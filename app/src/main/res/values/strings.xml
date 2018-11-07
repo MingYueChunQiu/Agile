@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">AgileMVPFrameProject</string>
+
+    <string name="error_service_response">服务器响应异常，请重试！</string>
+    <string name="error_login">登录请求失败，请重试！</string>
+    <string name="error_register">注册请求失败，请重试！</string>
+    <string name="error_get_verification">获取验证信息失败，请重试！</string>
+    <string name="error_validate_captcha">获取忘记密码验证信息失败，请重试！</string>
+    <string name="error_get_captcha">获取短信验证码失败，请重试！</string>
+    <string name="error_get_modify_password">获取修改密码结果信息失败，请重试！</string>
+    <string name="error_token">token异常，请重试！</string>
+    <string name="error_get_token">获取token失败，请重试！</string>
+    <string name="error_interface">界面异常，请重试！</string>
+    <string name="error_auto_login">自动登录失败！</string>
+    <string name="error_get_update_app">获取应用更新信息失败，请重试！</string>
+    <string name="error_get_class_time">获取课程起始截止时间信息失败，请重试！</string>
+    <string name="error_get_class_detailed">获取课程详情信息失败，请重试！</string>
+    <string name="error_get_class_list">获取课程列表信息失败，请重试！</string>
+    <string name="error_load_more">加载失败，请重试！</string>
+
+    <string name="warn_allow_storage_permission">请允许开启SD卡存储权限，以便存取数据</string>
+
+    <string name="prompt_click_again_exit">再按一次退出应用</string>
+    <string name="prompt_modify_password_successfully">恭喜您，修改密码成功！</string>
+    <string name="prompt_exit">您确定要退出吗？</string>
+    <string name="prompt_show_last_class">已显示最后一节课</string>
+    <string name="prompt_show_first_class">已显示第一节课</string>
+    <string name="prompt_permanent_notification">海螺宝宝为您服务，及时接受孩子上课通知</string>
+    <string name="prompt_update_app">您的应用有新版本啦！</string>
+    <string name="prompt_use_mobile_network">您正在使用移动网络</string>
+    <string name="prompt_query_mobile_network">您正在使用移动网络，是否继续观看？</string>
+    <string name="prompt_loading">海螺宝宝正在加载中</string>
+    <string name="prompt_no_course_today">今天没有课程休息一下吧！</string>
+
+    <string name="hint_update_app">您的应用有新版本啦！</string>
+    <string name="hint_updating_app">应用更新中……</string>
+
+    <string name="fill_today_header">今日课程数量：%1$d#本周剩余：%2$d/%3$d</string>
+    <string name="fill_common_header">课程数量：%1$d#%2$s</string>
+
+    <string name="no_content">本节课无此内容</string>
+    <string name="reload">重新加载</string>
+    <string name="my_class">我的课堂</string>
+    <string name="ignore">忽略</string>
+    <string name="calendar">日历</string>
+    <string name="exit_login">退出登录</string>
+    <string name="set_password">设置密码</string>
+    <string name="loading">正在加载中……</string>
+    <string name="preview_courseware">预习课件</string>
+    <string name="review_courseware">复习课件</string>
+    <string name="jump_today">返回\n今日</string>
+    <string name="time">时间</string>
+</resources>

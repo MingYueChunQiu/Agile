@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_30_round_corners">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_dialog_round_corners_loading_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_40"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_40"
+        android:paddingBottom="@dimen/dp_10"
+        android:text="@string/hint"
+        android:textSize="@dimen/font_20" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_dialog_round_corners_loading_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_40"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_40"
+        android:paddingBottom="@dimen/dp_10"
+        android:text="@string/content"
+        android:textSize="@dimen/font_16"
+        app:layout_constraintTop_toBottomOf="@id/tv_dialog_round_corners_loading_title" />
+
+    <View
+        android:id="@+id/v_dialog_round_corners_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/tv_dialog_round_corners_loading_content" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_dialog_round_corners_left"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_left_round_corner"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20"
+        android:text="@string/button"
+        android:textSize="@dimen/font_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/v_dialog_round_corners_vertical"
+        app:layout_constraintTop_toBottomOf="@id/v_dialog_round_corners_horizontal" />
+
+    <View
+        android:id="@+id/v_dialog_round_corners_vertical"
+        android:layout_width="@dimen/dp_1"
+        android:layout_height="0dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="@id/btn_dialog_round_corners_left"
+        app:layout_constraintLeft_toRightOf="@id/btn_dialog_round_corners_left"
+        app:layout_constraintRight_toLeftOf="@id/btn_dialog_round_corners_right"
+        app:layout_constraintTop_toBottomOf="@id/tv_dialog_round_corners_loading_content" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_dialog_round_corners_right"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_right_round_corner"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20"
+        android:text="@string/button"
+        android:textSize="@dimen/font_16"
+        app:layout_constraintLeft_toRightOf="@id/v_dialog_round_corners_vertical"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v_dialog_round_corners_horizontal" />
+</android.support.constraint.ConstraintLayout>

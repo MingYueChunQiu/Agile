@@ -1,0 +1,156 @@
+package com.mingyuechunqiu.agilemvpframe.util;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.PixelFormat;
+import android.hardware.display.DisplayManager;
+import android.media.Image;
+import android.media.ImageReader;
+import android.media.MediaCodec;
+import android.media.MediaCodecInfo;
+import android.media.MediaFormat;
+import android.media.projection.MediaProjection;
+import android.media.projection.MediaProjectionManager;
+import android.os.Build;
+import android.os.SystemClock;
+import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
+import android.view.Surface;
+
+import java.nio.ByteBuffer;
+
+/**
+ * <pre>
+ *     author : xyj
+ *     e-mail : yujie.xi@ehailuo.com
+ *     time   : 2018/05/18
+ *     desc   : 屏幕截取工具类
+ *     version: 1.0
+ * </pre>
+ */
+public class CaptureUtils {
+
+    /**
+     * 开始屏幕捕捉
+     *
+     * @param activity    进行屏幕捕捉的界面
+     * @param requestCode 屏幕捕捉请求码
+     * @return 是否成功请求屏幕捕捉
+     */
+    public static boolean startCapture(Activity activity, int requestCode) {
+        if (activity == null) {
+            return false;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            MediaProjectionManager manager = (MediaProjectionManager) activity.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+            activity.startActivityForResult(manager.createScreenCaptureIntent(), requestCode);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 获取截屏图片
+     *
+     * @param context    上下文
+     * @param manager    多媒体管理器
+     * @param resultCode 请求结果码
+     * @param data       传递参数
+     * @return 截屏图片
+     */
+    @Nullable
+    public static Bitmap getCaptureImage(Context context, MediaProjectionManager manager,
+                                         int resultCode, Intent data) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return null;
+        }
+        MediaProjection mediaProjection = manager.getMediaProjection(resultCode, data);
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        int screenWidth = metrics.widthPixels;
+        int screenHeight = metrics.heightPixels;
+        int densityDpi = metrics.densityDpi;
+        ImageReader imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 1);
+        mediaProjection.createVirtualDisplay("screenShot", screenWidth, screenHeight
+                , densityDpi, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+                imageReader.getSurface(), null, null);
+        SystemClock.sleep(1000);
+        Image image = imageReader.acquireNextImage();
+        return BitmapUtils.getBitmapFromImage(image);
+    }
+
+    /**
+     * 获取多媒体格式
+     *
+     * @param width  视频宽
+     * @param height 视频高
+     * @return 若设置成功则返回生成对象，否则返回null
+     */
+    @Nullable
+    public static MediaFormat getVideoMediaFormat(int width, int height) {
+        if (width <= 0 || height <= 0) {
+            return null;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            MediaFormat mediaFormat = MediaFormat.createAudioFormat("video/acc", width, height);
+            mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT,
+                    MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+            mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, 60000);
+            mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, 30);
+            mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 10);
+            return mediaFormat;
+        }
+        return null;
+    }
+
+    /**
+     * 获取屏幕捕捉的画面类
+     *
+     * @param mediaCodec
+     * @param format
+     * @return
+     */
+    @Nullable
+    public static Surface getVideoSurface(MediaCodec mediaCodec, MediaFormat format) {
+        if (mediaCodec == null || format == null) {
+            return null;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            mediaCodec.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
+            Surface surface = mediaCodec.createInputSurface();
+            mediaCodec.start();
+            return surface;
+        }
+        return null;
+    }
+
+    /**
+     * 对各帧上视频进行编码
+     *
+     * @param index      帧索引
+     * @param mediaCodec
+     * @param bufferInfo
+     * @return 返回缓冲字节
+     */
+    @Nullable
+    public static ByteBuffer encodeToVideoTrace(int index, MediaCodec mediaCodec,
+                                                MediaCodec.BufferInfo bufferInfo) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ByteBuffer encodedData = mediaCodec.getOutputBuffer(index);
+            if ((bufferInfo.flags & MediaCodec.BUFFER_FLAG_CODEC_CONFIG) != 0) {
+                bufferInfo.size = 0;
+            }
+            if (bufferInfo.size == 0) {
+                encodedData = null;
+            }
+            if (encodedData != null) {
+                encodedData.position(bufferInfo.offset);
+                encodedData.limit(bufferInfo.offset + bufferInfo.size);
+                return encodedData;
+            }
+        }
+        return null;
+    }
+
+}

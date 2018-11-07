@@ -1,0 +1,71 @@
+package com.mingyuechunqiu.agilemvpframe.util;
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.support.annotation.StringRes;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatTextView;
+import android.text.TextUtils;
+import android.view.View;
+
+import com.mingyuechunqiu.agilemvpframe.R;
+
+import pub.devrel.easypermissions.AppSettingsDialog;
+
+/**
+ * <pre>
+ *     author : 明月春秋
+ *     e-mail : xiyujieit@163.com
+ *     time   : 2018/05/12
+ *     desc   :
+ *     version: 1.0
+ * </pre>
+ */
+public class DialogUtils {
+
+    /**
+     * 获取加载对话框
+     *
+     * @param context    上下文
+     * @param hint       加载提示文字
+     * @param cancelable 点击界面对话框是否消失
+     * @return 返回生成的对话框
+     */
+    public static Dialog getLoadingDialog(Context context, String hint, boolean cancelable) {
+        if (TextUtils.isEmpty(hint)) {
+            hint = context.getString(R.string.prompt_loading);
+        }
+        View view = View.inflate(context, R.layout.dialog_loading, null);
+        AppCompatTextView actvMsg = view.findViewById(R.id.tv_dialog_loading);
+        actvMsg.setText(hint);
+        return new AlertDialog.Builder(context, R.style.Dialog_Loading)
+                .setView(view)
+                .setCancelable(cancelable)
+                .create();
+    }
+
+    public static void disappearDialog(Dialog dialog) {
+        if (dialog == null) {
+            return;
+        }
+        dialog.dismiss();
+    }
+
+    /**
+     * 显示权限设置对话框
+     *
+     * @param activity 界面
+     */
+    public static void showSetPermissionsDialog(Activity activity, @StringRes int rationaleResId) {
+        if (activity == null) {
+            return;
+        }
+        new AppSettingsDialog.Builder(activity)
+                .setTitle(R.string.set_permission)
+                .setRationale(rationaleResId)
+                .setPositiveButton(R.string.set)
+                .setNegativeButton(R.string.cancel)
+                .build().show();
+    }
+}
