@@ -2,8 +2,10 @@ package com.mingyuechunqiu.agilemvpframeproject.feature.main;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
@@ -79,5 +81,8 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         actvToolbarTitle.setText(R.string.app_name);
         actvToolbarTitle.setVisibility(View.VISIBLE);
         setSupportActionBar(mToolbar);
+        FrameLayout clContainer = findViewById(R.id.fl_navigation_container);
+        View view = getLayoutInflater().inflate(R.layout.activity_main, null);
+        clContainer.addView(view);
     }
 }
