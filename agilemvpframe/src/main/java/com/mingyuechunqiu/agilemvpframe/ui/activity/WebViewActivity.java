@@ -169,8 +169,6 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
     protected ToolbarUtils.ToolbarBean setToolbarBean() {
         return new ToolbarUtils.ToolbarBean.Builder()
                 .setImmerse(true)
-                .setHasCustomTitle(true)
-                .setNavigationIconResId(NO_RESOURCE_ID)
                 .build();
     }
 

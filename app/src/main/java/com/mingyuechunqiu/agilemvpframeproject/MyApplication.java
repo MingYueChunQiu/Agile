@@ -37,6 +37,10 @@ public class MyApplication extends Application {
         super.onCreate();
         sContext = getApplicationContext();
         Realm.init(this);
+        AgileMVPFrameConfigure configure = new AgileMVPFrameConfigure.Builder()
+                .setNetTimeout(20)
+                .build();
         AgileMVPFrame.init(this);
+        AgileMVPFrame.setConfigure(configure);
     }
 }

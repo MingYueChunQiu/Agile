@@ -15,7 +15,7 @@ import okhttp3.OkHttpClient;
  */
 public class BaseRetrofitManager {
 
-    protected static final int DEFAULT_TIMEOUT = 15;//默认服务器连接、读取超时时间
+    protected static final int DEFAULT_TIMEOUT = 15;//默认服务器连接、读取超时时间（秒数）
 
     protected static int sTimeout;
     protected static OkHttpClient sOkHttpClient;
@@ -29,6 +29,11 @@ public class BaseRetrofitManager {
             return;
         }
         sTimeout = timeout;
+        //根据新超时时间，创建新OkHttpClient
+        if (sOkHttpClient != null) {
+            sOkHttpClient = null;
+        }
+        sOkHttpClient = getOkHttpClient();
     }
 
     /**

@@ -11,7 +11,7 @@ package com.mingyuechunqiu.agilemvpframe.agile;
  */
 public class AgileMVPFrameConfigure {
 
-    private int netTimeout;//网络超时时间
+    private int netTimeout;//网络超时时间(秒数)
 
     public int getNetTimeout() {
         return netTimeout;
@@ -37,8 +37,9 @@ public class AgileMVPFrameConfigure {
             return mConfigure.netTimeout;
         }
 
-        public void setNetTimeout(int netTimeout) {
+        public Builder setNetTimeout(int netTimeout) {
             mConfigure.netTimeout = netTimeout;
+            return this;
         }
     }
 }

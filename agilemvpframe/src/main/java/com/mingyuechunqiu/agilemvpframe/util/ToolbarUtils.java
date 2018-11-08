@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agilemvpframe.util;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 
 /**
@@ -16,7 +17,7 @@ import android.view.View;
  */
 public class ToolbarUtils {
 
-    public static final int NO_RESOURCE_ID = -1;//没有资源id
+    public static final int NO_RESOURCE_ID = 0;//没有资源id
 
     /**
      * 初始化活动条
@@ -35,20 +36,37 @@ public class ToolbarUtils {
         if (toolbarBean.getNavigationIconResId() != NO_RESOURCE_ID) {
             toolbar.setNavigationIcon(toolbarBean.getNavigationIconResId());
         }
+        if (toolbarBean.getLogoResId() != NO_RESOURCE_ID) {
+            toolbar.setLogo(toolbarBean.getLogoResId());
+        }
+        if (toolbarBean.getLogoDrawable() != null) {
+            toolbar.setLogo(toolbarBean.getLogoDrawable());
+        }
         if (toolbarBean.getIconClickListener() != null) {
             toolbar.setNavigationOnClickListener(toolbarBean.getIconClickListener());
         }
-        if (toolbarBean.isHasCustomTitle()) {
+        //判断是否显示toolbar自身的标题
+        boolean isHasCustomTitle = true;
+        if (!TextUtils.isEmpty(toolbarBean.getTitle())) {
+            //因为在onCreate()中修改title的值，都会被重置成android:label的值
+            toolbar.setTitle(toolbarBean.getTitle());
+            if (toolbarBean.getTitleColor() != NO_RESOURCE_ID) {
+                toolbar.setTitleTextColor(toolbarBean.getTitleColor());
+            }
+            isHasCustomTitle = false;
+        }
+        if (!TextUtils.isEmpty(toolbarBean.getSubTitle())) {
+            toolbar.setSubtitle(toolbarBean.getSubTitle());
+            if (toolbarBean.getSubTitleColor() != NO_RESOURCE_ID) {
+                toolbar.setSubtitleTextColor(toolbarBean.getSubTitleColor());
+            }
+            isHasCustomTitle = false;
+        }
+        if (isHasCustomTitle) {
             //禁止活动条自身的标题显示
             if (actionBar != null) {
                 actionBar.setDisplayShowTitleEnabled(false);
             }
-        } else {
-            //因为在onCreate()中修改title的值，都会被重置成android:label的值
-            toolbar.setTitle(toolbarBean.getTitle());
-            toolbar.setTitleTextColor(toolbarBean.getTitleColor());
-            toolbar.setSubtitleTextColor(toolbarBean.getSubTitleColor());
-            toolbar.setSubtitle(toolbarBean.getSubTitle());
         }
         if (toolbarBean.isImmerse()) {
             //因为沉侵式布局会让活动条侵入到状态栏中，为了不影响活动条显示内容，
@@ -68,9 +86,11 @@ public class ToolbarUtils {
 
         private Drawable navigationIcon;//左侧导航图标
 
-        private View.OnClickListener iconClickListener;//图标点击事件
+        private int logoResId;//左侧logo图标资源ID
 
-        private Drawable drawable;//活动条的logo
+        private Drawable logoDrawable;//左侧logo图片
+
+        private View.OnClickListener iconClickListener;//图标点击事件
 
         private String title;//标题
 
@@ -79,8 +99,6 @@ public class ToolbarUtils {
         private String subTitle;//副标题
 
         private int subTitleColor;//副标题文本颜色
-
-        private boolean hasCustomTitle;//标记是否是设置自定义文本
 
         private boolean isImmerse;//标记是否是沉浸式
 
@@ -106,20 +124,28 @@ public class ToolbarUtils {
             this.navigationIcon = navigationIcon;
         }
 
+        public int getLogoResId() {
+            return logoResId;
+        }
+
+        public void setLogoResId(int logoResId) {
+            this.logoResId = logoResId;
+        }
+
+        public Drawable getLogoDrawable() {
+            return logoDrawable;
+        }
+
+        public void setLogoDrawable(Drawable logoDrawable) {
+            this.logoDrawable = logoDrawable;
+        }
+
         public View.OnClickListener getIconClickListener() {
             return iconClickListener;
         }
 
         public void setIconClickListener(View.OnClickListener iconClickListener) {
             this.iconClickListener = iconClickListener;
-        }
-
-        public Drawable getDrawable() {
-            return drawable;
-        }
-
-        public void setDrawable(Drawable drawable) {
-            this.drawable = drawable;
         }
 
         public String getTitle() {
@@ -152,14 +178,6 @@ public class ToolbarUtils {
 
         public void setSubTitleColor(int subTitleColor) {
             this.subTitleColor = subTitleColor;
-        }
-
-        public boolean isHasCustomTitle() {
-            return hasCustomTitle;
-        }
-
-        public void setHasCustomTitle(boolean hasCustomTitle) {
-            this.hasCustomTitle = hasCustomTitle;
         }
 
         public boolean isImmerse() {
@@ -225,21 +243,30 @@ public class ToolbarUtils {
                 return this;
             }
 
+            public int getLogoResId() {
+                return mBean.logoResId;
+            }
+
+            public Builder setLogoResId(int logoResId) {
+                mBean.logoResId = logoResId;
+                return this;
+            }
+
+            public Drawable getLogoDrawable() {
+                return mBean.logoDrawable;
+            }
+
+            public Builder setLogoDrawable(Drawable logoDrawable) {
+                mBean.logoDrawable = logoDrawable;
+                return this;
+            }
+
             public View.OnClickListener getIconClickListener() {
                 return mBean.iconClickListener;
             }
 
             public Builder setIconClickListener(View.OnClickListener iconClickListener) {
                 mBean.iconClickListener = iconClickListener;
-                return this;
-            }
-
-            public Drawable getDrawable() {
-                return mBean.drawable;
-            }
-
-            public Builder setDrawable(Drawable drawable) {
-                mBean.drawable = drawable;
                 return this;
             }
 
@@ -276,15 +303,6 @@ public class ToolbarUtils {
 
             public Builder setSubTitleColor(int subTitleColor) {
                 mBean.subTitleColor = subTitleColor;
-                return this;
-            }
-
-            public boolean isHasCustomTitle() {
-                return mBean.hasCustomTitle;
-            }
-
-            public Builder setHasCustomTitle(boolean hasCustomTitle) {
-                mBean.hasCustomTitle = hasCustomTitle;
                 return this;
             }
 
