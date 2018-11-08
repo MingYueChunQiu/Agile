@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agilemvpframe.util.DialogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ExitApplicationManager;
+import com.noober.background.BackgroundLibrary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BackgroundLibrary.inject(this);
         initView();
         ExitApplicationManager.addActivity(this);
     }
