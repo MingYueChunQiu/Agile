@@ -77,6 +77,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         AppCompatImageView acivBack = findViewById(R.id.iv_navigation_left_icon);
         acivBack.setVisibility(View.VISIBLE);
         actvToolbarTitle.setText(R.string.app_name);
+        actvToolbarTitle.setVisibility(View.VISIBLE);
         setSupportActionBar(mToolbar);
     }
 }

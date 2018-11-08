@@ -37,7 +37,8 @@
             android:layout_gravity="center"
             android:text="@string/app_name"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_20" />
+            android:textSize="@dimen/font_20"
+            android:visibility="gone" />
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
