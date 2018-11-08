@@ -199,7 +199,7 @@ public class PullDownEditText extends AppCompatEditText {
      * @param height 弹窗高度
      */
     public void setCompletionListHeight(int lines, int height) {
-        if (lines <= 0 || height <= 0) {
+        if (lines <= 0 || height <= 0 || mAdapter == null) {
             return;
         }
         mLines = lines;
@@ -217,6 +217,9 @@ public class PullDownEditText extends AppCompatEditText {
     }
 
     public void notifyDataChanged() {
+        if (mAdapter == null) {
+            return;
+        }
         ((BaseAdapter) mAdapter).notifyDataSetChanged();
         setCompletionListHeight(mLines, mHeight);
         lpwCompletion.dismiss();
@@ -311,7 +314,7 @@ public class PullDownEditText extends AppCompatEditText {
      * @param canvas 画布
      */
     private void drawPullDown(Canvas canvas) {
-        if (!isPullDownVisible) {
+        if (!isPullDownVisible || mAdapter == null) {
             return;
         }
         //如果列表没有数据，则不绘制图形
@@ -337,7 +340,7 @@ public class PullDownEditText extends AppCompatEditText {
      * @param canvas 画布
      */
     private void drawClearBtn(float scale, Canvas canvas) {
-        if (!isClearVisible) {
+        if (!isClearVisible || mAdapter == null) {
             return;
         }
         //如果有收回下拉图标，则按钮绘制在左边，否则绘制在最后面
