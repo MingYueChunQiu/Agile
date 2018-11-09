@@ -44,7 +44,7 @@ public class PasswordClearEditText extends AppCompatEditText {
     private int mBtnPadding, mTextPadding;//防止文字与图标重叠
     private int mBtnWidth;
     private int mBtnRightMargin;//最右边按钮距离边框距离
-    private boolean isEyeOpen, isClearShown;//记录当前是否已经下拉还是收回，清除按钮是否可见
+    private boolean isEyeOpen, isClearShown;//记录当前是否眼睛睁开，清除按钮是否可见，眼睛按钮是否可见
     //出现和消失动画
     private ValueAnimator mGoneAnimator;
     private ValueAnimator mVisibleAnimator;
@@ -75,8 +75,7 @@ public class PasswordClearEditText extends AppCompatEditText {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawEye(canvas);
-        drawClearBtn(canvas);
+        drawButtons(canvas);
     }
 
     @Override
@@ -89,7 +88,6 @@ public class PasswordClearEditText extends AppCompatEditText {
             }
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {
-
             boolean eyeTouched =
                     (getWidth() - mBtnPadding - mBtnRightMargin - mBtnWidth < event.getX())
                             && (event.getX() < getWidth() - mBtnPadding - mBtnRightMargin)
@@ -108,7 +106,9 @@ public class PasswordClearEditText extends AppCompatEditText {
                 } else {
                     isEyeOpen = true;
                     setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    setSelection(getText().length());
+                    if (getText() != null) {
+                        setSelection(getText().length());
+                    }
                     if (mListener != null) {
                         mListener.onClickEyeClose();
                     }
@@ -156,30 +156,9 @@ public class PasswordClearEditText extends AppCompatEditText {
     public void hidePassword() {
         isEyeOpen = false;
         setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
-        setSelection(getText().length());
-    }
-
-    /**
-     * 绘制清除按钮
-     *
-     * @param canvas 画布
-     */
-    private void drawClearBtn(Canvas canvas) {
-        //绘制按钮显示与消失效果
-        if (isClearShown) {
-            if (mVisibleAnimator.isRunning()) {
-                float scale = (float) mVisibleAnimator.getAnimatedValue();
-                drawClearBtn(scale, canvas);
-            } else {
-                drawClearBtn(1, canvas);
-            }
-        } else {
-            if (mGoneAnimator.isRunning()) {
-                float scale = (float) mGoneAnimator.getAnimatedValue();
-                drawClearBtn(scale, canvas);
-            }
+        if (getText() != null) {
+            setSelection(getText().length());
         }
-        invalidate();
     }
 
     /**
@@ -219,19 +198,42 @@ public class PasswordClearEditText extends AppCompatEditText {
         hidePassword();
     }
 
+    private void drawButtons(Canvas canvas) {
+        //绘制按钮显示与消失效果
+        if (isClearShown) {
+            if (mVisibleAnimator.isRunning()) {
+                float scale = (float) mVisibleAnimator.getAnimatedValue();
+                drawEye(canvas, scale);
+                drawClearBtn(canvas, scale);
+            } else {
+                drawEye(canvas, 1);
+                drawClearBtn(canvas, 1);
+            }
+        } else {
+            if (mGoneAnimator.isRunning()) {
+                float scale = (float) mGoneAnimator.getAnimatedValue();
+                drawEye(canvas, scale);
+                drawClearBtn(canvas, scale);
+            }
+        }
+        invalidate();
+    }
+
     /**
      * 绘制下拉收回图标按钮
      *
      * @param canvas 画布
      */
-    private void drawEye(Canvas canvas) {
+    private void drawEye(Canvas canvas, float scale) {
         if (!isPasswordVisible) {
             return;
         }
-        int right = getWidth() + getScrollX() - mBtnPadding - mBtnRightMargin;
-        int left = getWidth() + getScrollX() - mBtnPadding - mBtnRightMargin - mBtnWidth;
-        int top = getHeight() - mBtnWidth - mBtnPadding;
-        int bottom = top + mBtnWidth / 2;
+        int right = (int) (getWidth() + getScrollX() - mBtnPadding - mBtnRightMargin -
+                mBtnWidth * (1f - scale) / 2);
+        int left = (int) (getWidth() + getScrollX() - mBtnPadding - mBtnRightMargin -
+                mBtnWidth * (scale + (1f - scale) / 2f));
+        int top = (int) ((getHeight() - mBtnWidth * scale) / 2);
+        int bottom = (int) (top + mBtnWidth * scale);
         Rect rect = new Rect(left, top, right, bottom);
         if (isEyeOpen) {
             canvas.drawBitmap(mBpEyeOpen, null, rect, mPaint);
@@ -246,12 +248,14 @@ public class PasswordClearEditText extends AppCompatEditText {
      * @param scale  根据动画进度显示绘制效果
      * @param canvas 画布
      */
-    private void drawClearBtn(float scale, Canvas canvas) {
+    private void drawClearBtn(Canvas canvas, float scale) {
         if (!isClearVisible) {
             return;
         }
         int right = (int) (getWidth() + getScrollX() - mBtnPadding * 3 - mBtnRightMargin -
                 mBtnWidth - mBtnWidth * (1f - scale) / 2f);
+        //宽度 * scale + (宽度- 宽度* scale)/2 = 宽度 * scale + 宽度* （1- scale） /2
+        // = 宽度* (scale + (1 - scale)/2)
         int left = (int) (getWidth() + getScrollX() - mBtnPadding * 3 - mBtnWidth - mBtnRightMargin -
                 mBtnWidth * (scale + (1f - scale) / 2f));
         int top = (int) ((getHeight() - mBtnWidth * scale) / 2);

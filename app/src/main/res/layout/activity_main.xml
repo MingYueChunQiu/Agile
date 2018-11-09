@@ -16,4 +16,10 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.mingyuechunqiu.agilemvpframe.ui.widget.PasswordClearEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:pce_clear_btn_is_visible="true"
+        app:bl_focused_drawable="@drawable/sign_et_bg_focused"
+        app:bl_unFocused_drawable="@drawable/sign_et_bg_focus"/>
 </android.support.constraint.ConstraintLayout>
