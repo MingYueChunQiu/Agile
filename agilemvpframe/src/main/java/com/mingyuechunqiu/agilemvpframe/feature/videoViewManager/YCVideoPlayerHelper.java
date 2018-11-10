@@ -20,7 +20,7 @@ import org.yczbj.ycvideoplayerlib.player.VideoPlayer;
  *     version: 1.0
  * </pre>
  */
-public class YCVideoPlayerHelper extends BaseVideoView {
+public class YCVideoPlayerHelper extends BaseVideoViewHelper {
 
     private VideoPlayer vpVideo;
 
@@ -51,7 +51,7 @@ public class YCVideoPlayerHelper extends BaseVideoView {
     }
 
     @Override
-    public View getMediaPlayerController() {
+    public View getVideoController() {
         return mpContainer;
     }
 

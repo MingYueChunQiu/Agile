@@ -15,7 +15,7 @@ import android.view.View;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseVideoView implements VideoViewable {
+public abstract class BaseVideoViewHelper implements VideoViewable {
 
     protected View vContainer;
     protected View mpContainer;

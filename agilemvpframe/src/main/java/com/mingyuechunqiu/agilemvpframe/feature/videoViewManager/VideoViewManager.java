@@ -25,11 +25,7 @@ public class VideoViewManager implements VideoViewable {
         return new VideoViewManager(videoViewable);
     }
 
-    public VideoViewManager() {
-        this(new VideoViewHelper());
-    }
-
-    public VideoViewManager(VideoViewable videoViewable) {
+    private VideoViewManager(VideoViewable videoViewable) {
         if (videoViewable == null) {
             throw new IllegalArgumentException("VideoViewable can not be null!");
         }
@@ -49,6 +45,11 @@ public class VideoViewManager implements VideoViewable {
     @Override
     public View getVideoView() {
         return mVideoViewable.getVideoView();
+    }
+
+    @Override
+    public View getVideoController() {
+        return mVideoViewable.getVideoController();
     }
 
     @Override

@@ -3,26 +3,26 @@
 
     <!--带密码隐藏和清除功能的输入框-->
     <declare-styleable name="PasswordClearEditText">
-        <attr name="pce_password_is_visible" format="boolean" />
-        <attr name="pce_eye_open_drawable" format="reference" />
-        <attr name="pce_eye_eye_close_drawable" format="reference" />
-        <attr name="pce_clear_btn_is_visible" format="boolean" />
-        <attr name="pce_clear_btn_drawable" format="reference" />
-        <attr name="pce_button_padding" format="dimension" />
-        <attr name="pce_button_width" format="dimension" />
-        <attr name="pce_button_right_margin" format="dimension" />
+        <attr name="pcet_password_is_visible" format="boolean" />
+        <attr name="pcet_eye_open_drawable" format="reference" />
+        <attr name="pcet_eye_eye_close_drawable" format="reference" />
+        <attr name="pcet_clear_btn_is_visible" format="boolean" />
+        <attr name="pcet_clear_btn_drawable" format="reference" />
+        <attr name="pcet_button_padding" format="dimension" />
+        <attr name="pcet_button_width" format="dimension" />
+        <attr name="pcet_button_right_margin" format="dimension" />
     </declare-styleable>
 
     <!--可下拉收回的输入框样式-->
     <declare-styleable name="PullDownEditText">
-        <attr name="pullDownIsVisible" format="boolean" />
-        <attr name="retractDrawable" format="reference" />
-        <attr name="pullDownDrawable" format="reference" />
-        <attr name="clearBtnIsVisible" format="boolean" />
-        <attr name="clearBtnDrawable" format="reference" />
-        <attr name="buttonPadding" format="dimension" />
-        <attr name="buttonWidth" format="dimension" />
-        <attr name="buttonRightMargin" format="dimension" />
+        <attr name="pdet_pull_down_is_visible" format="boolean" />
+        <attr name="pdet_retract_drawable" format="reference" />
+        <attr name="pdet_pull_down_drawable" format="reference" />
+        <attr name="pdet_clear_button_is_visible" format="boolean" />
+        <attr name="pdet_clear_button_drawable" format="reference" />
+        <attr name="pdet_button_padding" format="dimension" />
+        <attr name="pdet_button_width" format="dimension" />
+        <attr name="pdet__button_right_margin" format="dimension" />
     </declare-styleable>
 
 </resources>

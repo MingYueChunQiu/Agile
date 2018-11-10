@@ -20,7 +20,7 @@ public interface VideoViewable {
 
     View getVideoView();
 
-    View getMediaPlayerController();
+    View getVideoController();
 
     void onStart();
 

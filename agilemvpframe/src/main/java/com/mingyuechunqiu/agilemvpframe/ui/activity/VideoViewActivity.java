@@ -7,7 +7,9 @@ import android.widget.FrameLayout;
 
 import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
+import com.mingyuechunqiu.agilemvpframe.feature.videoViewManager.Constants;
 import com.mingyuechunqiu.agilemvpframe.feature.videoViewManager.VideoViewManager;
+import com.mingyuechunqiu.agilemvpframe.feature.videoViewManager.YCVideoPlayerHelper;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
 
 import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_NAVIGATION_TITLE;
@@ -25,6 +27,8 @@ import static com.mingyuechunqiu.agilemvpframe.constants.KeyPrefixConstants.KEY_
  */
 public class VideoViewActivity extends BaseToolbarPresenterActivity {
 
+    //视频播放器帮助类实例类型
+    public static final String BUNDLE_VIDEO_VIEW_HELPER_TYPE = KEY_BUNDLE + "video_view_helper_type";
     //本地视频地址
     public static final String BUNDLE_LOCAL_VIDEO_RES_ID = KEY_BUNDLE + "local_video_res_id";
 
@@ -83,7 +87,6 @@ public class VideoViewActivity extends BaseToolbarPresenterActivity {
     protected void initView() {
         setContentView(R.layout.layout_navigation);
         FrameLayout container = findViewById(R.id.fl_navigation_container);
-        vvManager = VideoViewManager.getInstance();
         mToolbar = findViewById(R.id.tb_navigation_bar);
         actvToolbarTitle = findViewById(R.id.tv_navigation_title);
         AppCompatImageView acivBack = findViewById(R.id.iv_navigation_left_icon);
@@ -98,6 +101,24 @@ public class VideoViewActivity extends BaseToolbarPresenterActivity {
         String title = getIntent().getStringExtra(BUNDLE_NAVIGATION_TITLE);
         if (!TextUtils.isEmpty(title)) {
             actvToolbarTitle.setText(title);
+        }
+        initVideoView(container);
+    }
+
+    /**
+     * 初始化视频播放器
+     *
+     * @param container 父容器
+     */
+    private void initVideoView(FrameLayout container) {
+        if (getIntent().getExtras() != null) {
+            int videoHelperType = getIntent().getExtras().getInt(BUNDLE_VIDEO_VIEW_HELPER_TYPE,
+                    Constants.TYPE_ORIGINAL_HELPER);
+            if (videoHelperType == Constants.TYPE_ORIGINAL_HELPER) {
+                vvManager = VideoViewManager.getInstance();
+            } else if (videoHelperType == Constants.TYPE_THIRD_YC_HELPER) {
+                vvManager = VideoViewManager.getInstance(new YCVideoPlayerHelper());
+            }
         }
         container.addView(vvManager.getVideoContainer());
         vvManager.initVideoView(this);

@@ -268,14 +268,14 @@ public class PullDownEditText extends AppCompatEditText {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PullDownEditText);
         if (a != null) {
-            isPullDownVisible = a.getBoolean(R.styleable.PullDownEditText_pullDownIsVisible, false);
-            isClearVisible = a.getBoolean(R.styleable.PullDownEditText_clearBtnIsVisible, false);
-            mPullDownResId = a.getResourceId(R.styleable.PullDownEditText_pullDownDrawable, DEFAULT_PULL_DOWN_RES_ID);
-            mRetractResId = a.getResourceId(R.styleable.PullDownEditText_retractDrawable, DEFAULT_RETRACT_RES_ID);
-            mClearResId = a.getResourceId(R.styleable.PullDownEditText_clearBtnDrawable, DEFAULT_CLEAR_RES_ID);
-            mBtnPadding = a.getDimensionPixelSize(R.styleable.PullDownEditText_buttonPadding, DEFAULT_BUTTON_PADDING);
-            mBtnWidth = a.getDimensionPixelSize(R.styleable.PullDownEditText_buttonWidth, DEFAULT_BUTTON_WIDTH);
-            mBtnRightMargin = a.getDimensionPixelSize(R.styleable.PullDownEditText_buttonRightMargin, DEFAULT_BUTTON_RIGHT_MARGIN);
+            isPullDownVisible = a.getBoolean(R.styleable.PullDownEditText_pdet_pull_down_is_visible, false);
+            isClearVisible = a.getBoolean(R.styleable.PullDownEditText_pdet_clear_button_is_visible, false);
+            mPullDownResId = a.getResourceId(R.styleable.PullDownEditText_pdet_pull_down_drawable, DEFAULT_PULL_DOWN_RES_ID);
+            mRetractResId = a.getResourceId(R.styleable.PullDownEditText_pdet_retract_drawable, DEFAULT_RETRACT_RES_ID);
+            mClearResId = a.getResourceId(R.styleable.PullDownEditText_pdet_clear_button_drawable, DEFAULT_CLEAR_RES_ID);
+            mBtnPadding = a.getDimensionPixelSize(R.styleable.PullDownEditText_pdet_button_padding, DEFAULT_BUTTON_PADDING);
+            mBtnWidth = a.getDimensionPixelSize(R.styleable.PullDownEditText_pdet_button_width, DEFAULT_BUTTON_WIDTH);
+            mBtnRightMargin = a.getDimensionPixelSize(R.styleable.PullDownEditText_pdet__button_right_margin, DEFAULT_BUTTON_RIGHT_MARGIN);
             if (isPullDownVisible) {
                 mBpPullDown = BitmapFactory.decodeResource(getResources(), mPullDownResId);
                 mBpRetract = BitmapFactory.decodeResource(getResources(), mRetractResId);

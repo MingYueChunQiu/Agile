@@ -22,7 +22,7 @@ import com.mingyuechunqiu.agilemvpframe.R;
  *     version: 1.0
  * </pre>
  */
-public class VideoViewHelper extends BaseVideoView {
+public class VideoViewHelper extends BaseVideoViewHelper {
 
     private VideoView vvVideo;
     private AppCompatImageView acivPlay;
@@ -79,7 +79,7 @@ public class VideoViewHelper extends BaseVideoView {
     }
 
     @Override
-    public View getMediaPlayerController() {
+    public View getVideoController() {
         return mpContainer;
     }
 
