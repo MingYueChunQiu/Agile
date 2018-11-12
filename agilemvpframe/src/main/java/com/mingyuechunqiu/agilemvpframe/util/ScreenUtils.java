@@ -46,6 +46,17 @@ public class ScreenUtils {
     }
 
     /**
+     * 将sp转换成px
+     *
+     * @param resources 资源管理器
+     * @param spVal     sp值
+     * @return 返回px值
+     */
+    public static float getPxFromSp(Resources resources, float spVal) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spVal, resources.getDisplayMetrics());
+    }
+
+    /**
      * 设置文本控件字体大小
      *
      * @param textView 控件

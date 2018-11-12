@@ -1,13 +1,16 @@
 package com.mingyuechunqiu.agilemvpframeproject.feature.main;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseToolbarPresenterActivity;
+import com.mingyuechunqiu.agilemvpframe.util.StringUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
 import com.mingyuechunqiu.agilemvpframeproject.R;
 
@@ -84,5 +87,8 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         FrameLayout clContainer = findViewById(R.id.fl_navigation_container);
         View view = getLayoutInflater().inflate(R.layout.activity_main, null);
         clContainer.addView(view);
+        AppCompatTextView actvUrl = view.findViewById(R.id.tv_url);
+        actvUrl.setText(StringUtils.createColorUrlSpan("我已阅读并同意《云海螺用户注册协议》",
+                "《云海螺用户注册协议》", "http://www.ehailuo.com", Color.RED));
     }
 }

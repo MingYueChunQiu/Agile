@@ -275,7 +275,7 @@ public class PullDownEditText extends AppCompatEditText {
             mClearResId = a.getResourceId(R.styleable.PullDownEditText_pdet_clear_button_drawable, DEFAULT_CLEAR_RES_ID);
             mBtnPadding = a.getDimensionPixelSize(R.styleable.PullDownEditText_pdet_button_padding, DEFAULT_BUTTON_PADDING);
             mBtnWidth = a.getDimensionPixelSize(R.styleable.PullDownEditText_pdet_button_width, DEFAULT_BUTTON_WIDTH);
-            mBtnRightMargin = a.getDimensionPixelSize(R.styleable.PullDownEditText_pdet__button_right_margin, DEFAULT_BUTTON_RIGHT_MARGIN);
+            mBtnRightMargin = a.getDimensionPixelSize(R.styleable.PullDownEditText_pdet_button_right_margin, DEFAULT_BUTTON_RIGHT_MARGIN);
             if (isPullDownVisible) {
                 mBpPullDown = BitmapFactory.decodeResource(getResources(), mPullDownResId);
                 mBpRetract = BitmapFactory.decodeResource(getResources(), mRetractResId);

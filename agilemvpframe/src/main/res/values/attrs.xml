@@ -5,7 +5,7 @@
     <declare-styleable name="PasswordClearEditText">
         <attr name="pcet_password_is_visible" format="boolean" />
         <attr name="pcet_eye_open_drawable" format="reference" />
-        <attr name="pcet_eye_eye_close_drawable" format="reference" />
+        <attr name="pcet_eye_close_drawable" format="reference" />
         <attr name="pcet_clear_btn_is_visible" format="boolean" />
         <attr name="pcet_clear_btn_drawable" format="reference" />
         <attr name="pcet_button_padding" format="dimension" />
@@ -22,7 +22,7 @@
         <attr name="pdet_clear_button_drawable" format="reference" />
         <attr name="pdet_button_padding" format="dimension" />
         <attr name="pdet_button_width" format="dimension" />
-        <attr name="pdet__button_right_margin" format="dimension" />
+        <attr name="pdet_button_right_margin" format="dimension" />
     </declare-styleable>
 
 </resources>

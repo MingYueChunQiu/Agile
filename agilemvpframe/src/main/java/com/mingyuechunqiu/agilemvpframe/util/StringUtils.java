@@ -1,6 +1,13 @@
 package com.mingyuechunqiu.agilemvpframe.util;
 
+import android.support.annotation.Nullable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.URLSpan;
+
+import com.mingyuechunqiu.agilemvpframe.R;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -81,5 +88,30 @@ public class StringUtils {
             sbPhoneNumber.setCharAt(i, '*');
         }
         return sbPhoneNumber.toString();
+    }
+
+    /**
+     * 创建指定颜色的URL字符Span
+     *
+     * @param source  源字符串
+     * @param urlText 链接文字
+     * @param url     链接地址
+     * @param color   链接及链接文字颜色
+     * @return 返回Span
+     */
+    @Nullable
+    public static SpannableStringBuilder createColorUrlSpan(String source, String urlText,
+                                                            String url, int color) {
+        if (TextUtils.isEmpty(source) || urlText == null || !source.contains(urlText)) {
+            return null;
+        }
+        SpannableStringBuilder ssb = new SpannableStringBuilder(source);
+        URLSpan urlSpan = new URLSpan(url);
+        int start = source.indexOf(urlText);
+        int end = start + urlText.length();
+        ssb.setSpan(urlSpan, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(color);
+        ssb.setSpan(colorSpan, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        return ssb;
     }
 }
