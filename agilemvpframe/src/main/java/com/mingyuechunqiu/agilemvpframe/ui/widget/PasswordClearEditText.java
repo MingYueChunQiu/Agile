@@ -97,6 +97,12 @@ public class PasswordClearEditText extends AppCompatEditText {
                             && (event.getX() < getWidth() - mBtnPadding * 3 - mBtnRightMargin - mBtnWidth)
                             && isFocused();
 
+            //如果眼睛图标不可见，则让一键清除图标采用眼睛图标的位置判断
+            if (!isPasswordVisible) {
+                clearTouched = eyeTouched;
+                eyeTouched = false;
+            }
+
             if (eyeTouched) {
                 if (isEyeOpen) {
                     hidePassword();
@@ -151,9 +157,12 @@ public class PasswordClearEditText extends AppCompatEditText {
     }
 
     /**
-     * 隐藏密码
+     * 当密码显示按钮允许显示时，可以控制隐藏密码
      */
     public void hidePassword() {
+        if (!isPasswordVisible) {
+            return;
+        }
         isEyeOpen = false;
         setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
         if (getText() != null) {
@@ -191,6 +200,9 @@ public class PasswordClearEditText extends AppCompatEditText {
         }
         //给文字设置一个padding，避免文字和按钮重叠了
         mTextPadding = mBtnPadding * 4 + mBtnWidth * 2;
+        if (!isPasswordVisible) {
+            mTextPadding = mBtnPadding * 2 + mBtnWidth;
+        }
         //按钮出现和消失的动画
         mGoneAnimator = ValueAnimator.ofFloat(1f, 0f).setDuration(ANIMATOR_TIME);
         mVisibleAnimator = ValueAnimator.ofFloat(0f, 1f).setDuration(ANIMATOR_TIME);
@@ -203,65 +215,64 @@ public class PasswordClearEditText extends AppCompatEditText {
         if (isClearShown) {
             if (mVisibleAnimator.isRunning()) {
                 float scale = (float) mVisibleAnimator.getAnimatedValue();
-                drawEye(canvas, scale);
-                drawClearBtn(canvas, scale);
+                drawButton(canvas, scale, false);
+                drawButton(canvas, scale, true);
             } else {
-                drawEye(canvas, 1);
-                drawClearBtn(canvas, 1);
+                drawButton(canvas, 1, false);
+                drawButton(canvas, 1, true);
             }
         } else {
             if (mGoneAnimator.isRunning()) {
                 float scale = (float) mGoneAnimator.getAnimatedValue();
-                drawEye(canvas, scale);
-                drawClearBtn(canvas, scale);
+                drawButton(canvas, scale, false);
+                drawButton(canvas, scale, true);
             }
         }
         invalidate();
     }
 
     /**
-     * 绘制下拉收回图标按钮
+     * 绘制图标按钮
      *
-     * @param canvas 画布
+     * @param canvas      画布
+     * @param scale       根据动画进度显示绘制效果
+     * @param isDrawClear 是绘制一键清除图标还是眼睛图标
      */
-    private void drawEye(Canvas canvas, float scale) {
-        if (!isPasswordVisible) {
-            return;
+    private void drawButton(Canvas canvas, float scale, boolean isDrawClear) {
+        if (isDrawClear) {
+            if (!isClearVisible) {
+                return;
+            }
+        } else {
+            if (!isPasswordVisible) {
+                return;
+            }
         }
         int right = (int) (getWidth() + getScrollX() - mBtnPadding - mBtnRightMargin -
                 mBtnWidth * (1f - scale) / 2);
         int left = (int) (getWidth() + getScrollX() - mBtnPadding - mBtnRightMargin -
                 mBtnWidth * (scale + (1f - scale) / 2f));
+        //根据眼睛图标是否可见，来决定是否调整一键清除图标的位置
+        if (isDrawClear && isPasswordVisible) {
+            right = (int) (getWidth() + getScrollX() - mBtnPadding * 3 - mBtnRightMargin -
+                    mBtnWidth - mBtnWidth * (1f - scale) / 2f);
+            //宽度 * scale + (宽度- 宽度* scale)/2 = 宽度 * scale + 宽度* （1- scale） /2
+            // = 宽度* (scale + (1 - scale)/2)
+            left = (int) (getWidth() + getScrollX() - mBtnPadding * 3 - mBtnWidth - mBtnRightMargin -
+                    mBtnWidth * (scale + (1f - scale) / 2f));
+        }
         int top = (int) ((getHeight() - mBtnWidth * scale) / 2);
         int bottom = (int) (top + mBtnWidth * scale);
         Rect rect = new Rect(left, top, right, bottom);
-        if (isEyeOpen) {
-            canvas.drawBitmap(mBpEyeOpen, null, rect, mPaint);
+        if (isDrawClear) {
+            canvas.drawBitmap(mBpClear, null, rect, mPaint);
         } else {
-            canvas.drawBitmap(mBpEyeClosed, null, rect, mPaint);
+            if (isEyeOpen) {
+                canvas.drawBitmap(mBpEyeOpen, null, rect, mPaint);
+            } else {
+                canvas.drawBitmap(mBpEyeClosed, null, rect, mPaint);
+            }
         }
-    }
-
-    /**
-     * 绘制清除按钮
-     *
-     * @param scale  根据动画进度显示绘制效果
-     * @param canvas 画布
-     */
-    private void drawClearBtn(Canvas canvas, float scale) {
-        if (!isClearVisible) {
-            return;
-        }
-        int right = (int) (getWidth() + getScrollX() - mBtnPadding * 3 - mBtnRightMargin -
-                mBtnWidth - mBtnWidth * (1f - scale) / 2f);
-        //宽度 * scale + (宽度- 宽度* scale)/2 = 宽度 * scale + 宽度* （1- scale） /2
-        // = 宽度* (scale + (1 - scale)/2)
-        int left = (int) (getWidth() + getScrollX() - mBtnPadding * 3 - mBtnWidth - mBtnRightMargin -
-                mBtnWidth * (scale + (1f - scale) / 2f));
-        int top = (int) ((getHeight() - mBtnWidth * scale) / 2);
-        int bottom = (int) (top + mBtnWidth * scale);
-        Rect rect = new Rect(left, top, right, bottom);
-        canvas.drawBitmap(mBpClear, null, rect, mPaint);
     }
 
     // 清除按钮出现时的动画效果
