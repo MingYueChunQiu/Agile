@@ -15,27 +15,27 @@ import com.mingyuechunqiu.agilemvpframe.data.bean.BaseInfo;
 class MainPresenter extends MainContract.Presenter<MainContract.View, MainContract.Model> {
 
     @Override
-    public void start() {
-
-    }
-
-    @Override
-    protected MainContract.Model initModel() {
-        return null;
-    }
-
-    @Override
     protected <B extends BaseInfo> void requestModel(B info) {
 
     }
 
     @Override
-    protected void release() {
+    protected void disconnectNet() {
 
     }
 
     @Override
-    protected void disconnectNet() {
+    public void start() {
+
+    }
+
+    @Override
+    public MainContract.Model initModel() {
+        return null;
+    }
+
+    @Override
+    public void release() {
 
     }
 }

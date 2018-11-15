@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agilemvpframe.base.view;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseAbstractPresenter;
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BasePresenter;
 
 /**

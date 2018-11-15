@@ -8,11 +8,11 @@ import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2018/05/12
  *     desc   : 所有带对话框的view视图接口的父接口
- *              继承自BaseView
+ *              继承自BaseNetView
  *     version: 1.0
  * </pre>
  */
-public interface BaseDialogView<P extends BaseDialogPresenter> extends BaseView<P> {
+public interface BaseDialogView<P extends BaseDialogPresenter> extends BaseNetView<P> {
 
     /**
      * 显示加载对话框
