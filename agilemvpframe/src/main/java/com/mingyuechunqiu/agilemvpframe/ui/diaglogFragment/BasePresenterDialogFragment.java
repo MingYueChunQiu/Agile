@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
-import com.mingyuechunqiu.agilemvpframe.base.view.BaseView;
+import com.mingyuechunqiu.agilemvpframe.base.view.BaseNetView;
 
 /**
  * <pre>
@@ -20,7 +20,7 @@ import com.mingyuechunqiu.agilemvpframe.base.view.BaseView;
  *     version: 1.0
  * </pre>
  */
-public abstract class BasePresenterDialogFragment<V extends BaseView<P>, P extends BaseNetPresenter> extends BaseDialogFragment {
+public abstract class BasePresenterDialogFragment<V extends BaseNetView<P>, P extends BaseNetPresenter> extends BaseDialogFragment {
 
     protected P mPresenter;
 
