@@ -6,7 +6,6 @@ import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrame;
 import com.mingyuechunqiu.agilemvpframe.base.model.BaseNetModel;
 import com.mingyuechunqiu.agilemvpframe.base.view.BaseNetView;
-import com.mingyuechunqiu.agilemvpframe.base.view.BaseView;
 import com.mingyuechunqiu.agilemvpframe.data.bean.BaseInfo;
 import com.mingyuechunqiu.agilemvpframe.util.NetworkUtils;
 import com.mingyuechunqiu.agilemvpframe.util.SharedPreferencesUtils;
@@ -52,21 +51,17 @@ public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetM
     }
 
     /**
-     * 进行网络请求
-     */
-    protected void getRequest() {
-        getRequest(null);
-    }
-
-    /**
      * 带参数的网络请求
      *
      * @param info 网络请求参数对象
-     * @param <B>  网络请求参数类型
      */
-    protected <B extends BaseInfo> void getRequest(B info) {
+    public void setParamsInfo(BaseInfo info) {
         //判断当前网络状况，是否继续进行网络业务操作
         if (judgeNetwork()) {
+            if (info == null) {
+                showToast(R.string.error_set_net_params);
+                return;
+            }
             requestModel(info);
         } else {
             if (mViewRef.get() != null) {
@@ -98,9 +93,8 @@ public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetM
      * 由子类重写，调用model进行网络请求操作
      *
      * @param info 网络请求参数对象
-     * @param <B>  网络请求参数类型
      */
-    protected abstract <B extends BaseInfo> void requestModel(B info);
+    protected abstract void requestModel(BaseInfo info);
 
     /**
      * 当网络连接断开时回调

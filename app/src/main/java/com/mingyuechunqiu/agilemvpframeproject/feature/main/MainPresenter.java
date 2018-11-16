@@ -15,7 +15,7 @@ import com.mingyuechunqiu.agilemvpframe.data.bean.BaseInfo;
 class MainPresenter extends MainContract.Presenter<MainContract.View, MainContract.Model> {
 
     @Override
-    protected <B extends BaseInfo> void requestModel(B info) {
+    protected void requestModel(BaseInfo info) {
 
     }
 
