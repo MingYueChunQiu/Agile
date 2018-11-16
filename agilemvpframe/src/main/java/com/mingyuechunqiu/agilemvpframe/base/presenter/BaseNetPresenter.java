@@ -56,14 +56,14 @@ public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetM
      * @param info 网络请求参数对象
      */
     public void setParamsInfo(BaseInfo info) {
+        if (mModel == null) {
+            throw new IllegalArgumentException("Model has not been set!");
+        }
         //判断当前网络状况，是否继续进行网络业务操作
         if (judgeNetwork()) {
             if (info == null) {
                 showToast(R.string.error_set_net_params);
                 return;
-            }
-            if (mModel == null) {
-                throw new IllegalArgumentException("Model has not been set!");
             }
             requestModel(info);
         } else {

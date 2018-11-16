@@ -38,10 +38,10 @@ public abstract class BaseNetModel<I extends IBaseListener> implements BaseModel
      * @param info 网络请求参数对象
      */
     public void setParamsInfo(BaseInfo info) {
+        if (mListener == null) {
+            throw new IllegalArgumentException("Listener has not been set!");
+        }
         if (info == null) {
-            if (mListener == null) {
-                throw new IllegalArgumentException("Listener has not been set!");
-            }
             mListener.onFailure(R.string.error_set_net_params);
             return;
         }
