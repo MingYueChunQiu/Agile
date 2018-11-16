@@ -39,6 +39,9 @@ public abstract class BaseNetModel<I extends IBaseListener> implements BaseModel
      */
     public void setParamsInfo(BaseInfo info) {
         if (info == null) {
+            if (mListener == null) {
+                throw new IllegalArgumentException("Listener has not been set!");
+            }
             mListener.onFailure(R.string.error_set_net_params);
             return;
         }

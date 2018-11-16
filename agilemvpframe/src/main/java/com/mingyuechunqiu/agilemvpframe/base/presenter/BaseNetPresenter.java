@@ -62,6 +62,9 @@ public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetM
                 showToast(R.string.error_set_net_params);
                 return;
             }
+            if (mModel == null) {
+                throw new IllegalArgumentException("Model has not been set!");
+            }
             requestModel(info);
         } else {
             if (mViewRef.get() != null) {
