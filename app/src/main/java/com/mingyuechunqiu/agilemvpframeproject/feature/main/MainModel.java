@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agilemvpframeproject.feature.main;
 
+import com.mingyuechunqiu.agilemvpframe.data.bean.BaseInfo;
+
 import java.util.Map;
 
 /**
@@ -14,17 +16,19 @@ import java.util.Map;
  */
 class MainModel extends MainContract.Model<MainContract.Listener> {
 
-    public MainModel(MainContract.Listener listener) {
+    private MainParamsInfo mInfo;
+
+    MainModel(MainContract.Listener listener) {
         super(listener);
     }
 
     @Override
-    protected void reRequest(Map<String, String> paramMap) {
+    protected void getRequest(BaseInfo info) {
 
     }
 
     @Override
-    protected void getRequest() {
+    protected void reRequest(Map<String, String> paramMap) {
 
     }
 

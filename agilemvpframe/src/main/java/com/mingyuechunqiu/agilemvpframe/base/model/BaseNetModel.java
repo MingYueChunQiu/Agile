@@ -1,6 +1,8 @@
 package com.mingyuechunqiu.agilemvpframe.base.model;
 
+import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.base.framework.IBaseListener;
+import com.mingyuechunqiu.agilemvpframe.data.bean.BaseInfo;
 
 /**
  * <pre>
@@ -31,8 +33,23 @@ public abstract class BaseNetModel<I extends IBaseListener> implements BaseModel
     }
 
     /**
-     * 由子类重写进行网络请求
+     * 设置网络请求参数对象，进行网络请求
+     *
+     * @param info 网络请求参数对象
      */
-    protected abstract void getRequest();
+    public void setParamsInfo(BaseInfo info) {
+        if (info == null) {
+            mListener.onFailure(R.string.error_set_net_params);
+            return;
+        }
+        getRequest(info);
+    }
+
+    /**
+     * 由子类重写进行网络请求
+     *
+     * @param info 网络请求参数对象
+     */
+    protected abstract void getRequest(BaseInfo info);
 
 }
