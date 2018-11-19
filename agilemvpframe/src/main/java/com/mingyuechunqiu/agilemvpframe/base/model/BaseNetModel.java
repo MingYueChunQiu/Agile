@@ -44,7 +44,7 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
     /**
      * 处理Retrofit网络响应失败事件
      *
-     * @param t                抛出异常
+     * @param t                抛出的异常
      * @param errorStringResId 错误提示字符串资源ID
      */
     protected void onRetrofitResponseFailed(Throwable t, @StringRes int errorStringResId) {
