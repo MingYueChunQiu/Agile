@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">AgileMVPFrame</string>
 
+    <string name="error_set_params">业务请求参数设置异常，请重试！</string>
     <string name="error_set_net_params">网络请求参数设置异常，请重试！</string>
 
     <string name="prompt_exit">您确定要退出吗？</string>

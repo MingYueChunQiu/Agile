@@ -1,8 +1,10 @@
 package com.mingyuechunqiu.agilemvpframe.base.presenter;
 
+import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.base.model.BaseModel;
 import com.mingyuechunqiu.agilemvpframe.base.model.BaseTokenNetModel;
 import com.mingyuechunqiu.agilemvpframe.base.view.BaseView;
+import com.mingyuechunqiu.agilemvpframe.data.bean.BaseInfo;
 
 import java.lang.ref.WeakReference;
 
@@ -11,7 +13,7 @@ import java.lang.ref.WeakReference;
  *     author : xyj
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2018/06/14
- *     desc   : 所有Presenter的基类
+ *     desc   : 所有Presenter层的抽象基类
  *              实现BasePresenter
  *     version: 1.0
  * </pre>
@@ -41,6 +43,22 @@ public abstract class BaseAbstractPresenter<V extends BaseView, M extends BaseMo
         releaseOnDetach();
     }
 
+    /**
+     * 带参数的业务请求
+     *
+     * @param info 请求参数对象
+     */
+    public void setParamsInfo(BaseInfo info) {
+        if (mModel == null) {
+            throw new IllegalArgumentException("Model has not been set!");
+        }
+        if (info == null) {
+            showToast(R.string.error_set_net_params);
+            return;
+        }
+        requestModel(info);
+    }
+
     protected void releaseOnDetach() {
         release();
         if (mViewRef != null) {
@@ -60,4 +78,11 @@ public abstract class BaseAbstractPresenter<V extends BaseView, M extends BaseMo
             mViewRef.get().showToast(stringResourceId);
         }
     }
+
+    /**
+     * 由子类重写，调用model进行业务请求操作
+     *
+     * @param info 请求参数对象
+     */
+    protected abstract void requestModel(BaseInfo info);
 }

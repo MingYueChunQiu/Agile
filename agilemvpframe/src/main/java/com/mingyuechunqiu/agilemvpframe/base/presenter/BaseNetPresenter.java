@@ -35,26 +35,11 @@ public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetM
     }
 
     /**
-     * 检测网络请求
-     *
-     * @return 当界面被回收和网络中断时返回false，否则返回true
-     */
-    protected boolean judgeNetwork() {
-        if (mViewRef.get() != null) {
-            if (!NetworkUtils.checkNetState(mViewRef.get().getCurrentContext())) {
-                mViewRef.get().showToast(R.string.network_disconnected);
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * 带参数的网络请求
      *
      * @param info 网络请求参数对象
      */
+    @Override
     public void setParamsInfo(BaseInfo info) {
         if (mModel == null) {
             throw new IllegalArgumentException("Model has not been set!");
@@ -71,6 +56,22 @@ public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetM
                 disconnectNet();
             }
         }
+    }
+
+    /**
+     * 检测网络请求
+     *
+     * @return 当界面被回收和网络中断时返回false，否则返回true
+     */
+    protected boolean judgeNetwork() {
+        if (mViewRef.get() != null) {
+            if (!NetworkUtils.checkNetState(mViewRef.get().getCurrentContext())) {
+                mViewRef.get().showToast(R.string.network_disconnected);
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -91,13 +92,6 @@ public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetM
             return token;
         }
     }
-
-    /**
-     * 由子类重写，调用model进行网络请求操作
-     *
-     * @param info 网络请求参数对象
-     */
-    protected abstract void requestModel(BaseInfo info);
 
     /**
      * 当网络连接断开时回调
