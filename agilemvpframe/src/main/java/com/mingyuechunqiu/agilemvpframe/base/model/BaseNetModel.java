@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.base.model;
 
+import android.support.annotation.StringRes;
+
 import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.base.framework.IBaseListener;
 import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
@@ -28,7 +30,7 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
      * @param response 网络响应
      * @return 如果网络响应为空返回true，否则返回false
      */
-    protected boolean checkResponseIsNull(Response response) {
+    protected boolean checkRetrofitResponseIsNull(Response response) {
         if (response == null || response.body() == null) {
             LogUtils.d(TAG_FAILURE, "服务器响应异常，请重试！");
             if (mListener != null) {
@@ -37,5 +39,18 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
             return true;
         }
         return false;
+    }
+
+    /**
+     * 处理Retrofit网络响应失败事件
+     *
+     * @param t                抛出异常
+     * @param errorStringResId 错误提示字符串资源ID
+     */
+    protected void onRetrofitResponseFailed(Throwable t, @StringRes int errorStringResId) {
+        LogUtils.d(TAG_FAILURE, t.getMessage());
+        if (mListener != null) {
+            mListener.onFailure(errorStringResId);
+        }
     }
 }
