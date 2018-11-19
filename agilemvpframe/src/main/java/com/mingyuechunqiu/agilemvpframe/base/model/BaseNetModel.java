@@ -26,7 +26,7 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
      * 检测Retrofit的网络响应是否为空
      *
      * @param response 网络响应
-     * @return 如果为空返回true，否则返回false
+     * @return 如果网络响应为空返回true，否则返回false
      */
     protected boolean checkResponseIsNull(Response response) {
         if (response == null || response.body() == null) {
