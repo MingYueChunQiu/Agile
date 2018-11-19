@@ -3,6 +3,7 @@
 
     <string name="error_set_params">业务请求参数设置异常，请重试！</string>
     <string name="error_set_net_params">网络请求参数设置异常，请重试！</string>
+    <string name="error_service_response">服务器响应异常，请重试！</string>
 
     <string name="prompt_exit">您确定要退出吗？</string>
     <string name="prompt_use_mobile_network">您正在使用移动网络</string>
