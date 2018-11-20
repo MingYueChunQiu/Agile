@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -89,6 +90,12 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         clContainer.addView(view);
         AppCompatTextView actvUrl = view.findViewById(R.id.tv_url);
         actvUrl.setText(StringUtils.createColorUrlSpan("我已阅读并同意《云海螺用户注册协议》",
-                "《云海螺用户注册协议》", "http://www.ehailuo.com", Color.RED));
+                "《云海螺用户注册协议》", "http://www.ehailuo.com", Color.RED, new StringUtils.OnClickUrlLinkListener() {
+                    @Override
+                    public void onClickUrlLink(String source, String urlText, String url) {
+                        showToast("点击了链接" + url);
+                    }
+                }));
+        actvUrl.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

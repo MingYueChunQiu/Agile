@@ -13,7 +13,7 @@
         <attr name="pcet_button_right_margin" format="dimension" />
     </declare-styleable>
 
-    <!--可下拉收回的输入框样式-->
+    <!--可下拉收回的输入框-->
     <declare-styleable name="PullDownEditText">
         <attr name="pdet_pull_down_is_visible" format="boolean" />
         <attr name="pdet_retract_drawable" format="reference" />
@@ -23,6 +23,27 @@
         <attr name="pdet_button_padding" format="dimension" />
         <attr name="pdet_button_width" format="dimension" />
         <attr name="pdet_button_right_margin" format="dimension" />
+    </declare-styleable>
+
+    <!--圆形进度按钮-->
+    <declare-styleable name="CircleProgressButton">
+        <attr name="cpb_idle_circle_color" format="color" />
+        <attr name="cpb_pressed_circle_color" format="color" />
+        <attr name="cpb_released_circle_color" format="color" />
+        <attr name="cpb_idle_ring_color" format="color" />
+        <attr name="cpb_pressed_ring_color" format="color" />
+        <attr name="cpb_released_ring_color" format="color" />
+        <attr name="cpb_idle_ring_width" format="dimension" />
+        <attr name="cpb_pressed_ring_width" format="dimension" />
+        <attr name="cpb_released_ring_width" format="dimension" />
+        <attr name="cpb_idle_ring_visible" format="boolean" />
+        <attr name="cpb_pressed_ring_visible" format="boolean" />
+        <attr name="cpb_released_ring_visible" format="boolean" />
+        <attr name="cpb_min_progress" format="integer" />
+        <attr name="cpb_max_progress" format="integer" />
+        <attr name="cpb_current_progress" format="integer" />
+        <attr name="cpb_is_timer_mode" format="boolean" />
+        <attr name="cpb_progress_duration" format="integer" />
     </declare-styleable>
 
 </resources>

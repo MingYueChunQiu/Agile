@@ -1,13 +1,14 @@
 package com.mingyuechunqiu.agilemvpframe.util;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.URLSpan;
-
-import com.mingyuechunqiu.agilemvpframe.R;
+import android.text.style.UnderlineSpan;
+import android.view.View;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -100,18 +101,36 @@ public class StringUtils {
      * @return 返回Span
      */
     @Nullable
-    public static SpannableStringBuilder createColorUrlSpan(String source, String urlText,
-                                                            String url, int color) {
+    public static SpannableStringBuilder createColorUrlSpan(final String source, final String urlText,
+                                                            final String url, int color,
+                                                            final OnClickUrlLinkListener listener) {
         if (TextUtils.isEmpty(source) || urlText == null || !source.contains(urlText)) {
             return null;
         }
         SpannableStringBuilder ssb = new SpannableStringBuilder(source);
-        URLSpan urlSpan = new URLSpan(url);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                if (listener != null) {
+                    listener.onClickUrlLink(source, urlText, url);
+                }
+            }
+        };
         int start = source.indexOf(urlText);
         int end = start + urlText.length();
-        ssb.setSpan(urlSpan, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(clickableSpan, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        UnderlineSpan underlineSpan = new UnderlineSpan();
+        ssb.setSpan(underlineSpan, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(color);
         ssb.setSpan(colorSpan, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         return ssb;
+    }
+
+    /**
+     * 当点击网址链接时回调时间
+     */
+    public interface OnClickUrlLinkListener {
+
+        void onClickUrlLink(String source, String urlText, String url);
     }
 }

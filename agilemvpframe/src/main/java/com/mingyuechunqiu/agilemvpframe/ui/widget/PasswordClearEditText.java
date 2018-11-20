@@ -88,6 +88,7 @@ public class PasswordClearEditText extends AppCompatEditText {
             }
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {
+            performClick();
             boolean eyeTouched =
                     (getWidth() - mBtnPadding - mBtnRightMargin - mBtnWidth < event.getX())
                             && (event.getX() < getWidth() - mBtnPadding - mBtnRightMargin)
@@ -133,6 +134,11 @@ public class PasswordClearEditText extends AppCompatEditText {
     }
 
     @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
+
+    @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
         if (text.length() > 0 && isFocused()) {
@@ -145,6 +151,16 @@ public class PasswordClearEditText extends AppCompatEditText {
                 isClearShown = false;
                 startGoneAnimator();
             }
+        }
+    }
+
+    @Override
+    protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
+        super.onFocusChanged(focused, direction, previouslyFocusedRect);
+        if (focused) {
+            startVisibleAnimator();
+        } else {
+            startGoneAnimator();
         }
     }
 
