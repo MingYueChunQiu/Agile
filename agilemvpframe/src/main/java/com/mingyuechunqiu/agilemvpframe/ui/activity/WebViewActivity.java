@@ -3,11 +3,14 @@ package com.mingyuechunqiu.agilemvpframe.ui.activity;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +30,14 @@ import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
 
 import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_NAVIGATION_TITLE;
 import static com.mingyuechunqiu.agilemvpframe.constants.KeyPrefixConstants.KEY_BUNDLE;
-import static com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils.NO_RESOURCE_ID;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_DESKTOP_MODE;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_NAVIGATION_BG_COLOR;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_SHOW_BACK_DIALOG;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_COLOR;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_TEXT_SIZE;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_VISIBLE;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_WATCH_VIDEO;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_WEB_URL;
 
 /**
  * <pre>
@@ -41,18 +51,13 @@ import static com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils.NO_RESOURCE_ID;
  */
 public class WebViewActivity extends BaseToolbarPresenterActivity {
 
-    //传递给本界面的网页地址
-    public static final String BUNDLE_WEB_URL = KEY_BUNDLE + "web_url";
-    //是否已桌面形式浏览网页
-    public static final String BUNDLE_DESKTOP_MODE = KEY_BUNDLE + "desktop_mode";
-    //是否是打开网页观看视频
-    public static final String BUNDLE_WATCH_VIDEO = KEY_BUNDLE + "watch_video";
-
+    private static Drawable backDrawable;
     private ProgressBar pbProgress;
     private WebView wvWeb;
 
     private boolean isSelectedMobileNet;//标记是否选择了使用移动网络
     private NetworkConnectedTypeReceiver mReceiver;
+    private Bundle mBundle;//配置信息
 
     @Override
     protected void release() {
@@ -70,6 +75,11 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
             wvWeb.destroy();
             wvWeb = null;
         }
+        if (mBundle != null) {
+            mBundle.clear();
+            mBundle = null;
+        }
+        backDrawable = null;
     }
 
     @Override
@@ -81,6 +91,9 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
         actvToolbarTitle = findViewById(R.id.tv_navigation_title);
         AppCompatImageView acivBack = findViewById(R.id.iv_navigation_left_icon);
         acivBack.setVisibility(View.VISIBLE);
+        if (backDrawable != null) {
+            acivBack.setImageDrawable(backDrawable);
+        }
         acivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,9 +101,22 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
             }
         });
         setSupportActionBar(mToolbar);
-        String title = getIntent().getStringExtra(BUNDLE_NAVIGATION_TITLE);
-        if (!TextUtils.isEmpty(title)) {
-            actvToolbarTitle.setText(title);
+        mBundle = getIntent().getExtras();
+        if (mBundle != null && mBundle.getBoolean(BUNDLE_TITLE_VISIBLE, false)) {
+            actvToolbarTitle.setVisibility(View.VISIBLE);
+            String title = mBundle.getString(BUNDLE_NAVIGATION_TITLE);
+            if (!TextUtils.isEmpty(title)) {
+                actvToolbarTitle.setText(title);
+            }
+            int titleColor = mBundle.getInt(BUNDLE_TITLE_COLOR, Color.WHITE);
+            actvToolbarTitle.setTextColor(titleColor);
+            int titleTextSize = mBundle.getInt(BUNDLE_TITLE_TEXT_SIZE, 20);
+            actvToolbarTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, titleTextSize);
+        }
+        if (mBundle != null) {
+            int toolbarBgColor = mBundle.getInt(BUNDLE_NAVIGATION_BG_COLOR,
+                    getResources().getColor(android.R.color.darker_gray));
+            mToolbar.setBackgroundColor(toolbarBgColor);
         }
         container.addView(view);
         wvWeb = view.findViewById(R.id.wv_web);
@@ -102,7 +128,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
             return;
         }
         //如果是为了观看视频，要判断一下是否是4G网络
-        if (getIntent().getBooleanExtra(BUNDLE_WATCH_VIDEO, false)) {
+        if (mBundle != null && mBundle.getBoolean(BUNDLE_WATCH_VIDEO, false)) {
             NetworkUtils.checkNetworkType(this, new NetworkUtils.OnCheckNetworkTypeListener() {
                 @Override
                 public void onConnectedInMobile() {
@@ -151,16 +177,18 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            new AlertDialog.Builder(this)
-                    .setMessage(R.string.prompt_exit)
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    }).setNegativeButton(R.string.cancel, null)
-                    .create().show();
-            return true;
+            if (mBundle != null && mBundle.getBoolean(BUNDLE_SHOW_BACK_DIALOG, false)) {
+                new AlertDialog.Builder(this)
+                        .setMessage(R.string.prompt_exit)
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        }).setNegativeButton(R.string.cancel, null)
+                        .create().show();
+                return true;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -191,6 +219,15 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
     }
 
     /**
+     * 设置返回图标，在打开界面前调用
+     *
+     * @param drawable 图片
+     */
+    public static void setBackDrawable(Drawable drawable) {
+        backDrawable = drawable;
+    }
+
+    /**
      * 初始化WebView相关属性
      */
     private void initWebView() {
@@ -198,7 +235,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
         //下面两句话必须有，才能播放
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
-        if (getIntent().getBooleanExtra(BUNDLE_DESKTOP_MODE, false)) {
+        if (mBundle != null && mBundle.getBoolean(BUNDLE_DESKTOP_MODE, false)) {
             webSettings.setUserAgentString("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 " +
                     "(KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36");
         }
@@ -270,9 +307,30 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
      * 开始加载网页
      */
     private void startLoadingWeb() {
+        if (mBundle == null) {
+            return;
+        }
         String url = getIntent().getStringExtra(BUNDLE_WEB_URL);
         if (!TextUtils.isEmpty(url)) {
             wvWeb.loadUrl(url);
         }
+    }
+
+    /**
+     * 常量类
+     */
+    public static class Constants {
+        public static final String BUNDLE_TITLE_COLOR = KEY_BUNDLE + "title_color";
+        public static final String BUNDLE_TITLE_TEXT_SIZE = KEY_BUNDLE + "title_text_size";
+        public static final String BUNDLE_TITLE_VISIBLE = KEY_BUNDLE + "title_visible";
+        public static final String BUNDLE_NAVIGATION_BG_COLOR = KEY_BUNDLE + "navigation_bg_color";
+        //传递给本界面的网页地址
+        public static final String BUNDLE_WEB_URL = KEY_BUNDLE + "web_url";
+        //是否已桌面形式浏览网页
+        public static final String BUNDLE_DESKTOP_MODE = KEY_BUNDLE + "desktop_mode";
+        //是否是打开网页观看视频
+        public static final String BUNDLE_WATCH_VIDEO = KEY_BUNDLE + "watch_video";
+        //是否退出时显示退出对话框
+        public static final String BUNDLE_SHOW_BACK_DIALOG = KEY_BUNDLE + "show_back_dialog";
     }
 }

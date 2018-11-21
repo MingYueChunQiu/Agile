@@ -12,7 +12,6 @@
         app:bl_pressed_textColor="@color/colorPrimary"
         app:bl_unPressed_textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,9 +31,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.mingyuechunqiu.agilemvpframe.ui.widget.PasswordClearEditText
+        android:id="@+id/et_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         app:pcet_clear_btn_is_visible="true"
         app:pcet_password_is_visible="true" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_web"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/open_web"
+        app:layout_constraintTop_toBottomOf="@id/et_edit"/>
 </android.support.constraint.ConstraintLayout>

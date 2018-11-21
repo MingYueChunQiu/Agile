@@ -29,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity"/>
     </application>
 
 </manifest>

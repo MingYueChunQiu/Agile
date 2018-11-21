@@ -1,9 +1,11 @@
 package com.mingyuechunqiu.agilemvpframeproject.feature.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.method.LinkMovementMethod;
@@ -11,9 +13,21 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseToolbarPresenterActivity;
+import com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity;
+import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.StringUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
 import com.mingyuechunqiu.agilemvpframeproject.R;
+
+import java.lang.ref.WeakReference;
+
+import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_NAVIGATION_TITLE;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_NAVIGATION_BG_COLOR;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_SHOW_BACK_DIALOG;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_COLOR;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_TEXT_SIZE;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_VISIBLE;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_WEB_URL;
 
 /**
  * <pre>
@@ -89,13 +103,58 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         View view = getLayoutInflater().inflate(R.layout.activity_main, null);
         clContainer.addView(view);
         AppCompatTextView actvUrl = view.findViewById(R.id.tv_url);
-        actvUrl.setText(StringUtils.createColorUrlSpan("我已阅读并同意《云海螺用户注册协议》",
-                "《云海螺用户注册协议》", "http://www.ehailuo.com", Color.RED, new StringUtils.OnClickUrlLinkListener() {
+//        actvUrl.setText(StringUtils.createColorUrlSpan("我已阅读并同意《云海螺用户注册协议》",
+//                "《云海螺用户注册协议》", "http://www.ehailuo.com", Color.RED, new StringUtils.OnClickUrlLinkListener() {
+//                    @Override
+//                    public void onClickUrlLink(String source, String urlText, String url) {
+//                        showToast("点击了链接" + url);
+//                    }
+//                }));
+//        actvUrl.setMovementMethod(LinkMovementMethod.getInstance());
+        showCompact(actvUrl);
+        AppCompatButton btnWeb = findViewById(R.id.btn_web);
+        btnWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+                intent.putExtra(BUNDLE_WEB_URL, "http://www.ehailuo.com");
+                startActivity(intent);
+            }
+        });
+    }
+
+    /**
+     * 显示公司协议
+     *
+     * @param v 文本控件
+     */
+    public void showCompact(AppCompatTextView v) {
+        if (v == null) {
+            return;
+        }
+        final WeakReference<Context> ref = new WeakReference<>(v.getContext());
+        v.setText(StringUtils.createColorUrlSpan("我已阅读并同意《云海螺用户注册协议》",
+                "《云海螺用户注册协议》", "http://www.ehailuo.com",
+                v.getResources().getColor(android.R.color.holo_red_dark), new StringUtils.OnClickUrlLinkListener() {
                     @Override
-                    public void onClickUrlLink(String source, String urlText, String url) {
-                        showToast("点击了链接" + url);
+                    public void onClickUrlLink(String s, String s1, String s2) {
+                        LogUtils.d("放大", s2 + " " + (ref.get() == null));
+                        if (ref.get() != null) {
+                            Intent intent = new Intent(ref.get(), WebViewActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString(BUNDLE_WEB_URL, s2);
+                            bundle.putInt(BUNDLE_NAVIGATION_BG_COLOR, Color.GREEN);
+                            bundle.putInt(BUNDLE_TITLE_COLOR, Color.RED);
+                            bundle.putString(BUNDLE_NAVIGATION_TITLE, "辅导费");
+                            bundle.putBoolean(BUNDLE_TITLE_VISIBLE, true);
+                            bundle.putInt(BUNDLE_TITLE_TEXT_SIZE, 12);
+                            bundle.putBoolean(BUNDLE_SHOW_BACK_DIALOG, false);
+                            intent.putExtras(bundle);
+                            WebViewActivity.setBackDrawable(getResources().getDrawable(R.drawable.battery_10));
+                            ref.get().startActivity(intent);
+                        }
                     }
                 }));
-        actvUrl.setMovementMethod(LinkMovementMethod.getInstance());
+        v.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
