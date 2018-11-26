@@ -45,6 +45,7 @@ public class CircleProgressButton extends View {
     private int idleCircleColor, pressedCircleColor, releasedCircleColor;
     private int idleRingColor, pressedRingColor, releasedRingColor;
     private int idleRingWidth, pressedRingWidth, releasedRingWidth;
+    private int ringPadding;//圆环距离内圆的边距
     private boolean isIdleRingVisible, isPressedRingVisible, isReleasedRingVisible;
     private int minProgress, maxProgress, currentProgress;
     private boolean isTimerMode;
@@ -106,13 +107,16 @@ public class CircleProgressButton extends View {
         int ringWidth = getRingWidth();
         int realWidth = getWidth() - getPaddingLeft() - getPaddingRight();
         int realHeight = getHeight() - getPaddingTop() - getPaddingBottom();
-        int radius = realWidth < realHeight ? (realWidth - ringWidth * 2) / 2 : (realHeight - ringWidth * 2) / 2;
+        int radius = realWidth < realHeight ? (realWidth - ringWidth * 2 - ringPadding * 2) / 2 :
+                (realHeight - ringWidth * 2 - ringPadding * 2) / 2;
         int currentX = getWidth() / 2;
         int currentY = getHeight() / 2;
         canvas.drawCircle(currentX, currentY, radius, mCirclePaint);
         if (getRingVisible()) {
-            mRectF.set(currentX - radius - ringWidth / 2, currentY - radius - ringWidth / 2,
-                    currentX + radius + ringWidth / 2, currentY + radius + ringWidth / 2);
+            mRectF.set(currentX - radius - ringWidth / 2 - ringPadding,
+                    currentY - radius - ringWidth / 2 - ringPadding,
+                    currentX + radius + ringWidth / 2 + ringPadding,
+                    currentY + radius + ringWidth / 2 + ringPadding);
             canvas.save();
             canvas.rotate(-90, currentX, currentY);
             canvas.drawArc(mRectF, 0, mEndAngle, false, mRingPaint);
@@ -259,6 +263,7 @@ public class CircleProgressButton extends View {
                     DEFAULT_PRESSED_RING_WIDTH);
             releasedRingWidth = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_pressed_ring_width,
                     DEFAULT_RELEASED_RING_WIDTH);
+            ringPadding = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_ring_padding, 0);
             isIdleRingVisible = a.getBoolean(R.styleable.CircleProgressButton_cpb_idle_ring_visible,
                     true);
             isPressedRingVisible = a.getBoolean(R.styleable.CircleProgressButton_cpb_pressed_ring_visible,

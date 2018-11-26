@@ -44,4 +44,14 @@
         android:layout_height="wrap_content"
         android:text="@string/open_web"
         app:layout_constraintTop_toBottomOf="@id/et_edit"/>
+
+    <com.mingyuechunqiu.agilemvpframe.ui.widget.CircleProgressButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:cpb_max_progress="15"
+        app:cpb_is_timer_mode="true"
+        app:cpb_idle_ring_color="@color/colorPrimary"
+        app:cpb_released_ring_color="@color/colorAccent"
+        app:cpb_ring_padding="@dimen/dp_4"
+        app:layout_constraintTop_toBottomOf="@id/btn_web"/>
 </android.support.constraint.ConstraintLayout>

@@ -58,6 +58,7 @@ public class ExitApplicationManager {
             }
         }
         sExitApplicationManager.mList = null;
+        AgileMVPFrame.releaseResource();
     }
 
     private static void newInstance() {

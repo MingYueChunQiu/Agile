@@ -45,6 +45,14 @@ public class AgileMVPFrame {
     }
 
     /**
+     * 释放资源
+     */
+    public static void releaseResource() {
+        sConfigure = null;
+        sContext = null;
+    }
+
+    /**
      * 设置框架配置
      *
      * @param configure 配置对象
