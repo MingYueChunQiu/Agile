@@ -12,8 +12,10 @@ import android.support.v7.widget.AppCompatEditText;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.mingyuechunqiu.agilemvpframe.R;
+import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
 
 /**
  * <pre>
@@ -45,6 +47,8 @@ public class PasswordClearEditText extends AppCompatEditText {
     private int mBtnWidth;
     private int mBtnRightMargin;//最右边按钮距离边框距离
     private boolean isEyeOpen, isClearShown;//记录当前是否眼睛睁开，清除按钮是否可见，眼睛按钮是否可见
+    private boolean isAutoHide;//标记按钮是否自动消失
+
     //出现和消失动画
     private ValueAnimator mGoneAnimator;
     private ValueAnimator mVisibleAnimator;
@@ -157,10 +161,19 @@ public class PasswordClearEditText extends AppCompatEditText {
     @Override
     protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect);
+        if (!isAutoHide) {
+            return;
+        }
         if (focused) {
-            startVisibleAnimator();
+            if (!isClearShown) {
+                isClearShown = true;
+                startVisibleAnimator();
+            }
         } else {
-            startGoneAnimator();
+            if (isClearShown) {
+                isClearShown = false;
+                startGoneAnimator();
+            }
         }
     }
 
@@ -212,6 +225,7 @@ public class PasswordClearEditText extends AppCompatEditText {
             if (isClearVisible) {
                 mBpClear = BitmapFactory.decodeResource(getResources(), mClearResId);
             }
+            isAutoHide = a.getBoolean(R.styleable.PasswordClearEditText_pcet_btn_auto_hide, true);
             a.recycle();
         }
         //给文字设置一个padding，避免文字和按钮重叠了

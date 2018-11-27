@@ -11,6 +11,7 @@
         <attr name="pcet_button_padding" format="dimension" />
         <attr name="pcet_button_width" format="dimension" />
         <attr name="pcet_button_right_margin" format="dimension" />
+        <attr name="pcet_btn_auto_hide" format="boolean" />
     </declare-styleable>
 
     <!--可下拉收回的输入框-->
@@ -23,6 +24,7 @@
         <attr name="pdet_button_padding" format="dimension" />
         <attr name="pdet_button_width" format="dimension" />
         <attr name="pdet_button_right_margin" format="dimension" />
+        <attr name="pdet_button_auto_hide" format="boolean" />
     </declare-styleable>
 
     <!--圆形进度按钮-->
