@@ -1,10 +1,12 @@
 package com.mingyuechunqiu.agilemvpframe.ui.activity;
 
 import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.Toast;
 
 import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
@@ -112,6 +114,26 @@ public abstract class BaseActivity extends AppCompatActivity {
             mToast.setText(hint);
         }
         mToast.show();
+    }
+
+    /**
+     * 设置状态栏为轻色调，避免白色字体被白色活动条遮挡
+     */
+    protected void setLightStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+    }
+
+    /**
+     * 设置状态栏为深色调
+     */
+    protected void setDarkStatusBar() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
     }
 
     /**

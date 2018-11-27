@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.ui.fragment;
 
 import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -53,6 +54,32 @@ public abstract class BaseFragment extends Fragment {
             mToast.setText(hint);
         }
         mToast.show();
+    }
+
+    /**
+     * 设置状态栏为轻色调，避免白色字体被白色活动条遮挡
+     */
+    protected void setLightStatusBar() {
+        if (getActivity() == null) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+    }
+
+    /**
+     * 设置状态栏为深色调
+     */
+    protected void setDarkStatusBar() {
+        if (getActivity() == null) {
+            return;
+        }
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
     }
 
     /**
