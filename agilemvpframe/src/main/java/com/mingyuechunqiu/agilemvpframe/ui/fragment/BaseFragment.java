@@ -83,6 +83,19 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
+     * 销毁Activity
+     *
+     * @return 如果成功销毁返回true，否则返回false
+     */
+    protected boolean finishActivity() {
+        if (getActivity() == null) {
+            return false;
+        }
+        getActivity().finish();
+        return true;
+    }
+
+    /**
      * 根据资源id显示提示信息
      *
      * @param stringResourceId 提示文本资源id
