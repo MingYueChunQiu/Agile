@@ -18,6 +18,9 @@ public class CommonConstants {
     public static final String BUNDLE_COURSEWARE_URL = KEY_BUNDLE + "courseware_url";//课件网址
     public static final String BUNDLE_UPDATE_APP_DESCRIPTION = KEY_BUNDLE + "update_app_description";//更新应用描述
     public static final String BUNDLE_UPDATE_APP_URL = KEY_BUNDLE + "update_app_url";//更新应用URL地址
+    //返回上一个fragment
+    public static final String BUNDLE_RETURN_TO_PREVIOUS_FRAGMENT = KeyPrefixConstants.KEY_BUNDLE +
+            "return_to_previous_fragment";
 
     public static final int REQUEST_WRITE_EXTERNAL_STORAGE = 10;//写入外部存储卡权限请求码
 }

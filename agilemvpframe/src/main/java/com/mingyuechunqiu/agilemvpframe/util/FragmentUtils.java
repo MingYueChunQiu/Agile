@@ -1,11 +1,16 @@
 package com.mingyuechunqiu.agilemvpframe.util;
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
+
+import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_FRAGMENT;
 
 /**
  * <pre>
@@ -148,4 +153,17 @@ public class FragmentUtils {
                 enterAnimationId, exitAnimationId);
     }
 
+    /**
+     * 返回上一个fragment
+     *
+     * @param fragment 当前fragment
+     */
+    public static void returnToPreviousFragment(@NonNull BaseFragment fragment) {
+        FragmentActivity activity = fragment.getActivity();
+        if (activity instanceof BaseFragment.Callback) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(BUNDLE_RETURN_TO_PREVIOUS_FRAGMENT, true);
+            ((BaseFragment.Callback) activity).onCall(fragment, bundle);
+        }
+    }
 }
