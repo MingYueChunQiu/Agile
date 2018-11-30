@@ -340,17 +340,13 @@ public class PullDownEditText extends AppCompatEditText {
      * @param canvas 画布
      */
     private void drawPullDown(Canvas canvas) {
-        if (!isPullDownVisible || mAdapter == null) {
-            return;
-        }
-        //如果列表没有数据，则不绘制图形
-        if (mAdapter.getCount() == 0) {
+        if (!isPullDownVisible || mAdapter == null || mAdapter.getCount() == 0) {
             return;
         }
         int right = getWidth() + getScrollX() - mBtnPadding - mBtnRightMargin;
         int left = getWidth() + getScrollX() - mBtnPadding - mBtnRightMargin - mBtnWidth;
-        int top = getHeight() - mBtnWidth - mBtnPadding;
-        int bottom = top + mBtnWidth / 2;
+        int top = (getHeight() - mBtnWidth) / 2;
+        int bottom = top + mBtnWidth;
         Rect rect = new Rect(left, top, right, bottom);
         if (isPullDown) {
             canvas.drawBitmap(mBpRetract, null, rect, mPaint);

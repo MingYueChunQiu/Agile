@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.io;
 
+import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -17,23 +19,23 @@ public abstract class BaseFile {
 
     /**
      * 检查传入的文件名，判断文件名是否为空，或文件是否存在
-     * @param fileName
-     *          传入的文件名
-     * @return
-     *          返回判断的结果
+     *
+     * @param fileName 传入的文件名
+     * @return 返回判断的结果
      */
-    protected boolean checkFile(String fileName){
-        if (fileName == null || fileName.equals("")){
+    protected static boolean checkFile(String fileName) {
+        if (fileName == null || fileName.equals("")) {
             return false;
         }
         File file = new File(fileName);
-        if (file.isDirectory()){
+        if (file.isDirectory()) {
             return false;
         }
-        if (!file.exists()){
+        if (!file.exists()) {
             try {
                 return file.createNewFile();
             } catch (IOException e) {
+                LogUtils.d("BaseFile checkFile", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -42,10 +44,13 @@ public abstract class BaseFile {
 
     /**
      * 关闭流的操作，供子类调用
-     * @param stream
-     *          需要关闭的流
+     *
+     * @param stream 需要关闭的流
      */
-    protected void closeStream(Closeable stream){
+    protected static void closeStream(Closeable stream) {
+        if (stream == null) {
+            return;
+        }
         try {
             stream.close();
         } catch (IOException e) {

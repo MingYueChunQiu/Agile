@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.AppCompatTextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:text="helloWorld"
         app:bl_pressed_textColor="@color/colorPrimary"
-        app:bl_unPressed_textColor="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:bl_unPressed_textColor="@color/colorAccent" />
 
     <com.mingyuechunqiu.agilemvpframe.ui.widget.PasswordClearEditText
         android:layout_width="match_parent"
@@ -43,8 +41,7 @@
         android:id="@+id/btn_web"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/open_web"
-        app:layout_constraintBottom_toBottomOf="@id/et_edit" />
+        android:text="@string/open_web" />
 
     <com.mingyuechunqiu.agilemvpframe.ui.widget.CircleProgressButton
         android:id="@+id/cpb_test"
@@ -54,6 +51,12 @@
         app:cpb_is_timer_mode="true"
         app:cpb_max_progress="15"
         app:cpb_released_ring_color="@color/colorAccent"
-        app:cpb_ring_padding="@dimen/dp_4"
-        app:layout_constraintTop_toBottomOf="@id/btn_web" />
-</android.support.constraint.ConstraintLayout>
+        app:cpb_ring_padding="@dimen/dp_4" />
+
+    <com.mingyuechunqiu.agilemvpframe.ui.widget.PullDownEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        app:pdet_pull_down_is_visible="true"
+        app:pdet_clear_button_is_visible="true"/>
+</android.support.v7.widget.LinearLayoutCompat>
