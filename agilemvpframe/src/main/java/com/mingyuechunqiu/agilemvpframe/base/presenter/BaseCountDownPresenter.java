@@ -46,7 +46,7 @@ public abstract class BaseCountDownPresenter<V extends BaseDialogView, M extends
      * @param listener 处理倒计时的回调
      */
     public void setCountDown(final int count, @NonNull final ICountDownListener listener) {
-        if (count <= 0 || listener == null) {
+        if (count <= 0) {
             return;
         }
         mListener = listener;

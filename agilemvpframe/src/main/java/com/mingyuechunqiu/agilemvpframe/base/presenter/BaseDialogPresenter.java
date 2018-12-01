@@ -16,6 +16,19 @@ import com.mingyuechunqiu.agilemvpframe.base.view.BaseDialogView;
 public abstract class BaseDialogPresenter<V extends BaseDialogView, M extends BaseNetModel> extends BaseNetPresenter<V, M> {
 
     /**
+     * 显示加载对话框
+     *
+     * @param hint       提示信息
+     * @param cancelable 对话框是否可以被取消
+     */
+    protected void showLoadingDialog(String hint, boolean cancelable) {
+        if (mViewRef.get() == null) {
+            return;
+        }
+        mViewRef.get().showLoadingDialog(hint, cancelable);
+    }
+
+    /**
      * 关闭加载对话框
      */
     protected void disappearDialog() {
