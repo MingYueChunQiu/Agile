@@ -98,11 +98,11 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 按返回键通过Activity返回上一个Fragment
+     * 添加按返回键通过Activity返回上一个Fragment
      *
      * @param fragment 当前fragment
      */
-    protected void pressBackKeyToPreFragmentWithActivity(final BaseFragment fragment) {
+    protected void addBackKeyToPreFragmentWithActivity(final BaseFragment fragment) {
         if (getActivity() != null && getActivity() instanceof BaseActivity) {
             ((BaseActivity) getActivity()).addOnKeyDownListener(new OnKeyDownListener() {
                 @Override
