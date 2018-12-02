@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
 
-import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_FRAGMENT;
+import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 
 /**
  * <pre>
@@ -151,19 +151,5 @@ public class FragmentUtils {
         FragmentUtils.hideFragment(fragmentManager, hideFg, enterAnimationId, exitAnimationId);
         FragmentUtils.showFragment(fragmentManager, containerViewId, showFg,
                 enterAnimationId, exitAnimationId);
-    }
-
-    /**
-     * 返回上一个fragment
-     *
-     * @param fragment 当前fragment
-     */
-    public static void returnToPreviousFragment(@NonNull BaseFragment fragment) {
-        FragmentActivity activity = fragment.getActivity();
-        if (activity instanceof BaseFragment.Callback) {
-            Bundle bundle = new Bundle();
-            bundle.putBoolean(BUNDLE_RETURN_TO_PREVIOUS_FRAGMENT, true);
-            ((BaseFragment.Callback) activity).onCall(fragment, bundle);
-        }
     }
 }

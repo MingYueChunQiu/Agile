@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseActivity;
 import com.mingyuechunqiu.agilemvpframe.util.DialogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.FragmentUtils;
+
+import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 
 /**
  * <pre>
@@ -98,7 +101,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 添加按返回键通过Activity返回上一个Fragment
+     * 添加按返回键通过Activity返回上一个界面
      *
      * @param fragment 当前fragment
      */
@@ -108,13 +111,64 @@ public abstract class BaseFragment extends Fragment {
                 @Override
                 public boolean onFragmentKeyDown(int i, KeyEvent keyEvent) {
                     if (isVisible()) {
-                        FragmentUtils.returnToPreviousFragment(fragment);
-                        return true;
+                        return returnToPreviousPageWithActivity(fragment);
                     }
                     return false;
                 }
             });
         }
+    }
+
+    /**
+     * 添加按返回键通过Activity返回上一个界面
+     *
+     * @param fragment 当前fragment
+     */
+    protected void addBackKeyToPreFgWithParentFg(final BaseFragment fragment) {
+        if (getActivity() != null && getActivity() instanceof BaseActivity) {
+            ((BaseActivity) getActivity()).addOnKeyDownListener(new OnKeyDownListener() {
+                @Override
+                public boolean onFragmentKeyDown(int i, KeyEvent keyEvent) {
+                    if (isVisible()) {
+                        return returnToPreviousPageWithParentFg(fragment);
+                    }
+                    return false;
+                }
+            });
+        }
+    }
+
+    /**
+     * 返回上一个界面
+     *
+     * @param fragment 当前fragment
+     * @return 如果进行回调则返回true，否则返回false
+     */
+    protected boolean returnToPreviousPageWithParentFg(@NonNull BaseFragment fragment) {
+        if (getParentFragment() != null && getParentFragment() instanceof Callback) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE, true);
+            ((Callback) getParentFragment()).onCall(fragment, bundle);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 返回上一个界面
+     *
+     * @param fragment 当前fragment
+     * @return 如果进行回调则返回true，否则返回false
+     */
+    public boolean returnToPreviousPageWithActivity(@NonNull BaseFragment fragment) {
+        FragmentActivity activity = fragment.getActivity();
+        if (activity instanceof BaseFragment.Callback) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE, true);
+            ((Callback) activity).onCall(fragment, bundle);
+            return true;
+        }
+        return false;
     }
 
     /**
