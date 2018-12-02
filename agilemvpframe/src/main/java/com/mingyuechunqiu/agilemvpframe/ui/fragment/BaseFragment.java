@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseActivity;
 import com.mingyuechunqiu.agilemvpframe.util.DialogUtils;
+import com.mingyuechunqiu.agilemvpframe.util.FragmentUtils;
 
 /**
  * <pre>
@@ -93,6 +95,26 @@ public abstract class BaseFragment extends Fragment {
         }
         getActivity().finish();
         return true;
+    }
+
+    /**
+     * 按返回键通过Activity返回上一个Fragment
+     *
+     * @param fragment 当前fragment
+     */
+    protected void pressBackKeyToPreFragmentWithActivity(final BaseFragment fragment) {
+        if (getActivity() != null && getActivity() instanceof BaseActivity) {
+            ((BaseActivity) getActivity()).addOnKeyDownListener(new OnKeyDownListener() {
+                @Override
+                public boolean onFragmentKeyDown(int i, KeyEvent keyEvent) {
+                    if (isVisible()) {
+                        FragmentUtils.returnToPreviousFragment(fragment);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     /**
