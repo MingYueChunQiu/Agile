@@ -18,7 +18,7 @@ public abstract class BaseDialogPresenter<V extends BaseDialogView, M extends Ba
     /**
      * 显示加载对话框
      *
-     * @param hint       提示信息
+     * @param hint       提示文本
      * @param cancelable 对话框是否可以被取消
      */
     protected void showLoadingDialog(String hint, boolean cancelable) {
