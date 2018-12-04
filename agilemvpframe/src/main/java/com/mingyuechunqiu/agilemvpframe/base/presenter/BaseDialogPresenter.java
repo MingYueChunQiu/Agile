@@ -31,7 +31,7 @@ public abstract class BaseDialogPresenter<V extends BaseDialogView, M extends Ba
     /**
      * 关闭加载对话框
      */
-    protected void disappearDialog() {
+    protected void disappearLoadingDialog() {
         if (mViewRef.get() != null) {
             mViewRef.get().disappearLoadingDialog();
         }
@@ -42,7 +42,7 @@ public abstract class BaseDialogPresenter<V extends BaseDialogView, M extends Ba
      *
      * @param hint 提示文本
      */
-    protected void showToastAndDisappearDialog(String hint) {
+    protected void showToastAndDisappearLoadingDialog(String hint) {
         if (mViewRef.get() != null) {
             mViewRef.get().showToast(hint);
             mViewRef.get().disappearLoadingDialog();
@@ -54,7 +54,7 @@ public abstract class BaseDialogPresenter<V extends BaseDialogView, M extends Ba
      *
      * @param stringResourceId 提示文本资源ID
      */
-    protected void showToastAndDisappearDialog(int stringResourceId) {
+    protected void showToastAndDisappearLoadingDialog(int stringResourceId) {
         if (mViewRef.get() != null) {
             mViewRef.get().showToast(stringResourceId);
             mViewRef.get().disappearLoadingDialog();
