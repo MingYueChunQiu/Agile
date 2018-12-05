@@ -194,9 +194,10 @@ public class CircleProgressButton extends View {
         mProgressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                mEndAngle = (float) animation.getAnimatedValue() / maxProgress * 360;
+                float progress = (float) animation.getAnimatedValue();
+                mEndAngle = progress / maxProgress * 360;
                 if (mListener != null) {
-                    mListener.onProgress(CircleProgressButton.this, mEndAngle);
+                    mListener.onProgress(CircleProgressButton.this, progress);
                 }
                 invalidate();
             }
