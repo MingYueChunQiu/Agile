@@ -58,8 +58,8 @@ public class PopListLvAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.lv_pop_list_item, parent, false);
             convertView.getLayoutParams().height = mItemHeight;
             viewHolder = new ViewHolder();
-            viewHolder.actvUsername = convertView.findViewById(R.id.tv_pop_list_item_name);
-            viewHolder.acibtnDelete = convertView.findViewById(R.id.ibtn_pop_list_delete);
+            viewHolder.tvUsername = convertView.findViewById(R.id.tv_pop_list_item_name);
+            viewHolder.ibtnDelete = convertView.findViewById(R.id.ibtn_pop_list_delete);
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -68,11 +68,11 @@ public class PopListLvAdapter extends BaseAdapter {
                     }
                 }
             });
-            viewHolder.acibtnDelete.setOnClickListener(new View.OnClickListener() {
+            viewHolder.ibtnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mListener != null) {
-                        mListener.onClickDeleteBtn(mList.get(position));
+                        mListener.onClickDeleteBtn(mList.get(position), position);
                     }
                 }
             });
@@ -80,7 +80,7 @@ public class PopListLvAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.actvUsername.setText(mList.get(position).getName());
+        viewHolder.tvUsername.setText(mList.get(position).getName());
         return convertView;
     }
 
@@ -92,9 +92,13 @@ public class PopListLvAdapter extends BaseAdapter {
         mListener = listener;
     }
 
+    public List<Info> getListData() {
+        return mList;
+    }
+
     private static class ViewHolder {
-        private AppCompatTextView actvUsername;
-        private AppCompatImageButton acibtnDelete;
+        private AppCompatTextView tvUsername;
+        private AppCompatImageButton ibtnDelete;
     }
 
     public static class Info {
@@ -134,13 +138,9 @@ public class PopListLvAdapter extends BaseAdapter {
         /**
          * 当点击删除按钮时回调
          *
-         * @param user 要删除的用户信息
+         * @param Info     要的用户信息
+         * @param position 被点击的索引位置
          */
-        /**
-         * 当点击删除按钮时回调
-         *
-         * @param Info 要的用户信息
-         */
-        void onClickDeleteBtn(Info Info);
+        void onClickDeleteBtn(Info Info, int position);
     }
 }
