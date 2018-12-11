@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agilemvpframe.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -31,6 +33,9 @@ import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
 import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_NAVIGATION_TITLE;
 import static com.mingyuechunqiu.agilemvpframe.constants.KeyPrefixConstants.KEY_BUNDLE;
 import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_DESKTOP_MODE;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_IS_SET_LEFT_ICON_SIZE;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_LEFT_ICON_HEIGHT;
+import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_LEFT_ICON_WIDTH;
 import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_NAVIGATION_BG_COLOR;
 import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_SHOW_BACK_DIALOG;
 import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_COLOR;
@@ -89,12 +94,12 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
         View view = getLayoutInflater().inflate(R.layout.fragment_web_view, container, false);
         mToolbar = findViewById(R.id.tb_navigation_bar);
         actvToolbarTitle = findViewById(R.id.tv_navigation_title);
-        AppCompatImageView acivBack = findViewById(R.id.iv_navigation_left_icon);
-        acivBack.setVisibility(View.VISIBLE);
+        AppCompatImageView ivBack = findViewById(R.id.iv_navigation_left_icon);
+        ivBack.setVisibility(View.VISIBLE);
         if (backDrawable != null) {
-            acivBack.setImageDrawable(backDrawable);
+            ivBack.setImageDrawable(backDrawable);
         }
-        acivBack.setOnClickListener(new View.OnClickListener() {
+        ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -117,6 +122,11 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
             int toolbarBgColor = mBundle.getInt(BUNDLE_NAVIGATION_BG_COLOR,
                     getResources().getColor(android.R.color.darker_gray));
             mToolbar.setBackgroundColor(toolbarBgColor);
+            if (mBundle.getBoolean(BUNDLE_IS_SET_LEFT_ICON_SIZE)) {
+                int width = mBundle.getInt(BUNDLE_LEFT_ICON_WIDTH, Toolbar.LayoutParams.WRAP_CONTENT);
+                int height = mBundle.getInt(BUNDLE_LEFT_ICON_HEIGHT, Toolbar.LayoutParams.WRAP_CONTENT);
+                ivBack.setLayoutParams(new Toolbar.LayoutParams(width, height));
+            }
         }
         container.addView(view);
         wvWeb = view.findViewById(R.id.wv_web);
@@ -230,6 +240,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
     /**
      * 初始化WebView相关属性
      */
+    @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         WebSettings webSettings = wvWeb.getSettings();
         //下面两句话必须有，才能播放
@@ -324,6 +335,10 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
         public static final String BUNDLE_TITLE_TEXT_SIZE = KEY_BUNDLE + "title_text_size";
         public static final String BUNDLE_TITLE_VISIBLE = KEY_BUNDLE + "title_visible";
         public static final String BUNDLE_NAVIGATION_BG_COLOR = KEY_BUNDLE + "navigation_bg_color";
+        public static final String BUNDLE_IS_SET_LEFT_ICON_SIZE = KEY_BUNDLE + "is_set_left_icon_size";
+        //左边按钮的宽和高大小
+        public static final String BUNDLE_LEFT_ICON_WIDTH = KEY_BUNDLE + "navigation_icon_width";
+        public static final String BUNDLE_LEFT_ICON_HEIGHT = KEY_BUNDLE + "navigation_icon_height";
         //传递给本界面的网页地址
         public static final String BUNDLE_WEB_URL = KEY_BUNDLE + "web_url";
         //是否已桌面形式浏览网页
