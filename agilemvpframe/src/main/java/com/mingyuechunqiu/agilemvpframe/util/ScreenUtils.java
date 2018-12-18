@@ -30,7 +30,7 @@ public class ScreenUtils {
      * @param count   item个数
      * @return 返回平分后的item宽度
      */
-    public static int getItemWidth(Context context, float radio, int count) {
+    public static int getItemWidth(@NonNull Context context, float radio, int count) {
         return (int) (context.getResources().getDisplayMetrics().widthPixels * radio / count);
     }
 
@@ -41,7 +41,7 @@ public class ScreenUtils {
      * @param dpVal     dp值
      * @return 返回px值
      */
-    public static float getPxFromDp(Resources resources, float dpVal) {
+    public static float getPxFromDp(@NonNull Resources resources, float dpVal) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, resources.getDisplayMetrics());
     }
 
@@ -52,7 +52,7 @@ public class ScreenUtils {
      * @param spVal     sp值
      * @return 返回px值
      */
-    public static float getPxFromSp(Resources resources, float spVal) {
+    public static float getPxFromSp(@NonNull Resources resources, float spVal) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spVal, resources.getDisplayMetrics());
     }
 
@@ -62,7 +62,7 @@ public class ScreenUtils {
      * @param textView 控件
      * @param spVal    文本的sp大小
      */
-    public static void setTextSize(TextView textView, int spVal) {
+    public static void setTextSize(@NonNull TextView textView, int spVal) {
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, spVal);
     }
 
@@ -76,7 +76,7 @@ public class ScreenUtils {
      * @param right        右边距
      * @param bottom       下边距
      */
-    public static void setMargins(ViewGroup.MarginLayoutParams layoutParams, Resources resources,
+    public static void setMargins(@NonNull ViewGroup.MarginLayoutParams layoutParams, Resources resources,
                                   int left, int top, int right, int bottom) {
         layoutParams.setMargins((int) ScreenUtils.getPxFromDp(resources, left),
                 (int) ScreenUtils.getPxFromDp(resources, top),
@@ -90,9 +90,24 @@ public class ScreenUtils {
      * @param context 上下文
      * @return 返回状态栏高度
      */
-    public static int getStatusBarHeight(Context context) {
+    public static int getStatusBarHeight(@NonNull Context context) {
         int height = 0;
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            height = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return height;
+    }
+
+    /**
+     * 获取底部虚拟导航栏高度
+     *
+     * @param context 上下文
+     * @return 返回底部虚拟导航栏高度
+     */
+    public static int getNavigationBarHeight(@NonNull Context context) {
+        int height = 0;
+        int resourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId > 0) {
             height = context.getResources().getDimensionPixelSize(resourceId);
         }

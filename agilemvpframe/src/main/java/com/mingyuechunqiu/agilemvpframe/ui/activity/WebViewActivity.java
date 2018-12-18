@@ -216,7 +216,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
     }
 
     @Override
-    protected void setStatusAndNavigationTransparent() {
+    protected void setTransparentStatusAndControlNavigationLayout() {
         //设置隐藏底部导航栏
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
