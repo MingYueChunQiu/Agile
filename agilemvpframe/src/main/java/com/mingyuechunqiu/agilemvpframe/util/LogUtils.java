@@ -15,11 +15,12 @@ import android.util.Log;
 public class LogUtils {
 
     private static int current = 4;//记录当前日志记录级别，当正式上线时，将日志屏蔽
-    private static final int VERBOSE = 4;
-    private static final int DEBUG = 3;
-    private static final int INFO = 2;
-    private static final int WARN = 1;
-    private static final int ERROR = 0;
+    public static final int VERBOSE = 4;
+    public static final int DEBUG = 3;
+    public static final int INFO = 2;
+    public static final int WARN = 1;
+    public static final int ERROR = 0;
+    public static final int HIDDEN = -1;//隐藏日志级别
 
     public static int getCurrent() {
         return current;
@@ -29,55 +30,62 @@ public class LogUtils {
         LogUtils.current = current;
     }
 
-    public static void v(String tag, String msg){
-        if (current < VERBOSE){
+    /**
+     * 正式上线时设置隐藏日志信息
+     */
+    public static void hideLog() {
+        setCurrent(HIDDEN);
+    }
+
+    public static void v(String tag, String msg) {
+        if (current < VERBOSE) {
             return;
         }
-        if (TextUtils.isEmpty(msg)){
+        if (TextUtils.isEmpty(msg)) {
             LogUtils.d(tag, "传入日志内容为空");
             return;
         }
         Log.v(tag, msg);
     }
 
-    public static void d(String tag, String msg){
-        if (current < DEBUG){
+    public static void d(String tag, String msg) {
+        if (current < DEBUG) {
             return;
         }
-        if (TextUtils.isEmpty(msg)){
+        if (TextUtils.isEmpty(msg)) {
             LogUtils.d(tag, "传入日志内容为空");
             return;
         }
         Log.d(tag, msg);
     }
 
-    public static void i(String tag, String msg){
-        if (current < INFO){
+    public static void i(String tag, String msg) {
+        if (current < INFO) {
             return;
         }
-        if (TextUtils.isEmpty(msg)){
+        if (TextUtils.isEmpty(msg)) {
             LogUtils.d(tag, "传入日志内容为空");
             return;
         }
         Log.i(tag, msg);
     }
 
-    public static void w(String tag, String msg){
-        if (current < WARN){
+    public static void w(String tag, String msg) {
+        if (current < WARN) {
             return;
         }
-        if (TextUtils.isEmpty(msg)){
+        if (TextUtils.isEmpty(msg)) {
             LogUtils.d(tag, "传入日志内容为空");
             return;
         }
         Log.v(tag, msg);
     }
 
-    public static void e(String tag, String msg){
-        if (current < ERROR){
+    public static void e(String tag, String msg) {
+        if (current < ERROR) {
             return;
         }
-        if (TextUtils.isEmpty(msg)){
+        if (TextUtils.isEmpty(msg)) {
             LogUtils.d(tag, "传入日志内容为空");
             return;
         }
