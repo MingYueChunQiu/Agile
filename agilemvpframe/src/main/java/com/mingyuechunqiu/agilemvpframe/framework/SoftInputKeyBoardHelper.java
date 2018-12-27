@@ -21,22 +21,36 @@ import java.lang.ref.WeakReference;
  *     version: 1.0
  * </pre>
  */
-public class OnKeyBoardChangeListener {
+public class SoftInputKeyBoardHelper {
 
     private WeakReference<Activity> mActivityRef;
     private View mChildOfContent;
     private int usableHeightPrevious;
     private FrameLayout.LayoutParams frameLayoutParams;
     private boolean removeStatusHeight;//标记是否移除状态栏高度
+    private boolean changeContentHeight;//标记是否随软键盘弹出更改内容视图高度
+    private OnSoftKeyBoardChangeListener mListener;
 
     @NonNull
-    public static OnKeyBoardChangeListener getInstance(Activity activity, boolean removeStatusHeight) {
-        OnKeyBoardChangeListener listener = new OnKeyBoardChangeListener(activity);
+    public static SoftInputKeyBoardHelper getInstance(Activity activity) {
+        return getInstance(activity, false);
+    }
+
+    @NonNull
+    public static SoftInputKeyBoardHelper getInstance(Activity activity, boolean removeStatusHeight) {
+        return getInstance(activity, true, removeStatusHeight);
+    }
+
+    @NonNull
+    public static SoftInputKeyBoardHelper getInstance(Activity activity, boolean changeContentHeight,
+                                                      boolean removeStatusHeight) {
+        SoftInputKeyBoardHelper listener = new SoftInputKeyBoardHelper(activity);
+        listener.changeContentHeight = changeContentHeight;
         listener.removeStatusHeight = removeStatusHeight;
         return listener;
     }
 
-    private OnKeyBoardChangeListener(Activity activity) {
+    private SoftInputKeyBoardHelper(Activity activity) {
         mActivityRef = new WeakReference<>(activity);
     }
 
@@ -46,6 +60,22 @@ public class OnKeyBoardChangeListener {
 
     public void setRemoveStatusHeight(boolean removeStatusHeight) {
         this.removeStatusHeight = removeStatusHeight;
+    }
+
+    public boolean isChangeContentHeight() {
+        return changeContentHeight;
+    }
+
+    public void setChangeContentHeight(boolean changeContentHeight) {
+        this.changeContentHeight = changeContentHeight;
+    }
+
+    public OnSoftKeyBoardChangeListener getOnSoftKeyBoardChangeListener() {
+        return mListener;
+    }
+
+    public void setOnSoftKeyBoardChangeListener(OnSoftKeyBoardChangeListener listener) {
+        mListener = listener;
     }
 
     public void init() {
@@ -78,14 +108,24 @@ public class OnKeyBoardChangeListener {
             int heightDifference = usableHeightSansKeyboard - usableHeightNow;
             if (heightDifference > (usableHeightSansKeyboard / 4)) {
                 // keyboard probably just became visible
-                frameLayoutParams.height = usableHeightSansKeyboard
-                        - heightDifference;
-                if (removeStatusHeight) {
-                    frameLayoutParams.height += ScreenUtils.getStatusBarHeight(mActivityRef.get());
+                if (changeContentHeight) {
+                    frameLayoutParams.height = usableHeightSansKeyboard
+                            - heightDifference;
+                    if (removeStatusHeight) {
+                        frameLayoutParams.height += ScreenUtils.getStatusBarHeight(mActivityRef.get());
+                    }
+                }
+                if (mListener != null) {
+                    mListener.onShowSoftKeyBoard(heightDifference);
                 }
             } else {
                 // keyboard probably just became hidden
-                frameLayoutParams.height = usableHeightSansKeyboard;
+                if (changeContentHeight) {
+                    frameLayoutParams.height = usableHeightSansKeyboard;
+                }
+                if (mListener != null) {
+                    mListener.onHideSoftKeyBoard();
+                }
             }
             mChildOfContent.requestLayout();
             usableHeightPrevious = usableHeightNow;
@@ -103,4 +143,21 @@ public class OnKeyBoardChangeListener {
         return (r.bottom - r.top);
     }
 
+    /**
+     * 软键盘变化监听器
+     */
+    public interface OnSoftKeyBoardChangeListener {
+
+        /**
+         * 当软键盘显示时调用
+         *
+         * @param softInputHeight 软键盘高度
+         */
+        void onShowSoftKeyBoard(int softInputHeight);
+
+        /**
+         * 当隐藏软键盘时调用
+         */
+        void onHideSoftKeyBoard();
+    }
 }
