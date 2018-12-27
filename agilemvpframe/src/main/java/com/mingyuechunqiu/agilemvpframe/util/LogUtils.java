@@ -14,13 +14,13 @@ import android.util.Log;
  */
 public class LogUtils {
 
-    private static int current = 4;//记录当前日志记录级别，当正式上线时，将日志屏蔽
     public static final int VERBOSE = 4;
     public static final int DEBUG = 3;
     public static final int INFO = 2;
     public static final int WARN = 1;
     public static final int ERROR = 0;
     public static final int HIDDEN = -1;//隐藏日志级别
+    private static int current = 4;//记录当前日志记录级别，当正式上线时，将日志屏蔽
 
     public static int getCurrent() {
         return current;
