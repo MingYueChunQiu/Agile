@@ -1,11 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.ui.bottomSheetDialogFragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
 import com.mingyuechunqiu.agilemvpframe.base.view.BaseNetView;
@@ -23,11 +19,10 @@ public abstract class BasePresenterBSDialogFragment<V extends BaseNetView<P>, P 
 
     protected P mPresenter;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         attachPresenter();
-        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -43,6 +38,14 @@ public abstract class BasePresenterBSDialogFragment<V extends BaseNetView<P>, P 
         super.onDestroyView();
         if (mPresenter != null) {
             mPresenter.detachView();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            getLifecycle().removeObserver(mPresenter);
             mPresenter = null;
         }
     }
@@ -50,9 +53,13 @@ public abstract class BasePresenterBSDialogFragment<V extends BaseNetView<P>, P 
     /**
      * 绑定Presenter层
      */
+    @SuppressWarnings("unchecked")
     protected void attachPresenter() {
         ((V) this).setPresenter(initPresenter());
-        mPresenter.attachView((V) this);
+        if (mPresenter != null) {
+            mPresenter.attachView((V) this);
+            getLifecycle().addObserver(mPresenter);
+        }
     }
 
     protected abstract P initPresenter();

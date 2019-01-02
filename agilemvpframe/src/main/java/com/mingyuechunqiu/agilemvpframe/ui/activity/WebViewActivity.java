@@ -75,8 +75,10 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
         if (wvWeb != null) {
             wvWeb.loadDataWithBaseURL(null, "",
                     "text/html", "utf-8", null);
-            wvWeb.clearHistory();
             ((ViewGroup) wvWeb.getParent()).removeAllViews();
+            wvWeb.stopLoading();
+            wvWeb.clearHistory();
+            wvWeb.clearView();
             wvWeb.destroy();
             wvWeb = null;
         }

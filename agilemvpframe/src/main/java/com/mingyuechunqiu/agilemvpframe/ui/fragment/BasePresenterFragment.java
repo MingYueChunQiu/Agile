@@ -1,11 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.ui.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
 import com.mingyuechunqiu.agilemvpframe.base.view.BaseDialogView;
@@ -24,11 +20,10 @@ public abstract class BasePresenterFragment<V extends BaseDialogView<P>, P exten
 
     protected P mPresenter;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         attachPresenter();
-        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -50,17 +45,22 @@ public abstract class BasePresenterFragment<V extends BaseDialogView<P>, P exten
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //不能放在onDestroyView中执行，因为像输入框失去焦点这种事件会在onDestroyView之后才被调用
-        mPresenter = null;
+        if (mPresenter != null) {
+            getLifecycle().removeObserver(mPresenter);
+            //不能放在onDestroyView中执行，因为像输入框失去焦点这种事件会在onDestroyView之后才被调用
+            mPresenter = null;
+        }
     }
 
     /**
      * 添加Present相关
      */
+    @SuppressWarnings("unchecked")
     protected void attachPresenter() {
         ((V) this).setPresenter(initPresenter());
         if (mPresenter != null) {
             mPresenter.attachView((V) this);
+            getLifecycle().addObserver(mPresenter);
         }
     }
 

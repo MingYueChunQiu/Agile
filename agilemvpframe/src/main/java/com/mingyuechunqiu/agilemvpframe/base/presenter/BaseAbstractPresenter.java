@@ -1,5 +1,9 @@
 package com.mingyuechunqiu.agilemvpframe.base.presenter;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
+
 import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.base.model.BaseModel;
 import com.mingyuechunqiu.agilemvpframe.base.model.BaseTokenNetModel;
@@ -18,7 +22,7 @@ import java.lang.ref.WeakReference;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractPresenter<V extends BaseView, M extends BaseModel> implements BasePresenter<V, M> {
+public abstract class BaseAbstractPresenter<V extends BaseView, M extends BaseModel> implements BasePresenter<V, M>, LifecycleObserver {
 
     protected WeakReference<V> mViewRef;
     protected M mModel;
@@ -57,6 +61,31 @@ public abstract class BaseAbstractPresenter<V extends BaseView, M extends BaseMo
             return;
         }
         requestModel(info);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    protected void onCreate() {
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    protected void onStart() {
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    protected void onResume() {
+        start();
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    protected void onPause() {
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    protected void onStop() {
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    protected void onDestroy() {
     }
 
     protected void releaseOnDetach() {

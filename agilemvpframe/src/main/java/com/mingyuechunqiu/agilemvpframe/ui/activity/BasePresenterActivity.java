@@ -27,18 +27,11 @@ public abstract class BasePresenterActivity<V extends BaseDialogView<P>, P exten
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (mPresenter != null) {
-            mPresenter.start();
-        }
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mPresenter != null) {
             mPresenter.detachView();
+            getLifecycle().removeObserver(mPresenter);
             mPresenter = null;
         }
     }
@@ -46,10 +39,12 @@ public abstract class BasePresenterActivity<V extends BaseDialogView<P>, P exten
     /**
      * 添加Present相关
      */
+    @SuppressWarnings("unchecked")
     protected void attachPresenter() {
         ((V) this).setPresenter(initPresenter());
         if (mPresenter != null) {
             mPresenter.attachView((V) this);
+            getLifecycle().addObserver(mPresenter);
         }
     }
 
