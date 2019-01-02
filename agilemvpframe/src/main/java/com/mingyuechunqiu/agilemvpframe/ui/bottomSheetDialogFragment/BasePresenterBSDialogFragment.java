@@ -26,14 +26,6 @@ public abstract class BasePresenterBSDialogFragment<V extends BaseNetView<P>, P 
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (mPresenter != null) {
-            mPresenter.start();
-        }
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (mPresenter != null) {
