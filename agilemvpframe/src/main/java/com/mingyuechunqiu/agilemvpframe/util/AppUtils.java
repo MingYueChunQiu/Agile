@@ -2,6 +2,8 @@ package com.mingyuechunqiu.agilemvpframe.util;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrame;
 
@@ -19,40 +21,23 @@ import java.util.List;
 public class AppUtils {
 
     /**
-     * 判断应用是否正在前台运行
+     * 检测应用是否处于前台显示
      *
-     * @return 如果运行在前台则返回true，否则返回false
+     * @param context 上下文
+     * @return 如果处于前台显示返回true，否则返回false
      */
-    public static boolean judgeAppIsInForeground() {
-        ActivityManager manager = (ActivityManager) AgileMVPFrame.getAppContext()
-                .getSystemService(Context.ACTIVITY_SERVICE);
-        if (manager == null) {
-            return false;
-        }
-        List<ActivityManager.RunningTaskInfo> list = manager.getRunningTasks(1);
+    public static boolean checkAppIsForeground(@NonNull Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> list = activityManager.getRunningAppProcesses();
         if (list == null || list.size() == 0) {
             return false;
         }
-        return AgileMVPFrame.getAppContext().getPackageName().equals(
-                list.get(0).topActivity.getPackageName());
-    }
-
-    /**
-     * 获取前台栈里正在运行的Activity
-     *
-     * @return 如果获取成功则返回类名，否则返回null
-     */
-    public static String getTopActivityName() {
-        ActivityManager manager = (ActivityManager) AgileMVPFrame.getAppContext()
-                .getSystemService(Context.ACTIVITY_SERVICE);
-        if (manager == null) {
-            return null;
+        for (ActivityManager.RunningAppProcessInfo info : list) {
+            if (info.processName.equals(context.getPackageName())) {
+                return info.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+            }
         }
-        List<ActivityManager.RunningTaskInfo> list = manager.getRunningTasks(1);
-        if (list == null || list.size() == 0) {
-            return null;
-        }
-        return list.get(0).topActivity.getClassName();
+        return false;
     }
 
 }
