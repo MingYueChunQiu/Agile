@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseActivity;
 import com.mingyuechunqiu.agilemvpframe.util.DialogUtils;
-import com.mingyuechunqiu.agilemvpframe.util.FragmentUtils;
 
 import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 
@@ -145,9 +144,24 @@ public abstract class BaseFragment extends Fragment {
      * @return 如果进行回调则返回true，否则返回false
      */
     protected boolean returnToPreviousPageWithParentFg(@NonNull BaseFragment fragment) {
+        return returnToPreviousPageWithParentFg(fragment, null);
+    }
+
+    /**
+     * 返回上一个界面
+     *
+     * @param fragment    当前fragment
+     * @param interceptor 对跳转参数进行拦截设置
+     * @return 如果进行回调则返回true，否则返回false
+     */
+    protected boolean returnToPreviousPageWithParentFg(@NonNull BaseFragment fragment,
+                                                       JumpPageInterceptor interceptor) {
         if (getParentFragment() != null && getParentFragment() instanceof Callback) {
             Bundle bundle = new Bundle();
             bundle.putBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE, true);
+            if (interceptor != null) {
+                interceptor.interceptJumpPage(bundle);
+            }
             ((Callback) getParentFragment()).onCall(fragment, bundle);
             return true;
         }
@@ -161,10 +175,25 @@ public abstract class BaseFragment extends Fragment {
      * @return 如果进行回调则返回true，否则返回false
      */
     public boolean returnToPreviousPageWithActivity(@NonNull BaseFragment fragment) {
+        return returnToPreviousPageWithActivity(fragment, null);
+    }
+
+    /**
+     * 返回上一个界面
+     *
+     * @param fragment    当前fragment
+     * @param interceptor 对跳转参数进行拦截设置
+     * @return 如果进行回调则返回true，否则返回false
+     */
+    public boolean returnToPreviousPageWithActivity(@NonNull BaseFragment fragment,
+                                                    JumpPageInterceptor interceptor) {
         FragmentActivity activity = fragment.getActivity();
         if (activity instanceof BaseFragment.Callback) {
             Bundle bundle = new Bundle();
             bundle.putBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE, true);
+            if (interceptor != null) {
+                interceptor.interceptJumpPage(bundle);
+            }
             ((Callback) activity).onCall(fragment, bundle);
             return true;
         }
@@ -241,5 +270,19 @@ public abstract class BaseFragment extends Fragment {
          * @return 如果自己处理完成，不需要Activity继续处理返回true，否则返回false
          */
         boolean onFragmentKeyDown(int keyCode, KeyEvent event);
+    }
+
+    /**
+     * 跳转界面拦截器
+     */
+    public interface JumpPageInterceptor {
+
+        /**
+         * 对跳转界面的参数进行拦截自定义
+         *
+         * @param bundle 携带参数的数据包
+         */
+        void interceptJumpPage(@NonNull Bundle bundle);
+
     }
 }
