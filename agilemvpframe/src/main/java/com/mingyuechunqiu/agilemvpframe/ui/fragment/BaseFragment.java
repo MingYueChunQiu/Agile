@@ -174,7 +174,7 @@ public abstract class BaseFragment extends Fragment {
      * @param fragment 当前fragment
      * @return 如果进行回调则返回true，否则返回false
      */
-    public boolean returnToPreviousPageWithActivity(@NonNull BaseFragment fragment) {
+    protected boolean returnToPreviousPageWithActivity(@NonNull BaseFragment fragment) {
         return returnToPreviousPageWithActivity(fragment, null);
     }
 
@@ -185,8 +185,8 @@ public abstract class BaseFragment extends Fragment {
      * @param interceptor 对跳转参数进行拦截设置
      * @return 如果进行回调则返回true，否则返回false
      */
-    public boolean returnToPreviousPageWithActivity(@NonNull BaseFragment fragment,
-                                                    JumpPageInterceptor interceptor) {
+    protected boolean returnToPreviousPageWithActivity(@NonNull BaseFragment fragment,
+                                                       JumpPageInterceptor interceptor) {
         FragmentActivity activity = fragment.getActivity();
         if (activity instanceof BaseFragment.Callback) {
             Bundle bundle = new Bundle();
