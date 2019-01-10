@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agilemvpframe.util;
+package com.mingyuechunqiu.agilemvpframe.feature.json;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,7 +9,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mingyuechunqiu.agilemvpframe.io.BaseFile;
+import com.mingyuechunqiu.agilemvpframe.io.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -26,65 +26,54 @@ import java.util.Set;
 /**
  * <pre>
  *     author : xyj
+ *     Github : https://github.com/MingYueChunQiu
  *     e-mail : yujie.xi@ehailuo.com
- *     time   : 2018/9/7
- *     desc   : json转换工具类
+ *     time   : 2019/1/10
+ *     desc   : Json处理帮助类，使用Gson处理
+ *              实现JsonHelperable
  *     version: 1.0
  * </pre>
  */
-public class GsonUtils extends BaseFile {
+public class GsonHelper implements JsonHelperable {
 
-    /**
-     * 获取对象转换成的json字符串
-     *
-     * @param o java对象
-     * @return 如果转换成功返回字符串，否则返回null
-     */
-    public static String getJsonString(Object o) {
-        if (o == null) {
-            return null;
-        }
+    @Nullable
+    @Override
+    public String getJsonString(Object o) {
         Gson gson = new Gson();
-        return gson.toJson(o);
+        return o == null ? null : gson.toJson(o);
     }
 
-    /**
-     * 将字符串写入文件
-     *
-     * @param s        字符串
-     * @param fileName 文件名
-     */
-    public static void writeStringToFile(String s, String fileName) {
-        if (TextUtils.isEmpty(s) || TextUtils.isEmpty(fileName) || !checkFile(fileName)) {
+    @Override
+    public <T> T getJsonObject(String json, @NonNull Class<T> c) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, c);
+    }
+
+    @Override
+    public void writeJsonStringToFile(String json, String filePath) {
+        if (TextUtils.isEmpty(json) || TextUtils.isEmpty(filePath) || !IOUtils.checkIsFileOrCreate(filePath)) {
             return;
         }
         BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new FileWriter(fileName));
-            writer.write(s);
+            writer = new BufferedWriter(new FileWriter(filePath));
+            writer.write(json);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            closeStream(writer);
+            IOUtils.closeStream(writer);
         }
     }
 
-    /**
-     * 从文件中读取json
-     *
-     * @param fileName 文件名
-     * @param c        json对象类型
-     * @param <T>      json对象泛型约束
-     * @return 读取转换成功返回json对象，否则返回null
-     */
     @Nullable
-    public static <T> T readJsonFromFile(String fileName, Class<T> c) {
-        if (TextUtils.isEmpty(fileName)) {
+    @Override
+    public <T> T readJsonFromFile(String filePath, @NonNull Class<T> c) {
+        if (TextUtils.isEmpty(filePath)) {
             return null;
         }
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(fileName));
+            reader = new BufferedReader(new FileReader(filePath));
             StringBuilder sbJson = new StringBuilder();
             String text;
             while ((text = reader.readLine()) != null) {
@@ -96,21 +85,14 @@ public class GsonUtils extends BaseFile {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            closeStream(reader);
+            IOUtils.closeStream(reader);
         }
         return null;
     }
 
-    /**
-     * 从文件中读取json字符串
-     *
-     * @param fileName 文件路径
-     * @param c        json对象类字节码类
-     * @param <T>      json对象类型
-     * @return 转换成功返回json对象，否则返回null
-     */
     @Nullable
-    public static <T> List<T> readJsonArrayFromFile(String fileName, Class<T> c) {
+    @Override
+    public <T> List<T> readListFromFile(String fileName, @NonNull Class<T> c) {
         if (TextUtils.isEmpty(fileName)) {
             return null;
         }
@@ -132,20 +114,25 @@ public class GsonUtils extends BaseFile {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            closeStream(reader);
+            IOUtils.closeStream(reader);
         }
         return null;
     }
 
-    /**
-     * 将json字符串转换成list集合
-     *
-     * @param jsonArray json数组
-     * @param c         值的类型
-     * @param <T>       值的泛型类型
-     * @return 返回list集合
-     */
-    public static <T> List<T> getListFromJson(@NonNull JsonArray jsonArray, @NonNull Class<T> c) {
+    @Override
+    public <T> List<T> getListFromJson(String json, @NonNull Class<T> c) {
+        if (TextUtils.isEmpty(json)) {
+            return null;
+        }
+        JsonElement jsonElement = new JsonParser().parse(json);
+        if (jsonElement instanceof JsonArray) {
+            return getListFromJson(jsonElement.getAsJsonArray(), c);
+        }
+        return null;
+    }
+
+    @Override
+    public <T> List<T> getListFromJson(@NonNull JsonArray jsonArray, @NonNull Class<T> c) {
         List<T> list = new ArrayList<>();
         Gson gson = new Gson();
         for (JsonElement jsonElement : jsonArray) {
@@ -154,21 +141,16 @@ public class GsonUtils extends BaseFile {
         return list;
     }
 
-    /**
-     * 将json字符串转换成map集合
-     *
-     * @param json json格式的字符串
-     * @param c    map值的类型
-     * @param <T>  值的泛型类型
-     * @return 返回map集合
-     */
-    @Nullable
-    public static <T> Map<String, Object> getMapFromJson(@NonNull String json, @NonNull Class<T> c) {
+    @Override
+    public <T> Map<String, Object> getMapFromJson(String json, @NonNull Class<T> c) {
         if (TextUtils.isEmpty(json)) {
             return null;
         }
-        JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
-        if (jsonObject == null) {
+        JsonElement element = new JsonParser().parse(json);
+        JsonObject jsonObject;
+        if (element.isJsonObject()) {
+            jsonObject = element.getAsJsonObject();
+        } else {
             return null;
         }
         Gson gson = new Gson();
@@ -187,18 +169,5 @@ public class GsonUtils extends BaseFile {
             }
         }
         return map;
-    }
-
-    /**
-     * 根据json字符串获取json对象
-     *
-     * @param json json字符串
-     * @param c    json对象类型
-     * @param <T>  json对象泛型约束
-     * @return 返回json对象
-     */
-    public static <T> T getJsonObject(String json, Class<T> c) {
-        Gson gson = new Gson();
-        return gson.fromJson(json, c);
     }
 }

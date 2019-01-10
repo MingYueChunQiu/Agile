@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.feature.videoViewManager;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 /**
@@ -17,19 +18,32 @@ public class VideoViewManager implements VideoViewable {
 
     private VideoViewable mVideoViewable;
 
-    public static VideoViewManager getInstance() {
-        return new VideoViewManager(new VideoViewHelper());
+    private VideoViewManager(VideoViewable videoViewable) {
+        mVideoViewable = videoViewable;
+        if (mVideoViewable == null) {
+            mVideoViewable = new VideoViewHelper();
+        }
     }
 
+    /**
+     * 获取视频播放管理器实例（默认使用VideoViewHelper）
+     *
+     * @return 返回视频播放管理器实例
+     */
+    @NonNull
+    public static VideoViewManager getInstance() {
+        return getInstance(new VideoViewHelper());
+    }
+
+    /**
+     * 获取视频播放管理器实例
+     *
+     * @param videoViewable 视频帮助类
+     * @return 返回视频播放管理器实例
+     */
+    @NonNull
     public static VideoViewManager getInstance(VideoViewable videoViewable) {
         return new VideoViewManager(videoViewable);
-    }
-
-    private VideoViewManager(VideoViewable videoViewable) {
-        if (videoViewable == null) {
-            throw new IllegalArgumentException("VideoViewable can not be null!");
-        }
-        mVideoViewable = videoViewable;
     }
 
     @Override
@@ -85,5 +99,17 @@ public class VideoViewManager implements VideoViewable {
     @Override
     public void setUrl(Context context, String url) {
         mVideoViewable.setUrl(context, url);
+    }
+
+    /**
+     * 设置视频播放管理器新的具体操作实例
+     *
+     * @param videoViewable 视频帮助类实例
+     */
+    public void setVideoViewable(VideoViewable videoViewable) {
+        if (videoViewable == null) {
+            return;
+        }
+        mVideoViewable = videoViewable;
     }
 }
