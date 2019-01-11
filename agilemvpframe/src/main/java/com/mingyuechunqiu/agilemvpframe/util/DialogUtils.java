@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agilemvpframe.util;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -34,7 +35,7 @@ public class DialogUtils {
      * @param cancelable 点击界面对话框是否消失
      * @return 返回生成的对话框
      */
-    public static Dialog getLoadingDialog(Context context, String hint, boolean cancelable) {
+    public static Dialog getLoadingDialog(@NonNull Context context, String hint, boolean cancelable) {
         if (TextUtils.isEmpty(hint)) {
             hint = context.getString(R.string.prompt_loading);
         }
@@ -47,7 +48,12 @@ public class DialogUtils {
                 .create();
     }
 
-    public static void disappearDialog(Dialog dialog) {
+    /**
+     * 让对话框消失
+     *
+     * @param dialog 对话框
+     */
+    public static void disappearDialog(@Nullable Dialog dialog) {
         if (dialog == null) {
             return;
         }

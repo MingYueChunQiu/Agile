@@ -216,6 +216,9 @@ public abstract class BaseFragment extends Fragment {
      * @param cancelable 是否可以取消
      */
     protected void showLoadingDialog(String hint, boolean cancelable) {
+        if (getContext() == null) {
+            return;
+        }
         if (mLoadingDialog == null) {
             mLoadingDialog = DialogUtils.getLoadingDialog(getContext(), null, cancelable);
         }
