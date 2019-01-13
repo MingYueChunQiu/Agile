@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agilemvpframe.util;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,8 @@ import android.support.v4.app.FragmentTransaction;
 import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
 
+import java.util.List;
+
 import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 
 /**
@@ -17,7 +20,7 @@ import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_
  *     author : xyj
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2018/05/16
- *     desc   : 碎片管理工具类
+ *     desc   : Fragment管理工具类
  *     version: 1.0
  * </pre>
  */
@@ -151,5 +154,70 @@ public class FragmentUtils {
         FragmentUtils.hideFragment(fragmentManager, hideFg, enterAnimationId, exitAnimationId);
         FragmentUtils.showFragment(fragmentManager, containerViewId, showFg,
                 enterAnimationId, exitAnimationId);
+    }
+
+    /**
+     * 移除Fragment
+     *
+     * @param fragmentManager Fragment管理器
+     * @param fragments       要移除的Fragment
+     */
+    public static void removeFragments(@Nullable FragmentManager fragmentManager,
+                                       @Nullable Fragment... fragments) {
+        removeFragments(fragmentManager, false, fragments);
+    }
+
+    /**
+     * 移除Fragment
+     *
+     * @param fragmentManager Fragment管理器
+     * @param fragmentList    要移除的Fragment集合
+     */
+    public static void removeFragments(@Nullable FragmentManager fragmentManager,
+                                       @Nullable List<Fragment> fragmentList) {
+        removeFragments(fragmentManager, false, fragmentList);
+    }
+
+    /**
+     * 移除Fragment
+     *
+     * @param fragmentManager     Fragment管理器
+     * @param isAllowingStateLoss 是否允许丧失状态
+     * @param fragments           要移除的Fragment
+     */
+    public static void removeFragments(@Nullable FragmentManager fragmentManager,
+                                       boolean isAllowingStateLoss,
+                                       @Nullable Fragment... fragments) {
+        if (fragmentManager == null || fragments == null || fragments.length == 0) {
+            return;
+        }
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        for (Fragment fragment : fragments) {
+            if (fragment != null) {
+                transaction.remove(fragment);
+            }
+        }
+        if (isAllowingStateLoss) {
+            transaction.commitAllowingStateLoss();
+        } else {
+            transaction.commit();
+        }
+    }
+
+    /**
+     * 移除Fragment
+     *
+     * @param fragmentManager     Fragment管理器
+     * @param isAllowingStateLoss 是否允许丧失状态
+     * @param fragmentList        要移除的Fragment集合
+     */
+    public static void removeFragments(@Nullable FragmentManager fragmentManager,
+                                       boolean isAllowingStateLoss,
+                                       @Nullable List<Fragment> fragmentList) {
+        if (fragmentList == null) {
+            return;
+        }
+        Fragment[] fragments = new Fragment[fragmentList.size()];
+        removeFragments(fragmentManager, isAllowingStateLoss, fragmentList.toArray(fragments));
     }
 }

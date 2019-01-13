@@ -24,6 +24,12 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
         super(listener);
     }
 
+    @Override
+    public void release() {
+        releaseNetworkRequests();
+        super.release();
+    }
+
     /**
      * 检测Retrofit的网络响应是否为空
      *
@@ -53,4 +59,9 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
             mListener.onFailure(errorStringResId);
         }
     }
+
+    /**
+     * 释放网络请求
+     */
+    protected abstract void releaseNetworkRequests();
 }

@@ -23,6 +23,11 @@ class MainModel extends MainContract.Model<MainContract.Listener> {
     }
 
     @Override
+    protected void releaseNetworkRequests() {
+
+    }
+
+    @Override
     protected void getRequest(BaseInfo info) {
 
     }
