@@ -18,7 +18,7 @@ public class AgileMVPFrame {
 
     private static Context sContext;
     private static AgileMVPFrameConfigure sConfigure;
-    private static boolean debug;//是否处于debug模式
+    private static boolean debug;//标记是否处于debug模式
 
     /**
      * 进行框架初始化，需要在application中进行初始化
