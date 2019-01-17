@@ -20,21 +20,26 @@ public class LogUtils {
     public static final int WARN = 1;
     public static final int ERROR = 0;
     public static final int HIDDEN = -1;//隐藏日志级别
-    private static int current = 4;//记录当前日志记录级别，当正式上线时，将日志屏蔽
+    private static int current = VERBOSE;//记录当前日志记录级别，当正式上线时，将日志屏蔽
 
-    public static int getCurrent() {
+    public static int getCurrentLogLevel() {
         return current;
     }
 
-    public static void setCurrent(int current) {
-        LogUtils.current = current;
+    /**
+     * 设置当前日志等级
+     *
+     * @param currentLogLevel 当前日志等级
+     */
+    public static void setCurrentLogLevel(int currentLogLevel) {
+        current = currentLogLevel;
     }
 
     /**
      * 正式上线时设置隐藏日志信息
      */
-    public static void hideLog() {
-        setCurrent(HIDDEN);
+    public static void hideLog(boolean hideLog) {
+        current = hideLog ? HIDDEN : VERBOSE;
     }
 
     public static void v(String tag, String msg) {

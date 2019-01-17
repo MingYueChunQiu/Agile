@@ -1,10 +1,9 @@
 package com.mingyuechunqiu.agilemvpframe.agile;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.mingyuechunqiu.agilemvpframe.data.remote.retrofit.controller.BaseRetrofitManager;
-import com.mingyuechunqiu.agilemvpframe.service.NetworkStateService;
+import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
 
 /**
  * <pre>
@@ -64,6 +63,15 @@ public class AgileMVPFrame {
      */
     public static AgileMVPFrameConfigure getConfigure() {
         return sConfigure;
+    }
+
+    /**
+     * 设置调试模式
+     *
+     * @param debug 是否开启调试模式
+     */
+    public static void debug(boolean debug) {
+        LogUtils.hideLog(!debug);
     }
 
 }

@@ -150,7 +150,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                             bundle.putInt(BUNDLE_TITLE_TEXT_SIZE, 12);
                             bundle.putBoolean(BUNDLE_SHOW_BACK_DIALOG, false);
                             intent.putExtras(bundle);
-                            WebViewActivity.setBackDrawable(getResources().getDrawable(R.drawable.battery_10));
+                            WebViewActivity.setBackDrawable(getResources().getDrawable(R.drawable.arrow_back_press));
                             ref.get().startActivity(intent);
                         }
                     }
