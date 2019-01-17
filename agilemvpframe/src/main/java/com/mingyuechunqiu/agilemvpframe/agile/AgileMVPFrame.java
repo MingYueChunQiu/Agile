@@ -10,7 +10,7 @@ import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
  *     author : xyj
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2018/11/7
- *     desc   : 框架类
+ *     desc   : 框架主类
  *     version: 1.0
  * </pre>
  */
@@ -18,6 +18,7 @@ public class AgileMVPFrame {
 
     private static Context sContext;
     private static AgileMVPFrameConfigure sConfigure;
+    private static boolean debug;//是否处于debug模式
 
     /**
      * 进行框架初始化，需要在application中进行初始化
@@ -29,6 +30,7 @@ public class AgileMVPFrame {
             throw new IllegalArgumentException("context can not be null!");
         }
         sContext = context;
+        debug(false);
     }
 
     /**
@@ -66,12 +68,17 @@ public class AgileMVPFrame {
     }
 
     /**
-     * 设置调试模式
+     * 设置调试模式（在init方法后调用，否则会被init里的debug方法调用覆盖）
      *
      * @param debug 是否开启调试模式
      */
     public static void debug(boolean debug) {
-        LogUtils.hideLog(!debug);
+        AgileMVPFrame.debug = debug;
+        LogUtils.showLog(debug);
+    }
+
+    public static boolean isDebug() {
+        return debug;
     }
 
 }

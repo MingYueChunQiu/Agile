@@ -36,10 +36,12 @@ public class LogUtils {
     }
 
     /**
-     * 正式上线时设置隐藏日志信息
+     * 显示日志信息（正式上线时设置隐藏日志信息）
+     *
+     * @param showLog 是否显示日志信息
      */
-    public static void hideLog(boolean hideLog) {
-        current = hideLog ? HIDDEN : VERBOSE;
+    public static void showLog(boolean showLog) {
+        current = showLog ? VERBOSE : HIDDEN;
     }
 
     public static void v(String tag, String msg) {
