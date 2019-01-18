@@ -74,24 +74,25 @@ public class CircleProgressButton extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (mListener != null && !mListener.onPreProgress(this)) {
-                return true;
-            }
-            mState = State.PRESSED;
-            startProgressAnimator();
-            return true;
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            if (mProgressAnimator != null) {
-                if (mProgressAnimator.isRunning()) {
-                    mProgressAnimator.cancel();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (mListener != null && !mListener.onPreProgress(this)) {
+                    return true;
                 }
-                mProgressAnimator = null;
-            }
-            setReleasedState();
-            //消除警告
-            performClick();
-            return true;
+                mState = State.PRESSED;
+                startProgressAnimator();
+                return true;
+            case MotionEvent.ACTION_UP:
+                releaseProgress();
+                //消除警告
+                performClick();
+                return true;
+            case MotionEvent.ACTION_CANCEL:
+                if (mListener != null) {
+                    mListener.onCancelProgress(this);
+                }
+                releaseProgress();
+                return true;
         }
         return super.onTouchEvent(event);
     }
@@ -163,6 +164,19 @@ public class CircleProgressButton extends View {
 
     public void setOnCircleProgressButtonListener(OnCircleProgressButtonListener listener) {
         mListener = listener;
+    }
+
+    /**
+     * 释放进度加载
+     */
+    private void releaseProgress() {
+        if (mProgressAnimator != null) {
+            if (mProgressAnimator.isRunning()) {
+                mProgressAnimator.cancel();
+            }
+            mProgressAnimator = null;
+        }
+        setReleasedState();
     }
 
     /**
@@ -360,6 +374,13 @@ public class CircleProgressButton extends View {
          * @param v 控件本身
          */
         int onReleaseProgress(CircleProgressButton v);
+
+        /**
+         * 当取消进度加载时回调
+         *
+         * @param v 控件本身
+         */
+        void onCancelProgress(CircleProgressButton v);
     }
 
     /**
