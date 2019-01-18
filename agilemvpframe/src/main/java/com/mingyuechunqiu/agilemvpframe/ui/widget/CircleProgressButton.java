@@ -83,15 +83,16 @@ public class CircleProgressButton extends View {
                 startProgressAnimator();
                 return true;
             case MotionEvent.ACTION_UP:
-                releaseProgress();
+                releaseProgress(true);
                 //消除警告
                 performClick();
                 return true;
             case MotionEvent.ACTION_CANCEL:
+                boolean callRelease = true;
                 if (mListener != null) {
-                    mListener.onCancelProgress(this);
+                    callRelease = mListener.onCancelProgress(this);
                 }
-                releaseProgress();
+                releaseProgress(callRelease);
                 return true;
         }
         return super.onTouchEvent(event);
@@ -168,25 +169,29 @@ public class CircleProgressButton extends View {
 
     /**
      * 释放进度加载
+     *
+     * @param callRelease 是否调用释放回调
      */
-    private void releaseProgress() {
+    private void releaseProgress(boolean callRelease) {
         if (mProgressAnimator != null) {
             if (mProgressAnimator.isRunning()) {
                 mProgressAnimator.cancel();
             }
             mProgressAnimator = null;
         }
-        setReleasedState();
+        setReleasedState(callRelease);
     }
 
     /**
      * 设置控件释放状态
+     *
+     * @param callRelease 是否调用释放回调
      */
-    private void setReleasedState() {
+    private void setReleasedState(boolean callRelease) {
         mState = State.RELEASED;
         mEndAngle = 360;
         if (mListener != null) {
-            int angle = mListener.onReleaseProgress(this);
+            int angle = callRelease ? mListener.onReleaseProgress(this) : 360;
             if (angle >= 0 && angle <= 360) {
                 mEndAngle = angle;
             }
@@ -223,7 +228,7 @@ public class CircleProgressButton extends View {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                setReleasedState();
+                setReleasedState(true);
             }
 
             @Override
@@ -380,7 +385,7 @@ public class CircleProgressButton extends View {
          *
          * @param v 控件本身
          */
-        void onCancelProgress(CircleProgressButton v);
+        boolean onCancelProgress(CircleProgressButton v);
     }
 
     /**
