@@ -3,6 +3,6 @@
 
     <item android:drawable="@android:color/white" android:state_pressed="false" />
 
-    <item android:drawable="@color/gray_transparent" android:state_pressed="true" />
+    <item android:drawable="@color/gray_AAEEEEEE" android:state_pressed="true" />
 
 </selector>

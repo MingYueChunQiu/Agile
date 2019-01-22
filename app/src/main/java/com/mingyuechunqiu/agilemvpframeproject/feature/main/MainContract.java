@@ -1,8 +1,8 @@
 package com.mingyuechunqiu.agilemvpframeproject.feature.main;
 
 import com.mingyuechunqiu.agilemvpframe.base.framework.IBaseListener;
-import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
-import com.mingyuechunqiu.agilemvpframe.base.view.BaseDialogView;
+import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
+import com.mingyuechunqiu.agilemvpframe.base.view.BaseNetView;
 import com.mingyuechunqiu.agilemvpframeproject.base.model.BaseTokenNetModelImpl;
 
 /**
@@ -16,7 +16,7 @@ import com.mingyuechunqiu.agilemvpframeproject.base.model.BaseTokenNetModelImpl;
  */
 interface MainContract {
 
-    interface View<P extends Presenter> extends BaseDialogView<P> {
+    interface View<P extends Presenter> extends BaseNetView<P> {
     }
 
     interface Listener extends IBaseListener {
@@ -28,7 +28,7 @@ interface MainContract {
         }
     }
 
-    abstract class Presenter<V extends View, M extends Model> extends BaseDialogPresenter<V, M> {
+    abstract class Presenter<V extends View, M extends Model> extends BaseNetPresenter<V, M> {
     }
 
 }

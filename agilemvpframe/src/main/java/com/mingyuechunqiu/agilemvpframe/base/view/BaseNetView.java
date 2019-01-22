@@ -12,5 +12,5 @@ import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
  *     version: 1.0
  * </pre>
  */
-public interface BaseNetView<P extends BaseNetPresenter> extends BaseView<P> {
+public interface BaseNetView<P extends BaseNetPresenter> extends BaseDialogView<P> {
 }

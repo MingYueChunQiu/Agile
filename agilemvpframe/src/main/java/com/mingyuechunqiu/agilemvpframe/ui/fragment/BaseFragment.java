@@ -3,10 +3,12 @@ package com.mingyuechunqiu.agilemvpframe.ui.fragment;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +16,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseActivity;
+import com.mingyuechunqiu.agilemvpframe.ui.diaglogFragment.LoadingFragment;
 import com.mingyuechunqiu.agilemvpframe.util.DialogUtils;
+import com.mingyuechunqiu.agilemvpframe.util.FragmentUtils;
 
 import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 
@@ -31,6 +35,7 @@ public abstract class BaseFragment extends Fragment {
 
     private Toast mToast;
     private Dialog mLoadingDialog;
+    private LoadingFragment mLoadingFragment;
 
     @Nullable
     @Override
@@ -44,20 +49,8 @@ public abstract class BaseFragment extends Fragment {
         release();
         mToast = null;
         mLoadingDialog = null;
-    }
-
-    /**
-     * 显示提示信息
-     *
-     * @param hint 提示文本
-     */
-    protected void showToast(String hint) {
-        if (mToast == null) {
-            mToast = Toast.makeText(getContext(), hint, Toast.LENGTH_SHORT);
-        } else {
-            mToast.setText(hint);
-        }
-        mToast.show();
+        FragmentUtils.removeFragments(getChildFragmentManager(), true, mLoadingFragment);
+        mLoadingFragment = null;
     }
 
     /**
@@ -210,17 +203,34 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
+     * 显示提示信息
+     *
+     * @param hint 提示文本
+     */
+    protected void showToast(String hint) {
+        if (TextUtils.isEmpty(hint)) {
+            return;
+        }
+        if (mToast == null) {
+            mToast = Toast.makeText(getContext(), hint, Toast.LENGTH_SHORT);
+        } else {
+            mToast.setText(hint);
+        }
+        mToast.show();
+    }
+
+    /**
      * 显示加载对话框
      *
      * @param hint       提示文本
      * @param cancelable 是否可以取消
      */
-    protected void showLoadingDialog(String hint, boolean cancelable) {
+    protected void showLoadingDialog(@Nullable String hint, boolean cancelable) {
         if (getContext() == null) {
             return;
         }
         if (mLoadingDialog == null) {
-            mLoadingDialog = DialogUtils.getLoadingDialog(getContext(), null, cancelable);
+            mLoadingDialog = DialogUtils.getLoadingDialog(getContext(), hint, cancelable);
         }
         mLoadingDialog.show();
     }
@@ -230,6 +240,40 @@ public abstract class BaseFragment extends Fragment {
      */
     protected void disappearLoadingDialog() {
         DialogUtils.disappearDialog(mLoadingDialog);
+    }
+
+    /**
+     * 显示加载Fragment
+     *
+     * @param containerId 依附的父布局资源ID
+     * @param bundle      参数数据包
+     */
+    protected void showLoadingFragment(@IdRes int containerId, @Nullable Bundle bundle) {
+        if (mLoadingFragment == null) {
+            mLoadingFragment = new LoadingFragment();
+        }
+        mLoadingFragment.setArguments(bundle);
+        if (mLoadingFragment.isAdded()) {
+            getChildFragmentManager().beginTransaction()
+                    .show(mLoadingFragment)
+                    .commit();
+        } else {
+            getChildFragmentManager().beginTransaction()
+                    .add(containerId, mLoadingFragment, LoadingFragment.class.getSimpleName())
+                    .commit();
+        }
+    }
+
+    /**
+     * 隐藏加载Fragment
+     */
+    protected void hideLoadingFragment() {
+        if (mLoadingFragment == null || !mLoadingFragment.isAdded()) {
+            return;
+        }
+        getChildFragmentManager().beginTransaction()
+                .hide(mLoadingFragment)
+                .commit();
     }
 
     /**

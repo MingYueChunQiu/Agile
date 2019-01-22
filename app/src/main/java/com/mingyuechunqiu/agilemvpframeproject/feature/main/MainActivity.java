@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
@@ -14,6 +15,7 @@ import android.widget.FrameLayout;
 
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity;
+import com.mingyuechunqiu.agilemvpframe.ui.diaglogFragment.LoadingFragment;
 import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.StringUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
@@ -28,6 +30,7 @@ import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Const
 import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_TEXT_SIZE;
 import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_VISIBLE;
 import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_WEB_URL;
+import static com.mingyuechunqiu.agilemvpframe.ui.diaglogFragment.LoadingFragment.BUNDLE_AGILE_CAN_TOUCH_OUTSIDE;
 
 /**
  * <pre>
@@ -40,7 +43,9 @@ import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Const
  * </pre>
  */
 public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View<MainContract.Presenter>, MainContract.Presenter>
-        implements MainContract.View<MainContract.Presenter> {
+        implements MainContract.View<MainContract.Presenter>, View.OnClickListener {
+
+    private LoadingFragment mLoadingFragment;
 
     @Override
     public void setPresenter(@NonNull MainContract.Presenter presenter) {
@@ -85,6 +90,16 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
+    public void showLoadingFragment(int containerId, @Nullable Bundle bundle) {
+        super.showLoadingFragment(containerId, bundle);
+    }
+
+    @Override
+    public void hideLoadingFragment() {
+        super.hideLoadingFragment();
+    }
+
+    @Override
     protected void release() {
 
     }
@@ -121,6 +136,17 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                 startActivity(intent);
             }
         });
+        AppCompatButton btnShow = view.findViewById(R.id.btn_main_show);
+        AppCompatButton btnHide = view.findViewById(R.id.btn_main_hide);
+        btnShow.setOnClickListener(this);
+        btnHide.setOnClickListener(this);
+        mLoadingFragment = new LoadingFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(BUNDLE_AGILE_CAN_TOUCH_OUTSIDE, true);
+        mLoadingFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fl_navigation_container, mLoadingFragment, LoadingFragment.class.getSimpleName())
+                .commit();
     }
 
     /**
@@ -156,5 +182,22 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                     }
                 }));
         v.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_main_show:
+                getSupportFragmentManager().beginTransaction()
+                        .show(mLoadingFragment)
+                        .commit();
+                mLoadingFragment.setLoadingMessage("O(∩_∩)O哈哈~");
+                break;
+            case R.id.btn_main_hide:
+                getSupportFragmentManager().beginTransaction()
+                        .hide(mLoadingFragment)
+                        .commit();
+                break;
+        }
     }
 }

@@ -1,10 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.util;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -12,8 +9,6 @@ import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
 
 import java.util.List;
-
-import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 
 /**
  * <pre>
@@ -193,7 +188,7 @@ public class FragmentUtils {
         }
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         for (Fragment fragment : fragments) {
-            if (fragment != null) {
+            if (fragment != null && fragment.isAdded()) {
                 transaction.remove(fragment);
             }
         }

@@ -35,7 +35,7 @@ public class DialogUtils {
      * @param cancelable 点击界面对话框是否消失
      * @return 返回生成的对话框
      */
-    public static Dialog getLoadingDialog(@NonNull Context context, String hint, boolean cancelable) {
+    public static Dialog getLoadingDialog(@NonNull Context context, @Nullable String hint, boolean cancelable) {
         if (TextUtils.isEmpty(hint)) {
             hint = context.getString(R.string.prompt_loading);
         }

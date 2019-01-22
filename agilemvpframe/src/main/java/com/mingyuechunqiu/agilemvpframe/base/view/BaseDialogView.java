@@ -1,5 +1,9 @@
 package com.mingyuechunqiu.agilemvpframe.base.view;
 
+import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
+
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
 
 /**
@@ -12,7 +16,7 @@ import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
  *     version: 1.0
  * </pre>
  */
-public interface BaseDialogView<P extends BaseDialogPresenter> extends BaseNetView<P> {
+public interface BaseDialogView<P extends BaseDialogPresenter> extends BaseView<P> {
 
     /**
      * 显示加载对话框
@@ -20,8 +24,23 @@ public interface BaseDialogView<P extends BaseDialogPresenter> extends BaseNetVi
      * @param hint       加载提示文字
      * @param cancelable 点击界面对话框是否消失
      */
-    void showLoadingDialog(String hint, boolean cancelable);
+    void showLoadingDialog(@Nullable String hint, boolean cancelable);
 
+    /**
+     * 让加载对话框消失
+     */
     void disappearLoadingDialog();
 
+    /**
+     * 显示加载Fragment
+     *
+     * @param containerId 依附的父布局资源ID
+     * @param bundle      参数数据包
+     */
+    void showLoadingFragment(@IdRes int containerId, @Nullable Bundle bundle);
+
+    /**
+     * 隐藏加载Fragment
+     */
+    void hideLoadingFragment();
 }

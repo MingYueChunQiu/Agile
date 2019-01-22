@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="gray_transparent">#AAEEEEEE</color>
+    <color name="black_AA000000">#AA000000</color>
+
+    <color name="gray_AAEEEEEE">#AAEEEEEE</color>
     <color name="gray_B2B2B2">#B2B2B2</color>
 
 </resources>

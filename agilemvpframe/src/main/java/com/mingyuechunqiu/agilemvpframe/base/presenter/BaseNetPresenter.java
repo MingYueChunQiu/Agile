@@ -23,7 +23,7 @@ import static com.mingyuechunqiu.agilemvpframe.constants.UserConstants.TOKEN;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetModel> extends BaseAbstractPresenter<V, M> {
+public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetModel> extends BaseDialogPresenter<V, M> {
 
     @Override
     public void detachView() {

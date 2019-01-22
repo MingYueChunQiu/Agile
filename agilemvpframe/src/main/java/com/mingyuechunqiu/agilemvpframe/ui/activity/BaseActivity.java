@@ -3,15 +3,19 @@ package com.mingyuechunqiu.agilemvpframe.ui.activity;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.mingyuechunqiu.agilemvpframe.ui.diaglogFragment.LoadingFragment;
 import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agilemvpframe.util.DialogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ExitApplicationManager;
+import com.mingyuechunqiu.agilemvpframe.util.FragmentUtils;
 import com.noober.background.BackgroundLibrary;
 
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private Toast mToast;
     private Dialog mLoadingDialog;
+    private LoadingFragment mLoadingFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,13 +59,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mToast = null;
-        mLoadingDialog = null;
+        release();
         if (mKeyDownListenerList != null) {
             mKeyDownListenerList.clear();
             mKeyDownListenerList = null;
         }
-        release();
+        mToast = null;
+        mLoadingDialog = null;
+        FragmentUtils.removeFragments(getSupportFragmentManager(), true, mLoadingFragment);
+        mLoadingFragment = null;
     }
 
     /**
@@ -103,20 +110,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * 显示提示信息
-     *
-     * @param hint 提示文本
-     */
-    protected void showToast(String hint) {
-        if (mToast == null) {
-            mToast = Toast.makeText(this, hint, Toast.LENGTH_SHORT);
-        } else {
-            mToast.setText(hint);
-        }
-        mToast.show();
-    }
-
-    /**
      * 设置状态栏为轻色调，避免白色字体被白色活动条遮挡
      */
     protected void setLightStatusBar() {
@@ -146,12 +139,29 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * 显示提示信息
+     *
+     * @param hint 提示文本
+     */
+    protected void showToast(String hint) {
+        if (TextUtils.isEmpty(hint)) {
+            return;
+        }
+        if (mToast == null) {
+            mToast = Toast.makeText(this, hint, Toast.LENGTH_SHORT);
+        } else {
+            mToast.setText(hint);
+        }
+        mToast.show();
+    }
+
+    /**
      * 显示加载对话框
      *
      * @param hint       提示文本
      * @param cancelable 是否可以取消
      */
-    protected void showLoadingDialog(String hint, boolean cancelable) {
+    protected void showLoadingDialog(@Nullable String hint, boolean cancelable) {
         if (mLoadingDialog == null) {
             mLoadingDialog = DialogUtils.getLoadingDialog(this, hint, cancelable);
         }
@@ -163,6 +173,44 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void disappearLoadingDialog() {
         DialogUtils.disappearDialog(mLoadingDialog);
+    }
+
+    /**
+     * 显示加载Fragment
+     *
+     * @param containerId 依附的父布局资源ID
+     * @param bundle      参数数据包
+     */
+    protected void showLoadingFragment(@IdRes int containerId, @Nullable Bundle bundle) {
+        if (getSupportFragmentManager() == null) {
+            return;
+        }
+        if (mLoadingFragment == null) {
+            mLoadingFragment = new LoadingFragment();
+        }
+        mLoadingFragment.setArguments(bundle);
+        if (mLoadingFragment.isAdded()) {
+            getSupportFragmentManager().beginTransaction()
+                    .show(mLoadingFragment)
+                    .commit();
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .add(containerId, mLoadingFragment, LoadingFragment.class.getSimpleName())
+                    .commit();
+        }
+    }
+
+    /**
+     * 隐藏加载Fragment
+     */
+    protected void hideLoadingFragment() {
+        if (getSupportFragmentManager() == null || mLoadingFragment == null ||
+                !mLoadingFragment.isAdded()) {
+            return;
+        }
+        getSupportFragmentManager().beginTransaction()
+                .hide(mLoadingFragment)
+                .commit();
     }
 
     /**

@@ -38,8 +38,8 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mToast = null;
         release();
+        mToast = null;
     }
 
     /**

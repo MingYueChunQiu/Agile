@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.mingyuechunqiu.agilemvpframe.base.framework.ICountDownListener;
 import com.mingyuechunqiu.agilemvpframe.base.model.BaseNetModel;
-import com.mingyuechunqiu.agilemvpframe.base.view.BaseDialogView;
+import com.mingyuechunqiu.agilemvpframe.base.view.BaseNetView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -19,7 +19,7 @@ import java.util.TimerTask;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseCountDownPresenter<V extends BaseDialogView, M extends BaseNetModel> extends BaseDialogPresenter<V, M> {
+public abstract class BaseCountDownPresenter<V extends BaseNetView, M extends BaseNetModel> extends BaseNetPresenter<V, M> {
 
     private Timer mTimer;
     private TimerTask mTimerTask;
@@ -90,8 +90,8 @@ public abstract class BaseCountDownPresenter<V extends BaseDialogView, M extends
     /**
      * 开始倒计时
      *
-     * @param count    倒计时总数
-     * @param score    当前计数进度
+     * @param count 倒计时总数
+     * @param score 当前计数进度
      */
     private void startCountDown(int count, int score) {
         mListener.onCountDown(count - score);

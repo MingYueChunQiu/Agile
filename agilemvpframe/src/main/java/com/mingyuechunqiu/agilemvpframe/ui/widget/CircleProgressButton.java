@@ -384,6 +384,7 @@ public class CircleProgressButton extends View {
          * 当取消进度加载时回调
          *
          * @param v 控件本身
+         * @return 返回true表示继续进行后续调用，否则返回false
          */
         boolean onCancelProgress(CircleProgressButton v);
     }

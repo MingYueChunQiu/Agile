@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agilemvpframe.base.presenter;
 
-import com.mingyuechunqiu.agilemvpframe.base.model.BaseNetModel;
+import com.mingyuechunqiu.agilemvpframe.base.model.BaseAbstractModel;
 import com.mingyuechunqiu.agilemvpframe.base.view.BaseDialogView;
 
 /**
@@ -13,7 +13,7 @@ import com.mingyuechunqiu.agilemvpframe.base.view.BaseDialogView;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseDialogPresenter<V extends BaseDialogView, M extends BaseNetModel> extends BaseNetPresenter<V, M> {
+public abstract class BaseDialogPresenter<V extends BaseDialogView, M extends BaseAbstractModel> extends BaseAbstractPresenter<V, M> {
 
     /**
      * 显示加载对话框

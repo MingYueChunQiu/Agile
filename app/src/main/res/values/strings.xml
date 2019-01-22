@@ -51,4 +51,6 @@
     <string name="jump_today">返回\n今日</string>
     <string name="time">时间</string>
     <string name="open_web">打开网页</string>
+    <string name="show_loading_fragment">显示加载Fragment</string>
+    <string name="hide_loading_fragment">隐藏加载Fragment</string>
 </resources>

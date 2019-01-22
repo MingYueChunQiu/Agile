@@ -61,8 +61,8 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mToast = null;
         release();
+        mToast = null;
     }
 
     /**
