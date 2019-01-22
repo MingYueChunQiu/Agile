@@ -24,7 +24,7 @@ import static com.mingyuechunqiu.agilemvpframe.constants.KeyPrefixConstants.KEY_
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2019/1/22
  *     desc   : 用于加载显示的Fragment
- *              继承自Fragment
+ *              继承自DialogFragment
  *     version: 1.0
  * </pre>
  */
