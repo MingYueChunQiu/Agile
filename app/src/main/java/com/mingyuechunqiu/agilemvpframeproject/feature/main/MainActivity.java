@@ -193,7 +193,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         switch (v.getId()) {
             case R.id.btn_main_show:
                 getLoadingFragment().setLoadingBackground(new ColorDrawable(Color.RED));
-                getLoadingFragment().setContainerBackground(new ColorDrawable(Color.DKGRAY));
+//                getLoadingFragment().setContainerBackground(new ColorDrawable(Color.DKGRAY));
                 getLoadingFragment().setLoadingMessageColor(Color.BLUE);
                 getLoadingFragment().setLoadingMessage("O(∩_∩)O哈哈~");
                 showLoadingFragment(R.id.fl_navigation_container, null);

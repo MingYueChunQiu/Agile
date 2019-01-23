@@ -62,7 +62,7 @@ public class LoadingFragment extends Fragment implements LoadingFragmentable {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_fragment_loading, container, false);
+        View view = inflater.inflate(R.layout.agile_fragment_loading, container, false);
         LinearLayoutCompat llContainer = view.findViewById(R.id.ll_agile_fg_loading_container);
         ProgressBar pbLoading = view.findViewById(R.id.pb_agile_fg_loading_progress);
         AppCompatTextView tvText = view.findViewById(R.id.tv_agile_fg_loading_text);
