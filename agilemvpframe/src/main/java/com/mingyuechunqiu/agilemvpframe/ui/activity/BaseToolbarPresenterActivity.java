@@ -6,8 +6,8 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
-import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
-import com.mingyuechunqiu.agilemvpframe.base.view.BaseDialogView;
+import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
+import com.mingyuechunqiu.agilemvpframe.base.view.BaseNetView;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
 
 import static com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils.NO_RESOURCE_ID;
@@ -22,7 +22,7 @@ import static com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils.NO_RESOURCE_ID;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseToolbarPresenterActivity<V extends BaseDialogView<P>, P extends BaseDialogPresenter> extends BasePresenterActivity<V, P> {
+public abstract class BaseToolbarPresenterActivity<V extends BaseNetView<P>, P extends BaseNetPresenter> extends BasePresenterActivity<V, P> {
 
     protected Toolbar mToolbar;
     protected AppCompatTextView actvToolbarTitle;//工具栏标题

@@ -13,8 +13,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
-import com.mingyuechunqiu.agilemvpframe.base.view.BaseDialogView;
+import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
+import com.mingyuechunqiu.agilemvpframe.base.view.BaseNetView;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
 
 import static com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils.NO_RESOURCE_ID;
@@ -29,7 +29,7 @@ import static com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils.NO_RESOURCE_ID;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseToolbarPresenterFragment<V extends BaseDialogView<P>, P extends BaseDialogPresenter> extends BasePresenterFragment<V, P> {
+public abstract class BaseToolbarPresenterFragment<V extends BaseNetView<P>, P extends BaseNetPresenter> extends BasePresenterFragment<V, P> {
 
     protected Toolbar mToolbar;
     protected AppCompatTextView actvToolbarTitle;//工具栏标题

@@ -25,7 +25,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.mingyuechunqiu.agilemvpframe.R;
-import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
+import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
 import com.mingyuechunqiu.agilemvpframe.receiver.NetworkConnectedTypeReceiver;
 import com.mingyuechunqiu.agilemvpframe.util.NetworkUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
@@ -176,11 +176,6 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
     }
 
     @Override
-    protected BaseDialogPresenter initPresenter() {
-        return null;
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         wvWeb.onPause();
@@ -215,6 +210,11 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
     @Override
     protected void attachPresenter() {
         //由于本界面不需要使用present，所以重写父类方法，不进行present相关设置
+    }
+
+    @Override
+    protected BaseNetPresenter initPresenter() {
+        return null;
     }
 
     @Override

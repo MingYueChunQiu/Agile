@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.mingyuechunqiu.agilemvpframe.R;
-import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
+import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
 import com.mingyuechunqiu.agilemvpframe.feature.videoViewManager.Constants;
 import com.mingyuechunqiu.agilemvpframe.feature.videoViewManager.VideoViewManager;
 import com.mingyuechunqiu.agilemvpframe.feature.videoViewManager.YCVideoPlayerHelper;
@@ -71,7 +71,7 @@ public class VideoViewActivity extends BaseToolbarPresenterActivity {
     }
 
     @Override
-    protected BaseDialogPresenter initPresenter() {
+    protected BaseNetPresenter initPresenter() {
         return null;
     }
 
