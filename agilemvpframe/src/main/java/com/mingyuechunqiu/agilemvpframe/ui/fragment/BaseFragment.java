@@ -15,8 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseActivity;
 import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragment;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseActivity;
 import com.mingyuechunqiu.agilemvpframe.util.DialogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.FragmentUtils;
 
@@ -246,13 +247,13 @@ public abstract class BaseFragment extends Fragment {
      * 显示加载Fragment
      *
      * @param containerId 依附的父布局资源ID
-     * @param bundle      参数数据包
+     * @param option      加载配置参数信息对象
      */
-    protected void showLoadingFragment(@IdRes int containerId, @Nullable Bundle bundle) {
+    protected void showLoadingFragment(@IdRes int containerId, @Nullable LoadingFragmentOption option) {
         if (mLoadingFragment == null) {
-            mLoadingFragment = new LoadingFragment();
+            mLoadingFragment = LoadingFragment.getInstance(option);
+            mLoadingFragment.setLoadingFragmentOption(option);
         }
-        mLoadingFragment.setArguments(bundle);
         if (mLoadingFragment.isAdded()) {
             getChildFragmentManager().beginTransaction()
                     .show(mLoadingFragment)
@@ -274,6 +275,19 @@ public abstract class BaseFragment extends Fragment {
         getChildFragmentManager().beginTransaction()
                 .hide(mLoadingFragment)
                 .commit();
+    }
+
+    /**
+     * 获取加载Fragment实例
+     *
+     * @return 返回加载Fragment实例
+     */
+    @NonNull
+    protected LoadingFragment getLoadingFragment() {
+        if (mLoadingFragment == null) {
+            mLoadingFragment = LoadingFragment.getInstance();
+        }
+        return mLoadingFragment;
     }
 
     /**

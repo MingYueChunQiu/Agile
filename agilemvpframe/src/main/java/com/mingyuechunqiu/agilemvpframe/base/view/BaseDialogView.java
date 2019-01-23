@@ -1,10 +1,11 @@
 package com.mingyuechunqiu.agilemvpframe.base.view;
 
-import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragment;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragmentOption;
 
 /**
  * <pre>
@@ -35,12 +36,19 @@ public interface BaseDialogView<P extends BaseDialogPresenter> extends BaseView<
      * 显示加载Fragment
      *
      * @param containerId 依附的父布局资源ID
-     * @param bundle      参数数据包
+     * @param option      加载配置参数信息对象
      */
-    void showLoadingFragment(@IdRes int containerId, @Nullable Bundle bundle);
+    void showLoadingFragment(@IdRes int containerId, @Nullable LoadingFragmentOption option);
 
     /**
      * 隐藏加载Fragment
      */
     void hideLoadingFragment();
+
+    /**
+     * 获取加载Fragment实例
+     *
+     * @return 返回加载Fragment实例
+     */
+    LoadingFragment getLoadingFragment();
 }

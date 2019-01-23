@@ -46,8 +46,6 @@ import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Const
 public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View<MainContract.Presenter>, MainContract.Presenter>
         implements MainContract.View<MainContract.Presenter>, View.OnClickListener {
 
-    private LoadingFragment mLoadingFragment;
-
     @Override
     public void setPresenter(@NonNull MainContract.Presenter presenter) {
         mPresenter = presenter;
@@ -91,13 +89,19 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void showLoadingFragment(int containerId, @Nullable Bundle bundle) {
-        super.showLoadingFragment(containerId, bundle);
+    public void showLoadingFragment(int containerId, @Nullable LoadingFragmentOption option) {
+        super.showLoadingFragment(containerId, option);
     }
 
     @Override
     public void hideLoadingFragment() {
         super.hideLoadingFragment();
+    }
+
+    @NonNull
+    @Override
+    public LoadingFragment getLoadingFragment() {
+        return super.getLoadingFragment();
     }
 
     @Override
@@ -145,11 +149,8 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                 .setCanTouchOutside(true)
                 .setText("放大")
                 .build();
-        mLoadingFragment = LoadingFragment.getInstance(option);
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_navigation_container, mLoadingFragment, LoadingFragment.class.getSimpleName())
-                .commit();
-        mLoadingFragment.setShowLoadingMessage(false);
+        showLoadingFragment(R.id.fl_navigation_container, option);
+        getLoadingFragment().setShowLoadingMessage(false);
     }
 
     /**
@@ -191,18 +192,14 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_main_show:
-                getSupportFragmentManager().beginTransaction()
-                        .show(mLoadingFragment)
-                        .commit();
-                mLoadingFragment.setLoadingBackground(new ColorDrawable(Color.RED));
-                mLoadingFragment.setContainerBackground(new ColorDrawable(Color.DKGRAY));
-                mLoadingFragment.setLoadingMessageColor(Color.BLUE);
-                mLoadingFragment.setLoadingMessage("O(∩_∩)O哈哈~");
+                getLoadingFragment().setLoadingBackground(new ColorDrawable(Color.RED));
+                getLoadingFragment().setContainerBackground(new ColorDrawable(Color.DKGRAY));
+                getLoadingFragment().setLoadingMessageColor(Color.BLUE);
+                getLoadingFragment().setLoadingMessage("O(∩_∩)O哈哈~");
+                showLoadingFragment(R.id.fl_navigation_container, null);
                 break;
             case R.id.btn_main_hide:
-                getSupportFragmentManager().beginTransaction()
-                        .hide(mLoadingFragment)
-                        .commit();
+                hideLoadingFragment();
                 break;
         }
     }

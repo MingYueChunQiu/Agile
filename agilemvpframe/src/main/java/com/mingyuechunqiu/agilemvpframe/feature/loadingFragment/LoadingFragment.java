@@ -6,7 +6,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
@@ -23,12 +23,12 @@ import com.mingyuechunqiu.agilemvpframe.R;
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2019/1/22
  *     desc   : 用于加载显示的Fragment
- *              继承自DialogFragment
+ *              继承自Fragment
  *              实现LoadingFragmentable
  *     version: 1.0
  * </pre>
  */
-public class LoadingFragment extends DialogFragment implements LoadingFragmentable {
+public class LoadingFragment extends Fragment implements LoadingFragmentable {
 
     private LoadingFragmentDelegate mDelegate;
 
@@ -41,6 +41,7 @@ public class LoadingFragment extends DialogFragment implements LoadingFragmentab
      *
      * @return 返回加载Fragment实例
      */
+    @NonNull
     public static LoadingFragment getInstance() {
         return getInstance(null);
     }
@@ -51,6 +52,7 @@ public class LoadingFragment extends DialogFragment implements LoadingFragmentab
      * @param option 加载配置信息对象
      * @return 返回加载Fragment实例
      */
+    @NonNull
     public static LoadingFragment getInstance(LoadingFragmentOption option) {
         LoadingFragment loadingFragment = new LoadingFragment();
         loadingFragment.mDelegate.setLoadingFragmentOption(option);

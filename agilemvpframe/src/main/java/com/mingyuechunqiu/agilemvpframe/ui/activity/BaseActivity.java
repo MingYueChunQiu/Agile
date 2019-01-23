@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragment;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agilemvpframe.util.DialogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ExitApplicationManager;
@@ -179,16 +181,16 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 显示加载Fragment
      *
      * @param containerId 依附的父布局资源ID
-     * @param bundle      参数数据包
+     * @param option      加载配置参数信息对象
      */
-    protected void showLoadingFragment(@IdRes int containerId, @Nullable Bundle bundle) {
+    protected void showLoadingFragment(@IdRes int containerId, @Nullable LoadingFragmentOption option) {
         if (getSupportFragmentManager() == null) {
             return;
         }
         if (mLoadingFragment == null) {
-            mLoadingFragment = new LoadingFragment();
+            mLoadingFragment = LoadingFragment.getInstance(option);
+            mLoadingFragment.setLoadingFragmentOption(option);
         }
-        mLoadingFragment.setArguments(bundle);
         if (mLoadingFragment.isAdded()) {
             getSupportFragmentManager().beginTransaction()
                     .show(mLoadingFragment)
@@ -211,6 +213,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .hide(mLoadingFragment)
                 .commit();
+    }
+
+    /**
+     * 获取加载Fragment实例
+     *
+     * @return 返回加载Fragment实例
+     */
+    @NonNull
+    protected LoadingFragment getLoadingFragment() {
+        if (mLoadingFragment == null) {
+            mLoadingFragment = LoadingFragment.getInstance();
+        }
+        return mLoadingFragment;
     }
 
     /**
