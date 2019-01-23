@@ -27,8 +27,57 @@ AgileMVPFrameConfigure configure = new AgileMVPFrameConfigure.Builder()
 //这句一定要有，否则有些功能会无法实现
 AgileMVPFrame.init(this);
 AgileMVPFrame.setConfigure(configure);
+AgileMVPFrame.debug(true);//设置是否启动调试模式
 ```
 4.使用MVP
 所有MVP相关的类都在base包下，可以选择具体的M、V、P层进行继承，跟界面有关的类都在ui包下，可以选择对应的activity、fragment、dialogFragment进行继承。
 
+(1).base包下:
+view:		
+		BaseView
+	  	---BaseDialogView
+	     	   ---BaseNetView
+presenter:	
+		BasePresenter
+		---BaseAbstractPresenter
+		   ---BaseDialogPresenter
+		      ---BaseNetPresenter
+			 ---BaseCountDownPresenter（具体业务Presenter）
+model:		
+		BaseModel
+		---BaseAbstractModel
+		   ---BaseNetModel
+		      ---BaseTokenNetModel
+listener:	
+		IBaseListener
+		---ICountDownListener（具体业务接口）
+		
+(2).ui包下:
+activity:	
+		BaseActivity
+		---BaseFullImmerseScreenActivity
+		   ---BasePresenterActivity
+		      ---BaseToolbarPresenterActivity
+			 ---VideoViewActivity（具体业务实现）
+	        	 ---WebViewActivity（具体业务实现）
+					
+fragment:	
+		BaseFragment
+		---BasePresenterFragment
+		   ---BaseToolbarPresenterFragment
+			
+dialogFragment:	
+		BaseDialogFragment
+		---BasePresenterDialogFragment
+		
+bottomSheetDialogFragment:	
+		BaseBSDialogFragment
+		---BasePresenterBSDialogFragment
+				
+(3).feature包下:
+目前暂时提供了3个功能：
+	json包：提供了对json的相关处理
+	loadingFragment：提供了加载Fragment的功能
+	videoViewManager：提供了播放视频的相关功能
+	
 5.具体内容后续会进行补充
