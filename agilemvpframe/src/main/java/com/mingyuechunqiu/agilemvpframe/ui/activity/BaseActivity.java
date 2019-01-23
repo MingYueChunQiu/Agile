@@ -11,7 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.mingyuechunqiu.agilemvpframe.ui.diaglogFragment.LoadingFragment;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragment;
 import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agilemvpframe.util.DialogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ExitApplicationManager;

@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agilemvpframeproject.feature.main;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,9 +14,10 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragment;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity;
-import com.mingyuechunqiu.agilemvpframe.ui.diaglogFragment.LoadingFragment;
 import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.StringUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
@@ -30,7 +32,6 @@ import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Const
 import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_TEXT_SIZE;
 import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_VISIBLE;
 import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_WEB_URL;
-import static com.mingyuechunqiu.agilemvpframe.ui.diaglogFragment.LoadingFragment.BUNDLE_AGILE_CAN_TOUCH_OUTSIDE;
 
 /**
  * <pre>
@@ -140,13 +141,15 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         AppCompatButton btnHide = view.findViewById(R.id.btn_main_hide);
         btnShow.setOnClickListener(this);
         btnHide.setOnClickListener(this);
-        mLoadingFragment = new LoadingFragment();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(BUNDLE_AGILE_CAN_TOUCH_OUTSIDE, true);
-        mLoadingFragment.setArguments(bundle);
+        LoadingFragmentOption option = new LoadingFragmentOption.Builder()
+                .setCanTouchOutside(true)
+                .setText("放大")
+                .build();
+        mLoadingFragment = LoadingFragment.getInstance(option);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fl_navigation_container, mLoadingFragment, LoadingFragment.class.getSimpleName())
                 .commit();
+        mLoadingFragment.setShowLoadingMessage(false);
     }
 
     /**
@@ -191,6 +194,9 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                 getSupportFragmentManager().beginTransaction()
                         .show(mLoadingFragment)
                         .commit();
+                mLoadingFragment.setLoadingBackground(new ColorDrawable(Color.RED));
+                mLoadingFragment.setContainerBackground(new ColorDrawable(Color.DKGRAY));
+                mLoadingFragment.setLoadingMessageColor(Color.BLUE);
                 mLoadingFragment.setLoadingMessage("O(∩_∩)O哈哈~");
                 break;
             case R.id.btn_main_hide:

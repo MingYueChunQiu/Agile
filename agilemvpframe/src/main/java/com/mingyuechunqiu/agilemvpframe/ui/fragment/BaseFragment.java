@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseActivity;
-import com.mingyuechunqiu.agilemvpframe.ui.diaglogFragment.LoadingFragment;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragment;
 import com.mingyuechunqiu.agilemvpframe.util.DialogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.FragmentUtils;
 
