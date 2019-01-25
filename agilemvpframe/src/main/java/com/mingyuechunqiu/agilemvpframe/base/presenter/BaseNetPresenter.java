@@ -59,6 +59,16 @@ public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetM
     }
 
     /**
+     * 取消所有网络请求
+     */
+    public void cancelNetworkRequests() {
+        if (mModel == null) {
+            return;
+        }
+        mModel.releaseNetworkRequests();
+    }
+
+    /**
      * 检测网络请求
      *
      * @return 当界面被回收和网络中断时返回false，否则返回true
@@ -92,12 +102,6 @@ public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetM
             return token;
         }
     }
-
-
-    /**
-     * 取消所有网络请求
-     */
-    public abstract void cancelNetworkRequests();
 
     /**
      * 当网络连接断开时回调
