@@ -97,4 +97,9 @@ public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetM
      * 当网络连接断开时回调
      */
     protected abstract void disconnectNet();
+
+    /**
+     * 取消所有网络请求
+     */
+    protected abstract void cancelNetworkRequests();
 }
