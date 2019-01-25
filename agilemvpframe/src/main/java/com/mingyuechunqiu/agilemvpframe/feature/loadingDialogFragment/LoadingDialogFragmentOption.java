@@ -28,7 +28,7 @@ public class LoadingDialogFragmentOption {
     private String text;//加载文本
     private int textColor;//文本颜色
     private int textAppearance;//文本样式
-    private OnLoadingOptionListener loadingOptionListener;
+    private OnLoadingOptionListener loadingOptionListener;//加载相关监听器
 
     public Constants.ThemeType getThemeType() {
         return themeType;
@@ -259,8 +259,9 @@ public class LoadingDialogFragmentOption {
          * 当点击返回键时回调
          *
          * @param dialog 对话框实例
+         * @return 拦截返回键事件返回true，否则返回false
          */
-        void onClickKeyBack(DialogInterface dialog);
+        boolean onClickKeyBack(DialogInterface dialog);
 
         /**
          * 当对话框消失时回调

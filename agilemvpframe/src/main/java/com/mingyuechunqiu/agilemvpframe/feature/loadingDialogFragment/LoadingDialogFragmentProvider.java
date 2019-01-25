@@ -144,6 +144,12 @@ public class LoadingDialogFragmentProvider implements LoadingDfgProviderable {
     }
 
     @Override
+    public void setOnLoadingOptionListener(LoadingDialogFragmentOption.OnLoadingOptionListener listener) {
+        checkOrCreateLoadingDfgable();
+        mLoadingDfgable.setOnLoadingOptionListener(listener);
+    }
+
+    @Override
     public void setLoadingFragmentOption(LoadingDialogFragmentOption option) {
         checkOrCreateLoadingDfgable();
         mOption = option;

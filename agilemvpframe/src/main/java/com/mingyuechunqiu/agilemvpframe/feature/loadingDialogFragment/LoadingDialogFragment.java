@@ -102,8 +102,8 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
                     }
                     //拦截返回键事件，是否要做额外处理
                     if (mDelegate.getLoadingFragmentOption().getOnLoadingOptionListener() != null) {
-                        mDelegate.getLoadingFragmentOption().getOnLoadingOptionListener().onClickKeyBack(dialog);
-                        return true;
+                        return mDelegate.getLoadingFragmentOption().getOnLoadingOptionListener()
+                                .onClickKeyBack(dialog);
                     }
                 }
                 return false;
@@ -242,6 +242,12 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
     public void setLoadingMessageTextAppearance(@StyleRes int textAppearance) {
         checkOrCreateLoadingDfgDelegate();
         mDelegate.setLoadingMessageTextAppearance(textAppearance);
+    }
+
+    @Override
+    public void setOnLoadingOptionListener(LoadingDialogFragmentOption.OnLoadingOptionListener listener) {
+        checkOrCreateLoadingDfgDelegate();
+        mDelegate.setOnLoadingOptionListener(listener);
     }
 
     @Override

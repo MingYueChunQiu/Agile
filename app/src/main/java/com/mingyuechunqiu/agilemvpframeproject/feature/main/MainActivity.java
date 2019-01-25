@@ -148,20 +148,20 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                 .setThemeType(Constants.ThemeType.DARK_THEME)
 //                .setDialogWidth(400)
 //                .setDialogHeight(500)
-//                .setCancelable(false)
-                .setOnLoadingOptionListener(new LoadingDialogFragmentOption.OnLoadingOptionListener() {
-                    @Override
-                    public void onClickKeyBack(DialogInterface dialog) {
-                        showToast("哈哈");
-//                        finish();
-                        dismissLoadingDialog();
-                    }
-
-                    @Override
-                    public void onDismissListener(DialogFragment dialogFragment) {
-                        showToast("任务分为");
-                    }
-                })
+                .setCancelWithOutside(true)
+//                .setOnLoadingOptionListener(new LoadingDialogFragmentOption.OnLoadingOptionListener() {
+//                    @Override
+//                    public void onClickKeyBack(DialogInterface dialog) {
+//                        showToast("哈哈");
+////                        finish();
+//                        dismissLoadingDialog();
+//                    }
+//
+//                    @Override
+//                    public void onDismissListener(DialogFragment dialogFragment) {
+//                        showToast("任务分为");
+//                    }
+//                })
                 .build();
         showLoadingDialog(option);
 //        FragmentUtils.replaceFragment(getSupportFragmentManager(), R.id.fl_navigation_container,
@@ -214,7 +214,20 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 //                getLoadingFragment().setLoadingMessage("O(∩_∩)O哈哈~");
 //                showLoadingDialog(null);
 //                getLoadingDialog().setThemeType(Constants.ThemeType.DARK_THEME);
+
                 showLoadingDialog("蜂王浆", true);
+                getLoadingDialog().setOnLoadingOptionListener(new LoadingDialogFragmentOption.OnLoadingOptionListener() {
+                    @Override
+                    public boolean onClickKeyBack(DialogInterface dialog) {
+                        showToast("单位");
+                        return false;
+                    }
+
+                    @Override
+                    public void onDismissListener(DialogFragment dialogFragment) {
+
+                    }
+                });
                 break;
             case R.id.btn_main_hide:
                 dismissLoadingDialog();

@@ -236,6 +236,12 @@ class LoadingDfgDelegate implements LoadingDfgFunctionable {
     }
 
     @Override
+    public void setOnLoadingOptionListener(LoadingDialogFragmentOption.OnLoadingOptionListener listener) {
+        checkOrCreateOption();
+        mOption.setOnLoadingOptionListener(listener);
+    }
+
+    @Override
     public void setLoadingFragmentOption(LoadingDialogFragmentOption option) {
         if (option == null) {
             return;

@@ -41,10 +41,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         LoadingDialogFragmentOption option = new LoadingDialogFragmentOption.Builder()
                 .setDialogWidth(200)
                 .setDialogHeight(600)
+                .setCancelWithOutside(true)
                 .setOnLoadingOptionListener(new LoadingDialogFragmentOption.OnLoadingOptionListener() {
                     @Override
-                    public void onClickKeyBack(DialogInterface dialog) {
-                        dismissLoadingDialog();
+                    public boolean onClickKeyBack(DialogInterface dialog) {
+//                        dismissLoadingDialog();
+                        return true;
                     }
 
                     @Override
@@ -72,9 +74,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                         .setCancelWithOutside(true)
                         .setOnLoadingOptionListener(new LoadingDialogFragmentOption.OnLoadingOptionListener() {
                             @Override
-                            public void onClickKeyBack(DialogInterface dialog) {
-                                dismissLoadingDialog();
+                            public boolean onClickKeyBack(DialogInterface dialog) {
+//                                dismissLoadingDialog();
                                 showToast("分为");
+                                return false;
                             }
 
                             @Override

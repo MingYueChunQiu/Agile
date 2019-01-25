@@ -87,6 +87,13 @@ interface LoadingDfgFunctionable {
     void setLoadingMessageTextAppearance(@StyleRes final int textAppearance);
 
     /**
+     * 设置加载相关监听器
+     *
+     * @param listener 加载相关监听器
+     */
+    void setOnLoadingOptionListener(LoadingDialogFragmentOption.OnLoadingOptionListener listener);
+
+    /**
      * 设置加载配置信息
      *
      * @param option 配置信息对象
