@@ -1,23 +1,21 @@
 package com.mingyuechunqiu.agilemvpframe.ui.activity;
 
-import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragment;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDfgProviderable;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDialogFragmentProvider;
 import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
-import com.mingyuechunqiu.agilemvpframe.util.DialogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ExitApplicationManager;
-import com.mingyuechunqiu.agilemvpframe.util.FragmentUtils;
 import com.noober.background.BackgroundLibrary;
 
 import java.util.ArrayList;
@@ -37,8 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected List<BaseFragment.OnKeyDownListener> mKeyDownListenerList;
 
     private Toast mToast;
-    private Dialog mLoadingDialog;
-    private LoadingFragment mLoadingFragment;
+    private LoadingDfgProviderable mLoadingDfgProvider;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,9 +64,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             mKeyDownListenerList = null;
         }
         mToast = null;
-        mLoadingDialog = null;
-        FragmentUtils.removeFragments(getSupportFragmentManager(), true, mLoadingFragment);
-        mLoadingFragment = null;
+        dismissLoadingDialog();
+        mLoadingDfgProvider = null;
     }
 
     /**
@@ -136,7 +132,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param stringResourceId 提示文本资源id
      */
-    protected void showToast(int stringResourceId) {
+    protected void showToast(@StringRes int stringResourceId) {
         showToast(getString(stringResourceId));
     }
 
@@ -145,7 +141,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param hint 提示文本
      */
-    protected void showToast(String hint) {
+    protected void showToast(@Nullable String hint) {
         if (TextUtils.isEmpty(hint)) {
             return;
         }
@@ -164,55 +160,43 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param cancelable 是否可以取消
      */
     protected void showLoadingDialog(@Nullable String hint, boolean cancelable) {
-        if (mLoadingDialog == null) {
-            mLoadingDialog = DialogUtils.getLoadingDialog(this, hint, cancelable);
-        }
-        mLoadingDialog.show();
-    }
-
-    /**
-     * 隐藏加载对话框
-     */
-    protected void disappearLoadingDialog() {
-        DialogUtils.disappearDialog(mLoadingDialog);
+        LoadingDialogFragmentOption option = getLoadingDialog().getLoadingFragmentOption();
+        option.setText(hint);
+        option.setCancelWithOutside(cancelable);
+        showLoadingDialog(option);
     }
 
     /**
      * 显示加载Fragment
      *
-     * @param containerId 依附的父布局资源ID
-     * @param option      加载配置参数信息对象
+     * @param option 加载配置参数信息对象
      */
-    protected void showLoadingFragment(@IdRes int containerId, @Nullable LoadingFragmentOption option) {
+    protected void showLoadingDialog(@Nullable LoadingDialogFragmentOption option) {
         if (getSupportFragmentManager() == null) {
             return;
         }
-        if (mLoadingFragment == null) {
-            mLoadingFragment = LoadingFragment.getInstance(option);
-            mLoadingFragment.setLoadingFragmentOption(option);
-        }
-        if (mLoadingFragment.isAdded()) {
-            getSupportFragmentManager().beginTransaction()
-                    .show(mLoadingFragment)
-                    .commit();
+        if (mLoadingDfgProvider == null) {
+            mLoadingDfgProvider = LoadingDialogFragmentProvider.newInstance(option);
         } else {
-            getSupportFragmentManager().beginTransaction()
-                    .add(containerId, mLoadingFragment, LoadingFragment.class.getSimpleName())
-                    .commit();
+            //在这儿默认逻辑为如果option为空，代表不变
+            if (option != null) {
+                mLoadingDfgProvider.setLoadingFragmentOption(option);
+            }
+            if (mLoadingDfgProvider.showLoadingDialog()) {
+                return;
+            }
         }
+        //除隐藏对话框再显示用getDialog().show()，其他都直接用show()
+        mLoadingDfgProvider.showLoadingDialog(getSupportFragmentManager());
     }
 
     /**
-     * 隐藏加载Fragment
+     * 关闭加载对话框
      */
-    protected void hideLoadingFragment() {
-        if (getSupportFragmentManager() == null || mLoadingFragment == null ||
-                !mLoadingFragment.isAdded()) {
-            return;
+    protected void dismissLoadingDialog() {
+        if (mLoadingDfgProvider != null) {
+            mLoadingDfgProvider.dismissLoadingDialog();
         }
-        getSupportFragmentManager().beginTransaction()
-                .hide(mLoadingFragment)
-                .commit();
     }
 
     /**
@@ -221,11 +205,11 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @return 返回加载Fragment实例
      */
     @NonNull
-    protected LoadingFragment getLoadingFragment() {
-        if (mLoadingFragment == null) {
-            mLoadingFragment = LoadingFragment.getInstance();
+    protected LoadingDfgProviderable getLoadingDialog() {
+        if (mLoadingDfgProvider == null) {
+            mLoadingDfgProvider = LoadingDialogFragmentProvider.newInstance();
         }
-        return mLoadingFragment;
+        return mLoadingDfgProvider;
     }
 
     /**

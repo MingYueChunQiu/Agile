@@ -1,8 +1,10 @@
-package com.mingyuechunqiu.agilemvpframe.feature.loadingFragment;
+package com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment;
 
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.StyleRes;
+import android.support.v4.app.DialogFragment;
 
 /**
  * <pre>
@@ -14,10 +16,11 @@ import android.support.annotation.StyleRes;
  *     version: 1.0
  * </pre>
  */
-public class LoadingFragmentOption {
+public class LoadingDialogFragmentOption {
 
-    private boolean canTouchOutside;//是否能触摸外围区域
-    private Drawable containerBackground;//容器背景图像
+    private Constants.ThemeType themeType;//对话框主题类型
+    private boolean cancelWithOutside;//是否能触摸外围区域取消对话框
+    private int dialogWidth, dialogHeight;//对话框宽高
     private Drawable loadingBackground;//加载背景图像
     private Drawable indeterminateDrawable;//无进度图像
     private boolean showLoadingText;//是否显示加载文本
@@ -25,21 +28,38 @@ public class LoadingFragmentOption {
     private String text;//加载文本
     private int textColor;//文本颜色
     private int textAppearance;//文本样式
+    private OnLoadingOptionListener loadingOptionListener;
 
-    public boolean isCanTouchOutside() {
-        return canTouchOutside;
+    public Constants.ThemeType getThemeType() {
+        return themeType;
     }
 
-    public void setCanTouchOutside(boolean canTouchOutside) {
-        this.canTouchOutside = canTouchOutside;
+    public void setThemeType(Constants.ThemeType themeType) {
+        this.themeType = themeType;
     }
 
-    public Drawable getContainerBackground() {
-        return containerBackground;
+    public boolean isCancelWithOutside() {
+        return cancelWithOutside;
     }
 
-    public void setContainerBackground(Drawable containerBackground) {
-        this.containerBackground = containerBackground;
+    public void setCancelWithOutside(boolean cancelWithOutside) {
+        this.cancelWithOutside = cancelWithOutside;
+    }
+
+    public int getDialogWidth() {
+        return dialogWidth;
+    }
+
+    public void setDialogWidth(int dialogWidth) {
+        this.dialogWidth = dialogWidth;
+    }
+
+    public int getDialogHeight() {
+        return dialogHeight;
+    }
+
+    public void setDialogHeight(int dialogHeight) {
+        this.dialogHeight = dialogHeight;
     }
 
     public Drawable getLoadingBackground() {
@@ -98,36 +118,62 @@ public class LoadingFragmentOption {
         this.textAppearance = textAppearance;
     }
 
+    public OnLoadingOptionListener getOnLoadingOptionListener() {
+        return loadingOptionListener;
+    }
+
+    public void setOnLoadingOptionListener(OnLoadingOptionListener listener) {
+        this.loadingOptionListener = listener;
+    }
+
     /**
      * 链式调用
      */
     public static class Builder {
 
-        private LoadingFragmentOption mOption;
+        private LoadingDialogFragmentOption mOption;
 
         public Builder() {
-            mOption = new LoadingFragmentOption();
+            mOption = new LoadingDialogFragmentOption();
         }
 
-        public LoadingFragmentOption build() {
+        public LoadingDialogFragmentOption build() {
             return mOption;
         }
 
-        public boolean isCanTouchOutside() {
-            return mOption.canTouchOutside;
+        public Constants.ThemeType getThemeType() {
+            return mOption.themeType;
         }
 
-        public Builder setCanTouchOutside(boolean canTouchOutside) {
-            mOption.canTouchOutside = canTouchOutside;
+        public Builder setThemeType(Constants.ThemeType themeType) {
+            mOption.themeType = themeType;
             return this;
         }
 
-        public Drawable getContainerBackground() {
-            return mOption.containerBackground;
+        public boolean isCancelWithOutside() {
+            return mOption.cancelWithOutside;
         }
 
-        public Builder setContainerBackground(Drawable containerBackground) {
-            mOption.containerBackground = containerBackground;
+        public Builder setCancelWithOutside(boolean cancelWithOutside) {
+            mOption.cancelWithOutside = cancelWithOutside;
+            return this;
+        }
+
+        public int getDialogWidth() {
+            return mOption.dialogWidth;
+        }
+
+        public Builder setDialogWidth(int dialogWidth) {
+            mOption.dialogWidth = dialogWidth;
+            return this;
+        }
+
+        public int getDialogHeight() {
+            return mOption.dialogHeight;
+        }
+
+        public Builder setDialogHeight(int dialogHeight) {
+            mOption.dialogHeight = dialogHeight;
             return this;
         }
 
@@ -193,5 +239,34 @@ public class LoadingFragmentOption {
             mOption.textAppearance = textAppearance;
             return this;
         }
+
+        public OnLoadingOptionListener getOnLoadingOptionListener() {
+            return mOption.loadingOptionListener;
+        }
+
+        public Builder setOnLoadingOptionListener(OnLoadingOptionListener listener) {
+            mOption.loadingOptionListener = listener;
+            return this;
+        }
+    }
+
+    /**
+     * 加载相关监听器
+     */
+    public interface OnLoadingOptionListener {
+
+        /**
+         * 当点击返回键时回调
+         *
+         * @param dialog 对话框实例
+         */
+        void onClickKeyBack(DialogInterface dialog);
+
+        /**
+         * 当对话框消失时回调
+         *
+         * @param dialogFragment 对话框实例
+         */
+        void onDismissListener(DialogFragment dialogFragment);
     }
 }

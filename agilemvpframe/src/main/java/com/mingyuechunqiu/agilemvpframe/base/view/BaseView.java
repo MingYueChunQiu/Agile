@@ -2,8 +2,9 @@ package com.mingyuechunqiu.agilemvpframe.base.view;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 
-import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseAbstractPresenter;
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BasePresenter;
 
 /**
@@ -19,9 +20,9 @@ public interface BaseView<P extends BasePresenter> {
 
     void setPresenter(@NonNull P presenter);
 
-    void showToast(String hint);
+    void showToast(@Nullable String hint);
 
-    void showToast(int stringResourceId);
+    void showToast(@StringRes int stringResourceId);
 
     /**
      * 获取当前界面的上下文

@@ -1,12 +1,13 @@
 package com.mingyuechunqiu.agilemvpframeproject.feature.main;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
@@ -14,10 +15,12 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragment;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.Constants;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDfgProviderable;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity;
+import com.mingyuechunqiu.agilemvpframe.util.FragmentUtils;
 import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.StringUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
@@ -84,24 +87,19 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void disappearLoadingDialog() {
-        super.disappearLoadingDialog();
+    public void dismissLoadingDialog() {
+        super.dismissLoadingDialog();
     }
 
     @Override
-    public void showLoadingFragment(int containerId, @Nullable LoadingFragmentOption option) {
-        super.showLoadingFragment(containerId, option);
-    }
-
-    @Override
-    public void hideLoadingFragment() {
-        super.hideLoadingFragment();
+    public void showLoadingDialog(@Nullable LoadingDialogFragmentOption option) {
+        super.showLoadingDialog(option);
     }
 
     @NonNull
     @Override
-    public LoadingFragment getLoadingFragment() {
-        return super.getLoadingFragment();
+    public LoadingDfgProviderable getLoadingDialog() {
+        return super.getLoadingDialog();
     }
 
     @Override
@@ -123,14 +121,14 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         View view = getLayoutInflater().inflate(R.layout.activity_main, null);
         clContainer.addView(view);
         AppCompatTextView actvUrl = view.findViewById(R.id.tv_url);
-//        actvUrl.setText(StringUtils.createColorUrlSpan("我已阅读并同意《云海螺用户注册协议》",
-//                "《云海螺用户注册协议》", "http://www.ehailuo.com", Color.RED, new StringUtils.OnClickUrlLinkListener() {
-//                    @Override
-//                    public void onClickUrlLink(String source, String urlText, String url) {
-//                        showToast("点击了链接" + url);
-//                    }
-//                }));
-//        actvUrl.setMovementMethod(LinkMovementMethod.getInstance());
+        actvUrl.setText(StringUtils.createColorUrlSpan("我已阅读并同意《云海螺用户注册协议》",
+                "《云海螺用户注册协议》", "http://www.ehailuo.com", Color.RED, new StringUtils.OnClickUrlLinkListener() {
+                    @Override
+                    public void onClickUrlLink(String source, String urlText, String url) {
+                        showToast("点击了链接" + url);
+                    }
+                }));
+        actvUrl.setMovementMethod(LinkMovementMethod.getInstance());
         showCompact(actvUrl);
         AppCompatButton btnWeb = findViewById(R.id.btn_web);
         btnWeb.setOnClickListener(new View.OnClickListener() {
@@ -145,12 +143,30 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         AppCompatButton btnHide = view.findViewById(R.id.btn_main_hide);
         btnShow.setOnClickListener(this);
         btnHide.setOnClickListener(this);
-        LoadingFragmentOption option = new LoadingFragmentOption.Builder()
-                .setCanTouchOutside(true)
-                .setText("放大")
+        LoadingDialogFragmentOption option = new LoadingDialogFragmentOption.Builder()
+//                .setLoadingBackground(new ColorDrawable(Color.RED))
+//                .setText("放大")
+                .setThemeType(Constants.ThemeType.DARK_THEME)
+//                .setDialogWidth(400)
+//                .setDialogHeight(500)
+//                .setCancelable(false)
+                .setOnLoadingOptionListener(new LoadingDialogFragmentOption.OnLoadingOptionListener() {
+                    @Override
+                    public void onClickKeyBack(DialogInterface dialog) {
+                        showToast("哈哈");
+//                        finish();
+                        dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onDismissListener(DialogFragment dialogFragment) {
+                        showToast("任务分为");
+                    }
+                })
                 .build();
-        showLoadingFragment(R.id.fl_navigation_container, option);
-        getLoadingFragment().setShowLoadingMessage(false);
+//        showLoadingDialog(option);
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), R.id.fl_navigation_container,
+                new MainFragment());
     }
 
     /**
@@ -192,14 +208,17 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_main_show:
-                getLoadingFragment().setLoadingBackground(new ColorDrawable(Color.RED));
-//                getLoadingFragment().setContainerBackground(new ColorDrawable(Color.DKGRAY));
-                getLoadingFragment().setLoadingMessageColor(Color.BLUE);
-                getLoadingFragment().setLoadingMessage("O(∩_∩)O哈哈~");
-                showLoadingFragment(R.id.fl_navigation_container, null);
+//                getLoadingDialog().resetLoadingDialog();
+//                getLoadingFragment().setLoadingBackground(new ColorDrawable(Color.RED));
+////                getLoadingFragment().setContainerBackground(new ColorDrawable(Color.DKGRAY));
+//                getLoadingFragment().setLoadingMessageColor(Color.BLUE);
+//                getLoadingFragment().setLoadingMessage("O(∩_∩)O哈哈~");
+//                showLoadingDialog(null);
+//                getLoadingDialog().setThemeType(Constants.ThemeType.DARK_THEME);
+                showLoadingDialog("蜂王浆", true);
                 break;
             case R.id.btn_main_hide:
-                hideLoadingFragment();
+                dismissLoadingDialog();
                 break;
         }
     }

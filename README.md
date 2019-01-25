@@ -77,7 +77,7 @@ bottomSheetDialogFragment:
 (3).feature包下:
 目前暂时提供了3个功能：
 	json包：提供了对json的相关处理
-	loadingFragment：提供了加载Fragment的功能
+	loadingDialogFragment：提供了加载Fragment的功能
 	videoViewManager：提供了播放视频的相关功能
 	
 5.具体内容后续会进行补充

@@ -3,7 +3,9 @@ package com.mingyuechunqiu.agilemvpframe.ui.bottomSheetDialogFragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +63,10 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      *
      * @param hint 提示文本
      */
-    protected void showToast(String hint) {
+    protected void showToast(@Nullable String hint) {
+        if (TextUtils.isEmpty(hint)) {
+            return;
+        }
         if (mToast == null) {
             mToast = Toast.makeText(AgileMVPFrame.getAppContext(), hint, Toast.LENGTH_SHORT);
         } else {
@@ -75,7 +80,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      *
      * @param stringResourceId 提示文本资源id
      */
-    protected void showToast(int stringResourceId) {
+    protected void showToast(@StringRes int stringResourceId) {
         showToast(getString(stringResourceId));
     }
 

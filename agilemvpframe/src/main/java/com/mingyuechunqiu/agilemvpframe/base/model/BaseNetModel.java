@@ -63,5 +63,5 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
     /**
      * 释放网络请求
      */
-    protected abstract void releaseNetworkRequests();
+    public abstract void releaseNetworkRequests();
 }

@@ -1,5 +1,6 @@
-package com.mingyuechunqiu.agilemvpframe.feature.loadingFragment;
+package com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment;
 
+import android.app.Dialog;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -26,33 +28,31 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-class LoadingFragmentDelegate implements LoadingFragmentable {
+class LoadingDfgDelegate implements LoadingDfgFunctionable {
 
     private final List<Runnable> mActions = new ArrayList<>();
 
-    private WeakReference<View> vContainerRef;
+    private WeakReference<Dialog> dialogRef;
     private WeakReference<View> vLoadingContainerRef;
     private WeakReference<ProgressBar> pbLoadingRef;
     private WeakReference<TextView> tvTextRef;
 
-    private LoadingFragmentOption mOption;
+    private LoadingDialogFragmentOption mOption;
     private Handler mHandler;
 
     /**
      * 初始化参数
      *
-     * @param container        父容器
+     * @param dialog           对话框实例
      * @param loadingContainer 加载容器
      * @param progressBar      进度控件
      * @param textView         加载文本控件
      */
-    void initialize(View container, View loadingContainer, ProgressBar progressBar, TextView textView) {
-        vContainerRef = new WeakReference<>(container);
+    void initialize(Dialog dialog, View loadingContainer, ProgressBar progressBar, TextView textView) {
+        dialogRef = new WeakReference<>(dialog);
         vLoadingContainerRef = new WeakReference<>(loadingContainer);
         pbLoadingRef = new WeakReference<>(progressBar);
         tvTextRef = new WeakReference<>(textView);
-        mHandler = new Handler();
-        executeActions();
     }
 
     @Override
@@ -63,41 +63,45 @@ class LoadingFragmentDelegate implements LoadingFragmentable {
         }
         mActions.clear();
         mOption = null;
-        vContainerRef = null;
+        dialogRef = null;
         vLoadingContainerRef = null;
         pbLoadingRef = null;
         tvTextRef = null;
     }
 
     @Override
-    public void setCanTouchOutside(final boolean canTouchOutside) {
-        checkOptionOrCreate();
-        mOption.setCanTouchOutside(canTouchOutside);
+    public void setCanCancelWithOutside(final boolean canCancelWithOutside) {
+        checkOrCreateOption();
+        mOption.setCancelWithOutside(canCancelWithOutside);
         post(new Runnable() {
             @Override
             public void run() {
-                if (vContainerRef.get() == null) {
+                if (dialogRef.get() == null) {
                     return;
                 }
-                vContainerRef.get().setClickable(!canTouchOutside);
+                dialogRef.get().setCancelable(canCancelWithOutside);
             }
         });
     }
 
     @Override
-    public void setContainerBackground(final Drawable drawable) {
-        if (drawable == null) {
+    public void setDialogSize(final int width, final int height) {
+        if (width == 0 && height == 0) {
             return;
         }
-        checkOptionOrCreate();
-        mOption.setContainerBackground(drawable);
+        checkOrCreateOption();
+        mOption.setDialogWidth(width);
+        mOption.setDialogHeight(height);
         post(new Runnable() {
             @Override
             public void run() {
-                if (vContainerRef.get() == null) {
+                if (dialogRef.get() == null) {
                     return;
                 }
-                vContainerRef.get().setBackground(drawable);
+                Window window = dialogRef.get().getWindow();
+                if (window != null) {
+                    window.setLayout(width > 0 ? width : 0, height > 0 ? height : 0);
+                }
             }
         });
     }
@@ -107,7 +111,7 @@ class LoadingFragmentDelegate implements LoadingFragmentable {
         if (drawable == null) {
             return;
         }
-        checkOptionOrCreate();
+        checkOrCreateOption();
         mOption.setLoadingBackground(drawable);
         post(new Runnable() {
             @Override
@@ -125,7 +129,7 @@ class LoadingFragmentDelegate implements LoadingFragmentable {
         if (drawable == null) {
             return;
         }
-        checkOptionOrCreate();
+        checkOrCreateOption();
         mOption.setIndeterminateDrawable(drawable);
         post(new Runnable() {
             @Override
@@ -160,7 +164,7 @@ class LoadingFragmentDelegate implements LoadingFragmentable {
         if (drawable == null) {
             return;
         }
-        checkOptionOrCreate();
+        checkOrCreateOption();
         mOption.setTextBackground(drawable);
         post(new Runnable() {
             @Override
@@ -179,7 +183,7 @@ class LoadingFragmentDelegate implements LoadingFragmentable {
         if (TextUtils.isEmpty(msg)) {
             return;
         }
-        checkOptionOrCreate();
+        checkOrCreateOption();
         mOption.setText(msg);
         post(new Runnable() {
             @Override
@@ -198,7 +202,7 @@ class LoadingFragmentDelegate implements LoadingFragmentable {
         if (color == 0) {
             return;
         }
-        checkOptionOrCreate();
+        checkOrCreateOption();
         mOption.setTextColor(color);
         post(new Runnable() {
             @Override
@@ -217,7 +221,7 @@ class LoadingFragmentDelegate implements LoadingFragmentable {
         if (textAppearance == 0) {
             return;
         }
-        checkOptionOrCreate();
+        checkOrCreateOption();
         mOption.setTextAppearance(textAppearance);
         post(new Runnable() {
             @Override
@@ -232,13 +236,13 @@ class LoadingFragmentDelegate implements LoadingFragmentable {
     }
 
     @Override
-    public void setLoadingFragmentOption(LoadingFragmentOption option) {
+    public void setLoadingFragmentOption(LoadingDialogFragmentOption option) {
         if (option == null) {
             return;
         }
         mOption = option;
-        setCanTouchOutside(option.isCanTouchOutside());
-        setContainerBackground(option.getContainerBackground());
+        setCanCancelWithOutside(option.isCancelWithOutside());
+        setDialogSize(option.getDialogWidth(), option.getDialogHeight());
         setLoadingBackground(option.getLoadingBackground());
         setIndeterminateProgressDrawable(option.getIndeterminateDrawable());
         setShowLoadingMessage(option.isShowLoadingText());
@@ -248,17 +252,35 @@ class LoadingFragmentDelegate implements LoadingFragmentable {
         setLoadingMessageTextAppearance(option.getTextAppearance());
     }
 
+    @NonNull
     @Override
-    public LoadingFragmentOption getLoadingFragmentOption() {
+    public LoadingDialogFragmentOption getLoadingFragmentOption() {
+        checkOrCreateOption();
         return mOption;
+    }
+
+    /**
+     * 执行所有设置动作
+     */
+    void executeActions() {
+        //防止多并发
+        synchronized (mActions) {
+            if (mHandler == null) {
+                mHandler = new Handler();
+            }
+            for (Runnable r : mActions) {
+                mHandler.post(r);
+            }
+            mActions.clear();
+        }
     }
 
     /**
      * 检查配置信息对象是否存在，若不存在则创建
      */
-    private void checkOptionOrCreate() {
+    private void checkOrCreateOption() {
         if (mOption == null) {
-            mOption = new LoadingFragmentOption();
+            mOption = new LoadingDialogFragmentOption();
         }
     }
 
@@ -281,19 +303,6 @@ class LoadingFragmentDelegate implements LoadingFragmentable {
             mActions.add(runnable);
         } else {
             mHandler.post(runnable);
-        }
-    }
-
-    /**
-     * 执行所有设置动作
-     */
-    private void executeActions() {
-        //防止多并发
-        synchronized (mActions) {
-            for (Runnable r : mActions) {
-                mHandler.post(r);
-            }
-            mActions.clear();
         }
     }
 }

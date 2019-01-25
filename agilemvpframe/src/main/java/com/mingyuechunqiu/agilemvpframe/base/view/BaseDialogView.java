@@ -1,11 +1,10 @@
 package com.mingyuechunqiu.agilemvpframe.base.view;
 
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragment;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDfgProviderable;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDialogFragmentOption;
 
 /**
  * <pre>
@@ -28,27 +27,21 @@ public interface BaseDialogView<P extends BaseDialogPresenter> extends BaseView<
     void showLoadingDialog(@Nullable String hint, boolean cancelable);
 
     /**
-     * 让加载对话框消失
+     * 关闭加载对话框
      */
-    void disappearLoadingDialog();
+    void dismissLoadingDialog();
 
     /**
      * 显示加载Fragment
      *
-     * @param containerId 依附的父布局资源ID
-     * @param option      加载配置参数信息对象
+     * @param option 加载配置参数信息对象
      */
-    void showLoadingFragment(@IdRes int containerId, @Nullable LoadingFragmentOption option);
+    void showLoadingDialog(@Nullable LoadingDialogFragmentOption option);
 
     /**
-     * 隐藏加载Fragment
-     */
-    void hideLoadingFragment();
-
-    /**
-     * 获取加载Fragment实例
+     * 获取加载Fragment提供者实例
      *
-     * @return 返回加载Fragment实例
+     * @return 返回加载Fragment提供者实例
      */
-    LoadingFragment getLoadingFragment();
+    LoadingDfgProviderable getLoadingDialog();
 }

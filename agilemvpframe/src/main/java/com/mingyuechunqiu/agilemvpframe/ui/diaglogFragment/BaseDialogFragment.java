@@ -5,7 +5,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +42,10 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
      *
      * @param hint 提示文本
      */
-    protected void showToast(String hint) {
+    protected void showToast(@Nullable String hint) {
+        if (TextUtils.isEmpty(hint)) {
+            return;
+        }
         if (mToast == null) {
             mToast = Toast.makeText(getContext(), hint, Toast.LENGTH_SHORT);
         } else {
@@ -54,7 +59,7 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
      *
      * @param stringResourceId 提示文本资源id
      */
-    protected void showToast(int stringResourceId) {
+    protected void showToast(@StringRes int stringResourceId) {
         showToast(getString(stringResourceId));
     }
 

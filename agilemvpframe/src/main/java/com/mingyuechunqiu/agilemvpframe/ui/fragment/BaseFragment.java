@@ -1,11 +1,10 @@
 package com.mingyuechunqiu.agilemvpframe.ui.fragment;
 
-import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -15,11 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragment;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingFragment.LoadingFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDfgProviderable;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDialogFragmentProvider;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseActivity;
-import com.mingyuechunqiu.agilemvpframe.util.DialogUtils;
-import com.mingyuechunqiu.agilemvpframe.util.FragmentUtils;
 
 import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 
@@ -35,8 +33,7 @@ import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_
 public abstract class BaseFragment extends Fragment {
 
     private Toast mToast;
-    private Dialog mLoadingDialog;
-    private LoadingFragment mLoadingFragment;
+    private LoadingDfgProviderable mLoadingDfgProvider;
 
     @Nullable
     @Override
@@ -49,9 +46,8 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroyView();
         release();
         mToast = null;
-        mLoadingDialog = null;
-        FragmentUtils.removeFragments(getChildFragmentManager(), true, mLoadingFragment);
-        mLoadingFragment = null;
+        dismissLoadingDialog();
+        mLoadingDfgProvider = null;
     }
 
     /**
@@ -199,7 +195,7 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param stringResourceId 提示文本资源id
      */
-    protected void showToast(int stringResourceId) {
+    protected void showToast(@StringRes int stringResourceId) {
         showToast(getString(stringResourceId));
     }
 
@@ -208,7 +204,7 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param hint 提示文本
      */
-    protected void showToast(String hint) {
+    protected void showToast(@Nullable String hint) {
         if (TextUtils.isEmpty(hint)) {
             return;
         }
@@ -227,54 +223,40 @@ public abstract class BaseFragment extends Fragment {
      * @param cancelable 是否可以取消
      */
     protected void showLoadingDialog(@Nullable String hint, boolean cancelable) {
-        if (getContext() == null) {
-            return;
-        }
-        if (mLoadingDialog == null) {
-            mLoadingDialog = DialogUtils.getLoadingDialog(getContext(), hint, cancelable);
-        }
-        mLoadingDialog.show();
-    }
-
-    /**
-     * 隐藏加载对话框
-     */
-    protected void disappearLoadingDialog() {
-        DialogUtils.disappearDialog(mLoadingDialog);
+        LoadingDialogFragmentOption option = getLoadingDialog().getLoadingFragmentOption();
+        option.setText(hint);
+        option.setCancelWithOutside(cancelable);
+        showLoadingDialog(option);
     }
 
     /**
      * 显示加载Fragment
      *
-     * @param containerId 依附的父布局资源ID
-     * @param option      加载配置参数信息对象
+     * @param option 加载配置参数信息对象
      */
-    protected void showLoadingFragment(@IdRes int containerId, @Nullable LoadingFragmentOption option) {
-        if (mLoadingFragment == null) {
-            mLoadingFragment = LoadingFragment.getInstance(option);
-            mLoadingFragment.setLoadingFragmentOption(option);
-        }
-        if (mLoadingFragment.isAdded()) {
-            getChildFragmentManager().beginTransaction()
-                    .show(mLoadingFragment)
-                    .commit();
+    protected void showLoadingDialog(@Nullable LoadingDialogFragmentOption option) {
+        if (mLoadingDfgProvider == null) {
+            mLoadingDfgProvider = LoadingDialogFragmentProvider.newInstance(option);
         } else {
-            getChildFragmentManager().beginTransaction()
-                    .add(containerId, mLoadingFragment, LoadingFragment.class.getSimpleName())
-                    .commit();
+            //在这儿默认逻辑为如果option为空，代表不变
+            if (option != null) {
+                mLoadingDfgProvider.setLoadingFragmentOption(option);
+            }
+            if (mLoadingDfgProvider.showLoadingDialog()) {
+                return;
+            }
         }
+        //除隐藏对话框再显示用getDialog().show()，其他都直接用show()
+        mLoadingDfgProvider.showLoadingDialog(getFragmentManager());
     }
 
     /**
-     * 隐藏加载Fragment
+     * 关闭加载对话框
      */
-    protected void hideLoadingFragment() {
-        if (mLoadingFragment == null || !mLoadingFragment.isAdded()) {
-            return;
+    protected void dismissLoadingDialog() {
+        if (mLoadingDfgProvider != null) {
+            mLoadingDfgProvider.dismissLoadingDialog();
         }
-        getChildFragmentManager().beginTransaction()
-                .hide(mLoadingFragment)
-                .commit();
     }
 
     /**
@@ -283,11 +265,11 @@ public abstract class BaseFragment extends Fragment {
      * @return 返回加载Fragment实例
      */
     @NonNull
-    protected LoadingFragment getLoadingFragment() {
-        if (mLoadingFragment == null) {
-            mLoadingFragment = LoadingFragment.getInstance();
+    protected LoadingDfgProviderable getLoadingDialog() {
+        if (mLoadingDfgProvider == null) {
+            mLoadingDfgProvider = LoadingDialogFragmentProvider.newInstance();
         }
-        return mLoadingFragment;
+        return mLoadingDfgProvider;
     }
 
     /**

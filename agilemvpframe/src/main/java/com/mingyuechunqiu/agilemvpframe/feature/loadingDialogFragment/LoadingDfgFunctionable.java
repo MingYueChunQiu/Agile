@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agilemvpframe.feature.loadingFragment;
+package com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment;
 
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
@@ -15,7 +15,7 @@ import android.support.annotation.StyleRes;
  *     version: 1.0
  * </pre>
  */
-interface LoadingFragmentable {
+interface LoadingDfgFunctionable {
 
     /**
      * 释放资源
@@ -23,18 +23,19 @@ interface LoadingFragmentable {
     void release();
 
     /**
-     * 设置是否可以触摸外围区域
+     * 设置是否能通过触摸外围区域取消对话框
      *
-     * @param canTouchOutside 能否触摸外围区域
+     * @param canCancelWithOutside 是否能通过触摸外围区域取消对话框
      */
-    void setCanTouchOutside(boolean canTouchOutside);
+    void setCanCancelWithOutside(boolean canCancelWithOutside);
 
     /**
-     * 设置容器背景
+     * 设置对话框大小
      *
-     * @param drawable 背景图像对象
+     * @param width  宽
+     * @param height 高
      */
-    void setContainerBackground(Drawable drawable);
+    void setDialogSize(int width, int height);
 
     /**
      * 设置加载背景
@@ -90,12 +91,12 @@ interface LoadingFragmentable {
      *
      * @param option 配置信息对象
      */
-    void setLoadingFragmentOption(LoadingFragmentOption option);
+    void setLoadingFragmentOption(LoadingDialogFragmentOption option);
 
     /**
      * 获取配置信息
      *
      * @return 返回配置信息对象
      */
-    LoadingFragmentOption getLoadingFragmentOption();
+    LoadingDialogFragmentOption getLoadingFragmentOption();
 }
