@@ -23,7 +23,7 @@ public class LoadingDialogFragmentOption {
     private int dialogWidth, dialogHeight;//对话框宽高
     private Drawable loadingBackground;//加载背景图像
     private Drawable indeterminateDrawable;//无进度图像
-    private boolean showLoadingText;//是否显示加载文本
+    private boolean showLoadingText = true;//是否显示加载文本（默认显示）
     private Drawable textBackground;//文本背景图像
     private String text;//加载文本
     private int textColor;//文本颜色

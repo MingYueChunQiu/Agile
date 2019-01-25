@@ -20,7 +20,6 @@ import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDfg
 import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity;
-import com.mingyuechunqiu.agilemvpframe.util.FragmentUtils;
 import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.StringUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
@@ -164,9 +163,9 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                     }
                 })
                 .build();
-//        showLoadingDialog(option);
-        FragmentUtils.replaceFragment(getSupportFragmentManager(), R.id.fl_navigation_container,
-                new MainFragment());
+        showLoadingDialog(option);
+//        FragmentUtils.replaceFragment(getSupportFragmentManager(), R.id.fl_navigation_container,
+//                new MainFragment());
     }
 
     /**

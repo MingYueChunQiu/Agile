@@ -28,7 +28,7 @@ import com.mingyuechunqiu.agilemvpframe.R;
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2019/1/22
  *     desc   : 用于加载显示的Fragment
- *              继承自Fragment
+ *              继承自DialogFragment
  *              实现LoadingFragmentable
  *     version: 1.0
  * </pre>
@@ -75,7 +75,6 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            setCancelable(false);
         }
         View view;
         LinearLayoutCompat llContainer;
