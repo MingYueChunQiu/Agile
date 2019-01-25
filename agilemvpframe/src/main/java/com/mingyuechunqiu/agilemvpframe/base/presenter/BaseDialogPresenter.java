@@ -78,7 +78,7 @@ public abstract class BaseDialogPresenter<V extends BaseDialogView, M extends Ba
      *
      * @param hint 提示文本
      */
-    protected void showToastAndHideLoadingDialog(@Nullable String hint) {
+    protected void showToastAndDismissLoadingDialog(@Nullable String hint) {
         if (mViewRef.get() != null) {
             mViewRef.get().showToast(hint);
             mViewRef.get().dismissLoadingDialog();
@@ -90,7 +90,7 @@ public abstract class BaseDialogPresenter<V extends BaseDialogView, M extends Ba
      *
      * @param stringResourceId 提示文本资源ID
      */
-    protected void showToastAndHideLoadingDialog(@StringRes int stringResourceId) {
+    protected void showToastAndDismissLoadingDialog(@StringRes int stringResourceId) {
         if (mViewRef.get() != null) {
             mViewRef.get().showToast(stringResourceId);
             mViewRef.get().dismissLoadingDialog();
