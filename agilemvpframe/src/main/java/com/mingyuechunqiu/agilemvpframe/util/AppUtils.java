@@ -77,7 +77,7 @@ public class AppUtils {
      * @param versionCode 应用版本号
      * @return 如果需要更新返回true，否则返回false
      */
-    private boolean checkIsNeedUpdateApp(int versionCode) {
+    public static boolean checkIsNeedUpdateApp(int versionCode) {
         return versionCode > getAppVersionCode();
     }
 }
