@@ -2,8 +2,8 @@ package com.mingyuechunqiu.agilemvpframe.util;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrame;
 
@@ -40,4 +40,44 @@ public class AppUtils {
         return false;
     }
 
+    /**
+     * 获取应用版本迭代次数
+     *
+     * @return 返回版本迭代次数
+     */
+    public static long getAppVersionCode() {
+        PackageManager manager = AgileMVPFrame.getAppContext().getPackageManager();
+        try {
+            return manager.getPackageInfo(AgileMVPFrame.getAppContext().getPackageName(), 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 获取应用版本迭代名称
+     *
+     * @return 返回版本迭代名称
+     */
+    @NonNull
+    public static String getAppVersionName() {
+        PackageManager manager = AgileMVPFrame.getAppContext().getPackageManager();
+        try {
+            return manager.getPackageInfo(AgileMVPFrame.getAppContext().getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * 检测是否需要更新应用
+     *
+     * @param versionCode 应用版本号
+     * @return 如果需要更新返回true，否则返回false
+     */
+    private boolean checkIsNeedUpdateApp(int versionCode) {
+        return versionCode > getAppVersionCode();
+    }
 }
