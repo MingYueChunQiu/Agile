@@ -2,4 +2,8 @@
     package="com.mingyuechunqiu.agilemvpframe" >
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <application>
+        <activity android:name=".ui.activity.VideoViewActivity" />
+        <activity android:name=".ui.activity.WebViewActivity" />
+    </application>
 </manifest>
