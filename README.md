@@ -22,7 +22,9 @@ dependencies {
 ```
 //框架配置信息，可以配置，也可以不配置使用库的默认值
 AgileMVPFrameConfigure configure = new AgileMVPFrameConfigure.Builder()
-                .setNetTimeout(20)
+                .setConnectNetTimeout(20)
+                .setReadNetTimeout(20)
+                .setWriteNetTimeout(20)
                 .build();
 //这句一定要有，否则有些功能会无法实现
 AgileMVPFrame.init(this);
