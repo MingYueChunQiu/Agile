@@ -11,16 +11,37 @@ package com.mingyuechunqiu.agilemvpframe.agile;
  */
 public class AgileMVPFrameConfigure {
 
-    private int netTimeout;//网络超时时间(秒数)
+    private int connectNetTimeout;//网络连接超时时间(秒数)
+    private int readNetTimeout;//网络读取超时时间(秒数)
+    private int writeNetTimeout;//网络写入超时时间(秒数)
 
-    public int getNetTimeout() {
-        return netTimeout;
+    public int getConnectNetTimeout() {
+        return connectNetTimeout;
     }
 
-    public void setNetTimeout(int netTimeout) {
-        this.netTimeout = netTimeout;
+    public void setConnectNetTimeout(int connectNetTimeout) {
+        this.connectNetTimeout = connectNetTimeout;
     }
 
+    public int getReadNetTimeout() {
+        return readNetTimeout;
+    }
+
+    public void setReadNetTimeout(int readNetTimeout) {
+        this.readNetTimeout = readNetTimeout;
+    }
+
+    public int getWriteNetTimeout() {
+        return writeNetTimeout;
+    }
+
+    public void setWriteNetTimeout(int writeNetTimeout) {
+        this.writeNetTimeout = writeNetTimeout;
+    }
+
+    /**
+     * 链式调用
+     */
     public static class Builder {
 
         private AgileMVPFrameConfigure mConfigure;
@@ -33,12 +54,30 @@ public class AgileMVPFrameConfigure {
             return mConfigure;
         }
 
-        public int getNetTimeout() {
-            return mConfigure.netTimeout;
+        public int getConnectNetTimeout() {
+            return mConfigure.connectNetTimeout;
         }
 
-        public Builder setNetTimeout(int netTimeout) {
-            mConfigure.netTimeout = netTimeout;
+        public Builder setConnectNetTimeout(int connectNetTimeout) {
+            mConfigure.connectNetTimeout = connectNetTimeout;
+            return this;
+        }
+
+        public int getReadNetTimeout() {
+            return mConfigure.readNetTimeout;
+        }
+
+        public Builder setReadNetTimeout(int readNetTimeout) {
+            mConfigure.readNetTimeout = readNetTimeout;
+            return this;
+        }
+
+        public int getWriteNetTimeout() {
+            return mConfigure.writeNetTimeout;
+        }
+
+        public Builder setWriteNetTimeout(int writeNetTimeout) {
+            mConfigure.writeNetTimeout = writeNetTimeout;
             return this;
         }
     }

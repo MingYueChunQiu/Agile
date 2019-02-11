@@ -2,7 +2,6 @@ package com.mingyuechunqiu.agilemvpframe.agile;
 
 import android.content.Context;
 
-import com.mingyuechunqiu.agilemvpframe.data.remote.retrofit.controller.BaseRetrofitManager;
 import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
 
 /**
@@ -55,7 +54,6 @@ public class AgileMVPFrame {
             return;
         }
         sConfigure = configure;
-        BaseRetrofitManager.setTimeout(sConfigure.getNetTimeout());
     }
 
     /**

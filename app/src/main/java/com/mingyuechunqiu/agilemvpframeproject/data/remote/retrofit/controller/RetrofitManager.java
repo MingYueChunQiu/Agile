@@ -4,10 +4,6 @@ import com.mingyuechunqiu.agilemvpframe.data.remote.retrofit.controller.BaseRetr
 import com.mingyuechunqiu.agilemvpframeproject.constants.URLConstants;
 import com.mingyuechunqiu.agilemvpframeproject.data.remote.retrofit.service.APIService;
 
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 /**
  * <pre>
  *     author : xyj
@@ -19,7 +15,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitManager extends BaseRetrofitManager {
 
+    private static RetrofitManager sManager;
     private static APIService sApiService;
+
+    private RetrofitManager() {
+    }
+
+    public static RetrofitManager getInstance() {
+        if (sManager == null) {
+            synchronized (RetrofitManager.class) {
+                if (sManager == null) {
+                    sManager = new RetrofitManager();
+                }
+            }
+        }
+        return sManager;
+    }
 
     /**
      * 获取网络请求接口服务
@@ -27,19 +38,19 @@ public class RetrofitManager extends BaseRetrofitManager {
      * @return Retrofit的服务接口
      */
     public static APIService getAPIService() {
+        getInstance();
         if (sApiService == null) {
             synchronized (RetrofitManager.class) {
                 if (sApiService == null) {
-                    sApiService = new Retrofit.Builder()
-                            .baseUrl(URLConstants.URL_BASE)
-                            .client(getOkHttpClient())
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                            .build().create(APIService.class);
+                    sApiService = sManager.getDefaultRetrofit().create(APIService.class);
                 }
             }
         }
         return sApiService;
     }
 
+    @Override
+    protected String getBaseUrl() {
+        return URLConstants.URL_BASE;
+    }
 }

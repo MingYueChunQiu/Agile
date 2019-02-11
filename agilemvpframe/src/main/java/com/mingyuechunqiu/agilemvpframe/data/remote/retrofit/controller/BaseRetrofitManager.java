@@ -1,8 +1,14 @@
 package com.mingyuechunqiu.agilemvpframe.data.remote.retrofit.controller;
 
+import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrame;
+import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrameConfigure;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * <pre>
@@ -13,50 +19,45 @@ import okhttp3.OkHttpClient;
  *     version: 1.0
  * </pre>
  */
-public class BaseRetrofitManager {
+public abstract class BaseRetrofitManager {
 
-    protected static final int DEFAULT_TIMEOUT = 15;//默认服务器连接、读取超时时间（秒数）
+    protected static final int DEFAULT_TIMEOUT = 10;//默认服务器连接、读取超时时间（秒数）
 
-    protected static int sTimeout;
-    protected static OkHttpClient sOkHttpClient;
-
-    public static int getTimeout() {
-        return sTimeout;
-    }
-
-    public static void setTimeout(int timeout) {
-        if (timeout < 0) {
-            return;
-        }
-        sTimeout = timeout;
-        //根据新超时时间，创建新OkHttpClient
-        if (sOkHttpClient != null) {
-            sOkHttpClient = null;
-        }
-        sOkHttpClient = getOkHttpClient();
+    /**
+     * 获取默认Retrofit实例
+     *
+     * @return 返回Retrofit实例对象
+     */
+    public Retrofit getDefaultRetrofit() {
+        return new Retrofit.Builder()
+                .baseUrl(getBaseUrl())
+                .client(getDefaultOkHttpClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
     }
 
     /**
-     * 获取OkHttpClient
+     * 获取默认OkHttpClient
      *
-     * @return 返回OkHttpClient全局唯一实例对象
+     * @return 返回OkHttpClient实例对象
      */
-    protected static OkHttpClient getOkHttpClient() {
-        if (sTimeout <= 0) {
-            sTimeout = DEFAULT_TIMEOUT;
-        }
-        if (sOkHttpClient == null) {
-            synchronized (BaseRetrofitManager.class) {
-                if (sOkHttpClient == null) {
-                    sOkHttpClient = new OkHttpClient.Builder()
-                            .connectTimeout(sTimeout, TimeUnit.SECONDS)
-                            .readTimeout(sTimeout, TimeUnit.SECONDS)
-                            .writeTimeout(sTimeout, TimeUnit.SECONDS)
-                            .build();
-                }
-            }
-        }
-        return sOkHttpClient;
+    protected OkHttpClient getDefaultOkHttpClient() {
+        AgileMVPFrameConfigure configure = AgileMVPFrame.getConfigure();
+        return new OkHttpClient.Builder()
+                .connectTimeout(configure.getConnectNetTimeout() <= 0 ?
+                        DEFAULT_TIMEOUT : configure.getConnectNetTimeout(), TimeUnit.SECONDS)
+                .readTimeout(configure.getReadNetTimeout() <= 0 ?
+                        DEFAULT_TIMEOUT : configure.getReadNetTimeout(), TimeUnit.SECONDS)
+                .writeTimeout(configure.getWriteNetTimeout() <= 0 ?
+                        DEFAULT_TIMEOUT : configure.getWriteNetTimeout(), TimeUnit.SECONDS)
+                .build();
     }
 
+    /**
+     * 获取基本URL
+     *
+     * @return 返回URL字符串
+     */
+    protected abstract String getBaseUrl();
 }

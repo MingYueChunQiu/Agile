@@ -5,8 +5,6 @@ import android.content.Context;
 
 import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrame;
 import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrameConfigure;
-import com.mingyuechunqiu.agilemvpframeproject.constants.URLConstants;
-import com.mingyuechunqiu.agilemvpframeproject.data.remote.retrofit.service.APIService;
 
 import io.realm.Realm;
 
@@ -24,9 +22,9 @@ public class MyApplication extends Application {
     private static Context sContext;
 
     /**
-     * 获取应用全局context
+     * 获取应用全局Context
      *
-     * @return
+     * @return 返回全局Context
      */
     public static Context getAppContext() {
         return sContext;
@@ -38,7 +36,9 @@ public class MyApplication extends Application {
         sContext = getApplicationContext();
         Realm.init(this);
         AgileMVPFrameConfigure configure = new AgileMVPFrameConfigure.Builder()
-                .setNetTimeout(20)
+                .setConnectNetTimeout(20)
+                .setReadNetTimeout(20)
+                .setWriteNetTimeout(20)
                 .build();
         AgileMVPFrame.init(this);
         AgileMVPFrame.setConfigure(configure);
