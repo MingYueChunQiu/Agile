@@ -15,8 +15,8 @@ import com.mingyuechunqiu.agilemvpframeproject.data.remote.retrofit.service.APIS
  */
 public class RetrofitManager extends BaseRetrofitManager {
 
-    private static RetrofitManager sManager;
-    private static APIService sApiService;
+    private static volatile RetrofitManager sManager;
+    private static volatile APIService sApiService;
 
     private RetrofitManager() {
     }

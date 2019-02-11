@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.agile;
 
+import com.mingyuechunqiu.agilemvpframe.data.remote.retrofit.controller.BaseRetrofitManager;
+
 /**
  * <pre>
  *     author : xyj
@@ -14,6 +16,11 @@ public class AgileMVPFrameConfigure {
     private int connectNetTimeout;//网络连接超时时间(秒数)
     private int readNetTimeout;//网络读取超时时间(秒数)
     private int writeNetTimeout;//网络写入超时时间(秒数)
+
+    public AgileMVPFrameConfigure() {
+        //设置默认配置
+        connectNetTimeout = readNetTimeout = writeNetTimeout = BaseRetrofitManager.DEFAULT_TIMEOUT;
+    }
 
     public int getConnectNetTimeout() {
         return connectNetTimeout;

@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public abstract class BaseRetrofitManager {
 
-    protected static final int DEFAULT_TIMEOUT = 10;//默认服务器连接、读取超时时间（秒数）
+    public static final int DEFAULT_TIMEOUT = 10;//默认服务器连接、读取超时时间（秒数）
 
     /**
      * 获取默认Retrofit实例

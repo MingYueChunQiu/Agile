@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.agile;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
 
@@ -15,8 +16,8 @@ import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
  */
 public class AgileMVPFrame {
 
-    private static Context sContext;
-    private static AgileMVPFrameConfigure sConfigure;
+    private static Context sContext;//上下文对象
+    private static volatile AgileMVPFrameConfigure sConfigure;//配置信息对象
     private static boolean debug;//标记是否处于debug模式
 
     /**
@@ -61,7 +62,15 @@ public class AgileMVPFrame {
      *
      * @return 返回配置对象
      */
+    @NonNull
     public static AgileMVPFrameConfigure getConfigure() {
+        if (sConfigure == null) {
+            synchronized (AgileMVPFrame.class) {
+                if (sConfigure == null) {
+                    sConfigure = new AgileMVPFrameConfigure.Builder().build();
+                }
+            }
+        }
         return sConfigure;
     }
 
