@@ -3,9 +3,9 @@ package com.mingyuechunqiu.agilemvpframe.constants;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/05/17
- *     desc   :
+ *     desc   : URL常量类
  *     version: 1.0
  * </pre>
  */

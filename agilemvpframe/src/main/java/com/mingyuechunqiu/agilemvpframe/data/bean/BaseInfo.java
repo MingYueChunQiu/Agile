@@ -3,7 +3,7 @@ package com.mingyuechunqiu.agilemvpframe.data.bean;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/05/17
  *     desc   : 所有网络请求参数的基类
  *     version: 1.0

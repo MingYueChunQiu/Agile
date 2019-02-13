@@ -8,7 +8,7 @@ import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/11/7
  *     desc   : 框架主类
  *     version: 1.0

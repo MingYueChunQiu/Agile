@@ -5,9 +5,9 @@ import static com.mingyuechunqiu.agilemvpframe.constants.KeyPrefixConstants.KEY_
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/11/5
- *     desc   :
+ *     desc   : 用户相关常量类
  *     version: 1.0
  * </pre>
  */

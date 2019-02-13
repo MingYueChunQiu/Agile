@@ -5,7 +5,7 @@ import com.mingyuechunqiu.agilemvpframe.data.remote.retrofit.controller.BaseRetr
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/11/7
  *     desc   : 框架配置类
  *     version: 1.0

@@ -3,7 +3,7 @@ package com.mingyuechunqiu.agilemvpframe.constants;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/11/5
  *     desc   : 前缀键值常量
  *     version: 1.0
