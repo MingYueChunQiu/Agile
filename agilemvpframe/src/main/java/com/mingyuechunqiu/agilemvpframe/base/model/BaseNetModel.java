@@ -7,6 +7,7 @@ import com.mingyuechunqiu.agilemvpframe.base.framework.IBaseListener;
 import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -65,6 +66,16 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
         if (mRetrofitCallList == null) {
             mRetrofitCallList = new ArrayList<>();
         }
+        //移除已经失效了的Retrofit回调
+        if (mRetrofitCallList.size() > 0) {
+            Iterator<Call> iterator = mRetrofitCallList.iterator();
+            while (iterator.hasNext()) {
+                Call c = iterator.next();
+                if (c != null && c.isCanceled()) {
+                    iterator.remove();
+                }
+            }
+        }
         if (!mRetrofitCallList.contains(call)) {
             mRetrofitCallList.add(call);
         }
@@ -88,13 +99,12 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
     /**
      * 检测Retrofit的网络响应是否为空
      *
-     * @param call     Retrofit回调
      * @param response 网络响应
      * @return 如果网络响应为空返回true，否则返回false
      */
-    protected boolean checkRetrofitResponseIsNull(Call call, Response response) {
+    protected boolean checkRetrofitResponseIsNull(Response response) {
         if (response == null || response.body() == null) {
-            onRetrofitResponseFailed(call, new IllegalStateException("服务器响应异常，请重试！"),
+            onRetrofitResponseFailed(new IllegalStateException("服务器响应异常，请重试！"),
                     R.string.error_service_response);
             return true;
         }
@@ -104,16 +114,14 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
     /**
      * 处理Retrofit网络响应失败事件
      *
-     * @param call             Retrofit回调
      * @param t                抛出的异常
      * @param errorStringResId 错误提示字符串资源ID
      */
-    protected void onRetrofitResponseFailed(Call call, Throwable t, @StringRes int errorStringResId) {
+    protected void onRetrofitResponseFailed(Throwable t, @StringRes int errorStringResId) {
         LogUtils.d(TAG_FAILURE, t.getMessage());
         if (mListener != null) {
             mListener.onFailure(errorStringResId);
         }
-        removeRetrofitCall(call);
     }
 
     /**
