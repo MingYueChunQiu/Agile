@@ -71,4 +71,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hide_loading_fragment" />
+
+    <com.coorchice.library.SuperTextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textSize="20sp"
+        app:stv_corner="@dimen/dp_20"
+        app:stv_drawableAsBackground="true"
+        app:stv_isShowState2="true"
+        app:stv_pressTextColor="@android:color/darker_gray"
+        app:stv_state_drawable="@drawable/scenery"
+        app:stv_state_drawable2="@drawable/icon"
+        app:stv_state_drawable2_rotate="90"
+        app:stv_state_drawable_rotate="60"
+        app:stv_text_fill_color="@color/colorAccent"
+        app:stv_text_stroke="true"
+        app:stv_text_stroke_color="@color/colorPrimary"
+        app:stv_text_stroke_width="@dimen/dp_2" />
 </android.support.v7.widget.LinearLayoutCompat>

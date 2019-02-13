@@ -7,7 +7,7 @@ import com.mingyuechunqiu.agilemvpframe.data.bean.BaseInfo;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/11/19
  *     desc   : 所有Model层的抽象基类
  *              实现BaseModel

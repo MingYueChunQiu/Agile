@@ -16,10 +16,10 @@ import static com.mingyuechunqiu.agilemvpframe.constants.UserConstants.TOKEN;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/11/15
  *     desc   : 所有带网络功能的P层的基类
- *              继承自BaseAbstractPresenter
+ *              继承自BaseDialogPresenter
  *     version: 1.0
  * </pre>
  */
@@ -59,13 +59,13 @@ public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetM
     }
 
     /**
-     * 取消所有网络请求
+     * 释放网络相关资源
      */
-    public void cancelNetworkRequests() {
+    public void releaseNetResources() {
         if (mModel == null) {
             return;
         }
-        mModel.releaseNetworkRequests();
+        mModel.releaseNetResources();
     }
 
     /**

@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/06/14
  *     desc   : 所有Presenter层的抽象基类
  *              实现BasePresenter

@@ -6,7 +6,7 @@ import com.mingyuechunqiu.agilemvpframe.base.view.BaseView;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/11/15
  *     desc   : 所有P层的父接口
  *     version: 1.0

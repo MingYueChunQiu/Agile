@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/05/22
  *     desc   : 所有需要使用token的网络业务模型类的基类
  *              继承自BaseNetModel

@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/11/8
  *     desc   : 主界面模型层
  *              继承自MainContract.Model
@@ -23,7 +23,7 @@ class MainModel extends MainContract.Model<MainContract.Listener> {
     }
 
     @Override
-    public void releaseNetworkRequests() {
+    protected void releaseNetworkResources() {
 
     }
 

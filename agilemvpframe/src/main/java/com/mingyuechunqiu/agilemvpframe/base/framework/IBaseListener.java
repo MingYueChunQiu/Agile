@@ -3,7 +3,7 @@ package com.mingyuechunqiu.agilemvpframe.base.framework;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/05/17
  *     desc   : 所有回调信息的父接口
  *     version: 1.0

@@ -10,10 +10,10 @@ import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDia
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/05/12
  *     desc   : 所有带对话框功能的Presenter的基类
- *              继承自BaseNetPresenter
+ *              继承自BaseAbstractPresenter
  *     version: 1.0
  * </pre>
  */

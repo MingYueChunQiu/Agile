@@ -12,7 +12,7 @@ import java.util.TimerTask;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/05/23
  *     desc   : 所有具有倒计时功能的MVP模型的P层
  *              继承自BasePresenter
