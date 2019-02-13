@@ -18,4 +18,6 @@ public class CommonConstants {
     //返回上一个界面
     public static final String BUNDLE_RETURN_TO_PREVIOUS_PAGE = KeyPrefixConstants.KEY_BUNDLE +
             "return_to_previous_page";
+
+    public static final int REQUEST_WRITE_EXTERNAL_STORAGE = 10;//写入外部存储卡权限请求码
 }
