@@ -17,7 +17,7 @@ import java.lang.reflect.Field;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/06/13
  *     desc   : 多媒体工具类
  *     version: 1.0

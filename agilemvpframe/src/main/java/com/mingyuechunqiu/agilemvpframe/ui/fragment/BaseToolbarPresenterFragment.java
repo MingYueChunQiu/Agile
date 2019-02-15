@@ -17,7 +17,7 @@ import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
 import com.mingyuechunqiu.agilemvpframe.base.view.BaseNetView;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
 
-import static com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils.NO_RESOURCE_ID;
+import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.NO_RESOURCE_ID;
 
 /**
  * <pre>

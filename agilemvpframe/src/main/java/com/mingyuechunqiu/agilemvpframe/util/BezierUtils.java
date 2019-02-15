@@ -11,7 +11,7 @@ import java.util.List;
  * <pre>
  *     author : xyj
  *     Github : https://github.com/MingYueChunQiu
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2019/1/16
  *     desc   : 贝塞尔曲线工具类
  *     version: 1.0

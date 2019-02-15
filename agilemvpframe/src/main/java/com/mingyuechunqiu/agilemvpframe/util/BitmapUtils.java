@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/05/18
  *     desc   : 图片工具类
  *     version: 1.0

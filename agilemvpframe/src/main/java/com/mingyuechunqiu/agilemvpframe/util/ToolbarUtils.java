@@ -6,18 +6,18 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 
+import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.NO_RESOURCE_ID;
+
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/10/19
  *     desc   : 活动条工具类
  *     version: 1.0
  * </pre>
  */
 public class ToolbarUtils {
-
-    public static final int NO_RESOURCE_ID = 0;//没有资源id
 
     /**
      * 初始化活动条

@@ -13,6 +13,8 @@ import static com.mingyuechunqiu.agilemvpframe.constants.KeyPrefixConstants.KEY_
  */
 public class CommonConstants {
 
+    public static final int NO_RESOURCE_ID = 0;//没有资源id
+
     //导航栏标题
     public static final String BUNDLE_NAVIGATION_TITLE = KEY_BUNDLE + "navigation_title";
     //返回上一个界面

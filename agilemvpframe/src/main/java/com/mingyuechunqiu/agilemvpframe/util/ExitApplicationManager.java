@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/05/12
  *     desc   : 控制应用退出
  *     version: 1.0
@@ -25,19 +25,20 @@ public class ExitApplicationManager {
     private ArrayList<WeakReference<Activity>> mList;
 
     private ExitApplicationManager() {
+        mList = new ArrayList<>();
     }
 
     /**
      * 将界面添加进集合
      *
-     * @param activity
+     * @param activity Activity
      */
     public static void addActivity(Activity activity) {
         if (activity == null) {
             return;
         }
-        newInstance();
-        sExitApplicationManager.mList.add(new WeakReference<Activity>(activity));
+        checkInstance();
+        sExitApplicationManager.mList.add(new WeakReference<>(activity));
     }
 
     /**
@@ -49,23 +50,30 @@ public class ExitApplicationManager {
                 sExitApplicationManager.mList.size() == 0) {
             return;
         }
-        AgileMVPFrame.getAppContext().stopService(new Intent(
-                AgileMVPFrame.getAppContext(), NetworkStateService.class));
+        if (AgileMVPFrame.getAppContext() != null) {
+            AgileMVPFrame.getAppContext().stopService(new Intent(
+                    AgileMVPFrame.getAppContext(), NetworkStateService.class));
+        }
         for (WeakReference<Activity> weakReference : sExitApplicationManager.mList) {
             if (weakReference.get() != null) {
                 weakReference.get().finish();
-                weakReference.clear();
             }
         }
+        sExitApplicationManager.mList.clear();
         sExitApplicationManager.mList = null;
+        sExitApplicationManager = null;
     }
 
-    private static void newInstance() {
+    /**
+     * 检测单例是否存在，不存在则创建
+     */
+    private static void checkInstance() {
         if (sExitApplicationManager == null) {
-            sExitApplicationManager = new ExitApplicationManager();
-        }
-        if (sExitApplicationManager.mList == null) {
-            sExitApplicationManager.mList = new ArrayList<>();
+            synchronized (ExitApplicationManager.class) {
+                if (sExitApplicationManager == null) {
+                    sExitApplicationManager = new ExitApplicationManager();
+                }
+            }
         }
     }
 

@@ -9,7 +9,7 @@ import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrame;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/07/17
  *     desc   : Toast工具类
  *     version: 1.0

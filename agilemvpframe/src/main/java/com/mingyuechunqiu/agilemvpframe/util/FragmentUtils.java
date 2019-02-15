@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/05/16
  *     desc   : Fragment管理工具类
  *     version: 1.0

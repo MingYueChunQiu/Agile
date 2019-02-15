@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/05/17
  *     desc   : 字符串工具类
  *     version: 1.0

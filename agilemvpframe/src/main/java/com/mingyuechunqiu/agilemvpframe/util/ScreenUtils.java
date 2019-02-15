@@ -13,7 +13,7 @@ import android.widget.TextView;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/03/27
  *     desc   : 屏幕相关的工具类
  *     version: 1.0

@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/06/26
  *     desc   : 时间相关的工具类
  *     version: 1.0

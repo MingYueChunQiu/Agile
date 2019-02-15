@@ -15,7 +15,7 @@ import com.mingyuechunqiu.agilemvpframe.R;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2017/12/27
  *     desc   : 操作网络的工具类
  *              公共方法：
