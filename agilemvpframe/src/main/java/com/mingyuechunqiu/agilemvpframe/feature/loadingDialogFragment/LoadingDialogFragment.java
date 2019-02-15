@@ -261,7 +261,7 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
 
     @Override
     public void showLoadingDialog(FragmentManager manager) {
-        if (manager == null) {
+        if (isAdded() || isVisible() || manager == null) {
             return;
         }
         show(manager, LoadingDialogFragment.class.getSimpleName());
