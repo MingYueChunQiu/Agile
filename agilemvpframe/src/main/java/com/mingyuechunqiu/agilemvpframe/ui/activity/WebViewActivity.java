@@ -91,9 +91,9 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
 
     @Override
     protected void initView() {
-        setContentView(R.layout.layout_navigation);
+        setContentView(R.layout.agile_layout_navigation);
         FrameLayout container = findViewById(R.id.fl_navigation_container);
-        View view = getLayoutInflater().inflate(R.layout.fragment_web_view, container, false);
+        View view = getLayoutInflater().inflate(R.layout.agile_fragment_web_view, container, false);
         mToolbar = findViewById(R.id.tb_navigation_bar);
         actvToolbarTitle = findViewById(R.id.tv_navigation_title);
         AppCompatImageView ivBack = findViewById(R.id.iv_navigation_left_icon);

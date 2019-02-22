@@ -14,9 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDfgProviderable;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDialogFragmentOption;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDialogFragmentProvider;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDfgProvideFactory;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDfgProviderable;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseActivity;
 
 import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
@@ -236,7 +236,7 @@ public abstract class BaseFragment extends Fragment {
      */
     protected void showLoadingDialog(@Nullable LoadingDialogFragmentOption option) {
         if (mLoadingDfgProvider == null) {
-            mLoadingDfgProvider = LoadingDialogFragmentProvider.newInstance(option);
+            mLoadingDfgProvider = LoadingDfgProvideFactory.newInstance(option);
         } else {
             //在这儿默认逻辑为如果option为空，代表不变
             if (option != null) {
@@ -267,7 +267,7 @@ public abstract class BaseFragment extends Fragment {
     @NonNull
     protected LoadingDfgProviderable getLoadingDialog() {
         if (mLoadingDfgProvider == null) {
-            mLoadingDfgProvider = LoadingDialogFragmentProvider.newInstance();
+            mLoadingDfgProvider = LoadingDfgProvideFactory.newInstance();
         }
         return mLoadingDfgProvider;
     }

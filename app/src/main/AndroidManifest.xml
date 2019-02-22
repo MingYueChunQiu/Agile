@@ -25,6 +25,15 @@
         tools:replace="android:allowBackup">
 
         <activity android:name=".feature.main.MainActivity">
+
+        </activity>
+        <activity android:name="com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity" />
+        <activity
+            android:name=".feature.video.VideoActivity"
+            android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name=".feature.video.VideoDemoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +41,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity" />
     </application>
 
 </manifest>

@@ -15,9 +15,9 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.Constants;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDfgProviderable;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.Constants;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDfgProviderable;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity;
 import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
@@ -108,7 +108,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 
     @Override
     protected void initView() {
-        setContentView(R.layout.layout_navigation);
+        setContentView(R.layout.agile_layout_navigation);
         mToolbar = findViewById(R.id.tb_navigation_bar);
         actvToolbarTitle = findViewById(R.id.tv_navigation_title);
         AppCompatImageView acivBack = findViewById(R.id.iv_navigation_left_icon);

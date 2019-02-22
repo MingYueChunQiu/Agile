@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
-import com.mingyuechunqiu.agilemvpframe.base.view.BaseNetView;
+import com.mingyuechunqiu.agilemvpframe.base.view.IBaseNetView;
 
 /**
  * <pre>
@@ -16,7 +16,7 @@ import com.mingyuechunqiu.agilemvpframe.base.view.BaseNetView;
  *     version: 1.0
  * </pre>
  */
-public abstract class BasePresenterActivity<V extends BaseNetView<P>, P extends BaseNetPresenter> extends BaseFullImmerseScreenActivity {
+public abstract class BasePresenterActivity<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BaseFullImmerseScreenActivity {
 
     protected P mPresenter;
 

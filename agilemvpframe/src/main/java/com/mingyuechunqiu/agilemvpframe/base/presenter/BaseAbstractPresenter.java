@@ -5,9 +5,9 @@ import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 
 import com.mingyuechunqiu.agilemvpframe.R;
-import com.mingyuechunqiu.agilemvpframe.base.model.BaseModel;
+import com.mingyuechunqiu.agilemvpframe.base.model.IBaseModel;
 import com.mingyuechunqiu.agilemvpframe.base.model.BaseTokenNetModel;
-import com.mingyuechunqiu.agilemvpframe.base.view.BaseView;
+import com.mingyuechunqiu.agilemvpframe.base.view.IBaseView;
 import com.mingyuechunqiu.agilemvpframe.data.bean.BaseInfo;
 
 import java.lang.ref.WeakReference;
@@ -22,7 +22,7 @@ import java.lang.ref.WeakReference;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractPresenter<V extends BaseView, M extends BaseModel> implements BasePresenter<V, M>, LifecycleObserver {
+public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBaseModel> implements IBasePresenter<V, M>, LifecycleObserver {
 
     protected WeakReference<V> mViewRef;
     protected M mModel;

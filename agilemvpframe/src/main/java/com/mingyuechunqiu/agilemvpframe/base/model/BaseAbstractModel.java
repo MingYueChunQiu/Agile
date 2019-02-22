@@ -14,7 +14,7 @@ import com.mingyuechunqiu.agilemvpframe.data.bean.BaseInfo;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractModel<I extends IBaseListener> implements BaseModel {
+public abstract class BaseAbstractModel<I extends IBaseListener> implements IBaseModel {
 
     protected final String TAG = getClass().getSimpleName();//日志标签
     protected final String TAG_FAILURE = getClass().getSimpleName() + " failure";//打印错误日志标签

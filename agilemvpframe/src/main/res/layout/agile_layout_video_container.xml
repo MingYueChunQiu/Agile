@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mcv_agile_video_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardPreventCornerOverlap="false">
+
+    <RelativeLayout
+        android:id="@+id/rl_agile_video_container_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ViewStub
+            android:id="@+id/vs_agile_video_container_surface_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inflatedId="@+id/sv_agile_video_container_screen"
+            android:layout="@layout/agile_surface_view" />
+
+        <ViewStub
+            android:id="@+id/vs_agile_video_container_texture_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inflatedId="@+id/ttv_agile_video_container_screen"
+            android:layout="@layout/agile_texture_view" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_agile_video_container_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <com.coorchice.library.SuperTextView
+            android:id="@+id/tv_agile_video_container_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:layout_marginLeft="@dimen/dp_4"
+            android:layout_marginTop="@dimen/dp_4"
+            android:text="@string/title"
+            app:stv_text_fill_color="@android:color/white"
+            app:stv_text_stroke="true"
+            app:stv_text_stroke_color="@android:color/darker_gray"
+            app:stv_text_stroke_width="@dimen/dp_1" />
+
+        <ProgressBar
+            android:id="@+id/pb_agile_video_container_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/rotate_darker_gray_to_white" />
+    </RelativeLayout>
+
+</android.support.design.card.MaterialCardView>

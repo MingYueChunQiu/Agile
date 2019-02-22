@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
-import com.mingyuechunqiu.agilemvpframe.base.view.BaseNetView;
+import com.mingyuechunqiu.agilemvpframe.base.view.IBaseNetView;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
 
 import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.NO_RESOURCE_ID;
@@ -29,7 +29,7 @@ import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.NO_RESO
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseToolbarPresenterFragment<V extends BaseNetView<P>, P extends BaseNetPresenter> extends BasePresenterFragment<V, P> {
+public abstract class BaseToolbarPresenterFragment<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BasePresenterFragment<V, P> {
 
     protected Toolbar mToolbar;
     protected AppCompatTextView actvToolbarTitle;//工具栏标题

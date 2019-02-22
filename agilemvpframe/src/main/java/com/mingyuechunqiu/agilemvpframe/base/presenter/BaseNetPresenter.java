@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrame;
 import com.mingyuechunqiu.agilemvpframe.base.model.BaseNetModel;
-import com.mingyuechunqiu.agilemvpframe.base.view.BaseNetView;
+import com.mingyuechunqiu.agilemvpframe.base.view.IBaseNetView;
 import com.mingyuechunqiu.agilemvpframe.data.bean.BaseInfo;
 import com.mingyuechunqiu.agilemvpframe.util.NetworkUtils;
 import com.mingyuechunqiu.agilemvpframe.util.SharedPreferencesUtils;
@@ -23,7 +23,7 @@ import static com.mingyuechunqiu.agilemvpframe.constants.UserConstants.TOKEN;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseNetPresenter<V extends BaseNetView, M extends BaseNetModel> extends BaseDialogPresenter<V, M> {
+public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNetModel> extends BaseDialogPresenter<V, M> {
 
     @Override
     public void detachView() {

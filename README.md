@@ -7,7 +7,7 @@ a agile android framework for MVP.
 allprojects {
 		repositories {
 			...
-			maven { url 'https://jitpack.io' }
+			maven { videoSource 'https://jitpack.io' }
 		}
 	}
 ```

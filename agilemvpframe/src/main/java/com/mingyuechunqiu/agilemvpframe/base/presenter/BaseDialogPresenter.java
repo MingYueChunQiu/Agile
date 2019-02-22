@@ -4,8 +4,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
 import com.mingyuechunqiu.agilemvpframe.base.model.BaseAbstractModel;
-import com.mingyuechunqiu.agilemvpframe.base.view.BaseDialogView;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.base.view.IBaseDialogView;
+import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDialogFragmentOption;
 
 /**
  * <pre>
@@ -17,7 +17,7 @@ import com.mingyuechunqiu.agilemvpframe.feature.loadingDialogFragment.LoadingDia
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseDialogPresenter<V extends BaseDialogView, M extends BaseAbstractModel> extends BaseAbstractPresenter<V, M> {
+public abstract class BaseDialogPresenter<V extends IBaseDialogView, M extends BaseAbstractModel> extends BaseAbstractPresenter<V, M> {
 
     /**
      * 显示提示信息

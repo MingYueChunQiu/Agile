@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.mingyuechunqiu.agilemvpframe.base.framework.ICountDownListener;
 import com.mingyuechunqiu.agilemvpframe.base.model.BaseNetModel;
-import com.mingyuechunqiu.agilemvpframe.base.view.BaseNetView;
+import com.mingyuechunqiu.agilemvpframe.base.view.IBaseNetView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -19,7 +19,7 @@ import java.util.TimerTask;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseCountDownPresenter<V extends BaseNetView, M extends BaseNetModel> extends BaseNetPresenter<V, M> {
+public abstract class BaseCountDownPresenter<V extends IBaseNetView, M extends BaseNetModel> extends BaseNetPresenter<V, M> {
 
     private Timer mTimer;
     private TimerTask mTimerTask;

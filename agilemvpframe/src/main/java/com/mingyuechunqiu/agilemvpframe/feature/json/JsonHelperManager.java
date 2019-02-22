@@ -13,41 +13,20 @@ import java.util.Map;
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2019/1/10
- *     desc   : Json帮助类管理器
- *              实现JsonHelperable
+ *     desc   : Json处理帮助类管理器
+ *              实现JsonHelperManagerable
  *     version: 1.0
  * </pre>
  */
-public class JsonHelperManager implements JsonHelperable {
+class JsonHelperManager implements JsonHelperManagerable {
 
     private JsonHelperable mHelper;
 
-    private JsonHelperManager(JsonHelperable helper) {
+    JsonHelperManager(JsonHelperable helper) {
         mHelper = helper;
         if (mHelper == null) {
             mHelper = new GsonHelper();
         }
-    }
-
-    /**
-     * 获取Json帮助类管理器实例（默认使用Gson处理Json）
-     *
-     * @return 返回Json帮助类管理器实例
-     */
-    @NonNull
-    public static JsonHelperManager getInstance() {
-        return getInstance(new GsonHelper());
-    }
-
-    /**
-     * 获取Json帮助类管理器实例
-     *
-     * @param helper Json处理帮助类
-     * @return 返回Json帮助类管理器实例
-     */
-    @NonNull
-    public static JsonHelperManager getInstance(JsonHelperable helper) {
-        return new JsonHelperManager(helper);
     }
 
     @Override

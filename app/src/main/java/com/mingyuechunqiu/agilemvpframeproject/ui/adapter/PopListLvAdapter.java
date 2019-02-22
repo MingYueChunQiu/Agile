@@ -55,7 +55,7 @@ public class PopListLvAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.lv_pop_list_item, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.agile_lv_pop_list_item, parent, false);
             convertView.getLayoutParams().height = mItemHeight;
             viewHolder = new ViewHolder();
             viewHolder.actvUsername = convertView.findViewById(R.id.tv_pop_list_item_name);
