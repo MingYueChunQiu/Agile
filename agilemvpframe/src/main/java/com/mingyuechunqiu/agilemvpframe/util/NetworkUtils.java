@@ -152,12 +152,12 @@ public class NetworkUtils {
      */
     public static void checkNetworkType(Context context, int networkType, boolean popDialogWithMobile,
                                         final OnCheckNetworkTypeListener listener) {
-        if (context == null || listener == null) {
+        if (listener == null) {
             return;
         }
         if (checkNetworkTypeIsMobile(networkType)) {
             listener.onConnectedInMobile();
-            if (popDialogWithMobile) {
+            if (popDialogWithMobile && context != null) {
                 new AlertDialog.Builder(context)
                         .setCancelable(false)
                         .setMessage(R.string.prompt_query_mobile_network)
