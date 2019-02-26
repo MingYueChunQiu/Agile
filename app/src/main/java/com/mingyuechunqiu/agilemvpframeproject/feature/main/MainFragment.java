@@ -27,12 +27,12 @@ import com.mingyuechunqiu.agilemvpframeproject.R;
 public class MainFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
-    protected void releaseView() {
+    protected void releaseOnDestroyView() {
 
     }
 
     @Override
-    protected void release() {
+    protected void releaseOnDestroy() {
 
     }
 

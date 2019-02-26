@@ -66,25 +66,25 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        releaseView();
+        releaseOnDestroyView();
         mToast = null;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        release();
+        releaseOnDestroy();
     }
 
     /**
      * 释放资源（在onDestroyView时调用）
      */
-    protected abstract void releaseView();
+    protected abstract void releaseOnDestroyView();
 
     /**
      * 释放资源（在onDestroy时调用）
      */
-    protected abstract void release();
+    protected abstract void releaseOnDestroy();
 
     /**
      * 由子类重写控件的初始化方法

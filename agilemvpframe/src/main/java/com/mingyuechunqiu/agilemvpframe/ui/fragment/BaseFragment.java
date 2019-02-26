@@ -44,7 +44,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        releaseView();
+        releaseOnDestroyView();
         mToast = null;
         dismissLoadingDialog();
         mLoadingDfgProvider = null;
@@ -53,7 +53,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        release();
+        releaseOnDestroy();
     }
 
     /**
@@ -281,12 +281,12 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 释放资源（在onDestroyView时调用）
      */
-    protected abstract void releaseView();
+    protected abstract void releaseOnDestroyView();
 
     /**
      * 释放资源（在onDestroy时调用）
      */
-    protected abstract void release();
+    protected abstract void releaseOnDestroy();
 
     /**
      * 由子类重写控件的初始化方法

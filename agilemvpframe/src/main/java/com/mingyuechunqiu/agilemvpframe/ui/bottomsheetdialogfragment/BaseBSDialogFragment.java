@@ -40,14 +40,14 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        releaseView();
+        releaseOnDestroyView();
         mToast = null;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        release();
+        releaseOnDestroy();
     }
 
     /**
@@ -62,12 +62,12 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     /**
      * 释放资源（在onDestroyView时调用）
      */
-    protected abstract void releaseView();
+    protected abstract void releaseOnDestroyView();
 
     /**
      * 释放资源（在onDestroy时调用）
      */
-    protected abstract void release();
+    protected abstract void releaseOnDestroy();
 
     /**
      * 显示提示信息
