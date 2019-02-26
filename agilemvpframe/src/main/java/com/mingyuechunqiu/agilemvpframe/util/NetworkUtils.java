@@ -131,32 +131,62 @@ public class NetworkUtils {
     }
 
     /**
-     * 检测网络连接类型
+     * 检查网络连接类型
      *
-     * @param context  对话框所处上下文
-     * @param listener 检测网络类型回调接口
+     * @param context             对话框所处上下文
+     * @param popDialogWithMobile 是否在移动网络状态下弹出确认对话框
+     * @param listener            检测网络类型回调接口
      */
-    public static void checkNetworkType(Context context, final OnCheckNetworkTypeListener listener) {
-        if (NetworkUtils.getNetworkType() == NetworkUtils.NET_TYPE_MOBILE) {
+    public static void checkNetworkType(Context context, boolean popDialogWithMobile,
+                                        final OnCheckNetworkTypeListener listener) {
+        checkNetworkType(context, getNetworkType(), popDialogWithMobile, listener);
+    }
+
+    /**
+     * 检查网络连接类型
+     *
+     * @param context             对话框所处上下文
+     * @param networkType         网络连接类型
+     * @param popDialogWithMobile 是否在移动网络状态下弹出确认对话框
+     * @param listener            检测网络类型回调接口
+     */
+    public static void checkNetworkType(Context context, int networkType, boolean popDialogWithMobile,
+                                        final OnCheckNetworkTypeListener listener) {
+        if (context == null || listener == null) {
+            return;
+        }
+        if (checkNetworkTypeIsMobile(networkType)) {
             listener.onConnectedInMobile();
-            new AlertDialog.Builder(context)
-                    .setCancelable(false)
-                    .setMessage(R.string.prompt_query_mobile_network)
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            listener.onConfirmConnectedInMobile();
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            listener.onCancelConnectedInMobile();
-                        }
-                    }).create().show();
+            if (popDialogWithMobile) {
+                new AlertDialog.Builder(context)
+                        .setCancelable(false)
+                        .setMessage(R.string.prompt_query_mobile_network)
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                listener.onConfirmConnectedInMobile();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                listener.onCancelConnectedInMobile();
+                            }
+                        }).create().show();
+            }
         } else {
             listener.onConnectedInWifi();
         }
+    }
+
+    /**
+     * 检测网络类型是移动网络
+     *
+     * @param networkType 网络连接类型
+     * @return 如果是移动网络返回true，否则返回false
+     */
+    public static boolean checkNetworkTypeIsMobile(int networkType) {
+        return networkType == NetworkUtils.NET_TYPE_MOBILE;
     }
 
     /**

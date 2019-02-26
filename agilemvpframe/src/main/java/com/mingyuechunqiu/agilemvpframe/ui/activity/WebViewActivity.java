@@ -141,7 +141,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
         }
         //如果是为了观看视频，要判断一下是否是4G网络
         if (mBundle != null && mBundle.getBoolean(BUNDLE_WATCH_VIDEO, false)) {
-            NetworkUtils.checkNetworkType(this, new NetworkUtils.OnCheckNetworkTypeListener() {
+            NetworkUtils.checkNetworkType(this, true, new NetworkUtils.OnCheckNetworkTypeListener() {
                 @Override
                 public void onConnectedInMobile() {
                 }

@@ -54,6 +54,6 @@ public class VideoActivity extends AppCompatActivity {
 //    @Override
 //    protected void onDestroy() {
 //        super.onDestroy();
-//        managerable.release();
+//        managerable.releaseView();
 //    }
 }

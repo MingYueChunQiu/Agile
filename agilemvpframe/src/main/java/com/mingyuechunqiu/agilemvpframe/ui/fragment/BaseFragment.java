@@ -44,10 +44,16 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        release();
+        releaseView();
         mToast = null;
         dismissLoadingDialog();
         mLoadingDfgProvider = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        release();
     }
 
     /**
@@ -273,7 +279,12 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 释放资源
+     * 释放资源（在onDestroyView时调用）
+     */
+    protected abstract void releaseView();
+
+    /**
+     * 释放资源（在onDestroy时调用）
      */
     protected abstract void release();
 

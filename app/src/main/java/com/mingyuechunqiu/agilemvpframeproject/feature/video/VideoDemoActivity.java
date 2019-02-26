@@ -1,7 +1,9 @@
 package com.mingyuechunqiu.agilemvpframeproject.feature.video;
 
+import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.card.MaterialCardView;
@@ -14,6 +16,7 @@ import com.mingyuechunqiu.agilemvpframe.feature.playermanager.video.Constants;
 import com.mingyuechunqiu.agilemvpframe.feature.playermanager.video.VideoPlayerOption;
 import com.mingyuechunqiu.agilemvpframe.feature.playermanager.video.player.VideoPlayerManagerFactory;
 import com.mingyuechunqiu.agilemvpframe.feature.playermanager.video.player.VideoPlayerManagerable;
+import com.mingyuechunqiu.agilemvpframe.receiver.NetworkConnectedTypeReceiver;
 import com.mingyuechunqiu.agilemvpframeproject.R;
 
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ import java.util.List;
 public class VideoDemoActivity extends AppCompatActivity {
 
     List<VideoPlayerManagerable> list;
+    private NetworkConnectedTypeReceiver receiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,6 +89,9 @@ public class VideoDemoActivity extends AppCompatActivity {
 //                });
 //            }
         }
+        receiver = new NetworkConnectedTypeReceiver();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(receiver, intentFilter);
     }
 
     @Override
@@ -101,5 +108,11 @@ public class VideoDemoActivity extends AppCompatActivity {
         for (VideoPlayerManagerable m : list) {
             m.resume();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
     }
 }
