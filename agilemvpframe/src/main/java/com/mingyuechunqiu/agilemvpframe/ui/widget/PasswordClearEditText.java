@@ -12,10 +12,8 @@ import android.support.v7.widget.AppCompatEditText;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 
 import com.mingyuechunqiu.agilemvpframe.R;
-import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
 
 /**
  * <pre>

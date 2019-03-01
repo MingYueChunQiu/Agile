@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.feature.playermanager.video;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 
@@ -21,11 +23,14 @@ public class VideoPlayerOption {
     private Drawable placeholderDrawable;//占位图
     private VideoContainerable containerable;//视频容器
     private Constants.SURFACE_TYPE surfaceType;//图层类型
+    private Constants.SCREEN_TYPE screenType;//界面类型
     private Drawable backgroundDrawable;//视频播放背景颜色
     private String videoSource;//播放来源（ 包括本地路径和URL）
 
     public VideoPlayerOption() {
         surfaceType = Constants.SURFACE_TYPE.TYPE_NOT_SET;
+        screenType = Constants.SCREEN_TYPE.TYPE_FILL;
+        backgroundDrawable = new ColorDrawable(Color.BLACK);//默认黑色背景
     }
 
     public String getTitle() {
@@ -61,6 +66,14 @@ public class VideoPlayerOption {
 
     public void setSurfaceType(Constants.SURFACE_TYPE surfaceType) {
         this.surfaceType = surfaceType;
+    }
+
+    public Constants.SCREEN_TYPE getScreenType() {
+        return screenType;
+    }
+
+    public void setScreenType(Constants.SCREEN_TYPE screenType) {
+        this.screenType = screenType;
     }
 
     public Drawable getBackgroundDrawable() {
@@ -127,6 +140,15 @@ public class VideoPlayerOption {
 
         public Builder setSurfaceType(Constants.SURFACE_TYPE surfaceType) {
             mOption.surfaceType = surfaceType;
+            return this;
+        }
+
+        public Constants.SCREEN_TYPE getScreenType() {
+            return mOption.screenType;
+        }
+
+        public Builder setScreenType(Constants.SCREEN_TYPE screenType) {
+            mOption.screenType = screenType;
             return this;
         }
 

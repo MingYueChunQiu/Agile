@@ -4,7 +4,7 @@ import android.support.annotation.StringRes;
 
 import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.base.framework.IBaseListener;
-import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
+import com.mingyuechunqiu.agilemvpframe.feature.logmanager.LogManagerProvider;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -118,7 +118,7 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
      * @param errorStringResId 错误提示字符串资源ID
      */
     protected void onRetrofitResponseFailed(Throwable t, @StringRes int errorStringResId) {
-        LogUtils.d(TAG_FAILURE, t.getMessage());
+        LogManagerProvider.d(TAG_FAILURE, t.getMessage());
         if (mListener != null) {
             mListener.onFailure(errorStringResId);
         }

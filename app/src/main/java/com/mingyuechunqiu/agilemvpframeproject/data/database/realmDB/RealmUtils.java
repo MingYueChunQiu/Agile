@@ -4,7 +4,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Base64;
 
-import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
+import com.mingyuechunqiu.agilemvpframe.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agilemvpframe.util.SharedPreferencesUtils;
 import com.mingyuechunqiu.agilemvpframeproject.MyApplication;
 import com.mingyuechunqiu.agilemvpframeproject.data.database.realmDB.bean.User;
@@ -165,7 +165,7 @@ public class RealmUtils {
         }, new Realm.Transaction.OnError() {
             @Override
             public void onError(Throwable error) {
-                LogUtils.e("saveUserInfoToDB", "登录信息保存异常 "
+                LogManagerProvider.e("saveUserInfoToDB", "登录信息保存异常 "
                         + error.toString());
                 realm.close();
             }

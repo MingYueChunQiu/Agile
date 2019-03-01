@@ -18,9 +18,9 @@ import android.widget.FrameLayout;
 import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.Constants;
 import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDfgProviderable;
 import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity;
-import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
 import com.mingyuechunqiu.agilemvpframe.util.StringUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
 import com.mingyuechunqiu.agilemvpframeproject.R;
@@ -183,7 +183,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                 v.getResources().getColor(android.R.color.holo_red_dark), new StringUtils.OnClickUrlLinkListener() {
                     @Override
                     public void onClickUrlLink(String s, String s1, String s2) {
-                        LogUtils.d("放大", s2 + " " + (ref.get() == null));
+                        LogManagerProvider.d("放大", s2 + " " + (ref.get() == null));
                         if (ref.get() != null) {
                             Intent intent = new Intent(ref.get(), WebViewActivity.class);
                             Bundle bundle = new Bundle();

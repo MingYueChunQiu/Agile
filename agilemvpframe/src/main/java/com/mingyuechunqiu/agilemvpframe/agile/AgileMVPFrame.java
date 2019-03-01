@@ -3,7 +3,7 @@ package com.mingyuechunqiu.agilemvpframe.agile;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
+import com.mingyuechunqiu.agilemvpframe.feature.logmanager.LogManagerProvider;
 
 /**
  * <pre>
@@ -81,7 +81,7 @@ public class AgileMVPFrame {
      */
     public static void debug(boolean debug) {
         AgileMVPFrame.debug = debug;
-        LogUtils.showLog(debug);
+        LogManagerProvider.showLog(debug);
     }
 
     public static boolean isDebug() {

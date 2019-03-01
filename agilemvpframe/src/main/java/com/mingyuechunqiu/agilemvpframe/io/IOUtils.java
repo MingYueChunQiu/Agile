@@ -3,11 +3,15 @@ package com.mingyuechunqiu.agilemvpframe.io;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
+import com.mingyuechunqiu.agilemvpframe.feature.logmanager.LogManagerProvider;
 
+import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 /**
  * <pre>
@@ -50,7 +54,7 @@ public class IOUtils {
                     return file.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    LogUtils.d(TAG, e.getMessage());
+                    LogManagerProvider.d(TAG, e.getMessage());
                 }
             }
         }
@@ -100,6 +104,38 @@ public class IOUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 向指定文件写入字符串
+     *
+     * @param title    标题
+     * @param msg      信息
+     * @param filePath 文件路径
+     */
+    public static void writeStringToLocalFile(final String title, final String msg, final String filePath) {
+        if (!IOUtils.checkIsFileOrCreate(filePath)) {
+            return;
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                BufferedWriter bw = null;
+                try {
+                    bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filePath))));
+                    bw.write(title);
+                    bw.newLine();
+                    bw.write(msg);
+                    bw.flush();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    IOUtils.closeStream(bw);
+                }
+            }
+        }).start();
     }
 
     /**

@@ -41,9 +41,6 @@ class VideoPlayer implements VideoPlayerable, SurfaceHolder.Callback, TextureVie
         } else {
             mOption.getContainerable().getTextureView().setSurfaceTextureListener(this);
         }
-        if (mOption.getContainerable().getLoadingView() != null) {
-            mOption.getContainerable().getLoadingView().setVisibility(View.VISIBLE);
-        }
         if (!checkObjectIsNull(mOption.getContainerable().getPlaceholderView())) {
             mOption.getContainerable().getPlaceholderView().setVisibility(View.VISIBLE);
         }
@@ -172,8 +169,8 @@ class VideoPlayer implements VideoPlayerable, SurfaceHolder.Callback, TextureVie
                 return;
             } else {
                 initMediaPlayer();
-                if (mOption.getContainerable().getLoadingView() != null) {
-                    mOption.getContainerable().getLoadingView().setVisibility(View.VISIBLE);
+                if (!TextUtils.isEmpty(mOption.getVideoSource())) {
+                    showLoadingView();
                 }
             }
         }
@@ -214,8 +211,10 @@ class VideoPlayer implements VideoPlayerable, SurfaceHolder.Callback, TextureVie
         mPlayer.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
             @Override
             public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-                if (mOption.getSurfaceType() == Constants.SURFACE_TYPE.TYPE_TEXTURE_VIEW) {
-                    updateTextureViewSizeCenterCrop();
+                if (mOption.getScreenType() == Constants.SCREEN_TYPE.TYPE_PROPORTION_CLIP) {
+                    if (mOption.getSurfaceType() == Constants.SURFACE_TYPE.TYPE_TEXTURE_VIEW) {
+                        updateTextureViewSizeCenterCrop();
+                    }
                 }
             }
         });
@@ -226,11 +225,13 @@ class VideoPlayer implements VideoPlayerable, SurfaceHolder.Callback, TextureVie
      */
     private void prepareVideoSource() {
         if (!TextUtils.isEmpty(mOption.getVideoSource())) {
+            showLoadingView();
             try {
                 mPlayer.setDataSource(mOption.getVideoSource());
                 mPlayer.prepareAsync();
             } catch (IOException e) {
                 e.printStackTrace();
+                hideLoadingView();
             }
         }
     }
@@ -253,9 +254,7 @@ class VideoPlayer implements VideoPlayerable, SurfaceHolder.Callback, TextureVie
         mPlayer.start();
         //TextureView在播放时默认是白色透明的，设置了占位图但如果在start（）前调用，
         //会先隐藏占位图出现一个白屏再开始播放，所以要调整顺序
-        if (mOption.getContainerable().getLoadingView() != null) {
-            mOption.getContainerable().getLoadingView().setVisibility(View.GONE);
-        }
+        hideLoadingView();
         if (!checkObjectIsNull(mOption.getContainerable().getPlaceholderView())) {
             mOption.getContainerable().getPlaceholderView().setVisibility(View.GONE);
         }
@@ -300,4 +299,34 @@ class VideoPlayer implements VideoPlayerable, SurfaceHolder.Callback, TextureVie
         mOption.getContainerable().getTextureView().postInvalidate();
     }
 
+    /**
+     * 显示等待加载控件
+     */
+    private void showLoadingView() {
+        if (checkLoadingViewForbidSetVisibility(View.VISIBLE)) {
+            return;
+        }
+        mOption.getContainerable().getLoadingView().setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 隐藏等待加载控件
+     */
+    private void hideLoadingView() {
+        if (checkLoadingViewForbidSetVisibility(View.GONE)) {
+            return;
+        }
+        mOption.getContainerable().getLoadingView().setVisibility(View.GONE);
+    }
+
+    /**
+     * 检查等待加载控件是否无效
+     *
+     * @return 如果无效返回true，否则返回false
+     */
+    private boolean checkLoadingViewForbidSetVisibility(int visibility) {
+        return checkObjectIsNull(mOption) || checkObjectIsNull(mOption.getContainerable()) ||
+                checkObjectIsNull(mOption.getContainerable().getLoadingView()) ||
+                mOption.getContainerable().getLoadingView().getVisibility() == visibility;
+    }
 }

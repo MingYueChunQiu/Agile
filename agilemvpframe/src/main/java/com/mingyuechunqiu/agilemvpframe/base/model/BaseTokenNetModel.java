@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.mingyuechunqiu.agilemvpframe.base.framework.IBaseListener;
 import com.mingyuechunqiu.agilemvpframe.constants.URLConstants;
-import com.mingyuechunqiu.agilemvpframe.util.LogUtils;
+import com.mingyuechunqiu.agilemvpframe.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agilemvpframe.util.ToastUtils;
 
 import java.lang.ref.WeakReference;
@@ -61,7 +61,7 @@ public abstract class BaseTokenNetModel<I extends IBaseListener> extends BaseNet
             ToastUtils.showToast(errorMsg);
             callOnTokenInvalid();
         } else {
-            LogUtils.d(TAG, errorMsg);
+            LogManagerProvider.d(TAG, errorMsg);
             callOnTokenError();
             mListener.onFailure(errorMsg);
         }
