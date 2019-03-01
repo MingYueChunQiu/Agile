@@ -28,8 +28,7 @@
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/iv_agile_video_container_placeholder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+            android:layout_height="match_parent" />
 
         <com.coorchice.library.SuperTextView
             android:id="@+id/tv_agile_video_container_title"
