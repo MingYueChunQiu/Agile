@@ -44,10 +44,6 @@ public class LogManagerProvider {
     }
 
     public static synchronized void showLog(boolean showLog) {
-        //在日志管理实例还未创建时，如果是设置不显示日志，则直接返回，不创建对象
-        if (sLogManagerable == null && !showLog) {
-            return;
-        }
         checkOrCreateLogManager();
         sLogManagerable.showLog(showLog);
     }
