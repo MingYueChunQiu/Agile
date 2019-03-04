@@ -71,7 +71,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 添加fragment的按键监听器
      *
-     * @param listener 按键监听器
+     * @param listener fragment按键监听器
      */
     public void addOnKeyDownListener(BaseFragment.OnKeyDownListener listener) {
         if (listener == null) {
@@ -81,6 +81,19 @@ public abstract class BaseActivity extends AppCompatActivity {
             mKeyDownListenerList = new ArrayList<>();
         }
         mKeyDownListenerList.add(listener);
+    }
+
+    /**
+     * 删除fragment的按键监听器
+     *
+     * @param listener fragment按键监听器
+     * @return 如果删除成功返回true，否则返回false
+     */
+    public boolean removeOnKeyDownListener(BaseFragment.OnKeyDownListener listener) {
+        if (listener == null || mKeyDownListenerList == null) {
+            return false;
+        }
+        return mKeyDownListenerList.remove(listener);
     }
 
     public List<BaseFragment.OnKeyDownListener> getOnKeyDownListenerList() {

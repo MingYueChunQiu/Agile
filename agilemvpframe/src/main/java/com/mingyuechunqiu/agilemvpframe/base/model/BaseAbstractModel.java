@@ -2,7 +2,11 @@ package com.mingyuechunqiu.agilemvpframe.base.model;
 
 import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.base.framework.IBaseListener;
+import com.mingyuechunqiu.agilemvpframe.base.model.part.IModelPart;
 import com.mingyuechunqiu.agilemvpframe.data.bean.BaseInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <pre>
@@ -20,6 +24,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
     protected final String TAG_FAILURE = getClass().getSimpleName() + " failure";//打印错误日志标签
 
     protected I mListener;
+    protected List<IModelPart> mModelPartList;
 
     public BaseAbstractModel(I listener) {
         mListener = listener;
@@ -29,8 +34,17 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * 释放资源方法
      */
     public void release() {
-        mListener = null;
         destroy();
+        mListener = null;
+        if (mModelPartList != null) {
+            for (IModelPart part : mModelPartList) {
+                if (part != null) {
+                    part.destroy();
+                }
+            }
+            mModelPartList.clear();
+            mModelPartList = null;
+        }
     }
 
     /**
@@ -47,6 +61,34 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
             return;
         }
         getRequest(info);
+    }
+
+    /**
+     * 添加模型层part单元
+     *
+     * @param part part单元模块
+     */
+    protected void addModelPart(IModelPart part) {
+        if (part == null) {
+            return;
+        }
+        if (mModelPartList == null) {
+            mModelPartList = new ArrayList<>();
+        }
+        mModelPartList.add(part);
+    }
+
+    /**
+     * 删除指定的模型层part单元
+     *
+     * @param part part单元模块
+     * @return 如果删除成功返回true，否则返回false
+     */
+    protected boolean removeModelPart(IModelPart part) {
+        if (part == null || mModelPartList == null) {
+            return false;
+        }
+        return mModelPartList.remove(part);
     }
 
     /**
