@@ -30,9 +30,22 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
         mListener = listener;
     }
 
+    @Override
+    public void start() {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
     /**
      * 释放资源方法
      */
+    @Override
     public void release() {
         destroy();
         mListener = null;
@@ -97,4 +110,9 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param info 网络请求参数对象
      */
     protected abstract void getRequest(BaseInfo info);
+
+    /**
+     * 销毁资源
+     */
+    protected abstract void destroy();
 }

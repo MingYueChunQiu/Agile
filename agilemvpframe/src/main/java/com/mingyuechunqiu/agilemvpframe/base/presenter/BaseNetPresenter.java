@@ -25,15 +25,6 @@ import static com.mingyuechunqiu.agilemvpframe.constants.UserConstants.TOKEN;
  */
 public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNetModel> extends BaseDialogPresenter<V, M> {
 
-    @Override
-    public void detachView() {
-        if (mModel != null) {
-            mModel.release();
-            mModel = null;
-        }
-        releaseOnDetach();
-    }
-
     /**
      * 带参数的网络请求
      *

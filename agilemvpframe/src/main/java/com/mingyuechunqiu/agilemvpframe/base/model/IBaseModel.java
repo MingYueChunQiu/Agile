@@ -11,9 +11,15 @@ package com.mingyuechunqiu.agilemvpframe.base.model;
  */
 public interface IBaseModel {
 
+    void start();
+
+    void pause();
+
+    void resume();
+
     /**
-     * 销毁资源方法
+     * 释放资源
      */
-    void destroy();
+    void release();
 
 }

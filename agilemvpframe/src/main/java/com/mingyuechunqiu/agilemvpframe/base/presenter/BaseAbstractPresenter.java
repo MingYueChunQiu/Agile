@@ -5,12 +5,15 @@ import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 
 import com.mingyuechunqiu.agilemvpframe.R;
-import com.mingyuechunqiu.agilemvpframe.base.model.IBaseModel;
 import com.mingyuechunqiu.agilemvpframe.base.model.BaseTokenNetModel;
+import com.mingyuechunqiu.agilemvpframe.base.model.IBaseModel;
+import com.mingyuechunqiu.agilemvpframe.base.presenter.engine.IPresenterEngine;
 import com.mingyuechunqiu.agilemvpframe.base.view.IBaseView;
 import com.mingyuechunqiu.agilemvpframe.data.bean.BaseInfo;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <pre>
@@ -26,6 +29,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     protected WeakReference<V> mViewRef;
     protected M mModel;
+    protected List<IPresenterEngine> mPresenterEngineList;
 
     @Override
     public void attachView(V view) {
@@ -40,11 +44,11 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     @Override
     public void detachView() {
+        releaseOnDetach();
         if (mModel != null) {
-            mModel.destroy();
+            mModel.release();
             mModel = null;
         }
-        releaseOnDetach();
     }
 
     /**
@@ -69,15 +73,24 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     protected void onStart() {
+        if (mModel != null) {
+            mModel.start();
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     protected void onResume() {
         start();
+        if (mModel != null) {
+            mModel.resume();
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     protected void onPause() {
+        if (mModel != null) {
+            mModel.pause();
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
@@ -90,10 +103,47 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     protected void releaseOnDetach() {
         release();
+        if (mPresenterEngineList != null) {
+            for (IPresenterEngine engine : mPresenterEngineList) {
+                if (engine != null) {
+                    engine.release();
+                }
+            }
+            mPresenterEngineList.clear();
+            mPresenterEngineList = null;
+        }
         if (mViewRef != null) {
             mViewRef.clear();
             mViewRef = null;
         }
+    }
+
+    /**
+     * 添加模型层engine单元
+     *
+     * @param engine engine单元模块
+     */
+    protected void addPresenterEngine(IPresenterEngine engine) {
+        if (engine == null) {
+            return;
+        }
+        if (mPresenterEngineList == null) {
+            mPresenterEngineList = new ArrayList<>();
+        }
+        mPresenterEngineList.add(engine);
+    }
+
+    /**
+     * 删除指定的模型层engine单元
+     *
+     * @param engine engine单元模块
+     * @return 如果删除成功返回true，否则返回false
+     */
+    protected boolean removePresenterEngine(IPresenterEngine engine) {
+        if (engine == null || mPresenterEngineList == null) {
+            return false;
+        }
+        return mPresenterEngineList.remove(engine);
     }
 
     protected void showToast(String hint) {
@@ -114,4 +164,9 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param info 请求参数对象
      */
     protected abstract void requestModel(BaseInfo info);
+
+    /**
+     * 释放资源
+     */
+    protected abstract void release();
 }

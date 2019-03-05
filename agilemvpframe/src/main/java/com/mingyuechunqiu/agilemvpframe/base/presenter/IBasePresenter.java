@@ -22,5 +22,4 @@ public interface IBasePresenter<V extends IBaseView, M extends IBaseModel> {
 
     M initModel();
 
-    void release();
 }
