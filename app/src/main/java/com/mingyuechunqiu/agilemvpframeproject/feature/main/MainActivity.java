@@ -15,9 +15,9 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.Constants;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDfgProviderable;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.Constants;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDfgProviderable;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity;

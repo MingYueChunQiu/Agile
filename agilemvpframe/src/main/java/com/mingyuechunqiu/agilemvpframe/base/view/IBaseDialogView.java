@@ -3,8 +3,8 @@ package com.mingyuechunqiu.agilemvpframe.base.view;
 import android.support.annotation.Nullable;
 
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDfgProviderable;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDfgProviderable;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDialogFragmentOption;
 
 /**
  * <pre>

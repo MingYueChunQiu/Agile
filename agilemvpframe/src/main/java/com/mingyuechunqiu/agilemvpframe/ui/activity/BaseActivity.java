@@ -13,9 +13,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDfgProvideFactory;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDfgProviderable;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDfgProvideFactory;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDfgProviderable;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agilemvpframe.util.ExitApplicationManager;
 import com.noober.background.BackgroundLibrary;

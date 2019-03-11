@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment;
+package com.mingyuechunqiu.agilemvpframe.feature.loading;
 
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;

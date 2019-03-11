@@ -16,9 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDfgProvideFactory;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDfgProviderable;
-import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDfgProvideFactory;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDfgProviderable;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseActivity;
 
 import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
