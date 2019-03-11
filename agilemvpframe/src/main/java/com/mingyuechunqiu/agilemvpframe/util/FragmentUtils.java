@@ -1,5 +1,8 @@
 package com.mingyuechunqiu.agilemvpframe.util;
 
+import android.support.annotation.AnimRes;
+import android.support.annotation.AnimatorRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -36,7 +39,7 @@ public class FragmentUtils {
      * @param <F>             替换的Fragment类型
      */
     public static <F extends BaseFragment> void replaceFragment(
-            FragmentManager fragmentManager, int containerViewId, F f) {
+            FragmentManager fragmentManager, @IdRes int containerViewId, F f) {
         replaceFragment(fragmentManager, containerViewId, f, true,
                 R.anim.slide_in_right, R.anim.slide_out_left);
     }
@@ -53,8 +56,8 @@ public class FragmentUtils {
      * @param <F>              替换的Fragment类型
      */
     public static <F extends BaseFragment> void replaceFragment(
-            FragmentManager fragmentManager, int containerViewId, F f, boolean isAddToBack,
-            int enterAnimationId, int exitAnimationId) {
+            FragmentManager fragmentManager, @IdRes int containerViewId, F f, boolean isAddToBack,
+            @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         updateFragment(fragmentManager, containerViewId, f, isAddToBack, TYPE_REPLACE,
                 enterAnimationId, exitAnimationId);
     }
@@ -70,9 +73,9 @@ public class FragmentUtils {
      * @param enterAnimationId 入场动画
      * @param exitAnimationId  出场动画
      */
-    public static void updateFragment(FragmentManager manager, int containerViewId, Fragment fragment,
+    public static void updateFragment(FragmentManager manager, @IdRes int containerViewId, Fragment fragment,
                                       boolean isAddToBack, int type,
-                                      int enterAnimationId, int exitAnimationId) {
+                                      @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         FragmentTransaction transaction = manager.beginTransaction();
         if (enterAnimationId != NO_ID && exitAnimationId != NO_ID) {
             transaction.setCustomAnimations(enterAnimationId, exitAnimationId);
@@ -106,8 +109,8 @@ public class FragmentUtils {
      * @param enterAnimationId 入场动画
      * @param exitAnimationId  出场动画
      */
-    public static void showFragment(FragmentManager manager, int containerViewId, Fragment fragment,
-                                    int enterAnimationId, int exitAnimationId) {
+    public static void showFragment(FragmentManager manager, @IdRes int containerViewId, Fragment fragment,
+                                    @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         if (!fragment.isAdded()) {
             FragmentUtils.updateFragment(manager, containerViewId, fragment, false,
                     FragmentUtils.TYPE_ADD, enterAnimationId, exitAnimationId);
@@ -126,7 +129,7 @@ public class FragmentUtils {
      * @param exitAnimationId  出场动画
      */
     public static void hideFragment(FragmentManager fragmentManager, Fragment fragment,
-                                    int enterAnimationId, int exitAnimationId) {
+                                    @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         if (fragment != null && !fragment.isHidden()) {
             FragmentUtils.updateFragment(fragmentManager, FragmentUtils.NO_ID, fragment, false,
                     FragmentUtils.TYPE_HIDE, enterAnimationId, exitAnimationId);
@@ -143,9 +146,9 @@ public class FragmentUtils {
      * @param enterAnimationId 入场动画
      * @param exitAnimationId  出场动画
      */
-    public static void showAndHideFragment(FragmentManager fragmentManager, int containerViewId,
+    public static void showAndHideFragment(FragmentManager fragmentManager, @IdRes int containerViewId,
                                            Fragment hideFg, Fragment showFg,
-                                           int enterAnimationId, int exitAnimationId) {
+                                           @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         FragmentUtils.hideFragment(fragmentManager, hideFg, enterAnimationId, exitAnimationId);
         FragmentUtils.showFragment(fragmentManager, containerViewId, showFg,
                 enterAnimationId, exitAnimationId);

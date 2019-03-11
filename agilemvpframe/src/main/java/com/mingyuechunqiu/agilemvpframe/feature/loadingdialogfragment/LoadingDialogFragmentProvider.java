@@ -1,10 +1,15 @@
 package com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment;
 
 import android.graphics.drawable.Drawable;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+
+import com.mingyuechunqiu.agilemvpframe.util.FragmentUtils;
 
 /**
  * <pre>
@@ -21,6 +26,7 @@ class LoadingDialogFragmentProvider implements LoadingDfgProviderable {
 
     private LoadingDialogFragmentable mLoadingDfgable;
     private LoadingDialogFragmentOption mOption;
+    private Constants.ModeType mModeType;//当前所属模式
 
     LoadingDialogFragmentProvider(LoadingDialogFragmentable loadingDfgable) {
         mLoadingDfgable = loadingDfgable;
@@ -31,13 +37,29 @@ class LoadingDialogFragmentProvider implements LoadingDfgProviderable {
     @Override
     public boolean showLoadingDialog() {
         checkOrCreateLoadingDfgable();
+        if (getDialogFragment().isVisible()) {
+            return true;
+        }
+        if (mModeType == Constants.ModeType.TYPE_FRAGMENT) {
+            return false;
+        }
+        mModeType = Constants.ModeType.TYPE_DIALOG;
         return mLoadingDfgable.showLoadingDialog();
     }
 
     @Override
     public void showLoadingDialog(FragmentManager manager) {
         checkOrCreateLoadingDfgable();
+        if (getDialogFragment().isVisible()) {
+            return;
+        }
+        if (mModeType == Constants.ModeType.TYPE_FRAGMENT) {
+            hideLoadingDialog(manager);
+            removeLoadingDialog(manager);
+            mLoadingDfgable = LoadingDialogFragment.newInstance(mOption);
+        }
         mLoadingDfgable.showLoadingDialog(manager);
+        mModeType = Constants.ModeType.TYPE_DIALOG;
     }
 
     @Override
@@ -47,6 +69,7 @@ class LoadingDialogFragmentProvider implements LoadingDfgProviderable {
         }
         mLoadingDfgable.dismissLoadingDialog();
         mLoadingDfgable = null;
+        mModeType = Constants.ModeType.TYPE_NOT_SET;
     }
 
     @Override
@@ -56,6 +79,7 @@ class LoadingDialogFragmentProvider implements LoadingDfgProviderable {
         }
         mLoadingDfgable.release();
         mLoadingDfgable = null;
+        mModeType = Constants.ModeType.TYPE_NOT_SET;
     }
 
     @Override
@@ -144,12 +168,62 @@ class LoadingDialogFragmentProvider implements LoadingDfgProviderable {
     }
 
     @Override
+    public void addOrShowLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option) {
+        if (manager == null || getDialogFragment().isVisible()) {
+            return;
+        }
+        if (option != null) {
+            mOption = option;
+        }
+        if (mModeType == Constants.ModeType.TYPE_DIALOG) {
+            dismissLoadingDialog();
+        }
+        mLoadingDfgable = LoadingDialogFragment.newInstance(mOption);
+        FragmentTransaction transaction = manager.beginTransaction();
+        if (getDialogFragment().isAdded()) {
+            transaction.show(getDialogFragment()).commit();
+        } else {
+            transaction.add(containerId, getDialogFragment()).commit();
+        }
+        mModeType = Constants.ModeType.TYPE_FRAGMENT;
+    }
+
+    @Override
+    public void hideLoadingDialog(FragmentManager manager) {
+        if (manager == null || mModeType == Constants.ModeType.TYPE_DIALOG ||
+                !getDialogFragment().isAdded() || getDialogFragment().isHidden()) {
+            return;
+        }
+        manager.beginTransaction().hide(getDialogFragment()).commit();
+    }
+
+    @Override
+    public void removeLoadingDialog(FragmentManager manager) {
+        removeLoadingDialog(manager, getDialogFragment());
+    }
+
+    @Override
+    public void removeLoadingDialog(FragmentManager manager, DialogFragment dialogFragment) {
+        if (mModeType == Constants.ModeType.TYPE_DIALOG) {
+            return;
+        }
+        FragmentUtils.removeFragments(manager, true, dialogFragment);
+        mLoadingDfgable = null;
+    }
+
+    @Override
     public void resetLoadingDialog() {
         if (mLoadingDfgable != null) {
             mLoadingDfgable.dismissLoadingDialog();
             mLoadingDfgable = null;
         }
         mOption = null;
+    }
+
+    @Override
+    public DialogFragment getDialogFragment() {
+        checkOrCreateLoadingDfgable();
+        return mLoadingDfgable.getDialogFragment();
     }
 
     /**

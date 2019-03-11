@@ -43,7 +43,7 @@ public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNet
             }
             requestModel(info);
         } else {
-            if (mViewRef.get() != null) {
+            if (mViewRef != null && mViewRef.get() != null) {
                 disconnectNet();
             }
         }
@@ -65,7 +65,7 @@ public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNet
      * @return 当界面被回收和网络中断时返回false，否则返回true
      */
     protected boolean judgeNetwork() {
-        if (mViewRef.get() != null) {
+        if (mViewRef != null && mViewRef.get() != null) {
             if (!NetworkUtils.checkNetState(mViewRef.get().getCurrentContext())) {
                 mViewRef.get().showToast(R.string.network_disconnected);
                 return false;
@@ -81,7 +81,7 @@ public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNet
      * @return 存储的token值
      */
     protected String getToken() {
-        if (mViewRef.get() == null) {
+        if (mViewRef == null || mViewRef.get() == null) {
             return null;
         }
         String token = SharedPreferencesUtils.getString(

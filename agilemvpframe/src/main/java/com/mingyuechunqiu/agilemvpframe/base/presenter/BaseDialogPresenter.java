@@ -20,35 +20,13 @@ import com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment.LoadingDia
 public abstract class BaseDialogPresenter<V extends IBaseDialogView, M extends BaseAbstractModel> extends BaseAbstractPresenter<V, M> {
 
     /**
-     * 显示提示信息
-     *
-     * @param hint 提示文本
-     */
-    protected void showToast(@Nullable String hint) {
-        if (mViewRef.get() != null) {
-            mViewRef.get().showToast(hint);
-        }
-    }
-
-    /**
-     * 显示提示信息
-     *
-     * @param stringResourceId 提示文本资源ID
-     */
-    protected void showToast(@StringRes int stringResourceId) {
-        if (mViewRef.get() != null) {
-            mViewRef.get().showToast(stringResourceId);
-        }
-    }
-
-    /**
      * 显示加载对话框
      *
      * @param hint       提示文本
      * @param cancelable 对话框是否可以被取消
      */
     protected void showLoadingDialog(@Nullable String hint, boolean cancelable) {
-        if (mViewRef.get() != null) {
+        if (mViewRef != null && mViewRef.get() != null) {
             mViewRef.get().showLoadingDialog(hint, cancelable);
         }
     }
@@ -59,7 +37,7 @@ public abstract class BaseDialogPresenter<V extends IBaseDialogView, M extends B
      * @param option 加载配置参数信息对象
      */
     protected void showLoadingDialog(@Nullable LoadingDialogFragmentOption option) {
-        if (mViewRef.get() != null) {
+        if (mViewRef != null && mViewRef.get() != null) {
             mViewRef.get().showLoadingDialog(option);
         }
     }
@@ -68,7 +46,7 @@ public abstract class BaseDialogPresenter<V extends IBaseDialogView, M extends B
      * 关闭加载对话框
      */
     protected void dismissLoadingDialog() {
-        if (mViewRef.get() != null) {
+        if (mViewRef != null && mViewRef.get() != null) {
             mViewRef.get().dismissLoadingDialog();
         }
     }
@@ -79,7 +57,7 @@ public abstract class BaseDialogPresenter<V extends IBaseDialogView, M extends B
      * @param hint 提示文本
      */
     protected void showToastAndDismissLoadingDialog(@Nullable String hint) {
-        if (mViewRef.get() != null) {
+        if (mViewRef != null && mViewRef.get() != null) {
             mViewRef.get().showToast(hint);
             mViewRef.get().dismissLoadingDialog();
         }
@@ -91,7 +69,7 @@ public abstract class BaseDialogPresenter<V extends IBaseDialogView, M extends B
      * @param stringResourceId 提示文本资源ID
      */
     protected void showToastAndDismissLoadingDialog(@StringRes int stringResourceId) {
-        if (mViewRef.get() != null) {
+        if (mViewRef != null && mViewRef.get() != null) {
             mViewRef.get().showToast(stringResourceId);
             mViewRef.get().dismissLoadingDialog();
         }

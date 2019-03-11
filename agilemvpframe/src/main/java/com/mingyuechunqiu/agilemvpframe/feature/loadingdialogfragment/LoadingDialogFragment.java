@@ -73,7 +73,7 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (getDialog().getWindow() != null) {
+        if (getDialog() != null && getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
         View view;
@@ -93,22 +93,24 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
             tvText = view.findViewById(R.id.tv_agile_dfg_light_loading_text);
         }
         mDelegate.initialize(getDialog(), llContainer, pbLoading, tvText);
-        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (mDelegate == null) {
-                        return false;
+        if (getDialog() != null) {
+            getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        if (mDelegate == null) {
+                            return false;
+                        }
+                        //拦截返回键事件，是否要做额外处理
+                        if (mDelegate.getLoadingFragmentOption().getOnLoadingOptionListener() != null) {
+                            return mDelegate.getLoadingFragmentOption().getOnLoadingOptionListener()
+                                    .onClickKeyBack(dialog);
+                        }
                     }
-                    //拦截返回键事件，是否要做额外处理
-                    if (mDelegate.getLoadingFragmentOption().getOnLoadingOptionListener() != null) {
-                        return mDelegate.getLoadingFragmentOption().getOnLoadingOptionListener()
-                                .onClickKeyBack(dialog);
-                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+        }
         return view;
     }
 
@@ -270,6 +272,11 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
     @Override
     public void dismissLoadingDialog() {
         dismiss();
+    }
+
+    @Override
+    public DialogFragment getDialogFragment() {
+        return this;
     }
 
     /**

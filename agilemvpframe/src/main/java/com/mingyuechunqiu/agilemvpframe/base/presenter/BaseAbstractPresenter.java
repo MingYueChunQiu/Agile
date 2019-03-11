@@ -3,6 +3,8 @@ package com.mingyuechunqiu.agilemvpframe.base.presenter;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 
 import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.base.model.BaseTokenNetModel;
@@ -146,14 +148,24 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
         return mPresenterEngineList.remove(engine);
     }
 
-    protected void showToast(String hint) {
-        if (mViewRef.get() != null) {
+    /**
+     * 显示提示信息
+     *
+     * @param hint 提示文本
+     */
+    protected void showToast(@Nullable String hint) {
+        if (mViewRef != null && mViewRef.get() != null) {
             mViewRef.get().showToast(hint);
         }
     }
 
-    protected void showToast(int stringResourceId) {
-        if (mViewRef.get() != null) {
+    /**
+     * 显示提示信息
+     *
+     * @param stringResourceId 提示文本资源ID
+     */
+    protected void showToast(@StringRes int stringResourceId) {
+        if (mViewRef != null && mViewRef.get() != null) {
             mViewRef.get().showToast(stringResourceId);
         }
     }

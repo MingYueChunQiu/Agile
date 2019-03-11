@@ -1,11 +1,14 @@
 package com.mingyuechunqiu.agilemvpframeproject.feature.video;
 
+import android.animation.ValueAnimator;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.card.MaterialCardView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.mingyuechunqiu.agilemvpframe.feature.playermanager.video.VideoPlayerOption;
@@ -30,8 +33,34 @@ public class VideoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-        FrameLayout flContainer = findViewById(R.id.fl_video);
-        managerable = VideoPlayerManagerFactory.newInstance(this, flContainer,
+        AppCompatButton btnBig = findViewById(R.id.btn_big);
+        final FrameLayout flSmall = findViewById(R.id.fl_small);
+        final FrameLayout flBig = findViewById(R.id.fl_big);
+        btnBig.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = flSmall.getChildAt(0);
+                flSmall.removeViewAt(0);
+                flBig.addView(view);
+                ValueAnimator animator = ValueAnimator.ofInt(flSmall.getHeight(), 0).setDuration(500);
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        flSmall.getLayoutParams().height = (int) animation.getAnimatedValue();
+                        flSmall.requestLayout();
+                    }
+                });
+//                animator.addListener(new AnimatorListenerAdapter() {
+//                    @Override
+//                    public void onAnimationEnd(Animator animation) {
+//                        super.onAnimationEnd(animation);
+//                        flSmall.getLayoutParams().height = 0;
+//                    }
+//                });
+                animator.start();
+            }
+        });
+        managerable = VideoPlayerManagerFactory.newInstance(this, flSmall,
                 new VideoPlayerOption.Builder().setVideoSource("http://live.ehailuo.com/ehello_123/behind.m3u8?auth_key=1582180883-0-0-e99fa77b60031f432b927c57148c4dd0")
                         .setPlaceholderDrawable(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))).build());
         MaterialCardView cardView = managerable.getVideoPlayerOption().getContainerable().getContainerView();
@@ -39,21 +68,21 @@ public class VideoActivity extends AppCompatActivity {
 //        managerable.setVideoSource("http://live.ehailuo.com/ehello_123/behind.m3u8?auth_key=1582180883-0-0-e99fa77b60031f432b927c57148c4dd0");
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        managerable.pause();
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        managerable.start();
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        managerable.releaseOnDestroyView();
-//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        managerable.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        managerable.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        managerable.release();
+    }
 }

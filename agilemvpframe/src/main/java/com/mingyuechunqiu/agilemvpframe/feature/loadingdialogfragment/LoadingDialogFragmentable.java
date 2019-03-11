@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment;
 
+import android.support.v4.app.DialogFragment;
+
 /**
  * <pre>
  *     author : xyj
@@ -12,4 +14,6 @@ package com.mingyuechunqiu.agilemvpframe.feature.loadingdialogfragment;
  * </pre>
  */
 public interface LoadingDialogFragmentable extends LoadingDfgFunctionable, LoadingDfgControlable {
+
+    DialogFragment getDialogFragment();
 }

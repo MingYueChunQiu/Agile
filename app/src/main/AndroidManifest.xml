@@ -28,12 +28,13 @@
 
         </activity>
         <activity android:name="com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity" />
-        <activity
-            android:name=".feature.video.VideoActivity"
-            android:screenOrientation="landscape">
+        <activity android:name=".feature.video.VideoActivity">
 
         </activity>
         <activity android:name=".feature.video.VideoDemoActivity">
+
+        </activity>
+        <activity android:name=".feature.loading.DialogActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />

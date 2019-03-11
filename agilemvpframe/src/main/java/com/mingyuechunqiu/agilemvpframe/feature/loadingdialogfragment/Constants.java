@@ -16,4 +16,10 @@ public class Constants {
     public enum ThemeType {
         LIGHT_THEME, DARK_THEME
     }
+
+    //模式类型
+    public enum ModeType {
+        //未设置，对话框模式，Fragment模式
+        TYPE_NOT_SET, TYPE_DIALOG, TYPE_FRAGMENT
+    }
 }

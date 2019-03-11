@@ -2,9 +2,11 @@ package com.mingyuechunqiu.agilemvpframe.ui.activity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -210,6 +212,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (mLoadingDfgProvider != null) {
             mLoadingDfgProvider.dismissLoadingDialog();
         }
+    }
+
+    /**
+     * 添加显示对话框
+     *
+     * @param manager     Fragment管理器
+     * @param containerId 父布局ID
+     * @param option      加载对话框配置信息对象
+     */
+    protected void addOrShowLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option) {
+        getLoadingDialog().addOrShowLoadingDialog(manager, containerId, option);
+    }
+
+    /**
+     * 隐藏加载对话框
+     *
+     * @param manager Fragment管理器
+     */
+    protected void hideLoadingDialog(FragmentManager manager) {
+        getLoadingDialog().hideLoadingDialog(manager);
     }
 
     /**
