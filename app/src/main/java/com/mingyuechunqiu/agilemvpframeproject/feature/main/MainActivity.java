@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
@@ -99,16 +98,6 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     @Override
     public void hideLoadingDialog() {
         super.hideLoadingDialog(getSupportFragmentManager());
-    }
-
-    @Override
-    public void addOrShowLoadingDialog(FragmentManager manager, int containerId, LoadingDialogFragmentOption option) {
-        super.addOrShowLoadingDialog(manager, containerId, option);
-    }
-
-    @Override
-    public void hideLoadingDialog(FragmentManager manager) {
-        super.hideLoadingDialog(manager);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agilemvpframe.base.presenter;
 
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
@@ -48,6 +49,27 @@ public abstract class BaseDialogPresenter<V extends IBaseDialogView, M extends B
     protected void dismissLoadingDialog() {
         if (mViewRef != null && mViewRef.get() != null) {
             mViewRef.get().dismissLoadingDialog();
+        }
+    }
+
+    /**
+     * 添加显示加载对话框
+     *
+     * @param containerId 对话框所属布局ID
+     * @param option      加载对话框配置信息对象
+     */
+    protected void addOrShowLoadingDialog(@IdRes int containerId, LoadingDialogFragmentOption option) {
+        if (mViewRef != null && mViewRef.get() != null) {
+            mViewRef.get().addOrShowLoadingDialog(containerId, option);
+        }
+    }
+
+    /**
+     * 隐藏加载对话框
+     */
+    protected void hideLoadingDialog() {
+        if (mViewRef != null && mViewRef.get() != null) {
+            mViewRef.get().hideLoadingDialog();
         }
     }
 
