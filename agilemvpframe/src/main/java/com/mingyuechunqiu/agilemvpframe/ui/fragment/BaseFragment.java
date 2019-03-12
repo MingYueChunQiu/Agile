@@ -268,7 +268,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 添加显示对话框
+     * 添加显示加载对话框
      *
      * @param manager     Fragment管理器
      * @param containerId 父布局ID
