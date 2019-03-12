@@ -218,7 +218,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 添加显示加载对话框
      *
      * @param manager     Fragment管理器
-     * @param containerId 父布局ID
+     * @param containerId 对话框所属布局ID
      * @param option      加载对话框配置信息对象
      */
     protected void addOrShowLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option) {

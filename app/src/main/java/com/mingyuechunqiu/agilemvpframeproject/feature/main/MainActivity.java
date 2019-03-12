@@ -92,6 +92,16 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
+    public void addOrShowLoadingDialog(int containerId, LoadingDialogFragmentOption option) {
+        super.addOrShowLoadingDialog(getSupportFragmentManager(), containerId, option);
+    }
+
+    @Override
+    public void hideLoadingDialog() {
+        super.hideLoadingDialog(getSupportFragmentManager());
+    }
+
+    @Override
     public void addOrShowLoadingDialog(FragmentManager manager, int containerId, LoadingDialogFragmentOption option) {
         super.addOrShowLoadingDialog(manager, containerId, option);
     }
