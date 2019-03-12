@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.mingyuechunqiu.agilemvpframe.feature.loading.Constants;
 import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDfgProvideFactory;
 import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDfgProviderable;
 import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDialogFragmentOption;
@@ -178,7 +179,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         LoadingDialogFragmentOption option = getLoadingDialog().getLoadingFragmentOption();
         option.setText(hint);
         option.setCancelWithOutside(cancelable);
-        showLoadingDialog(option);
+        showLoadingDialog(interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_DIALOG));
     }
 
     /**
@@ -187,15 +188,16 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param option 加载配置参数信息对象
      */
     protected void showLoadingDialog(@Nullable LoadingDialogFragmentOption option) {
+        LoadingDialogFragmentOption temp = interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_DIALOG);
         if (getSupportFragmentManager() == null) {
             return;
         }
         if (mLoadingDfgProvider == null) {
-            mLoadingDfgProvider = LoadingDfgProvideFactory.newInstance(option);
+            mLoadingDfgProvider = LoadingDfgProvideFactory.newInstance(temp);
         } else {
             //在这儿默认逻辑为如果option为空，代表不变
-            if (option != null) {
-                mLoadingDfgProvider.setLoadingFragmentOption(option);
+            if (temp != null) {
+                mLoadingDfgProvider.setLoadingFragmentOption(temp);
             }
             if (mLoadingDfgProvider.showLoadingDialog()) {
                 return;
@@ -222,7 +224,8 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param option      加载对话框配置信息对象
      */
     protected void addOrShowLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option) {
-        getLoadingDialog().addOrShowLoadingDialog(manager, containerId, option);
+        getLoadingDialog().addOrShowLoadingDialog(manager, containerId,
+                interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_FRAGMENT));
     }
 
     /**
@@ -245,6 +248,18 @@ public abstract class BaseActivity extends AppCompatActivity {
             mLoadingDfgProvider = LoadingDfgProvideFactory.newInstance();
         }
         return mLoadingDfgProvider;
+    }
+
+    /**
+     * 拦截加载对话框配置信息对象
+     *
+     * @param option   加载对话框配置信息对象
+     * @param modeType 加载对话框模式
+     * @return 返回进行过拦截处理的加载对话框配置信息对象
+     */
+    protected LoadingDialogFragmentOption interceptLoadingFragmentOption(
+            @Nullable LoadingDialogFragmentOption option, Constants.ModeType modeType) {
+        return modeType == Constants.ModeType.TYPE_NOT_SET ? null : option;
     }
 
     /**
