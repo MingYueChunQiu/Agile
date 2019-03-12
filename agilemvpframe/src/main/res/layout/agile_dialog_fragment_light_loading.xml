@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@drawable/shape_dialog"
+        android:elevation="@dimen/dp_10"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/dp_20">
@@ -29,7 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
-            android:text="@string/prompt_loading" />
+            android:text="@string/prompt_loading"
+            android:textColor="@android:color/black" />
     </android.support.v7.widget.LinearLayoutCompat>
 
 </RelativeLayout>
