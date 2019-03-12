@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseActivity;
 import com.mingyuechunqiu.agilemvpframeproject.R;
-import com.mingyuechunqiu.agilemvpframeproject.feature.main.MainFragment;
 
 /**
  * <pre>
@@ -36,7 +35,7 @@ public class DialogActivity extends BaseActivity implements View.OnClickListener
         btnDismiss.setOnClickListener(this);
         btnTest.setOnClickListener(this);
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_loading_container, new MainFragment()).commit();
+                .add(R.id.fl_loading_container, new DialogFragmentTest()).commit();
     }
 
     @Override
