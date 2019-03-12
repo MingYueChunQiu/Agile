@@ -1,6 +1,8 @@
 package com.mingyuechunqiu.agilemvpframe.base.view;
 
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
 import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDfgProviderable;
@@ -27,16 +29,32 @@ public interface IBaseDialogView<P extends BaseDialogPresenter> extends IBaseVie
     void showLoadingDialog(@Nullable String hint, boolean cancelable);
 
     /**
-     * 关闭加载对话框
-     */
-    void dismissLoadingDialog();
-
-    /**
      * 显示加载Fragment
      *
      * @param option 加载配置参数信息对象
      */
     void showLoadingDialog(@Nullable LoadingDialogFragmentOption option);
+
+    /**
+     * 关闭加载对话框
+     */
+    void dismissLoadingDialog();
+
+    /**
+     * 添加显示对话框
+     *
+     * @param manager     Fragment管理器
+     * @param containerId 父布局ID
+     * @param option      加载对话框配置信息对象
+     */
+    void addOrShowLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option);
+
+    /**
+     * 隐藏加载对话框
+     *
+     * @param manager Fragment管理器
+     */
+    void hideLoadingDialog(FragmentManager manager);
 
     /**
      * 获取加载Fragment提供者实例
