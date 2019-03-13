@@ -30,6 +30,8 @@ interface LoadingDfgControlable {
 
     /**
      * 关闭加载对话框
+     *
+     * @param allowStateLoss 是否允许丢失状态信息
      */
-    void dismissLoadingDialog();
+    void dismissLoadingDialog(boolean allowStateLoss);
 }

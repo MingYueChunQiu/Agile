@@ -212,7 +212,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void dismissLoadingDialog() {
         if (mLoadingDfgProvider != null) {
-            mLoadingDfgProvider.dismissLoadingDialog();
+            mLoadingDfgProvider.dismissLoadingDialog(true);
         }
     }
 

@@ -265,7 +265,7 @@ public abstract class BaseFragment extends Fragment {
      */
     protected void dismissLoadingDialog() {
         if (mLoadingDfgProvider != null) {
-            mLoadingDfgProvider.dismissLoadingDialog();
+            mLoadingDfgProvider.dismissLoadingDialog(true);
         }
     }
 
@@ -288,6 +288,15 @@ public abstract class BaseFragment extends Fragment {
      */
     protected void hideLoadingDialog(FragmentManager manager) {
         getLoadingDialog().hideLoadingDialog(manager);
+    }
+
+    /**
+     * 移除加载对话框
+     *
+     * @param manager Fragment管理器
+     */
+    protected void removeLoadingDialog(FragmentManager manager) {
+        getLoadingDialog().removeLoadingDialog(manager);
     }
 
     /**

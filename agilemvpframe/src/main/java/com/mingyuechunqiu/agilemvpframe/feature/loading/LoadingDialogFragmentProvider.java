@@ -63,11 +63,11 @@ class LoadingDialogFragmentProvider implements LoadingDfgProviderable {
     }
 
     @Override
-    public void dismissLoadingDialog() {
+    public void dismissLoadingDialog(boolean allowStateLoss) {
         if (mLoadingDfgable == null) {
             return;
         }
-        mLoadingDfgable.dismissLoadingDialog();
+        mLoadingDfgable.dismissLoadingDialog(allowStateLoss);
         mLoadingDfgable = null;
         mModeType = Constants.ModeType.TYPE_NOT_SET;
     }
@@ -159,7 +159,7 @@ class LoadingDialogFragmentProvider implements LoadingDfgProviderable {
     @Override
     public void setThemeType(Constants.ThemeType themeType) {
         if (mLoadingDfgable != null) {
-            mLoadingDfgable.dismissLoadingDialog();
+            mLoadingDfgable.dismissLoadingDialog(true);
             mLoadingDfgable = null;
         }
         checkOrCreateLoadingDfgable();
@@ -176,14 +176,14 @@ class LoadingDialogFragmentProvider implements LoadingDfgProviderable {
             mOption = option;
         }
         if (mModeType == Constants.ModeType.TYPE_DIALOG) {
-            dismissLoadingDialog();
+            dismissLoadingDialog(true);
         }
         mLoadingDfgable = LoadingDialogFragment.newInstance(mOption);
         FragmentTransaction transaction = manager.beginTransaction();
         if (getDialogFragment().isAdded()) {
-            transaction.show(getDialogFragment()).commit();
+            transaction.show(getDialogFragment()).commitAllowingStateLoss();
         } else {
-            transaction.add(containerId, getDialogFragment()).commit();
+            transaction.add(containerId, getDialogFragment()).commitAllowingStateLoss();
         }
         mModeType = Constants.ModeType.TYPE_FRAGMENT;
     }
@@ -194,7 +194,7 @@ class LoadingDialogFragmentProvider implements LoadingDfgProviderable {
                 !getDialogFragment().isAdded() || getDialogFragment().isHidden()) {
             return;
         }
-        manager.beginTransaction().hide(getDialogFragment()).commit();
+        manager.beginTransaction().hide(getDialogFragment()).commitAllowingStateLoss();
     }
 
     @Override
@@ -214,7 +214,7 @@ class LoadingDialogFragmentProvider implements LoadingDfgProviderable {
     @Override
     public void resetLoadingDialog() {
         if (mLoadingDfgable != null) {
-            mLoadingDfgable.dismissLoadingDialog();
+            mLoadingDfgable.dismissLoadingDialog(true);
             mLoadingDfgable = null;
         }
         mOption = null;

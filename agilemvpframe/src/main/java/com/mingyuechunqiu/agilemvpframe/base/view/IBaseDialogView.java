@@ -35,7 +35,7 @@ public interface IBaseDialogView<P extends BaseDialogPresenter> extends IBaseVie
     void showLoadingDialog(@Nullable LoadingDialogFragmentOption option);
 
     /**
-     * 关闭加载对话框
+     * 关闭加载对话框（默认关闭时允许丢失状态）
      */
     void dismissLoadingDialog();
 

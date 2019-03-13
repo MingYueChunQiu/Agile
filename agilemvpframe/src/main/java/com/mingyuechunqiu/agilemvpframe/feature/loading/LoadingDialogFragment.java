@@ -270,8 +270,15 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
     }
 
     @Override
-    public void dismissLoadingDialog() {
-        dismiss();
+    public void dismissLoadingDialog(boolean allowStateLoss) {
+        /* 在某些情况下调用对话框dismiss时，会出现
+         * java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+         * 所以要调用commitAllowingStateLoss方法*/
+        if (allowStateLoss) {
+            dismissAllowingStateLoss();
+        } else {
+            dismiss();
+        }
     }
 
     @Override
