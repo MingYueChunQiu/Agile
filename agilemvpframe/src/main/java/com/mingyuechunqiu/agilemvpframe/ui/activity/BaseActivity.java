@@ -60,6 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        dismissLoadingDialog();
         super.onDestroy();
         release();
         if (mKeyDownListenerList != null) {
@@ -67,7 +68,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             mKeyDownListenerList = null;
         }
         mToast = null;
-        dismissLoadingDialog();
         mLoadingDfgProvider = null;
     }
 
