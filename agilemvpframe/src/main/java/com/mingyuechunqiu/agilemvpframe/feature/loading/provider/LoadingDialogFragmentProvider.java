@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agilemvpframe.feature.loading;
+package com.mingyuechunqiu.agilemvpframe.feature.loading.provider;
 
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IdRes;
@@ -9,6 +9,10 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.Constants;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.function.LoadingDialogFragment;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.function.LoadingDialogFragmentable;
 import com.mingyuechunqiu.agilemvpframe.util.FragmentUtils;
 
 /**

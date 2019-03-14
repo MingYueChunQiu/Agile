@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agilemvpframe.feature.loading;
+package com.mingyuechunqiu.agilemvpframe.feature.loading.function;
 
 import android.support.v4.app.FragmentManager;
 

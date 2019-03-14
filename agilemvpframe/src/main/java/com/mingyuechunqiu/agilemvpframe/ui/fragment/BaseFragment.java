@@ -16,10 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.mingyuechunqiu.agilemvpframe.feature.loading.Constants;
-import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDfgProvideFactory;
-import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDfgProviderable;
-import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.Constants;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.provider.LoadingDfgProvideFactory;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.provider.LoadingDfgProviderable;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseActivity;
 
 import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
@@ -103,8 +103,8 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param fragment 当前fragment
      */
-    protected void addBackKeyToPreFragmentWithActivity(final BaseFragment fragment) {
-        if (getActivity() != null && getActivity() instanceof BaseActivity) {
+    protected void addBackKeyToPreFragmentWithActivity(final Fragment fragment) {
+        if (getActivity() instanceof BaseActivity) {
             ((BaseActivity) getActivity()).addOnKeyDownListener(new OnKeyDownListener() {
                 @Override
                 public boolean onFragmentKeyDown(int i, KeyEvent keyEvent) {
@@ -122,13 +122,13 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param fragment 当前fragment
      */
-    protected void addBackKeyToPreFgWithParentFg(final BaseFragment fragment) {
-        if (getActivity() != null && getActivity() instanceof BaseActivity) {
+    protected void addBackKeyToPreFgWithParentFg(final Fragment fragment) {
+        if (getActivity() instanceof BaseActivity) {
             ((BaseActivity) getActivity()).addOnKeyDownListener(new OnKeyDownListener() {
                 @Override
                 public boolean onFragmentKeyDown(int i, KeyEvent keyEvent) {
                     if (isVisible()) {
-                        return returnToPreviousPageWithParentFg(fragment);
+                        return returnToPreviousPageWithParentFg(fragment, null);
                     }
                     return false;
                 }
@@ -137,31 +137,47 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 返回上一个界面
+     * 返回父fragment界面
      *
-     * @param fragment 当前fragment
-     * @return 如果进行回调则返回true，否则返回false
+     * @param fragment    当前fragment
+     * @param interceptor 对跳转参数进行拦截设置
+     * @return 如果成功进行回调则返回true，否则返回false
      */
-    protected boolean returnToPreviousPageWithParentFg(@NonNull BaseFragment fragment) {
-        return returnToPreviousPageWithParentFg(fragment, null);
+    protected boolean returnToPreviousPageWithParentFg(@NonNull Fragment fragment,
+                                                       JumpPageInterceptor interceptor) {
+        return returnToPreviousPageWithFragment(fragment, getParentFragment(), interceptor);
+    }
+
+    /**
+     * 返回目标fragment界面
+     *
+     * @param fragment    当前fragment
+     * @param interceptor 对跳转参数进行拦截设置
+     * @return 如果成功进行回调则返回true，否则返回false
+     */
+    protected boolean returnToPreviousPageWithTargetFg(@NonNull Fragment fragment,
+                                                       JumpPageInterceptor interceptor) {
+        return returnToPreviousPageWithFragment(fragment, getTargetFragment(), interceptor);
     }
 
     /**
      * 返回上一个界面
      *
      * @param fragment    当前fragment
+     * @param parentFg    fragment的父fragment
      * @param interceptor 对跳转参数进行拦截设置
      * @return 如果进行回调则返回true，否则返回false
      */
-    protected boolean returnToPreviousPageWithParentFg(@NonNull BaseFragment fragment,
+    protected boolean returnToPreviousPageWithFragment(@NonNull Fragment fragment,
+                                                       Fragment parentFg,
                                                        JumpPageInterceptor interceptor) {
-        if (getParentFragment() != null && getParentFragment() instanceof Callback) {
+        if (parentFg instanceof Callback) {
             Bundle bundle = new Bundle();
             bundle.putBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE, true);
             if (interceptor != null) {
                 interceptor.interceptJumpPage(bundle);
             }
-            ((Callback) getParentFragment()).onCall(fragment, bundle);
+            ((Callback) parentFg).onCall(fragment, bundle);
             return true;
         }
         return false;
@@ -173,7 +189,7 @@ public abstract class BaseFragment extends Fragment {
      * @param fragment 当前fragment
      * @return 如果进行回调则返回true，否则返回false
      */
-    protected boolean returnToPreviousPageWithActivity(@NonNull BaseFragment fragment) {
+    protected boolean returnToPreviousPageWithActivity(@NonNull Fragment fragment) {
         return returnToPreviousPageWithActivity(fragment, null);
     }
 
@@ -184,7 +200,7 @@ public abstract class BaseFragment extends Fragment {
      * @param interceptor 对跳转参数进行拦截设置
      * @return 如果进行回调则返回true，否则返回false
      */
-    protected boolean returnToPreviousPageWithActivity(@NonNull BaseFragment fragment,
+    protected boolean returnToPreviousPageWithActivity(@NonNull Fragment fragment,
                                                        JumpPageInterceptor interceptor) {
         FragmentActivity activity = fragment.getActivity();
         if (activity instanceof BaseFragment.Callback) {
@@ -197,6 +213,20 @@ public abstract class BaseFragment extends Fragment {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 添加按键监听事件
+     *
+     * @param listener 按键监听器
+     */
+    protected void addOnKeyDownListenerToActivity(OnKeyDownListener listener) {
+        if (listener == null) {
+            return;
+        }
+        if (getActivity() instanceof BaseActivity) {
+            ((BaseActivity) getActivity()).addOnKeyDownListener(listener);
+        }
     }
 
     /**
@@ -354,7 +384,7 @@ public abstract class BaseFragment extends Fragment {
          * @param fragment 传递Fragment自身给其所在的Activity使用
          * @param bundle   用于Fragment向Activity传递数据
          */
-        void onCall(BaseFragment fragment, Bundle bundle);
+        void onCall(Fragment fragment, Bundle bundle);
     }
 
     /**

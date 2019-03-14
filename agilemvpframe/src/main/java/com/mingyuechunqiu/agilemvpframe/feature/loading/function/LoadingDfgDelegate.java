@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agilemvpframe.feature.loading;
+package com.mingyuechunqiu.agilemvpframe.feature.loading.function;
 
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;
@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.LoadingDialogFragmentOption;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

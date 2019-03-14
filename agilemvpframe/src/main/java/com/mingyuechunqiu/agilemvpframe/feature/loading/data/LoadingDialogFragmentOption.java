@@ -1,10 +1,12 @@
-package com.mingyuechunqiu.agilemvpframe.feature.loading;
+package com.mingyuechunqiu.agilemvpframe.feature.loading.data;
 
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
+
+import com.mingyuechunqiu.agilemvpframe.feature.loading.function.LoadingDfgContainerable;
 
 /**
  * <pre>
@@ -18,6 +20,7 @@ import android.support.v4.app.DialogFragment;
  */
 public class LoadingDialogFragmentOption {
 
+    private LoadingDfgContainerable containerable;//对话框布局容器（使用了自定义容器，主题类型属性将不起作用）
     private Constants.ThemeType themeType;//对话框主题类型
     private boolean cancelWithOutside;//是否能触摸外围区域取消对话框
     private int dialogWidth, dialogHeight;//对话框宽高
@@ -32,6 +35,14 @@ public class LoadingDialogFragmentOption {
 
     public LoadingDialogFragmentOption() {
         showLoadingText = true;
+    }
+
+    public LoadingDfgContainerable getContainerable() {
+        return containerable;
+    }
+
+    public void setContainerable(LoadingDfgContainerable containerable) {
+        this.containerable = containerable;
     }
 
     public Constants.ThemeType getThemeType() {
@@ -143,6 +154,15 @@ public class LoadingDialogFragmentOption {
 
         public LoadingDialogFragmentOption build() {
             return mOption;
+        }
+
+        public LoadingDfgContainerable getContainerable() {
+            return mOption.containerable;
+        }
+
+        public Builder setContainerable(LoadingDfgContainerable containerable) {
+            mOption.containerable = containerable;
+            return this;
         }
 
         public Constants.ThemeType getThemeType() {

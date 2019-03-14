@@ -206,7 +206,7 @@ public class FragmentUtils {
      * 移除Fragment
      *
      * @param fragmentManager     Fragment管理器
-     * @param isAllowingStateLoss 是否允许丧失状态
+     * @param isAllowingStateLoss 是否允许丢失状态
      * @param fragmentList        要移除的Fragment集合
      */
     public static void removeFragments(@Nullable FragmentManager fragmentManager,

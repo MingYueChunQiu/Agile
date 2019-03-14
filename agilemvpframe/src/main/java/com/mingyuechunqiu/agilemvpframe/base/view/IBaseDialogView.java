@@ -4,8 +4,8 @@ import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
-import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDfgProviderable;
-import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.provider.LoadingDfgProviderable;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.LoadingDialogFragmentOption;
 
 /**
  * <pre>

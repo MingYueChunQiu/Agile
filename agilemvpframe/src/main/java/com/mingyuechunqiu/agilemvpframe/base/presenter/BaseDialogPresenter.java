@@ -6,7 +6,7 @@ import android.support.annotation.StringRes;
 
 import com.mingyuechunqiu.agilemvpframe.base.model.BaseAbstractModel;
 import com.mingyuechunqiu.agilemvpframe.base.view.IBaseDialogView;
-import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.LoadingDialogFragmentOption;
 
 /**
  * <pre>

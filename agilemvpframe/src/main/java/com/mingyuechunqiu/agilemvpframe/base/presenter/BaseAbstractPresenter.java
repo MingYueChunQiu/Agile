@@ -124,15 +124,16 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * 添加模型层engine单元
      *
      * @param engine engine单元模块
+     * @return 如果添加成功返回true，否则返回false
      */
-    protected void addPresenterEngine(IPresenterEngine engine) {
+    protected boolean addPresenterEngine(IPresenterEngine engine) {
         if (engine == null) {
-            return;
+            return false;
         }
         if (mPresenterEngineList == null) {
             mPresenterEngineList = new ArrayList<>();
         }
-        mPresenterEngineList.add(engine);
+        return mPresenterEngineList.add(engine);
     }
 
     /**

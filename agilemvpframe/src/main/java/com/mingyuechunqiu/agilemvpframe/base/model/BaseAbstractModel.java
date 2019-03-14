@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agilemvpframe.base.model;
 
 import com.mingyuechunqiu.agilemvpframe.R;
 import com.mingyuechunqiu.agilemvpframe.base.framework.IBaseListener;
+import com.mingyuechunqiu.agilemvpframe.base.dao.IDao;
 import com.mingyuechunqiu.agilemvpframe.base.model.part.IModelPart;
 import com.mingyuechunqiu.agilemvpframe.data.bean.BaseInfo;
 
@@ -25,6 +26,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
 
     protected I mListener;
     protected List<IModelPart> mModelPartList;
+    protected List<IDao> mDaoList;
 
     public BaseAbstractModel(I listener) {
         mListener = listener;
@@ -52,11 +54,20 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
         if (mModelPartList != null) {
             for (IModelPart part : mModelPartList) {
                 if (part != null) {
-                    part.destroy();
+                    part.release();
                 }
             }
             mModelPartList.clear();
             mModelPartList = null;
+        }
+        if (mDaoList != null) {
+            for (IDao dao : mDaoList) {
+                if (dao != null) {
+                    dao.release();
+                }
+            }
+            mDaoList.clear();
+            mDaoList = null;
         }
     }
 
@@ -80,15 +91,16 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * 添加模型层part单元
      *
      * @param part part单元模块
+     * @return 如果添加成功返回true，否则返回false
      */
-    protected void addModelPart(IModelPart part) {
+    protected boolean addModelPart(IModelPart part) {
         if (part == null) {
-            return;
+            return false;
         }
         if (mModelPartList == null) {
             mModelPartList = new ArrayList<>();
         }
-        mModelPartList.add(part);
+        return mModelPartList.add(part);
     }
 
     /**
@@ -102,6 +114,35 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
             return false;
         }
         return mModelPartList.remove(part);
+    }
+
+    /**
+     * 添加Dao层单元
+     *
+     * @param dao dao单元
+     * @return 如果添加成功返回true，否则返回false
+     */
+    protected boolean addDao(IDao dao) {
+        if (dao == null) {
+            return false;
+        }
+        if (mDaoList == null) {
+            mDaoList = new ArrayList<>();
+        }
+        return mDaoList.add(dao);
+    }
+
+    /**
+     * 删除dao单元
+     *
+     * @param dao dao单元
+     * @return 如果删除成功返回true，否则返回false
+     */
+    protected boolean removeDao(IDao dao) {
+        if (dao == null || mDaoList == null) {
+            return false;
+        }
+        return mDaoList.remove(dao);
     }
 
     /**

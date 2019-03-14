@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agilemvpframe.feature.loading;
+package com.mingyuechunqiu.agilemvpframe.feature.loading.function;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -11,15 +11,16 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.mingyuechunqiu.agilemvpframe.R;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.Constants;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.LoadingDialogFragmentOption;
 
 /**
  * <pre>
@@ -77,22 +78,30 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
         View view;
-        LinearLayoutCompat llContainer;
+        View loadingContainer;
         ProgressBar pbLoading;
-        AppCompatTextView tvText;
+        TextView tvText;
         checkOrCreateLoadingDfgDelegate();
-        if (mDelegate.getLoadingFragmentOption().getThemeType() == Constants.ThemeType.DARK_THEME) {
-            view = inflater.inflate(R.layout.agile_dialog_fragment_dark_loading, container, false);
-            llContainer = view.findViewById(R.id.ll_agile_dfg_dark_loading_container);
-            pbLoading = view.findViewById(R.id.pb_agile_dfg_dark_loading_progress);
-            tvText = view.findViewById(R.id.tv_agile_dfg_dark_loading_text);
+        if (mDelegate.getLoadingFragmentOption().getContainerable() != null) {
+            LoadingDfgContainerable containerable = mDelegate.getLoadingFragmentOption().getContainerable();
+            view = containerable.getContainer();
+            loadingContainer = containerable.getLoadingContainer();
+            pbLoading = containerable.getProgressBar();
+            tvText = containerable.getTextView();
         } else {
-            view = inflater.inflate(R.layout.agile_dialog_fragment_light_loading, container, false);
-            llContainer = view.findViewById(R.id.ll_agile_dfg_light_loading_container);
-            pbLoading = view.findViewById(R.id.pb_agile_dfg_light_loading_progress);
-            tvText = view.findViewById(R.id.tv_agile_dfg_light_loading_text);
+            if (mDelegate.getLoadingFragmentOption().getThemeType() == Constants.ThemeType.DARK_THEME) {
+                view = inflater.inflate(R.layout.agile_dialog_fragment_dark_loading, container, false);
+                loadingContainer = view.findViewById(R.id.ll_agile_dfg_dark_loading_container);
+                pbLoading = view.findViewById(R.id.pb_agile_dfg_dark_loading_progress);
+                tvText = view.findViewById(R.id.tv_agile_dfg_dark_loading_text);
+            } else {
+                view = inflater.inflate(R.layout.agile_dialog_fragment_light_loading, container, false);
+                loadingContainer = view.findViewById(R.id.ll_agile_dfg_light_loading_container);
+                pbLoading = view.findViewById(R.id.pb_agile_dfg_light_loading_progress);
+                tvText = view.findViewById(R.id.tv_agile_dfg_light_loading_text);
+            }
         }
-        mDelegate.initialize(getDialog(), llContainer, pbLoading, tvText);
+        mDelegate.initialize(getDialog(), loadingContainer, pbLoading, tvText);
         if (getDialog() != null) {
             getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
                 @Override

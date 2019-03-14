@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mingyuechunqiu.agilemvpframe.feature.loading.Constants;
-import com.mingyuechunqiu.agilemvpframe.feature.loading.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.Constants;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agilemvpframeproject.R;
 
