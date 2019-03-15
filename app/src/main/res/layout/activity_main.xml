@@ -48,10 +48,9 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:cpb_idle_ring_color="@color/colorPrimary"
-        app:cpb_is_timer_mode="true"
         app:cpb_max_progress="15"
-        app:cpb_released_ring_color="@color/colorAccent"
-        app:cpb_ring_padding="@dimen/dp_4" />
+        app:cpb_pressed_inner_padding="@dimen/dp_4"
+        app:cpb_released_ring_color="@color/colorAccent" />
 
     <com.mingyuechunqiu.agilemvpframe.ui.widget.PullDownEditText
         android:layout_width="match_parent"
