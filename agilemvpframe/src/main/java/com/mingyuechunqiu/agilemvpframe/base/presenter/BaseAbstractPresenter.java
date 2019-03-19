@@ -42,6 +42,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
                 ((BaseTokenNetModel) mModel).setContextRef(mViewRef.get().getCurrentContext());
             }
         }
+        onAttachView(view, mModel);
     }
 
     @Override
@@ -169,6 +170,15 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
         if (mViewRef != null && mViewRef.get() != null) {
             mViewRef.get().showToast(stringResourceId);
         }
+    }
+
+    /**
+     * 当和视图View进行依附关联时调用
+     *
+     * @param view  依附的View
+     * @param model 控制的Model
+     */
+    protected void onAttachView(V view, M model) {
     }
 
     /**

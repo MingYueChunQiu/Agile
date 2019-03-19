@@ -19,7 +19,7 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractModel<I extends IBaseListener> implements IBaseModel {
+public abstract class BaseAbstractModel<I extends IBaseListener> implements IBaseModel<I> {
 
     protected final String TAG = getClass().getSimpleName();//日志标签
     protected final String TAG_FAILURE = getClass().getSimpleName() + " failure";//打印错误日志标签
@@ -29,7 +29,13 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
     protected List<IDao> mDaoList;
 
     public BaseAbstractModel(I listener) {
+        attachListener(listener);
+    }
+
+    @Override
+    public void attachListener(I listener) {
         mListener = listener;
+        onAttachListener(listener);
     }
 
     @Override
@@ -143,6 +149,14 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
             return false;
         }
         return mDaoList.remove(dao);
+    }
+
+    /**
+     * 当和监听器关联时回调
+     *
+     * @param listener 监听器
+     */
+    protected void onAttachListener(I listener) {
     }
 
     /**

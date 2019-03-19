@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.base.model;
 
+import com.mingyuechunqiu.agilemvpframe.base.framework.IBaseListener;
+
 /**
  * <pre>
  *     author : xyj
@@ -9,7 +11,14 @@ package com.mingyuechunqiu.agilemvpframe.base.model;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseModel {
+public interface IBaseModel<I extends IBaseListener> {
+
+    /**
+     * 当和监听器关联时调用
+     *
+     * @param listener 监听器
+     */
+    void attachListener(I listener);
 
     void start();
 
