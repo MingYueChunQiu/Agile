@@ -14,9 +14,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.mingyuechunqiu.agilemvpframe.feature.loading.data.Constants;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.feature.loading.provider.LoadingDfgProvideFactory;
 import com.mingyuechunqiu.agilemvpframe.feature.loading.provider.LoadingDfgProviderable;
-import com.mingyuechunqiu.agilemvpframe.feature.loading.data.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agilemvpframe.util.ExitApplicationManager;
 import com.noober.background.BackgroundLibrary;
@@ -44,8 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         BackgroundLibrary.inject(this);
         super.onCreate(savedInstanceState);
-        initView();
-        ExitApplicationManager.addActivity(this);
+        initOnCreate();
     }
 
     @Override
@@ -101,6 +100,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public List<BaseFragment.OnKeyDownListener> getOnKeyDownListenerList() {
         return mKeyDownListenerList;
+    }
+
+    /**
+     * 在创建时执行初始化操作
+     */
+    protected void initOnCreate() {
+        initView();
+        ExitApplicationManager.addActivity(this);
     }
 
     /**
