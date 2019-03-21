@@ -52,6 +52,6 @@ dependencies {
     api group: 'io.reactivex.rxjava2', name: 'rxandroid', version: '2.1.0'
     api 'com.github.MingYueChunQiu:RoundCornerDialogHelper:0.2.2'
     api 'com.github.MingYueChunQiu:RecorderManager:0.2.12'
-    api 'com.github.chenBingX:SuperTextView:3.1.6.2'
+    api 'com.github.chenBingX:SuperTextView:3.1.5'
     api 'cn.yc:YCDialogLib:3.6.5'
 }
