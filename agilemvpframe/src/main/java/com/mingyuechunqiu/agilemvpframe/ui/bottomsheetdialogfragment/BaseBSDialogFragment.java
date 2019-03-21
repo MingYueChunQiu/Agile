@@ -32,7 +32,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (getDialog().getWindow() != null) {
-            getDialog().getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_dialog));
+            getDialog().getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.agile_shape_dialog));
         }
         return initView(inflater, container);
     }

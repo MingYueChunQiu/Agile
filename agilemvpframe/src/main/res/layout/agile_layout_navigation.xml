@@ -21,7 +21,7 @@
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
             android:layout_marginLeft="@dimen/dp_10"
-            android:src="@drawable/selector_arrow_back"
+            android:src="@drawable/agile_selector_arrow_back"
             android:visibility="gone" />
 
         <android.support.v7.widget.AppCompatTextView

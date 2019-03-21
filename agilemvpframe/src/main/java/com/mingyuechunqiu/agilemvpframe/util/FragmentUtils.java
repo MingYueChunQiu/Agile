@@ -41,7 +41,7 @@ public class FragmentUtils {
     public static <F extends BaseFragment> void replaceFragment(
             FragmentManager fragmentManager, @IdRes int containerViewId, F f) {
         replaceFragment(fragmentManager, containerViewId, f, true,
-                R.anim.slide_in_right, R.anim.slide_out_left);
+                R.anim.agile_slide_in_right, R.anim.agile_slide_out_left);
     }
 
     /**

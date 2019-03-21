@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/shape_round_corners_4_black"
+        android:background="@drawable/agile_shape_round_corners_4_black"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/dp_20">
@@ -22,7 +22,7 @@
             android:id="@+id/pb_agile_dfg_dark_loading_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminateDrawable="@drawable/rotate_darker_gray_to_white" />
+            android:indeterminateDrawable="@drawable/agile_rotate_darker_gray_to_white" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_agile_dfg_dark_loading_text"

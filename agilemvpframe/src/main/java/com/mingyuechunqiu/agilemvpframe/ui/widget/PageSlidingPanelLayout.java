@@ -50,7 +50,7 @@ public class PageSlidingPanelLayout extends SlidingPaneLayout {
             case MotionEvent.ACTION_MOVE: {
                 final float x = ev.getX();
                 final float y = ev.getY();
-                // The user should always be able to "close" the pane, so we only check
+                // The user should always be able to "agile_close" the pane, so we only check
                 // for child scrollability if the pane is currently closed.
                 if (mInitialMotionX > mEdgeSlop && !isOpen() && canScroll(this, false,
                         Math.round(x - mInitialMotionX), Math.round(x), Math.round(y))) {

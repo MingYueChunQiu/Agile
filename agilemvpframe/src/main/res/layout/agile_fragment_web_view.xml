@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_2"
         android:max="100"
-        android:progressDrawable="@drawable/pb_web_layer_list" />
+        android:progressDrawable="@drawable/agile_pb_web_layer_list" />
 
     <WebView
         android:id="@+id/wv_web"

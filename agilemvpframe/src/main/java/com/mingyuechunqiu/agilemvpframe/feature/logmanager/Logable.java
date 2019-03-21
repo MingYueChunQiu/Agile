@@ -31,7 +31,7 @@ public interface Logable {
     void v(String tag, String msg);
 
     /**
-     * 将日志写入到指定文件中
+     * 将日志写入到指定文件中，是否启动根据是否处于调试模式决定
      *
      * @param tag      标签
      * @param msg      信息
@@ -40,19 +40,29 @@ public interface Logable {
      */
     void saveVerboseToLocal(String tag, String msg, String title, String filePath);
 
+    void saveVerboseToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch);
+
     void d(String tag, String msg);
 
     void saveDebugToLocal(String tag, String msg, String title, String filePath);
+
+    void saveDebugToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch);
 
     void i(String tag, String msg);
 
     void saveInfoToLocal(String tag, String msg, String title, String filePath);
 
+    void saveInfoToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch);
+
     void w(String tag, String msg);
 
     void saveWarnToLocal(String tag, String msg, String title, String filePath);
 
+    void saveWarnToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch);
+
     void e(String tag, String msg);
 
     void saveErrorToLocal(String tag, String msg, String title, String filePath);
+
+    void saveErrorToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch);
 }

@@ -58,7 +58,7 @@ class LogUtils implements Logable {
 
     @Override
     public void v(String tag, String msg) {
-        if (checkLogIsInvalid(tag, msg, VERBOSE)) {
+        if (checkLogIsInvalid(tag, msg, VERBOSE, false)) {
             return;
         }
         Log.v(tag, msg);
@@ -66,7 +66,12 @@ class LogUtils implements Logable {
 
     @Override
     public void saveVerboseToLocal(String tag, String msg, String title, String filePath) {
-        if (checkLogIsInvalid(tag, msg, VERBOSE)) {
+        saveVerboseToLocal(tag, msg, title, filePath, false);
+    }
+
+    @Override
+    public void saveVerboseToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+        if (checkLogIsInvalid(tag, msg, VERBOSE, ignoreLogSwitch)) {
             return;
         }
         saveLogToLocalFile(msg, title, filePath);
@@ -74,7 +79,7 @@ class LogUtils implements Logable {
 
     @Override
     public void d(String tag, String msg) {
-        if (checkLogIsInvalid(tag, msg, DEBUG)) {
+        if (checkLogIsInvalid(tag, msg, DEBUG, false)) {
             return;
         }
         Log.d(tag, msg);
@@ -82,7 +87,12 @@ class LogUtils implements Logable {
 
     @Override
     public void saveDebugToLocal(String tag, String msg, String title, String filePath) {
-        if (checkLogIsInvalid(tag, msg, DEBUG)) {
+        saveDebugToLocal(tag, msg, title, filePath, false);
+    }
+
+    @Override
+    public void saveDebugToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+        if (checkLogIsInvalid(tag, msg, DEBUG, ignoreLogSwitch)) {
             return;
         }
         saveLogToLocalFile(msg, title, filePath);
@@ -90,7 +100,7 @@ class LogUtils implements Logable {
 
     @Override
     public void i(String tag, String msg) {
-        if (checkLogIsInvalid(tag, msg, INFO)) {
+        if (checkLogIsInvalid(tag, msg, INFO, false)) {
             return;
         }
         Log.i(tag, msg);
@@ -98,7 +108,12 @@ class LogUtils implements Logable {
 
     @Override
     public void saveInfoToLocal(String tag, String msg, String title, String filePath) {
-        if (checkLogIsInvalid(tag, msg, INFO)) {
+        saveInfoToLocal(tag, msg, title, filePath, false);
+    }
+
+    @Override
+    public void saveInfoToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+        if (checkLogIsInvalid(tag, msg, INFO, ignoreLogSwitch)) {
             return;
         }
         saveLogToLocalFile(msg, title, filePath);
@@ -118,7 +133,12 @@ class LogUtils implements Logable {
 
     @Override
     public void saveWarnToLocal(String tag, String msg, String title, String filePath) {
-        if (checkLogIsInvalid(tag, msg, WARN)) {
+        saveWarnToLocal(tag, msg, title, filePath, false);
+    }
+
+    @Override
+    public void saveWarnToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+        if (checkLogIsInvalid(tag, msg, WARN, ignoreLogSwitch)) {
             return;
         }
         saveLogToLocalFile(msg, title, filePath);
@@ -126,7 +146,7 @@ class LogUtils implements Logable {
 
     @Override
     public void e(String tag, String msg) {
-        if (checkLogIsInvalid(tag, msg, ERROR)) {
+        if (checkLogIsInvalid(tag, msg, ERROR, false)) {
             return;
         }
         Log.e(tag, msg);
@@ -134,7 +154,12 @@ class LogUtils implements Logable {
 
     @Override
     public void saveErrorToLocal(String tag, String msg, String title, String filePath) {
-        if (checkLogIsInvalid(tag, msg, ERROR)) {
+        saveErrorToLocal(tag, msg, title, filePath, false);
+    }
+
+    @Override
+    public void saveErrorToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+        if (checkLogIsInvalid(tag, msg, ERROR, ignoreLogSwitch)) {
             return;
         }
         saveLogToLocalFile(msg, title, filePath);
@@ -143,13 +168,14 @@ class LogUtils implements Logable {
     /**
      * 检查日志是否无效
      *
-     * @param tag      标签
-     * @param msg      日志信息
-     * @param logLevel 日志等级
+     * @param tag             标签
+     * @param msg             日志信息
+     * @param logLevel        日志等级
+     * @param ignoreLogSwitch 是否忽略日志开关
      * @return 如果无效返回true，否则返回false
      */
-    private boolean checkLogIsInvalid(String tag, String msg, int logLevel) {
-        if (current < logLevel) {
+    private boolean checkLogIsInvalid(String tag, String msg, int logLevel, boolean ignoreLogSwitch) {
+        if (!ignoreLogSwitch && current < logLevel) {
             return true;
         }
         if (TextUtils.isEmpty(msg)) {

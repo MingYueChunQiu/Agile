@@ -3,7 +3,7 @@
 
     <!--加载对话框显示样式-->
     <style name="Dialog_Loading" parent="Theme.AppCompat.Dialog">
-        <item name="android:windowBackground">@drawable/shape_dialog</item>
+        <item name="android:windowBackground">@drawable/agile_shape_dialog</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowIsFloating">true</item>
@@ -21,8 +21,8 @@
 
     <!--弹出对话框动画样式-->
     <style name="PopupDialogAnim" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/dialog_show_overshoot</item>
-        <item name="android:windowExitAnimation">@anim/dialog_hide_anticipate</item>
+        <item name="android:windowEnterAnimation">@anim/agile_dialog_show_overshoot</item>
+        <item name="android:windowExitAnimation">@anim/agile_dialog_hide_anticipate</item>
     </style>
 
 </resources>

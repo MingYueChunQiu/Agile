@@ -27,9 +27,9 @@ import com.mingyuechunqiu.agilemvpframe.R;
  */
 public class PasswordClearEditText extends AppCompatEditText {
 
-    private static final int DEFAULT_EYE_OPEN_RES_ID = R.drawable.eye_open;
-    private static final int DEFAULT_EYE_CLOSED_RES_ID = R.drawable.eye_closed;
-    private static final int DEFAULT_CLEAR_RES_ID = R.drawable.close;
+    private static final int DEFAULT_EYE_OPEN_RES_ID = R.drawable.agile_eye_open;
+    private static final int DEFAULT_EYE_CLOSED_RES_ID = R.drawable.agile_eye_closed;
+    private static final int DEFAULT_CLEAR_RES_ID = R.drawable.agile_close;
     //图标按钮的间距、宽度、距离右边边距
     private final int DEFAULT_BUTTON_PADDING =
             getResources().getDimensionPixelSize(R.dimen.dp_5);

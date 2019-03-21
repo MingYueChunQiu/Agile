@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/selector_pop_list"
+    android:background="@drawable/agile_selector_pop_list"
     android:paddingLeft="@dimen/dp_20"
     android:paddingRight="@dimen/dp_20">
 
@@ -24,7 +24,7 @@
             android:id="@+id/ibtn_pop_list_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/close" />
+            android:background="@drawable/agile_close" />
     </android.support.v7.widget.LinearLayoutCompat>
 
     <View

@@ -30,9 +30,9 @@ import com.mingyuechunqiu.agilemvpframe.R;
  */
 public class PullDownEditText extends AppCompatEditText {
 
-    private static final int DEFAULT_PULL_DOWN_RES_ID = R.drawable.pull_down;
-    private static final int DEFAULT_RETRACT_RES_ID = R.drawable.retract;
-    private static final int DEFAULT_CLEAR_RES_ID = R.drawable.close;
+    private static final int DEFAULT_PULL_DOWN_RES_ID = R.drawable.agile_pull_down;
+    private static final int DEFAULT_RETRACT_RES_ID = R.drawable.agile_retract;
+    private static final int DEFAULT_CLEAR_RES_ID = R.drawable.agile_close;
     //图标按钮的间距、宽度、距离右边边距
     private final int DEFAULT_BUTTON_PADDING =
             getResources().getDimensionPixelSize(R.dimen.dp_5);

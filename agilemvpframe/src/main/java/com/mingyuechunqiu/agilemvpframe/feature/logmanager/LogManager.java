@@ -45,6 +45,11 @@ class LogManager implements LogManagerable {
     }
 
     @Override
+    public void saveVerboseToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+        mLogable.saveVerboseToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+    }
+
+    @Override
     public void d(String tag, String msg) {
         mLogable.d(tag, msg);
     }
@@ -52,6 +57,11 @@ class LogManager implements LogManagerable {
     @Override
     public void saveDebugToLocal(String tag, String msg, String title, String filePath) {
         mLogable.saveDebugToLocal(tag, msg, title, filePath);
+    }
+
+    @Override
+    public void saveDebugToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+        mLogable.saveDebugToLocal(tag, msg, title, filePath, ignoreLogSwitch);
     }
 
     @Override
@@ -65,6 +75,11 @@ class LogManager implements LogManagerable {
     }
 
     @Override
+    public void saveInfoToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+        mLogable.saveInfoToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+    }
+
+    @Override
     public void w(String tag, String msg) {
         mLogable.w(tag, msg);
     }
@@ -75,6 +90,11 @@ class LogManager implements LogManagerable {
     }
 
     @Override
+    public void saveWarnToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+        mLogable.saveWarnToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+    }
+
+    @Override
     public void e(String tag, String msg) {
         mLogable.e(tag, msg);
     }
@@ -82,5 +102,10 @@ class LogManager implements LogManagerable {
     @Override
     public void saveErrorToLocal(String tag, String msg, String title, String filePath) {
         mLogable.saveErrorToLocal(tag, msg, title, filePath);
+    }
+
+    @Override
+    public void saveErrorToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+        mLogable.saveErrorToLocal(tag, msg, title, filePath, ignoreLogSwitch);
     }
 }
