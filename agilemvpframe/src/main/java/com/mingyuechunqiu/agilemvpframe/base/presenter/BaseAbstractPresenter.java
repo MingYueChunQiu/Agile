@@ -23,7 +23,7 @@ import java.util.List;
  *     e-mail : xiyujieit@163.com
  *     time   : 2018/06/14
  *     desc   : 所有Presenter层的抽象基类
- *              实现BasePresenter
+ *              实现IBasePresenter
  *     version: 1.0
  * </pre>
  */
@@ -37,7 +37,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     public void attachView(V view) {
         mViewRef = new WeakReference<>(view);
         mModel = initModel();
-        if (mViewRef.get() != null && mViewRef.get().getCurrentContext() != null) {
+        if (!checkViewRefIsNull() && mViewRef.get().getCurrentContext() != null) {
             if (mModel instanceof BaseTokenNetModel) {
                 ((BaseTokenNetModel) mModel).setContextRef(mViewRef.get().getCurrentContext());
             }
@@ -156,7 +156,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param hint 提示文本
      */
     protected void showToast(@Nullable String hint) {
-        if (mViewRef != null && mViewRef.get() != null) {
+        if (!checkViewRefIsNull()) {
             mViewRef.get().showToast(hint);
         }
     }
@@ -167,7 +167,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param stringResourceId 提示文本资源ID
      */
     protected void showToast(@StringRes int stringResourceId) {
-        if (mViewRef != null && mViewRef.get() != null) {
+        if (!checkViewRefIsNull()) {
             mViewRef.get().showToast(stringResourceId);
         }
     }
@@ -179,6 +179,15 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param model 控制的Model
      */
     protected void onAttachView(V view, M model) {
+    }
+
+    /**
+     * 检测关联的View层是否为空
+     *
+     * @return 如果为空返回true，否则返回false
+     */
+    protected boolean checkViewRefIsNull() {
+        return mViewRef == null || mViewRef.get() == null;
     }
 
     /**

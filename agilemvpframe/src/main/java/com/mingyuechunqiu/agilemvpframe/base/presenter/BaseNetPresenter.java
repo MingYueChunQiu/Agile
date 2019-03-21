@@ -43,7 +43,7 @@ public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNet
             }
             requestModel(info);
         } else {
-            if (mViewRef != null && mViewRef.get() != null) {
+            if (!checkViewRefIsNull()) {
                 disconnectNet();
             }
         }
@@ -65,7 +65,7 @@ public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNet
      * @return 当界面被回收和网络中断时返回false，否则返回true
      */
     protected boolean judgeNetwork() {
-        if (mViewRef != null && mViewRef.get() != null) {
+        if (!checkViewRefIsNull()) {
             if (!NetworkUtils.checkNetState(mViewRef.get().getCurrentContext())) {
                 mViewRef.get().showToast(R.string.network_disconnected);
                 return false;
@@ -81,9 +81,6 @@ public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNet
      * @return 存储的token值
      */
     protected String getToken() {
-        if (mViewRef == null || mViewRef.get() == null) {
-            return null;
-        }
         String token = SharedPreferencesUtils.getString(
                 AgileMVPFrame.getAppContext(), PREF_USER_INFO, TOKEN, null);
         if (TextUtils.isEmpty(token)) {
