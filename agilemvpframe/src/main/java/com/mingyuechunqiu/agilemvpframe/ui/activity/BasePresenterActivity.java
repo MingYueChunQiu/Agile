@@ -1,5 +1,8 @@
 package com.mingyuechunqiu.agilemvpframe.ui.activity;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
 import com.mingyuechunqiu.agilemvpframe.base.view.IBaseNetView;
 
@@ -18,9 +21,9 @@ public abstract class BasePresenterActivity<V extends IBaseNetView<P>, P extends
     protected P mPresenter;
 
     @Override
-    protected void initOnCreate() {
+    protected void initOnCreate(@Nullable Bundle savedInstanceState) {
         attachPresenter();
-        super.initOnCreate();
+        super.initOnCreate(savedInstanceState);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.ui.activity;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
 import android.view.View;
@@ -85,14 +87,14 @@ public class VideoViewActivity extends BaseToolbarPresenterActivity {
     }
 
     @Override
-    protected void initView() {
+    protected void initView(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.agile_layout_navigation);
         FrameLayout container = findViewById(R.id.fl_navigation_container);
         mToolbar = findViewById(R.id.tb_navigation_bar);
         actvToolbarTitle = findViewById(R.id.tv_navigation_title);
-        AppCompatImageView acivBack = findViewById(R.id.iv_navigation_left_icon);
-        acivBack.setVisibility(View.VISIBLE);
-        acivBack.setOnClickListener(new View.OnClickListener() {
+        AppCompatImageView ivBack = findViewById(R.id.iv_navigation_left_icon);
+        ivBack.setVisibility(View.VISIBLE);
+        ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

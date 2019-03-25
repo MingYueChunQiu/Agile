@@ -117,7 +117,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    protected void initView() {
+    protected void initView(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.agile_layout_navigation);
         mToolbar = findViewById(R.id.tb_navigation_bar);
         actvToolbarTitle = findViewById(R.id.tv_navigation_title);

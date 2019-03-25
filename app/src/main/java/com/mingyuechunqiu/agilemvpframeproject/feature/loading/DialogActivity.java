@@ -44,7 +44,7 @@ public class DialogActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    protected void initView() {
+    protected void initView(@Nullable Bundle savedInstanceState) {
 
     }
 

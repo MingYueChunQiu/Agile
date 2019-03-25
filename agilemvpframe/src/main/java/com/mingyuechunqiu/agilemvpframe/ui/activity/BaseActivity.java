@@ -44,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         BackgroundLibrary.inject(this);
         super.onCreate(savedInstanceState);
-        initOnCreate();
+        initOnCreate(savedInstanceState);
     }
 
     @Override
@@ -104,9 +104,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 在创建时执行初始化操作
+     *
+     * @param savedInstanceState 界面销毁时保存的状态数据实例
      */
-    protected void initOnCreate() {
-        initView();
+    protected void initOnCreate(@Nullable Bundle savedInstanceState) {
+        initView(savedInstanceState);
         ExitApplicationManager.addActivity(this);
     }
 
@@ -276,7 +278,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 由子类重写控件的初始化方法
+     *
+     * @param savedInstanceState 界面销毁时保存的状态数据实例
      */
-    protected abstract void initView();
+    protected abstract void initView(@Nullable Bundle savedInstanceState);
 
 }

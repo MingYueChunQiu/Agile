@@ -41,7 +41,7 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return initView(inflater, container);
+        return initView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -367,11 +367,12 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 由子类重写控件的初始化方法
      *
-     * @param inflater  布局填充器
-     * @param container 填充的布局所在父布局
+     * @param inflater           布局填充器
+     * @param container          填充的布局所在父布局
+     * @param savedInstanceState 界面销毁时保存的状态数据实例
      * @return 返回创建的填充View
      */
-    protected abstract View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container);
+    protected abstract View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
     /**
      * 供Activity实现的回调接口，实现对Fragment的调用

@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
@@ -90,7 +91,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
     }
 
     @Override
-    protected void initView() {
+    protected void initView(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.agile_layout_navigation);
         FrameLayout container = findViewById(R.id.fl_navigation_container);
         View view = getLayoutInflater().inflate(R.layout.agile_fragment_web_view, container, false);

@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agilemvpframeproject.feature.main;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -37,7 +38,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    protected View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+    protected View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         AppCompatButton btnShow = view.findViewById(R.id.btn_fragment_main_show);
         AppCompatButton btnHide = view.findViewById(R.id.btn_fragment_main_hide);
