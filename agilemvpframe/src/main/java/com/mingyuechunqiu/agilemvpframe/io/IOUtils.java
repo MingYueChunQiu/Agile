@@ -139,6 +139,23 @@ public class IOUtils {
     }
 
     /**
+     * 删除文件
+     *
+     * @param filePath 文件路径
+     * @return 如果删除成功返回true， 否则返回false
+     */
+    public static boolean deleteFile(String filePath) {
+        if (TextUtils.isEmpty(filePath)) {
+            return false;
+        }
+        File file = new File(filePath);
+        if (file.exists()) {
+            return file.delete();
+        }
+        return false;
+    }
+
+    /**
      * 根据路径获取文件
      *
      * @param filePath 路径地址
