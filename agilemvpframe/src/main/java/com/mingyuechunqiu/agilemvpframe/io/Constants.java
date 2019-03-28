@@ -16,6 +16,7 @@ public interface Constants {
      * 文件后缀格式常量
      */
     interface FileSuffixFormat {
+
         String FILE_SUFFIX_PNG = ".png";//png图片
         String FILE_SUFFIX_MP4 = ".mp4";//MP4格式
     }
