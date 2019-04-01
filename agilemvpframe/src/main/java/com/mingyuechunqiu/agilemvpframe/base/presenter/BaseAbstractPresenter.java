@@ -52,6 +52,10 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
             mModel.release();
             mModel = null;
         }
+        if (mViewRef != null) {
+            mViewRef.clear();
+            mViewRef = null;
+        }
     }
 
     /**
@@ -114,10 +118,6 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
             }
             mPresenterEngineList.clear();
             mPresenterEngineList = null;
-        }
-        if (mViewRef != null) {
-            mViewRef.clear();
-            mViewRef = null;
         }
     }
 
