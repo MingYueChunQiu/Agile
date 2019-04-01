@@ -16,14 +16,15 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.mingyuechunqiu.agilemvpframe.feature.loading.data.Constants;
-import com.mingyuechunqiu.agilemvpframe.feature.loading.provider.LoadingDfgProviderable;
 import com.mingyuechunqiu.agilemvpframe.feature.loading.data.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.provider.LoadingDfgProviderable;
 import com.mingyuechunqiu.agilemvpframe.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity;
 import com.mingyuechunqiu.agilemvpframe.util.StringUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
 import com.mingyuechunqiu.agilemvpframeproject.R;
+import com.mingyuechunqiu.agilemvpframeproject.feature.loading.ShowDialogFragment;
 
 import java.lang.ref.WeakReference;
 
@@ -173,9 +174,12 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 //                    }
 //                })
                 .build();
-        showLoadingDialog(option);
+//        showLoadingDialog(option);
+
 //        FragmentUtils.replaceFragment(getSupportFragmentManager(), R.id.fl_navigation_container,
 //                new MainFragment());
+        ShowDialogFragment fragment = new ShowDialogFragment();
+        fragment.show(getSupportFragmentManager(), ShowDialogFragment.class.getSimpleName());
     }
 
     /**
