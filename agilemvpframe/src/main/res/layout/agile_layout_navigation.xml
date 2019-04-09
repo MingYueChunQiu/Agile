@@ -20,6 +20,7 @@
             android:id="@+id/iv_navigation_left_icon"
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
+            android:layout_marginStart="@dimen/dp_10"
             android:layout_marginLeft="@dimen/dp_10"
             android:src="@drawable/agile_selector_arrow_back"
             android:visibility="gone" />

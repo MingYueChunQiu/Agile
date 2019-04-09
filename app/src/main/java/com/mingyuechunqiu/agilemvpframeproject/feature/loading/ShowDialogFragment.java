@@ -33,6 +33,7 @@ public class ShowDialogFragment extends BaseDialogFragment {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
         View view = inflater.inflate(R.layout.dialog_fragment_show, container, false);
+        showLoadingDialog("你好", true);
         return view;
     }
 

@@ -30,6 +30,7 @@ import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.BUNDLE_
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2018/05/16
  *     desc   : 所有Fragment的基类
+ *              继承自Fragment
  *     version: 1.0
  * </pre>
  */

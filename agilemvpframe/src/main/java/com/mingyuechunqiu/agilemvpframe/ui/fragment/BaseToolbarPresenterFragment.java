@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,15 +23,14 @@ import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.NO_RESO
  *     author : xyj
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2018/10/19
- *     desc   : 所有工具条界面的额父类
+ *     desc   : 所有MVP层工具条界面的基类
  *              继承自BasePresenterFragment
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseToolbarPresenterFragment<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BasePresenterFragment<V, P> {
+public abstract class BaseToolbarPresenterFragment<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BaseNetPresenterFragment<V, P> {
 
     protected Toolbar mToolbar;
-    protected AppCompatTextView actvToolbarTitle;//工具栏标题
     protected ToolbarUtils.ToolbarBean mToolbarBean;
 
     @Nullable

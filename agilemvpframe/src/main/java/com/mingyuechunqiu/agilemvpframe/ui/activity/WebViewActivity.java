@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -51,7 +52,7 @@ import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Const
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2018/07/03
  *     desc   : 网页浏览界面
- *              继承自BaseFullImmerseScreenActivity
+ *              继承自BaseToolbarPresenterActivity
  *     version: 1.0
  * </pre>
  */
@@ -96,7 +97,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
         FrameLayout container = findViewById(R.id.fl_navigation_container);
         View view = getLayoutInflater().inflate(R.layout.agile_fragment_web_view, container, false);
         mToolbar = findViewById(R.id.tb_navigation_bar);
-        actvToolbarTitle = findViewById(R.id.tv_navigation_title);
+        AppCompatTextView tvToolbarTitle = findViewById(R.id.tv_navigation_title);
         AppCompatImageView ivBack = findViewById(R.id.iv_navigation_left_icon);
         ivBack.setVisibility(View.VISIBLE);
         if (backDrawable != null) {
@@ -111,15 +112,15 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
         setSupportActionBar(mToolbar);
         mBundle = getIntent().getExtras();
         if (mBundle != null && mBundle.getBoolean(BUNDLE_TITLE_VISIBLE, false)) {
-            actvToolbarTitle.setVisibility(View.VISIBLE);
+            tvToolbarTitle.setVisibility(View.VISIBLE);
             String title = mBundle.getString(BUNDLE_NAVIGATION_TITLE);
             if (!TextUtils.isEmpty(title)) {
-                actvToolbarTitle.setText(title);
+                tvToolbarTitle.setText(title);
             }
             int titleColor = mBundle.getInt(BUNDLE_TITLE_COLOR, Color.WHITE);
-            actvToolbarTitle.setTextColor(titleColor);
+            tvToolbarTitle.setTextColor(titleColor);
             int titleTextSize = mBundle.getInt(BUNDLE_TITLE_TEXT_SIZE, 20);
-            actvToolbarTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, titleTextSize);
+            tvToolbarTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, titleTextSize);
         }
         if (mBundle != null) {
             int toolbarBgColor = mBundle.getInt(BUNDLE_NAVIGATION_BG_COLOR,

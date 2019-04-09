@@ -121,11 +121,11 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     protected void initView(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.agile_layout_navigation);
         mToolbar = findViewById(R.id.tb_navigation_bar);
-        actvToolbarTitle = findViewById(R.id.tv_navigation_title);
+        AppCompatTextView tvToolbarTitle = findViewById(R.id.tv_navigation_title);
         AppCompatImageView acivBack = findViewById(R.id.iv_navigation_left_icon);
         acivBack.setVisibility(View.VISIBLE);
-        actvToolbarTitle.setText(R.string.app_name);
-        actvToolbarTitle.setVisibility(View.VISIBLE);
+        tvToolbarTitle.setText(R.string.app_name);
+        tvToolbarTitle.setVisibility(View.VISIBLE);
         setSupportActionBar(mToolbar);
         FrameLayout clContainer = findViewById(R.id.fl_navigation_container);
         View view = getLayoutInflater().inflate(R.layout.activity_main, null);

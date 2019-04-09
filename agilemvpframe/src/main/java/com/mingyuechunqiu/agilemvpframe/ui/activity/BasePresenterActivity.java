@@ -3,8 +3,8 @@ package com.mingyuechunqiu.agilemvpframe.ui.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
-import com.mingyuechunqiu.agilemvpframe.base.view.IBaseNetView;
+import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
+import com.mingyuechunqiu.agilemvpframe.base.view.IBaseDialogView;
 
 /**
  * <pre>
@@ -16,7 +16,7 @@ import com.mingyuechunqiu.agilemvpframe.base.view.IBaseNetView;
  *     version: 1.0
  * </pre>
  */
-public abstract class BasePresenterActivity<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BaseFullImmerseScreenActivity {
+public abstract class BasePresenterActivity<V extends IBaseDialogView<P>, P extends BaseDialogPresenter> extends BaseFullImmerseScreenActivity {
 
     protected P mPresenter;
 

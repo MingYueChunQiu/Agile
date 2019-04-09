@@ -2,7 +2,6 @@ package com.mingyuechunqiu.agilemvpframe.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
@@ -17,15 +16,14 @@ import static com.mingyuechunqiu.agilemvpframe.constants.CommonConstants.NO_RESO
  *     author : xyj
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2018/05/21
- *     desc   : 所有工具条界面的父类
+ *     desc   : 所有工具条界面的基类
  *              继承自BasePresenterActivity
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseToolbarPresenterActivity<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BasePresenterActivity<V, P> {
+public abstract class BaseToolbarPresenterActivity<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BaseNetPresenterActivity<V, P> {
 
     protected Toolbar mToolbar;
-    protected AppCompatTextView actvToolbarTitle;//工具栏标题
     private ToolbarUtils.ToolbarBean mToolbarBean;
 
     @Override

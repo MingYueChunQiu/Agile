@@ -3,16 +3,23 @@ package com.mingyuechunqiu.agilemvpframe.ui.diaglogfragment;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.Constants;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.data.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.provider.LoadingDfgProvideFactory;
+import com.mingyuechunqiu.agilemvpframe.feature.loading.provider.LoadingDfgProviderable;
 
 /**
  * <pre>
@@ -27,6 +34,7 @@ import android.widget.Toast;
 public abstract class BaseDialogFragment extends AppCompatDialogFragment {
 
     private Toast mToast;
+    private LoadingDfgProviderable mLoadingDfgProvider;
 
     @Nullable
     @Override
@@ -36,6 +44,21 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
         return initView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        dismissLoadingDialog();
+        super.onDestroyView();
+        releaseOnDestroyView();
+        mToast = null;
+        mLoadingDfgProvider = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        releaseOnDestroy();
     }
 
     /**
@@ -64,17 +87,103 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
         showToast(getString(stringResourceId));
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        releaseOnDestroyView();
-        mToast = null;
+    /**
+     * 显示加载对话框
+     *
+     * @param hint       提示文本
+     * @param cancelable 是否可以取消
+     */
+    protected void showLoadingDialog(@Nullable String hint, boolean cancelable) {
+        LoadingDialogFragmentOption option = getLoadingDialog().getLoadingFragmentOption();
+        option.setText(hint);
+        option.setCancelWithOutside(cancelable);
+        showLoadingDialog(interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_DIALOG));
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releaseOnDestroy();
+    /**
+     * 显示加载Fragment
+     *
+     * @param option 加载配置参数信息对象
+     */
+    protected void showLoadingDialog(@Nullable LoadingDialogFragmentOption option) {
+        LoadingDialogFragmentOption temp = interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_DIALOG);
+        if (mLoadingDfgProvider == null) {
+            mLoadingDfgProvider = LoadingDfgProvideFactory.newInstance(temp);
+        } else {
+            //在这儿默认逻辑为如果option为空，代表不变
+            if (temp != null) {
+                mLoadingDfgProvider.setLoadingFragmentOption(temp);
+            }
+            if (mLoadingDfgProvider.showLoadingDialog()) {
+                return;
+            }
+        }
+        //除隐藏对话框再显示用getDialog().show()，其他都直接用show()
+        mLoadingDfgProvider.showLoadingDialog(getFragmentManager());
+    }
+
+    /**
+     * 关闭加载对话框
+     */
+    protected void dismissLoadingDialog() {
+        if (mLoadingDfgProvider != null) {
+            mLoadingDfgProvider.dismissLoadingDialog(true);
+        }
+    }
+
+    /**
+     * 添加显示加载对话框
+     *
+     * @param manager     Fragment管理器
+     * @param containerId 对话框所属布局ID
+     * @param option      加载对话框配置信息对象
+     */
+    protected void addOrShowLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option) {
+        getLoadingDialog().addOrShowLoadingDialog(manager, containerId,
+                interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_FRAGMENT));
+    }
+
+    /**
+     * 隐藏加载对话框
+     *
+     * @param manager Fragment管理器
+     */
+    protected void hideLoadingDialog(FragmentManager manager) {
+        getLoadingDialog().hideLoadingDialog(manager);
+    }
+
+    /**
+     * 移除加载对话框
+     *
+     * @param manager Fragment管理器
+     */
+    protected void removeLoadingDialog(FragmentManager manager) {
+        getLoadingDialog().removeLoadingDialog(manager);
+    }
+
+    /**
+     * 获取加载Fragment实例
+     *
+     * @return 返回加载Fragment实例
+     */
+    @NonNull
+    protected LoadingDfgProviderable getLoadingDialog() {
+        if (mLoadingDfgProvider == null) {
+            mLoadingDfgProvider = LoadingDfgProvideFactory.newInstance();
+        }
+        return mLoadingDfgProvider;
+    }
+
+    /**
+     * 拦截加载对话框配置信息对象
+     *
+     * @param option   加载对话框配置信息对象
+     * @param modeType 加载对话框模式
+     * @return 返回进行过拦截处理的加载对话框配置信息对象
+     */
+    protected LoadingDialogFragmentOption interceptLoadingFragmentOption(
+            @Nullable LoadingDialogFragmentOption option, Constants.ModeType modeType) {
+        return modeType == Constants.ModeType.TYPE_NOT_SET ? null : option;
     }
 
     /**

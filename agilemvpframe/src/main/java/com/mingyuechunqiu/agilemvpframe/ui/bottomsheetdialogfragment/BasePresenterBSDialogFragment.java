@@ -3,19 +3,20 @@ package com.mingyuechunqiu.agilemvpframe.ui.bottomsheetdialogfragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseNetPresenter;
-import com.mingyuechunqiu.agilemvpframe.base.view.IBaseNetView;
+import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
+import com.mingyuechunqiu.agilemvpframe.base.view.IBaseDialogView;
 
 /**
  * <pre>
  *     author : 明月春秋
  *     e-mail : xiyujieit@163.com
  *     time   : 2018/10/21
- *     desc   :
+ *     desc   : 所有MVP层底部对话框碎片的基类
+ *              继承自BaseBSDialogFragment
  *     version: 1.0
  * </pre>
  */
-public abstract class BasePresenterBSDialogFragment<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BaseBSDialogFragment {
+public abstract class BasePresenterBSDialogFragment<V extends IBaseDialogView<P>, P extends BaseDialogPresenter> extends BaseBSDialogFragment {
 
     protected P mPresenter;
 
