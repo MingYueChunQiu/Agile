@@ -133,39 +133,35 @@ public class NetworkUtils {
     /**
      * 检查网络连接类型
      *
-     * @param context             对话框所处上下文
-     * @param popDialogWithMobile 是否在移动网络状态下弹出确认对话框
-     * @param listener            检测网络类型回调接口
+     * @param context  对话框所处上下文
+     * @param listener 检测网络类型回调接口
      */
-    public static void checkNetworkType(Context context, boolean popDialogWithMobile,
-                                        final OnCheckNetworkTypeListener listener) {
-        checkNetworkType(context, popDialogWithMobile, listener, null);
+    public static void checkNetworkType(Context context, OnCheckNetworkTypeListener listener) {
+        checkNetworkType(context, listener, null);
     }
 
     /**
      * 检查网络连接类型
      *
-     * @param context             对话框所处上下文
-     * @param popDialogWithMobile 是否在移动网络状态下弹出确认对话框
-     * @param typeListener        检测网络类型监听器
-     * @param selectListener      流量连接选择监听器
+     * @param context        对话框所处上下文
+     * @param typeListener   检测网络类型监听器
+     * @param selectListener 流量连接选择监听器
      */
-    public static void checkNetworkType(Context context, boolean popDialogWithMobile,
+    public static void checkNetworkType(Context context,
                                         final OnCheckNetworkTypeListener typeListener,
                                         OnSelectConnectInMobileListener selectListener) {
-        checkNetworkType(context, getNetworkType(), popDialogWithMobile, typeListener, selectListener);
+        checkNetworkType(context, getNetworkType(), typeListener, selectListener);
     }
 
     /**
      * 检查网络连接类型
      *
-     * @param context             对话框所处上下文
-     * @param networkType         网络连接类型
-     * @param popDialogWithMobile 是否在移动网络状态下弹出确认对话框
-     * @param listener            检测网络类型监听器
-     * @param selectListener      流量连接选择监听器
+     * @param context        对话框所处上下文
+     * @param networkType    网络连接类型
+     * @param listener       检测网络类型监听器
+     * @param selectListener 流量连接选择监听器
      */
-    public static void checkNetworkType(Context context, int networkType, boolean popDialogWithMobile,
+    public static void checkNetworkType(Context context, int networkType,
                                         OnCheckNetworkTypeListener listener,
                                         final OnSelectConnectInMobileListener selectListener) {
         if (listener == null) {
@@ -175,24 +171,20 @@ public class NetworkUtils {
             listener.onDisconnectNetwork();
         } else {
             listener.onConnectNetwork(networkType);
-            if (popDialogWithMobile && checkNetworkTypeIsMobile(networkType) && context != null) {
+            if (selectListener != null && checkNetworkTypeIsMobile(networkType) && context != null) {
                 new AlertDialog.Builder(context)
                         .setCancelable(false)
                         .setMessage(R.string.prompt_query_mobile_network)
                         .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if (selectListener != null) {
-                                    selectListener.onConfirmConnectedInMobile();
-                                }
+                                selectListener.onConfirmConnectedInMobile();
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if (selectListener != null) {
-                                    selectListener.onCancelConnectedInMobile();
-                                }
+                                selectListener.onCancelConnectedInMobile();
                             }
                         }).create().show();
             }
