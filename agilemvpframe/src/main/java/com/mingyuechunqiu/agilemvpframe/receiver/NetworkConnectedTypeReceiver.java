@@ -7,6 +7,8 @@ import android.net.ConnectivityManager;
 
 import com.mingyuechunqiu.agilemvpframe.util.NetworkUtils;
 
+import static com.mingyuechunqiu.agilemvpframe.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_MOBILE;
+
 /**
  * <pre>
  *     author : xyj
@@ -27,7 +29,7 @@ public class NetworkConnectedTypeReceiver extends BroadcastReceiver {
             if (mListener == null) {
                 return;
             }
-            if (NetworkUtils.getNetworkType() == NetworkUtils.NET_TYPE_MOBILE) {
+            if (NetworkUtils.getNetworkType() == NET_TYPE_MOBILE) {
                 mListener.onNetworkTypeChanged(true);
             } else {
                 mListener.onNetworkTypeChanged(false);

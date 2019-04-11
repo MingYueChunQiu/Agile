@@ -45,6 +45,7 @@ import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Const
 import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_VISIBLE;
 import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_WATCH_VIDEO;
 import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Constants.BUNDLE_WEB_URL;
+import static com.mingyuechunqiu.agilemvpframe.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_WIFI;
 
 /**
  * <pre>
@@ -145,15 +146,18 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
         if (mBundle != null && mBundle.getBoolean(BUNDLE_WATCH_VIDEO, false)) {
             NetworkUtils.checkNetworkType(this, true, new NetworkUtils.OnCheckNetworkTypeListener() {
                 @Override
-                public void onConnectedInMobile() {
+                public void onDisconnectNetwork() {
+
                 }
 
                 @Override
-                public void onConnectedInWifi() {
-                    registerNetworkTypeReceiver();
-                    startLoadingWeb();
+                public void onConnectNetwork(int networkType) {
+                    if (networkType == NET_TYPE_WIFI) {
+                        registerNetworkTypeReceiver();
+                        startLoadingWeb();
+                    }
                 }
-
+            }, new NetworkUtils.OnSelectConnectInMobileListener() {
                 @Override
                 public void onConfirmConnectedInMobile() {
                     isSelectedMobileNet = true;

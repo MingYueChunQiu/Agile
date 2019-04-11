@@ -12,6 +12,11 @@ import android.support.v7.app.AlertDialog;
 import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrame;
 import com.mingyuechunqiu.agilemvpframe.R;
 
+import static com.mingyuechunqiu.agilemvpframe.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_DISCONNECTED;
+import static com.mingyuechunqiu.agilemvpframe.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_MOBILE;
+import static com.mingyuechunqiu.agilemvpframe.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_UNKNOWN;
+import static com.mingyuechunqiu.agilemvpframe.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_WIFI;
+
 /**
  * <pre>
  *     author : xyj
@@ -24,11 +29,6 @@ import com.mingyuechunqiu.agilemvpframe.R;
  * </pre>
  */
 public class NetworkUtils {
-
-    public static final int NET_TYPE_DISCONNECTED = 0x00;//网络状态未连接
-    public static final int NET_TYPE_UNKNOWN = 0x01;//未知的网络连接类型
-    public static final int NET_TYPE_WIFI = 0x02;//WiFi连接状态
-    public static final int NET_TYPE_MOBILE = 0x03;//移动网络连接状态
 
     private static ConnectivityManager sConnMgr;//连接管理器
 
@@ -73,7 +73,7 @@ public class NetworkUtils {
      * @param context 获取系统连接管理器的上下文
      * @return 返回获取到的系统连接管理器
      */
-    private static ConnectivityManager getConnectivityManager(Context context) {
+    public static ConnectivityManager getConnectivityManager(Context context) {
         if (sConnMgr == null) {
             synchronized (NetworkUtils.class) {
                 if (sConnMgr == null) {
@@ -139,7 +139,21 @@ public class NetworkUtils {
      */
     public static void checkNetworkType(Context context, boolean popDialogWithMobile,
                                         final OnCheckNetworkTypeListener listener) {
-        checkNetworkType(context, getNetworkType(), popDialogWithMobile, listener);
+        checkNetworkType(context, popDialogWithMobile, listener, null);
+    }
+
+    /**
+     * 检查网络连接类型
+     *
+     * @param context             对话框所处上下文
+     * @param popDialogWithMobile 是否在移动网络状态下弹出确认对话框
+     * @param typeListener        检测网络类型监听器
+     * @param selectListener      流量连接选择监听器
+     */
+    public static void checkNetworkType(Context context, boolean popDialogWithMobile,
+                                        final OnCheckNetworkTypeListener typeListener,
+                                        OnSelectConnectInMobileListener selectListener) {
+        checkNetworkType(context, getNetworkType(), popDialogWithMobile, typeListener, selectListener);
     }
 
     /**
@@ -148,34 +162,40 @@ public class NetworkUtils {
      * @param context             对话框所处上下文
      * @param networkType         网络连接类型
      * @param popDialogWithMobile 是否在移动网络状态下弹出确认对话框
-     * @param listener            检测网络类型回调接口
+     * @param listener            检测网络类型监听器
+     * @param selectListener      流量连接选择监听器
      */
     public static void checkNetworkType(Context context, int networkType, boolean popDialogWithMobile,
-                                        final OnCheckNetworkTypeListener listener) {
+                                        OnCheckNetworkTypeListener listener,
+                                        final OnSelectConnectInMobileListener selectListener) {
         if (listener == null) {
             return;
         }
-        if (checkNetworkTypeIsMobile(networkType)) {
-            listener.onConnectedInMobile();
-            if (popDialogWithMobile && context != null) {
+        if (networkType == NET_TYPE_DISCONNECTED) {
+            listener.onDisconnectNetwork();
+        } else {
+            listener.onConnectNetwork(networkType);
+            if (popDialogWithMobile && checkNetworkTypeIsMobile(networkType) && context != null) {
                 new AlertDialog.Builder(context)
                         .setCancelable(false)
                         .setMessage(R.string.prompt_query_mobile_network)
                         .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                listener.onConfirmConnectedInMobile();
+                                if (selectListener != null) {
+                                    selectListener.onConfirmConnectedInMobile();
+                                }
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                listener.onCancelConnectedInMobile();
+                                if (selectListener != null) {
+                                    selectListener.onCancelConnectedInMobile();
+                                }
                             }
                         }).create().show();
             }
-        } else {
-            listener.onConnectedInWifi();
         }
     }
 
@@ -186,7 +206,19 @@ public class NetworkUtils {
      * @return 如果是移动网络返回true，否则返回false
      */
     public static boolean checkNetworkTypeIsMobile(int networkType) {
-        return networkType == NetworkUtils.NET_TYPE_MOBILE;
+        return networkType == NET_TYPE_MOBILE;
+    }
+
+    /**
+     * 网络类型常量类
+     */
+    public static class NetworkTypeConstants {
+
+        public static final int NET_TYPE_DISCONNECTED = 0x00;//网络状态未连接
+        public static final int NET_TYPE_UNKNOWN = 0x01;//未知的网络连接类型
+        public static final int NET_TYPE_WIFI = 0x02;//WiFi连接状态
+        public static final int NET_TYPE_MOBILE = 0x03;//移动网络连接状态
+
     }
 
     /**
@@ -195,14 +227,22 @@ public class NetworkUtils {
     public interface OnCheckNetworkTypeListener {
 
         /**
-         * 当使用移动网络连接时回调
+         * 当与网络断开连接时回调
          */
-        void onConnectedInMobile();
+        void onDisconnectNetwork();
 
         /**
-         * 当使用WiFi连接时回调
+         * 当连接到网络时回调
+         *
+         * @param networkType 网络类型
          */
-        void onConnectedInWifi();
+        void onConnectNetwork(int networkType);
+    }
+
+    /**
+     * 当使用流量连接网络时回调监听器
+     */
+    public interface OnSelectConnectInMobileListener {
 
         /**
          * 当确认使用移动网络连接时回调
