@@ -218,7 +218,7 @@ public class FragmentUtils {
     }
 
     /**
-     * Fragment操作事务类型常量类
+     * Fragment事务操作类型常量类
      */
     public static class TransactionTypeConstants {
 
