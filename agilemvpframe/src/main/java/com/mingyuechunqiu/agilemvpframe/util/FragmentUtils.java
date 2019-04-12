@@ -9,9 +9,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.mingyuechunqiu.agilemvpframe.R;
-import com.mingyuechunqiu.agilemvpframe.ui.fragment.BaseFragment;
 
 import java.util.List;
+
+import static com.mingyuechunqiu.agilemvpframe.util.FragmentUtils.TransactionTypeConstants.TYPE_ADD;
+import static com.mingyuechunqiu.agilemvpframe.util.FragmentUtils.TransactionTypeConstants.TYPE_HIDE;
+import static com.mingyuechunqiu.agilemvpframe.util.FragmentUtils.TransactionTypeConstants.TYPE_REPLACE;
+import static com.mingyuechunqiu.agilemvpframe.util.FragmentUtils.TransactionTypeConstants.TYPE_SHOW;
 
 /**
  * <pre>
@@ -24,23 +28,18 @@ import java.util.List;
  */
 public class FragmentUtils {
 
-    public static final int NO_ID = -1;//没有资源id
-    public static final int TYPE_REPLACE = 0x00;//替换
-    public static final int TYPE_ADD = 0x01;//添加
-    public static final int TYPE_SHOW = 0x02;//显示
-    public static final int TYPE_HIDE = 0x03;//隐藏
+    public static final int NO_ID = -1;//没有资源ID
 
     /**
      * 替换Fragment，默认添加到栈中
      *
      * @param fragmentManager fragment管理器
      * @param containerViewId 容器ID
-     * @param f               替换的Fragment
-     * @param <F>             替换的Fragment类型
+     * @param fragment        替换的Fragment
      */
-    public static <F extends BaseFragment> void replaceFragment(
-            FragmentManager fragmentManager, @IdRes int containerViewId, F f) {
-        replaceFragment(fragmentManager, containerViewId, f, true,
+    public static void replaceFragment(
+            FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment) {
+        replaceFragment(fragmentManager, containerViewId, fragment, true,
                 R.anim.agile_slide_in_right, R.anim.agile_slide_out_left);
     }
 
@@ -49,16 +48,15 @@ public class FragmentUtils {
      *
      * @param fragmentManager  fragment管理器
      * @param containerViewId  容器ID
-     * @param f                替换的Fragment
+     * @param fragment         替换的Fragment
      * @param isAddToBack      是否添加到栈中
      * @param enterAnimationId 入场动画
      * @param exitAnimationId  出场动画
-     * @param <F>              替换的Fragment类型
      */
-    public static <F extends BaseFragment> void replaceFragment(
-            FragmentManager fragmentManager, @IdRes int containerViewId, F f, boolean isAddToBack,
+    public static void replaceFragment(
+            FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment, boolean isAddToBack,
             @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
-        updateFragment(fragmentManager, containerViewId, f, isAddToBack, TYPE_REPLACE,
+        updateFragment(fragmentManager, containerViewId, fragment, isAddToBack, TYPE_REPLACE,
                 enterAnimationId, exitAnimationId);
     }
 
@@ -113,10 +111,10 @@ public class FragmentUtils {
                                     @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         if (!fragment.isAdded()) {
             FragmentUtils.updateFragment(manager, containerViewId, fragment, false,
-                    FragmentUtils.TYPE_ADD, enterAnimationId, exitAnimationId);
+                    TYPE_ADD, enterAnimationId, exitAnimationId);
         } else {
             FragmentUtils.updateFragment(manager, containerViewId, fragment, false,
-                    FragmentUtils.TYPE_SHOW, enterAnimationId, exitAnimationId);
+                    TYPE_SHOW, enterAnimationId, exitAnimationId);
         }
     }
 
@@ -132,7 +130,7 @@ public class FragmentUtils {
                                     @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         if (fragment != null && !fragment.isHidden()) {
             FragmentUtils.updateFragment(fragmentManager, FragmentUtils.NO_ID, fragment, false,
-                    FragmentUtils.TYPE_HIDE, enterAnimationId, exitAnimationId);
+                    TYPE_HIDE, enterAnimationId, exitAnimationId);
         }
     }
 
@@ -217,5 +215,17 @@ public class FragmentUtils {
         }
         Fragment[] fragments = new Fragment[fragmentList.size()];
         removeFragments(fragmentManager, isAllowingStateLoss, fragmentList.toArray(fragments));
+    }
+
+    /**
+     * Fragment操作事务类型常量类
+     */
+    public static class TransactionTypeConstants {
+
+        public static final int TYPE_REPLACE = 0x00;//替换
+        public static final int TYPE_ADD = 0x01;//添加
+        public static final int TYPE_SHOW = 0x02;//显示
+        public static final int TYPE_HIDE = 0x03;//隐藏
+
     }
 }
