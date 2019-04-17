@@ -115,7 +115,10 @@ public class VideoViewActivity extends BaseToolbarPresenterActivity {
      * @param container 父容器
      */
     private void initVideoView(FrameLayout container) {
-        if (getIntent().getExtras() != null) {
+        if (container == null) {
+            return;
+        }
+        if (getIntent() != null && getIntent().getExtras() != null) {
             int videoHelperType = getIntent().getExtras().getInt(BUNDLE_VIDEO_VIEW_HELPER_TYPE,
                     Constants.TYPE_ORIGINAL_HELPER);
             if (videoHelperType == Constants.TYPE_ORIGINAL_HELPER) {
@@ -135,7 +138,10 @@ public class VideoViewActivity extends BaseToolbarPresenterActivity {
      * 播放本地视频
      */
     private void setLocalVideo() {
-        if (getIntent().getExtras() != null) {
+        if (vvManager == null) {
+            return;
+        }
+        if (getIntent() != null && getIntent().getExtras() != null) {
             int localResId = getIntent().getIntExtra(BUNDLE_LOCAL_VIDEO_RES_ID, -1);
             if (localResId != 0) {
                 vvManager.setLocal(this, localResId);
