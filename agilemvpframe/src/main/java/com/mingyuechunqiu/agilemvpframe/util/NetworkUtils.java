@@ -78,7 +78,6 @@ public class NetworkUtils {
             synchronized (NetworkUtils.class) {
                 if (sConnMgr == null) {
                     sConnMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                    return sConnMgr;
                 }
             }
         }
@@ -105,9 +104,9 @@ public class NetworkUtils {
     private static boolean checkNetStateWith21(Context context) {
         checkConnMgr(context);
         NetworkInfo wifiInfo = sConnMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        boolean isWifiConnected = wifiInfo.isConnected();
+        boolean isWifiConnected = wifiInfo != null && wifiInfo.isConnected();
         NetworkInfo mobileInfo = sConnMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        boolean isMobileConnected = mobileInfo.isConnected();
+        boolean isMobileConnected = mobileInfo != null && mobileInfo.isConnected();
         return isWifiConnected || isMobileConnected;
     }
 
@@ -121,10 +120,15 @@ public class NetworkUtils {
     private static boolean checkNetStateWith21OrNew(Context context) {
         checkConnMgr(context);
         Network[] networks = sConnMgr.getAllNetworks();
+        if (networks == null) {
+            return false;
+        }
         for (Network network : networks) {
-            NetworkInfo networkInfo = sConnMgr.getNetworkInfo(network);
-            if (networkInfo.isConnected()) {
-                return true;
+            if (network != null) {
+                NetworkInfo networkInfo = sConnMgr.getNetworkInfo(network);
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    return true;
+                }
             }
         }
         return false;

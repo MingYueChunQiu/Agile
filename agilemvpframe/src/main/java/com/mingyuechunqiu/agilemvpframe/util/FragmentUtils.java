@@ -14,6 +14,7 @@ import java.util.List;
 
 import static com.mingyuechunqiu.agilemvpframe.util.FragmentUtils.TransactionTypeConstants.TYPE_ADD;
 import static com.mingyuechunqiu.agilemvpframe.util.FragmentUtils.TransactionTypeConstants.TYPE_HIDE;
+import static com.mingyuechunqiu.agilemvpframe.util.FragmentUtils.TransactionTypeConstants.TYPE_REMOVE;
 import static com.mingyuechunqiu.agilemvpframe.util.FragmentUtils.TransactionTypeConstants.TYPE_REPLACE;
 import static com.mingyuechunqiu.agilemvpframe.util.FragmentUtils.TransactionTypeConstants.TYPE_SHOW;
 
@@ -28,7 +29,7 @@ import static com.mingyuechunqiu.agilemvpframe.util.FragmentUtils.TransactionTyp
  */
 public class FragmentUtils {
 
-    public static final int NO_ID = -1;//没有资源ID
+    public static final int NO_ID = -1;//无效资源ID
 
     /**
      * 替换Fragment，默认添加到栈中
@@ -39,7 +40,7 @@ public class FragmentUtils {
      */
     public static void replaceFragment(
             FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment) {
-        replaceFragment(fragmentManager, containerViewId, fragment, true,
+        replaceFragment(fragmentManager, containerViewId, fragment, true, true,
                 R.anim.agile_slide_in_right, R.anim.agile_slide_out_left);
     }
 
@@ -49,15 +50,17 @@ public class FragmentUtils {
      * @param fragmentManager  fragment管理器
      * @param containerViewId  容器ID
      * @param fragment         替换的Fragment
-     * @param isAddToBack      是否添加到栈中
+     * @param addToBack        是否添加到栈中
+     * @param allowStateLoss   是否允许丢失状态
      * @param enterAnimationId 入场动画
      * @param exitAnimationId  出场动画
      */
     public static void replaceFragment(
-            FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment, boolean isAddToBack,
+            FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment,
+            boolean addToBack, boolean allowStateLoss,
             @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
-        updateFragment(fragmentManager, containerViewId, fragment, isAddToBack, TYPE_REPLACE,
-                enterAnimationId, exitAnimationId);
+        updateFragment(fragmentManager, containerViewId, fragment, addToBack, allowStateLoss,
+                TYPE_REPLACE, enterAnimationId, exitAnimationId);
     }
 
     /**
@@ -66,36 +69,23 @@ public class FragmentUtils {
      * @param manager          fragment管理器
      * @param containerViewId  父布局id
      * @param fragment         要更新的新fragment
-     * @param isAddToBack      是否添加到栈中
+     * @param addToBack        是否添加到栈中
+     * @param allowStateLoss   是否允许丢失状态
      * @param type             更新的方式类型
      * @param enterAnimationId 入场动画
      * @param exitAnimationId  出场动画
      */
     public static void updateFragment(FragmentManager manager, @IdRes int containerViewId, Fragment fragment,
-                                      boolean isAddToBack, int type,
+                                      boolean addToBack, boolean allowStateLoss, int type,
                                       @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
+        if (manager == null || fragment == null) {
+            return;
+        }
         FragmentTransaction transaction = manager.beginTransaction();
         if (enterAnimationId != NO_ID && exitAnimationId != NO_ID) {
             transaction.setCustomAnimations(enterAnimationId, exitAnimationId);
         }
-        switch (type) {
-            case TYPE_REPLACE:
-                transaction.replace(containerViewId, fragment);
-                if (isAddToBack) {
-                    transaction.addToBackStack(null);
-                }
-                break;
-            case TYPE_ADD:
-                transaction.add(containerViewId, fragment, fragment.getClass().getSimpleName());
-                break;
-            case TYPE_SHOW:
-                transaction.show(fragment);
-                break;
-            case TYPE_HIDE:
-                transaction.hide(fragment);
-                break;
-        }
-        transaction.commit();
+        handleTransaction(containerViewId, fragment, addToBack, allowStateLoss, type, transaction);
     }
 
     /**
@@ -109,11 +99,14 @@ public class FragmentUtils {
      */
     public static void showFragment(FragmentManager manager, @IdRes int containerViewId, Fragment fragment,
                                     @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
+        if (fragment == null) {
+            return;
+        }
         if (!fragment.isAdded()) {
-            FragmentUtils.updateFragment(manager, containerViewId, fragment, false,
+            FragmentUtils.updateFragment(manager, containerViewId, fragment, false, true,
                     TYPE_ADD, enterAnimationId, exitAnimationId);
         } else {
-            FragmentUtils.updateFragment(manager, containerViewId, fragment, false,
+            FragmentUtils.updateFragment(manager, containerViewId, fragment, false, true,
                     TYPE_SHOW, enterAnimationId, exitAnimationId);
         }
     }
@@ -129,7 +122,7 @@ public class FragmentUtils {
     public static void hideFragment(FragmentManager fragmentManager, Fragment fragment,
                                     @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         if (fragment != null && !fragment.isHidden()) {
-            FragmentUtils.updateFragment(fragmentManager, FragmentUtils.NO_ID, fragment, false,
+            FragmentUtils.updateFragment(fragmentManager, FragmentUtils.NO_ID, fragment, false, true,
                     TYPE_HIDE, enterAnimationId, exitAnimationId);
         }
     }
@@ -177,12 +170,12 @@ public class FragmentUtils {
     /**
      * 移除Fragment
      *
-     * @param fragmentManager     Fragment管理器
-     * @param isAllowingStateLoss 是否允许丧失状态
-     * @param fragments           要移除的Fragment
+     * @param fragmentManager Fragment管理器
+     * @param allowStateLoss  是否允许丧失状态
+     * @param fragments       要移除的Fragment
      */
     public static void removeFragments(@Nullable FragmentManager fragmentManager,
-                                       boolean isAllowingStateLoss,
+                                       boolean allowStateLoss,
                                        @Nullable Fragment... fragments) {
         if (fragmentManager == null || fragments == null || fragments.length == 0) {
             return;
@@ -193,7 +186,7 @@ public class FragmentUtils {
                 transaction.remove(fragment);
             }
         }
-        if (isAllowingStateLoss) {
+        if (allowStateLoss) {
             transaction.commitAllowingStateLoss();
         } else {
             transaction.commit();
@@ -203,18 +196,65 @@ public class FragmentUtils {
     /**
      * 移除Fragment
      *
-     * @param fragmentManager     Fragment管理器
-     * @param isAllowingStateLoss 是否允许丢失状态
-     * @param fragmentList        要移除的Fragment集合
+     * @param fragmentManager Fragment管理器
+     * @param allowStateLoss  是否允许丢失状态
+     * @param fragmentList    要移除的Fragment集合
      */
     public static void removeFragments(@Nullable FragmentManager fragmentManager,
-                                       boolean isAllowingStateLoss,
+                                       boolean allowStateLoss,
                                        @Nullable List<Fragment> fragmentList) {
         if (fragmentList == null) {
             return;
         }
         Fragment[] fragments = new Fragment[fragmentList.size()];
-        removeFragments(fragmentManager, isAllowingStateLoss, fragmentList.toArray(fragments));
+        removeFragments(fragmentManager, allowStateLoss, fragmentList.toArray(fragments));
+    }
+
+    /**
+     * 处理事务
+     *
+     * @param containerViewId 父布局id
+     * @param fragment        要更新的新fragment
+     * @param addToBack       是否添加到栈中
+     * @param allowStateLoss  是否允许丢失状态
+     * @param type            更新的方式类型
+     * @param transaction     事务
+     */
+    private static void handleTransaction(@IdRes int containerViewId, Fragment fragment, boolean addToBack, boolean allowStateLoss, int type, FragmentTransaction transaction) {
+        if (fragment == null || transaction == null) {
+            return;
+        }
+        switch (type) {
+            case TYPE_REPLACE:
+                transaction.replace(containerViewId, fragment);
+                if (addToBack) {
+                    transaction.addToBackStack(null);
+                }
+                break;
+            case TYPE_ADD:
+                if (!fragment.isAdded()) {
+                    transaction.add(containerViewId, fragment, fragment.getClass().getSimpleName());
+                }
+                break;
+            case TYPE_SHOW:
+                transaction.show(fragment);
+                break;
+            case TYPE_HIDE:
+                transaction.hide(fragment);
+                break;
+            case TYPE_REMOVE:
+                if (fragment.isAdded()) {
+                    transaction.remove(fragment);
+                }
+                break;
+            default:
+                break;
+        }
+        if (allowStateLoss) {
+            transaction.commitAllowingStateLoss();
+        } else {
+            transaction.commit();
+        }
     }
 
     /**
@@ -226,6 +266,7 @@ public class FragmentUtils {
         public static final int TYPE_ADD = 0x01;//添加
         public static final int TYPE_SHOW = 0x02;//显示
         public static final int TYPE_HIDE = 0x03;//隐藏
+        public static final int TYPE_REMOVE = 0x04;//移除
 
     }
 }

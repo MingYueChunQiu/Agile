@@ -124,9 +124,11 @@ public class VideoViewActivity extends BaseToolbarPresenterActivity {
                 vvManager = VideoViewManagerFactory.newInstance(new YCVideoPlayerHelper());
             }
         }
-        container.addView(vvManager.getVideoContainer());
-        vvManager.initVideoView(this);
-        setLocalVideo();
+        if (vvManager != null && vvManager.getVideoContainer() != null) {
+            container.addView(vvManager.getVideoContainer());
+            vvManager.initVideoView(this);
+            setLocalVideo();
+        }
     }
 
     /**

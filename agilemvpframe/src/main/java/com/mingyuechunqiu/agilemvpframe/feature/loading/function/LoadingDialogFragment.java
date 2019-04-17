@@ -272,7 +272,8 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
 
     @Override
     public void showLoadingDialog(FragmentManager manager) {
-        if (isAdded() || isVisible() || manager == null) {
+        //状态已经保存了就不显示，否则DialogFragment默认的show方法调用的是commit，在保存状态后调用会崩溃报异常
+        if (isAdded() || isVisible() || manager == null || manager.isStateSaved()) {
             return;
         }
         show(manager, LoadingDialogFragment.class.getSimpleName());
@@ -280,6 +281,9 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
 
     @Override
     public void dismissLoadingDialog(boolean allowStateLoss) {
+        if (getFragmentManager() == null) {
+            return;
+        }
         /* 在某些情况下调用对话框dismiss时，会出现
          * java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
          * 所以要调用commitAllowingStateLoss方法*/
