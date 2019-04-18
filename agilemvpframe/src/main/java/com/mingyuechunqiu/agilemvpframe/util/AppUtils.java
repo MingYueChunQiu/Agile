@@ -1,9 +1,11 @@
 package com.mingyuechunqiu.agilemvpframe.util;
 
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrame;
 
@@ -21,23 +23,49 @@ import java.util.List;
 public class AppUtils {
 
     /**
-     * 检测应用是否处于前台显示
+     * 检测应用是否在前台显示
      *
      * @param context 上下文
      * @return 如果处于前台显示返回true，否则返回false
      */
     public static boolean checkAppIsForeground(@NonNull Context context) {
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> list = activityManager.getRunningAppProcesses();
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if (am == null) {
+            return false;
+        }
+        List<ActivityManager.RunningAppProcessInfo> list = am.getRunningAppProcesses();
         if (list == null || list.size() == 0) {
             return false;
         }
         for (ActivityManager.RunningAppProcessInfo info : list) {
-            if (info.processName.equals(context.getPackageName())) {
+            if (info != null && info.processName.equals(context.getPackageName())) {
                 return info.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
             }
         }
         return false;
+    }
+
+    /**
+     * 判断某个Activity是否在前台显示
+     *
+     * @param context   上下文
+     * @param className Activity的类名
+     * @return 如果在前台显示返回true，否则返回false
+     */
+    public static boolean checkActivityIsForeground(Context context, String className) {
+        if (context == null || TextUtils.isEmpty(className)) {
+            return false;
+        }
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if (am == null) {
+            return false;
+        }
+        List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
+        if (list == null || list.size() == 0 || list.get(0) == null) {
+            return false;
+        }
+        ComponentName cpn = list.get(0).topActivity;
+        return cpn != null && className.equals(cpn.getClassName());
     }
 
     /**
