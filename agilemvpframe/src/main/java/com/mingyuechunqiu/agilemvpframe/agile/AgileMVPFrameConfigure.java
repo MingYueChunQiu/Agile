@@ -1,6 +1,8 @@
 package com.mingyuechunqiu.agilemvpframe.agile;
 
+import com.mingyuechunqiu.agilemvpframe.agile.engine.GlideImageEngine;
 import com.mingyuechunqiu.agilemvpframe.data.remote.retrofit.controller.BaseRetrofitManager;
+import com.mingyuechunqiu.agilemvpframe.framework.engine.IImageEngine;
 
 /**
  * <pre>
@@ -16,10 +18,12 @@ public class AgileMVPFrameConfigure {
     private int connectNetTimeout;//网络连接超时时间(秒数)
     private int readNetTimeout;//网络读取超时时间(秒数)
     private int writeNetTimeout;//网络写入超时时间(秒数)
+    private IImageEngine imageEngine;//图片显示引擎
 
     public AgileMVPFrameConfigure() {
         //设置默认配置
         connectNetTimeout = readNetTimeout = writeNetTimeout = BaseRetrofitManager.DEFAULT_TIMEOUT;
+        imageEngine = new GlideImageEngine();
     }
 
     public int getConnectNetTimeout() {
@@ -44,6 +48,14 @@ public class AgileMVPFrameConfigure {
 
     public void setWriteNetTimeout(int writeNetTimeout) {
         this.writeNetTimeout = writeNetTimeout;
+    }
+
+    public IImageEngine getImageEngine() {
+        return imageEngine;
+    }
+
+    public void setImageEngine(IImageEngine imageEngine) {
+        this.imageEngine = imageEngine;
     }
 
     /**
@@ -85,6 +97,15 @@ public class AgileMVPFrameConfigure {
 
         public Builder setWriteNetTimeout(int writeNetTimeout) {
             mConfigure.writeNetTimeout = writeNetTimeout;
+            return this;
+        }
+
+        public IImageEngine getImageEngine() {
+            return mConfigure.imageEngine;
+        }
+
+        public Builder setImageEngine(IImageEngine imageEngine) {
+            mConfigure.imageEngine = imageEngine;
             return this;
         }
     }

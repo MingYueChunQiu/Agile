@@ -76,8 +76,11 @@ public class ScreenUtils {
      * @param right        右边距
      * @param bottom       下边距
      */
-    public static void setMargins(@NonNull ViewGroup.MarginLayoutParams layoutParams, Resources resources,
+    public static void setMargins(ViewGroup.MarginLayoutParams layoutParams, Resources resources,
                                   int left, int top, int right, int bottom) {
+        if (layoutParams == null || resources == null) {
+            return;
+        }
         layoutParams.setMargins((int) ScreenUtils.getPxFromDp(resources, left),
                 (int) ScreenUtils.getPxFromDp(resources, top),
                 (int) ScreenUtils.getPxFromDp(resources, right),

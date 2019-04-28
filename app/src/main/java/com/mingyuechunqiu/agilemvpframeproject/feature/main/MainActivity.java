@@ -24,7 +24,6 @@ import com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity;
 import com.mingyuechunqiu.agilemvpframe.util.StringUtils;
 import com.mingyuechunqiu.agilemvpframe.util.ToolbarUtils;
 import com.mingyuechunqiu.agilemvpframeproject.R;
-import com.mingyuechunqiu.agilemvpframeproject.feature.loading.ShowDialogFragment;
 
 import java.lang.ref.WeakReference;
 
@@ -48,6 +47,18 @@ import static com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity.Const
  */
 public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View<MainContract.Presenter>, MainContract.Presenter>
         implements MainContract.View<MainContract.Presenter>, View.OnClickListener {
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
+//            MediaUtils.VideoInfo info = MediaUtils.queryVideoInfo(getContentResolver(), data.getData());
+//            Log.d("份", (info == null) + "" + info.getSize() + " " + info.getDuration());
+//            if (info.getSize() > 1 * 1024 * 1024L){
+//                showToast("视频不能大于");
+//            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     public void setPresenter(@NonNull MainContract.Presenter presenter) {
@@ -121,9 +132,16 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     protected void initView(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.agile_layout_navigation);
         mToolbar = findViewById(R.id.tb_navigation_bar);
+        mToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                MediaUtils.startPickVideo(MainActivity.this, 2);
+
+            }
+        });
         AppCompatTextView tvToolbarTitle = findViewById(R.id.tv_navigation_title);
-        AppCompatImageView acivBack = findViewById(R.id.iv_navigation_left_icon);
-        acivBack.setVisibility(View.VISIBLE);
+        AppCompatImageView ivBack = findViewById(R.id.iv_navigation_left_icon);
+        ivBack.setVisibility(View.VISIBLE);
         tvToolbarTitle.setText(R.string.app_name);
         tvToolbarTitle.setVisibility(View.VISIBLE);
         setSupportActionBar(mToolbar);
@@ -178,8 +196,8 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 
 //        FragmentUtils.replaceFragment(getSupportFragmentManager(), R.id.fl_navigation_container,
 //                new MainFragment());
-        ShowDialogFragment fragment = new ShowDialogFragment();
-        fragment.show(getSupportFragmentManager(), ShowDialogFragment.class.getSimpleName());
+//        ShowDialogFragment fragment = new ShowDialogFragment();
+//        fragment.show(getSupportFragmentManager(), ShowDialogFragment.class.getSimpleName());
     }
 
     /**

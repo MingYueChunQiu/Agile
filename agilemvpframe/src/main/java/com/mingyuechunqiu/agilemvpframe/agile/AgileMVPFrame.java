@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.mingyuechunqiu.agilemvpframe.feature.logmanager.LogManagerProvider;
+import com.mingyuechunqiu.agilemvpframe.framework.engine.IImageEngine;
 
 /**
  * <pre>
@@ -16,9 +17,19 @@ import com.mingyuechunqiu.agilemvpframe.feature.logmanager.LogManagerProvider;
  */
 public class AgileMVPFrame {
 
-    private static Context sContext;//上下文对象
-    private static volatile AgileMVPFrameConfigure sConfigure;//配置信息对象
-    private static boolean debug;//标记是否处于debug模式
+    private static final AgileMVPFrame INSTANCE;//单例
+
+    private Context mContext;//上下文对象
+    private AgileMVPFrameConfigure mConfigure;//配置信息对象
+    private boolean mDebug;//标记是否处于debug模式
+
+    static {
+        INSTANCE = new AgileMVPFrame();
+    }
+
+    private AgileMVPFrame() {
+        mConfigure = new AgileMVPFrameConfigure.Builder().build();
+    }
 
     /**
      * 进行框架初始化，需要在application中进行初始化
@@ -29,7 +40,7 @@ public class AgileMVPFrame {
         if (context == null) {
             throw new IllegalArgumentException("context can not be null!");
         }
-        sContext = context;
+        INSTANCE.mContext = context;
         debug(false);
     }
 
@@ -39,10 +50,10 @@ public class AgileMVPFrame {
      * @return 返回全局上下文
      */
     public static Context getAppContext() {
-        if (sContext == null) {
+        if (INSTANCE.mContext == null) {
             throw new IllegalArgumentException("Context has not been initialized!");
         }
-        return sContext;
+        return INSTANCE.mContext;
     }
 
     /**
@@ -54,7 +65,7 @@ public class AgileMVPFrame {
         if (configure == null) {
             return;
         }
-        sConfigure = configure;
+        INSTANCE.mConfigure = configure;
     }
 
     /**
@@ -64,14 +75,7 @@ public class AgileMVPFrame {
      */
     @NonNull
     public static AgileMVPFrameConfigure getConfigure() {
-        if (sConfigure == null) {
-            synchronized (AgileMVPFrame.class) {
-                if (sConfigure == null) {
-                    sConfigure = new AgileMVPFrameConfigure.Builder().build();
-                }
-            }
-        }
-        return sConfigure;
+        return INSTANCE.mConfigure;
     }
 
     /**
@@ -80,12 +84,15 @@ public class AgileMVPFrame {
      * @param debug 是否开启调试模式
      */
     public static void debug(boolean debug) {
-        AgileMVPFrame.debug = debug;
+        INSTANCE.mDebug = debug;
         LogManagerProvider.showLog(debug);
     }
 
     public static boolean isDebug() {
-        return debug;
+        return INSTANCE.mDebug;
     }
 
+    public static IImageEngine getImageEngine() {
+        return INSTANCE.mConfigure.getImageEngine();
+    }
 }

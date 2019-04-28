@@ -10,6 +10,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import java.lang.reflect.Field;
@@ -52,7 +53,7 @@ public class MediaUtils {
      * @param requestCode 启动请求码
      */
     public static void startPickVideo(@NonNull Activity activity, int requestCode) {
-        activity.startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI), requestCode);
+        activity.startActivityForResult(getPickVideoIntent(), requestCode);
     }
 
     /**
@@ -62,10 +63,7 @@ public class MediaUtils {
      * @param requestCode 启动请求码
      */
     public static void startPickVideo(@NonNull Fragment fragment, int requestCode) {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-        //必须加这句话，否则会连图片也一起查找到
-        intent.setType("video/*");
-        fragment.startActivityForResult(intent, requestCode);
+        fragment.startActivityForResult(getPickVideoIntent(), requestCode);
     }
 
     /**
@@ -75,7 +73,8 @@ public class MediaUtils {
      * @param uri      视频本地地址
      * @return 如果成功获取数据，则返回VideoInfo，否则返回null
      */
-    public static VideoInfo queryVideoInfo(@NonNull ContentResolver resolver, Uri uri) {
+    @Nullable
+    public static VideoInfo queryVideoInfo(@NonNull ContentResolver resolver, @NonNull Uri uri) {
         Cursor cursor = resolver.query(uri, null, null, null, null);
         if (cursor == null) {
             return null;
@@ -126,6 +125,20 @@ public class MediaUtils {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 获取选择视频的启动意图
+     *
+     * @return 返回启动意图
+     */
+    @NonNull
+    private static Intent getPickVideoIntent() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        //必须加类型，否则会连图片也一起查找到
+        intent.setDataAndType(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, MediaStore.Video.Media.CONTENT_TYPE);
+        intent.putExtra(MediaStore.Video.Media.SIZE, 1 * 1024 * 1024);
+        return intent;
     }
 
     /**
