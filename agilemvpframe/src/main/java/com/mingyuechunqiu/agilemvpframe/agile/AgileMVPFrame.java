@@ -95,4 +95,11 @@ public class AgileMVPFrame {
     public static IImageEngine getImageEngine() {
         return INSTANCE.mConfigure.getImageEngine();
     }
+
+    public static void setImageEngine(IImageEngine engine) {
+        if (engine == null || engine == INSTANCE.mConfigure.getImageEngine()) {
+            return;
+        }
+        INSTANCE.mConfigure.setImageEngine(engine);
+    }
 }
