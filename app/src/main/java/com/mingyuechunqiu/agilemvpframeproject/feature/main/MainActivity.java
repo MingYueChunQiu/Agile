@@ -136,7 +136,6 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
             @Override
             public void onClick(View v) {
 //                MediaUtils.startPickVideo(MainActivity.this, 2);
-
             }
         });
         AppCompatTextView tvToolbarTitle = findViewById(R.id.tv_navigation_title);

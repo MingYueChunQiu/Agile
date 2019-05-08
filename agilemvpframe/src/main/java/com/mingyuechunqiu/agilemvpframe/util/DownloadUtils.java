@@ -5,10 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrame;
 import com.mingyuechunqiu.agilemvpframe.R;
+import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrame;
+
+import java.io.File;
 
 /**
  * <pre>
@@ -35,17 +38,20 @@ public class DownloadUtils {
      * @return 返回下载文件id
      */
     public static long requestDownload(DownloadManager manager, String url, String name) {
+        if (manager == null || TextUtils.isEmpty(url)) {
+            return DOWNLOAD_ERROR;
+        }
         Context context = AgileMVPFrame.getAppContext();
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        if (TextUtils.isEmpty(name)) {
-            request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS,
-                    AgileMVPFrame.getAppContext().getPackageName() + ".apk");
-        } else {
-            request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, name);
+        String fileName = name;
+        if (TextUtils.isEmpty(fileName)) {
+            fileName = AgileMVPFrame.getAppContext().getPackageName() + ".apk";
         }
-        request.setTitle(context.getString(R.string.update_application));
-        request.setDescription(context.getString(R.string.installation_package_is_downloading));
-        request.setMimeType(TYPE_APK);
+        deleteResidualOldFile(context, fileName);
+        request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, fileName)
+                .setTitle(context.getString(R.string.update_application))
+                .setDescription(context.getString(R.string.installation_package_is_downloading))
+                .setMimeType(TYPE_APK);
         return manager.enqueue(request);
     }
 
@@ -89,7 +95,7 @@ public class DownloadUtils {
         //乘以100时，可能会溢出int的数值范围，导致结果变成负数
         long downloadBytes = bean.getDownloadedBytes();
         long totalBytes = bean.getTotalBytes();
-        if (downloadBytes > 0 && totalBytes > 0 && downloadBytes >= totalBytes) {
+        if (totalBytes > 0 && downloadBytes >= totalBytes) {
             return 100;
         } else {
             return (int) (downloadBytes * 100 / totalBytes);
@@ -105,6 +111,23 @@ public class DownloadUtils {
      */
     public static int getProgress(DownloadManager manager, long id) {
         return getProgress(queryDownload(manager, id));
+    }
+
+    /**
+     * 删除残留的旧文件
+     *
+     * @param context  上下文
+     * @param fileName 文件名称
+     */
+    private static void deleteResidualOldFile(@NonNull Context context, String fileName) {
+        File parentFile = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        if (parentFile == null) {
+            return;
+        }
+        File oldFile = new File(parentFile.getAbsolutePath() + File.separator + fileName);
+        if (oldFile.exists() && !oldFile.delete()) {
+            ToastUtils.showToast("删除残留旧版本apk失败！");
+        }
     }
 
     /**
