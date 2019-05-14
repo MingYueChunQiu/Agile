@@ -4,11 +4,20 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.media.Image;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
+import com.mingyuechunqiu.agilemvpframe.feature.logmanager.LogManagerProvider;
+import com.mingyuechunqiu.agilemvpframe.io.IOUtils;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 
 /**
@@ -88,4 +97,80 @@ public class BitmapUtils {
         return newBitmap;
     }
 
+    /**
+     * 保存图片到本地
+     *
+     * @param bitmapUrl 图片地址
+     * @param filePath  保存文件路径
+     * @param listener  下载图片监听器
+     */
+    public static void saveBitmapToLocal(String bitmapUrl, String filePath, OnDownloadBitmapListener listener) {
+        if (TextUtils.isEmpty(bitmapUrl) || TextUtils.isEmpty(filePath)) {
+            if (listener != null) {
+                listener.onDownloadBitmapFailed("parameters not set");
+            }
+            return;
+        }
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(bitmapUrl);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setDoInput(true);
+            connection.connect();
+            File file = new File(filePath);
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                bis = new BufferedInputStream(connection.getInputStream());
+                bos = new BufferedOutputStream(new FileOutputStream(file));
+                byte[] bytes = new byte[1024];
+                int length;
+                while ((length = bis.read(bytes)) != -1) {
+                    bos.write(bytes, 0, length);
+                }
+            }
+            if (listener != null) {
+                listener.onDownloadBitmapSuccess(file);
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            LogManagerProvider.d("downloadBitmap", e.getMessage());
+            if (listener != null) {
+                listener.onDownloadBitmapFailed(e.getMessage());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            LogManagerProvider.d("downloadBitmap", e.getMessage());
+            if (listener != null) {
+                listener.onDownloadBitmapFailed(e.getMessage());
+            }
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+            IOUtils.closeStream(bis);
+            IOUtils.closeStream(bos);
+        }
+    }
+
+    /**
+     * 下载图片监听器
+     */
+    public interface OnDownloadBitmapListener {
+
+        /**
+         * 当下载成功时回调
+         *
+         * @param file 下载图片所保存文件
+         */
+        void onDownloadBitmapSuccess(File file);
+
+        /**
+         * 当下载失败时回调
+         *
+         * @param msg 失败信息
+         */
+        void onDownloadBitmapFailed(String msg);
+    }
 }
