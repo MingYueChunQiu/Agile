@@ -36,28 +36,37 @@ public class BitmapUtils {
      *
      * @param bitmap 要保存的图片
      * @param file   图片存储文件
+     * @return 如果成功进行保存返回true，否则返回false
      */
-    public static void saveBitmapToFile(Bitmap bitmap, File file) {
+    public static boolean saveBitmapToFile(Bitmap bitmap, File file) {
+        if (bitmap == null || file == null) {
+            return false;
+        }
         try {
             FileOutputStream fos = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.flush();
             fos.close();
+            return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     /**
      * 从image中获取图片
      *
      * @param image 存储图像的image
-     * @return 提取出的图片
+     * @return 提取图片成功返回Bitmap，否则返回null
      */
     @Nullable
     public static Bitmap getBitmapFromImage(Image image) {
+        if (image == null) {
+            return null;
+        }
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             int width = image.getWidth();
             int height = image.getHeight();
@@ -79,7 +88,7 @@ public class BitmapUtils {
      *
      * @param src       原始图片
      * @param waterMask 水印图片
-     * @return 返回带水印的图片
+     * @return 带水印的图片创建成功返回Bitmap，否则返回null
      */
     public static Bitmap drawWaterMask(Bitmap src, Bitmap waterMask) {
         if (src == null || waterMask == null) {
