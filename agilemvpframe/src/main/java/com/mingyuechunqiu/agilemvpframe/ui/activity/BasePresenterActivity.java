@@ -30,7 +30,6 @@ public abstract class BasePresenterActivity<V extends IBaseDialogView<P>, P exte
     protected void onDestroy() {
         super.onDestroy();
         if (mPresenter != null) {
-            mPresenter.detachView();
             getLifecycle().removeObserver(mPresenter);
             mPresenter = null;
         }

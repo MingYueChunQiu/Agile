@@ -106,6 +106,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     protected void onDestroy() {
+        detachView();
     }
 
     protected void releaseOnDetach() {

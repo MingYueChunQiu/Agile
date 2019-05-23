@@ -89,4 +89,9 @@
         app:stv_text_stroke="true"
         app:stv_text_stroke_color="@color/colorPrimary"
         app:stv_text_stroke_width="@dimen/dp_2" />
+
+    <FrameLayout
+        android:id="@+id/fl_main_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </android.support.v7.widget.LinearLayoutCompat>

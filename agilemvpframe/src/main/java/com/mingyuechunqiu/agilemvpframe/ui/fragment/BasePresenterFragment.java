@@ -27,14 +27,6 @@ public abstract class BasePresenterFragment<V extends IBaseDialogView<P>, P exte
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (mPresenter != null) {
-            mPresenter.detachView();
-        }
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         if (mPresenter != null) {

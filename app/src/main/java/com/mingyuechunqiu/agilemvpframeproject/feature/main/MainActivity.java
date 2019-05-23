@@ -197,6 +197,9 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 //                new MainFragment());
 //        ShowDialogFragment fragment = new ShowDialogFragment();
 //        fragment.show(getSupportFragmentManager(), ShowDialogFragment.class.getSimpleName());
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fl_main_container, new TestFragment())
+                .commit();
     }
 
     /**
