@@ -60,7 +60,7 @@ public class DownloadUtils {
         if (destFile == null) {
             destFile = new File(context.getCacheDir().getAbsolutePath() + File.separator + fileName);
         }
-        if (!deleteResidualOldFile(destFile.getParentFile())) {
+        if (!deleteResidualOldFile(destFile)) {
             return DOWNLOAD_ERROR;
         }
         request.setDestinationUri(Uri.fromFile(destFile))
@@ -135,7 +135,7 @@ public class DownloadUtils {
      * @return 如果删除成功返回true，否则返回false
      */
     private static boolean deleteResidualOldFile(File file) {
-        if (file != null && !file.delete()) {
+        if (file != null && file.exists() && !file.delete()) {
             ToastUtils.showToast("删除残留旧版本apk失败！");
             return false;
         }
