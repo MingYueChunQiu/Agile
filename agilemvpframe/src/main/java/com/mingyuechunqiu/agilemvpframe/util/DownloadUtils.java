@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.mingyuechunqiu.agilemvpframe.R;
@@ -47,8 +46,24 @@ public class DownloadUtils {
         if (TextUtils.isEmpty(fileName)) {
             fileName = AgileMVPFrame.getAppContext().getPackageName() + ".apk";
         }
-        deleteResidualOldFile(context, fileName);
-        request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, fileName)
+        File destFile = null;//存储的目的地址文件
+        File parentFile = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        if (parentFile != null) {
+            File file = new File(parentFile.getAbsolutePath() + File.separator + "Apk");
+            if (!file.exists()) {
+                if (!file.mkdirs()) {
+                    return DOWNLOAD_ERROR;
+                }
+            }
+            destFile = new File(file.getAbsolutePath() + File.separator + fileName);
+        }
+        if (destFile == null) {
+            destFile = new File(context.getCacheDir().getAbsolutePath() + File.separator + fileName);
+        }
+        if (!deleteResidualOldFile(destFile.getParentFile())) {
+            return DOWNLOAD_ERROR;
+        }
+        request.setDestinationUri(Uri.fromFile(destFile))
                 .setTitle(context.getString(R.string.update_application))
                 .setDescription(context.getString(R.string.installation_package_is_downloading))
                 .setMimeType(TYPE_APK);
@@ -116,18 +131,15 @@ public class DownloadUtils {
     /**
      * 删除残留的旧文件
      *
-     * @param context  上下文
-     * @param fileName 文件名称
+     * @param file 存储目的文件的父文件
+     * @return 如果删除成功返回true，否则返回false
      */
-    private static void deleteResidualOldFile(@NonNull Context context, String fileName) {
-        File parentFile = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-        if (parentFile == null) {
-            return;
-        }
-        File oldFile = new File(parentFile.getAbsolutePath() + File.separator + fileName);
-        if (oldFile.exists() && !oldFile.delete()) {
+    private static boolean deleteResidualOldFile(File file) {
+        if (file != null && !file.delete()) {
             ToastUtils.showToast("删除残留旧版本apk失败！");
+            return false;
         }
+        return true;
     }
 
     /**
