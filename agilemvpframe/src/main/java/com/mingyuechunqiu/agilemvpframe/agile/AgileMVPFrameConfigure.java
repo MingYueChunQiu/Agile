@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agilemvpframe.agile;
 
 import com.mingyuechunqiu.agilemvpframe.agile.engine.GlideImageEngine;
-import com.mingyuechunqiu.agilemvpframe.data.remote.retrofit.controller.BaseRetrofitManager;
+import com.mingyuechunqiu.agilemvpframe.agile.remote.AgileNetworkConfig;
 import com.mingyuechunqiu.agilemvpframe.framework.engine.IImageEngine;
 
 /**
@@ -15,39 +15,21 @@ import com.mingyuechunqiu.agilemvpframe.framework.engine.IImageEngine;
  */
 public class AgileMVPFrameConfigure {
 
-    private int connectNetTimeout;//网络连接超时时间(秒数)
-    private int readNetTimeout;//网络读取超时时间(秒数)
-    private int writeNetTimeout;//网络写入超时时间(秒数)
+    private AgileNetworkConfig networkConfig;//网络框架配置信息对象
     private IImageEngine imageEngine;//图片显示引擎
 
     public AgileMVPFrameConfigure() {
         //设置默认配置
-        connectNetTimeout = readNetTimeout = writeNetTimeout = BaseRetrofitManager.DEFAULT_TIMEOUT;
+        networkConfig = new AgileNetworkConfig();
         imageEngine = new GlideImageEngine();
     }
 
-    public int getConnectNetTimeout() {
-        return connectNetTimeout;
+    public AgileNetworkConfig getNetworkConfig() {
+        return networkConfig;
     }
 
-    public void setConnectNetTimeout(int connectNetTimeout) {
-        this.connectNetTimeout = connectNetTimeout;
-    }
-
-    public int getReadNetTimeout() {
-        return readNetTimeout;
-    }
-
-    public void setReadNetTimeout(int readNetTimeout) {
-        this.readNetTimeout = readNetTimeout;
-    }
-
-    public int getWriteNetTimeout() {
-        return writeNetTimeout;
-    }
-
-    public void setWriteNetTimeout(int writeNetTimeout) {
-        this.writeNetTimeout = writeNetTimeout;
+    public void setNetworkConfig(AgileNetworkConfig networkConfig) {
+        this.networkConfig = networkConfig;
     }
 
     public IImageEngine getImageEngine() {
@@ -73,30 +55,12 @@ public class AgileMVPFrameConfigure {
             return mConfigure;
         }
 
-        public int getConnectNetTimeout() {
-            return mConfigure.connectNetTimeout;
+        public AgileNetworkConfig getNetworkConfig() {
+            return mConfigure.networkConfig;
         }
 
-        public Builder setConnectNetTimeout(int connectNetTimeout) {
-            mConfigure.connectNetTimeout = connectNetTimeout;
-            return this;
-        }
-
-        public int getReadNetTimeout() {
-            return mConfigure.readNetTimeout;
-        }
-
-        public Builder setReadNetTimeout(int readNetTimeout) {
-            mConfigure.readNetTimeout = readNetTimeout;
-            return this;
-        }
-
-        public int getWriteNetTimeout() {
-            return mConfigure.writeNetTimeout;
-        }
-
-        public Builder setWriteNetTimeout(int writeNetTimeout) {
-            mConfigure.writeNetTimeout = writeNetTimeout;
+        public Builder setNetworkConfig(AgileNetworkConfig networkConfig) {
+            mConfigure.networkConfig = networkConfig;
             return this;
         }
 

@@ -45,12 +45,12 @@ public abstract class BaseRetrofitManager {
     protected OkHttpClient getDefaultOkHttpClient() {
         AgileMVPFrameConfigure configure = AgileMVPFrame.getConfigure();
         return new OkHttpClient.Builder()
-                .connectTimeout(configure.getConnectNetTimeout() <= 0 ?
-                        DEFAULT_TIMEOUT : configure.getConnectNetTimeout(), TimeUnit.SECONDS)
-                .readTimeout(configure.getReadNetTimeout() <= 0 ?
-                        DEFAULT_TIMEOUT : configure.getReadNetTimeout(), TimeUnit.SECONDS)
-                .writeTimeout(configure.getWriteNetTimeout() <= 0 ?
-                        DEFAULT_TIMEOUT : configure.getWriteNetTimeout(), TimeUnit.SECONDS)
+                .connectTimeout(configure.getNetworkConfig().getConnectNetTimeout() <= 0 ?
+                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getConnectNetTimeout(), TimeUnit.SECONDS)
+                .readTimeout(configure.getNetworkConfig().getReadNetTimeout() <= 0 ?
+                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getReadNetTimeout(), TimeUnit.SECONDS)
+                .writeTimeout(configure.getNetworkConfig().getWriteNetTimeout() <= 0 ?
+                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getWriteNetTimeout(), TimeUnit.SECONDS)
                 .build();
     }
 

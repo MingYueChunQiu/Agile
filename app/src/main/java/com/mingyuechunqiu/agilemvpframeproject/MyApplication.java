@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrame;
 import com.mingyuechunqiu.agilemvpframe.agile.AgileMVPFrameConfigure;
+import com.mingyuechunqiu.agilemvpframe.agile.remote.AgileNetworkConfig;
 
 import io.realm.Realm;
 
@@ -13,7 +14,8 @@ import io.realm.Realm;
  *     author : xyj
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2018/05/18
- *     desc   :
+ *     desc   : 应用类
+ *              继承自Application
  *     version: 1.0
  * </pre>
  */
@@ -36,9 +38,11 @@ public class MyApplication extends Application {
         sContext = getApplicationContext();
         Realm.init(this);
         AgileMVPFrameConfigure configure = new AgileMVPFrameConfigure.Builder()
-                .setConnectNetTimeout(20)
-                .setReadNetTimeout(20)
-                .setWriteNetTimeout(20)
+                .setNetworkConfig(new AgileNetworkConfig.Builder()
+                        .setConnectNetTimeout(20)
+                        .setReadNetTimeout(20)
+                        .setWriteNetTimeout(20)
+                        .build())
                 .build();
         AgileMVPFrame.init(this);
         AgileMVPFrame.setConfigure(configure);
