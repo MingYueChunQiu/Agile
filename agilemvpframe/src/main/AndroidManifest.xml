@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application>
-        <activity android:name=".ui.activity.VideoViewActivity" />
         <activity android:name=".ui.activity.WebViewActivity" />
     </application>
 </manifest>

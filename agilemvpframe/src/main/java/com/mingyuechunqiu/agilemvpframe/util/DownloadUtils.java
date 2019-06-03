@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.mingyuechunqiu.agilemvpframe.R;
@@ -126,6 +127,20 @@ public class DownloadUtils {
      */
     public static int getProgress(DownloadManager manager, long id) {
         return getProgress(queryDownload(manager, id));
+    }
+
+    /**
+     * 获取下载的apk包所在文件夹
+     *
+     * @return 返回文件夹所在绝对路径字符串
+     */
+    @Nullable
+    public static String getDownloadApkDirectory() {
+        File parentFile = AgileMVPFrame.getAppContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        if (parentFile != null) {
+            return parentFile.getAbsolutePath() + File.separator + "Apk";
+        }
+        return null;
     }
 
     /**
