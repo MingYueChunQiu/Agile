@@ -59,5 +59,31 @@ public abstract class BaseRetrofitManager {
      *
      * @return 返回URL字符串
      */
-    protected abstract String getBaseUrl();
+    protected String getBaseUrl() {
+        return beInTest() ? getTestBaseUrl() : getFormalBaseUrl();
+    }
+
+    /**
+     * 是否处于测试中（默认返回false）
+     *
+     * @return 是返回true，否则返回false
+     */
+    protected boolean beInTest() {
+        return false;
+    }
+
+    /**
+     * 获取正式基本URL
+     *
+     * @return 返回URL字符串
+     */
+    protected abstract String getFormalBaseUrl();
+
+    /**
+     * 获取测试基本URL
+     *
+     * @return 返回URL字符串
+     */
+    protected abstract String getTestBaseUrl();
+
 }

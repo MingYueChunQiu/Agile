@@ -50,7 +50,12 @@ public class RetrofitManager extends BaseRetrofitManager {
     }
 
     @Override
-    protected String getBaseUrl() {
+    protected String getFormalBaseUrl() {
         return URLConstants.URL_BASE;
+    }
+
+    @Override
+    protected String getTestBaseUrl() {
+        return null;
     }
 }
