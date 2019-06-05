@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agilemvpframeproject.feature.main;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
@@ -22,7 +23,14 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TestBottomDialogFragment fragment = new TestBottomDialogFragment();
-        fragment.show(getSupportFragmentManager(), "23");
+//        TestBottomDialogFragment fragment = new TestBottomDialogFragment();
+//        fragment.show(getSupportFragmentManager(), "23");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                TestDialogFragment testDialogFragment = new TestDialogFragment();
+                testDialogFragment.show(getSupportFragmentManager(), "fewf");
+            }
+        }, 1000);
     }
 }

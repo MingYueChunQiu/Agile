@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.mingyuechunqiu.agilemvpframe.feature.loading.data.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agilemvpframe.feature.loading.provider.LoadingDfgProviderable;
 import com.mingyuechunqiu.agilemvpframe.ui.diaglogfragment.BasePresenterDialogFragment;
+import com.mingyuechunqiu.agilemvpframeproject.R;
 
 /**
  * <pre>
@@ -23,7 +24,7 @@ import com.mingyuechunqiu.agilemvpframe.ui.diaglogfragment.BasePresenterDialogFr
  * </pre>
  */
 public class TestDialogFragment extends BasePresenterDialogFragment<MainContract.View<MainContract.Presenter>, MainContract.Presenter>
-implements MainContract.View<MainContract.Presenter> {
+        implements MainContract.View<MainContract.Presenter> {
 
     @Override
     public void showLoadingDialog(@Nullable String hint, boolean cancelable) {
@@ -67,7 +68,10 @@ implements MainContract.View<MainContract.Presenter> {
 
     @Override
     protected View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return null;
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setWindowAnimations(R.style.PopupDialogAnim);
+        }
+        return inflater.inflate(R.layout.activity_test, container, false);
     }
 
     @Override
