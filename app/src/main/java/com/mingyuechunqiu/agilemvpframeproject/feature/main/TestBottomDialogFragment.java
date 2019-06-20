@@ -23,7 +23,7 @@ import com.mingyuechunqiu.agilemvpframe.ui.bottomsheetdialogfragment.BasePresent
  * </pre>
  */
 public class TestBottomDialogFragment extends BasePresenterBSDialogFragment<MainContract.View<MainContract.Presenter>, MainContract.Presenter>
-implements MainContract.View<MainContract.Presenter> {
+        implements MainContract.View<MainContract.Presenter> {
     @Override
     protected View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return null;
@@ -90,7 +90,7 @@ implements MainContract.View<MainContract.Presenter> {
     }
 
     @Override
-    protected MainContract.Presenter initPresenter() {
+    public MainContract.Presenter initPresenter() {
         return new MainPresenter();
     }
 }

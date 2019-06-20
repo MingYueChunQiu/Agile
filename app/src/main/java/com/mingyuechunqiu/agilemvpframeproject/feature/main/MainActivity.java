@@ -81,14 +81,13 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    protected ToolbarUtils.ToolbarBean setToolbarBean() {
-        return new ToolbarUtils.ToolbarBean.Builder()
-                .setImmerse(true)
-                .build();
+    public boolean aloneView() {
+        return super.aloneView();
     }
 
     @Override
-    protected MainContract.Presenter initPresenter() {
+    public MainContract.Presenter initPresenter() {
+        showToast("调用了");
         return new MainPresenter();
     }
 
@@ -121,6 +120,13 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     @Override
     public LoadingDfgProviderable getLoadingDialog() {
         return super.getLoadingDialog();
+    }
+
+    @Override
+    protected ToolbarUtils.ToolbarBean setToolbarBean() {
+        return new ToolbarUtils.ToolbarBean.Builder()
+                .setImmerse(true)
+                .build();
     }
 
     @Override

@@ -25,7 +25,12 @@
         tools:replace="android:allowBackup">
 
         <activity android:name=".feature.main.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name="com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity" />
         <activity android:name=".feature.video.VideoActivity">
@@ -37,13 +42,8 @@
         <activity android:name=".feature.loading.DialogActivity">
 
         </activity>
-        <activity android:name=".feature.main.TestActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".feature.main.TestActivity">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

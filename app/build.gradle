@@ -37,4 +37,5 @@ dependencies {
     implementation project(':agilemvpframe')
     implementation 'com.haibin:calendarview:3.4.7'
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.1.0'
+    implementation 'com.lxj:xpopup:1.8.1'
 }

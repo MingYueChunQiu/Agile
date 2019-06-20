@@ -91,7 +91,7 @@ public class TestFragment extends BasePresenterFragment<MainContract.View<MainCo
     }
 
     @Override
-    protected MainContract.Presenter initPresenter() {
+    public MainContract.Presenter initPresenter() {
         return new MainPresenter();
     }
 }

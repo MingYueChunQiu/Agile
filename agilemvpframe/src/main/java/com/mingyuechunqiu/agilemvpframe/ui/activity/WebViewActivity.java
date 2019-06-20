@@ -214,12 +214,12 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
     }
 
     @Override
-    protected void attachPresenter() {
-        //由于本界面不需要使用present，所以重写父类方法，不进行present相关设置
+    public boolean aloneView() {
+        return true;
     }
 
     @Override
-    protected BaseNetPresenter initPresenter() {
+    public BaseNetPresenter initPresenter() {
         return null;
     }
 

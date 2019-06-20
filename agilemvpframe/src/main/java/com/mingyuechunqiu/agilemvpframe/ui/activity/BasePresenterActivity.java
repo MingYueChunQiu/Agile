@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.mingyuechunqiu.agilemvpframe.base.presenter.BaseDialogPresenter;
 import com.mingyuechunqiu.agilemvpframe.base.view.IBaseDialogView;
+import com.mingyuechunqiu.agilemvpframe.base.view.IViewAttachPresenter;
 
 /**
  * <pre>
@@ -16,7 +17,8 @@ import com.mingyuechunqiu.agilemvpframe.base.view.IBaseDialogView;
  *     version: 1.0
  * </pre>
  */
-public abstract class BasePresenterActivity<V extends IBaseDialogView<P>, P extends BaseDialogPresenter> extends BaseFullImmerseScreenActivity {
+public abstract class BasePresenterActivity<V extends IBaseDialogView<P>, P extends BaseDialogPresenter> extends BaseFullImmerseScreenActivity
+        implements IViewAttachPresenter<P> {
 
     protected P mPresenter;
 
@@ -36,17 +38,28 @@ public abstract class BasePresenterActivity<V extends IBaseDialogView<P>, P exte
     }
 
     /**
+     * 是否单独使用View，不绑定Presenter（默认返回false）
+     *
+     * @return 返回true表示只用View不绑定Presenter，否则返回false
+     */
+    @Override
+    public boolean aloneView() {
+        return false;
+    }
+
+    /**
      * 添加Present相关
      */
     @SuppressWarnings("unchecked")
-    protected void attachPresenter() {
+    @Override
+    public void attachPresenter() {
+        if (aloneView()) {
+            return;
+        }
         ((V) this).setPresenter(initPresenter());
         if (mPresenter != null) {
             mPresenter.attachView((V) this);
             getLifecycle().addObserver(mPresenter);
         }
     }
-
-    protected abstract P initPresenter();
-
 }

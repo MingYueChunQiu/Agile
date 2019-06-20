@@ -95,7 +95,7 @@ public class TestDialogFragment extends BasePresenterDialogFragment<MainContract
     }
 
     @Override
-    protected MainContract.Presenter initPresenter() {
+    public MainContract.Presenter initPresenter() {
         return new MainPresenter();
     }
 }

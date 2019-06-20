@@ -26,7 +26,7 @@ class MainPresenter extends MainContract.Presenter<MainContract.View, MainContra
 
     @Override
     public void start() {
-
+        showToast("那你发的发的是");
     }
 
     @Override
