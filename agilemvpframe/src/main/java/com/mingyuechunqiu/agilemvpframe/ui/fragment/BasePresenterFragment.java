@@ -54,6 +54,9 @@ public abstract class BasePresenterFragment<V extends IBaseDialogView<P>, P exte
     @SuppressWarnings("unchecked")
     @Override
     public void attachPresenter() {
+        if (aloneView()) {
+            return;
+        }
         ((V) this).setPresenter(initPresenter());
         if (mPresenter != null) {
             mPresenter.attachView((V) this);
