@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.remote;
 
-import com.mingyuechunqiu.agile.base.model.part.dao.operation.remote.IBaseRemoteOperation;
+import com.mingyuechunqiu.agile.base.model.part.dao.operation.remote.IBaseRemoteDaoOperation;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,32 +19,32 @@ import java.util.List;
  */
 public abstract class BaseAbstractRemoteDao implements IBaseRemoteDao {
 
-    protected List<IBaseRemoteOperation> mRemoteOperationList;
+    protected List<IBaseRemoteDaoOperation> mRemoteDaoOperationList;
 
     /**
      * 添加远程操作
      *
      * @param operation 远程操作
      */
-    protected void addRemoteOperation(IBaseRemoteOperation operation) {
+    protected void addRemoteOperation(IBaseRemoteDaoOperation operation) {
         if (operation == null || operation.isCanceled()) {
             return;
         }
-        if (mRemoteOperationList == null) {
-            mRemoteOperationList = new ArrayList<>();
+        if (mRemoteDaoOperationList == null) {
+            mRemoteDaoOperationList = new ArrayList<>();
         }
         //移除已经失效了的操作
-        if (mRemoteOperationList.size() > 0) {
-            Iterator<IBaseRemoteOperation> iterator = mRemoteOperationList.iterator();
+        if (mRemoteDaoOperationList.size() > 0) {
+            Iterator<IBaseRemoteDaoOperation> iterator = mRemoteDaoOperationList.iterator();
             while (iterator.hasNext()) {
-                IBaseRemoteOperation o = iterator.next();
+                IBaseRemoteDaoOperation o = iterator.next();
                 if (o != null && o.isCanceled()) {
                     iterator.remove();
                 }
             }
         }
-        if (!mRemoteOperationList.contains(operation)) {
-            mRemoteOperationList.add(operation);
+        if (!mRemoteDaoOperationList.contains(operation)) {
+            mRemoteDaoOperationList.add(operation);
         }
     }
 
@@ -53,27 +53,27 @@ public abstract class BaseAbstractRemoteDao implements IBaseRemoteDao {
      *
      * @param operation 远程操作
      */
-    protected void removeRemoteOperation(IBaseRemoteOperation operation) {
-        if (operation == null || mRemoteOperationList == null || mRemoteOperationList.size() == 0) {
+    protected void removeRemoteOperation(IBaseRemoteDaoOperation operation) {
+        if (operation == null || mRemoteDaoOperationList == null || mRemoteDaoOperationList.size() == 0) {
             return;
         }
         if (!operation.isCanceled()) {
             operation.cancel();
         }
-        mRemoteOperationList.remove(operation);
+        mRemoteDaoOperationList.remove(operation);
     }
 
     @Override
     public void release() {
-        if (mRemoteOperationList == null) {
+        if (mRemoteDaoOperationList == null) {
             return;
         }
-        for (IBaseRemoteOperation operation : mRemoteOperationList) {
+        for (IBaseRemoteDaoOperation operation : mRemoteDaoOperationList) {
             if (operation != null && !operation.isCanceled()) {
                 operation.cancel();
             }
         }
-        mRemoteOperationList.clear();
-        mRemoteOperationList = null;
+        mRemoteDaoOperationList.clear();
+        mRemoteDaoOperationList = null;
     }
 }

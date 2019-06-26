@@ -15,9 +15,9 @@ import retrofit2.Call;
  *     version: 1.0
  * </pre>
  */
-public class RetrofitCallOperation extends BaseAbstractRemoteOperation<Call> {
+public class RetrofitCallDaoOperation extends BaseAbstractRemoteDaoOperation<Call> {
 
-    public RetrofitCallOperation(@NonNull Call operation) {
+    public RetrofitCallDaoOperation(@NonNull Call operation) {
         super(operation);
     }
 

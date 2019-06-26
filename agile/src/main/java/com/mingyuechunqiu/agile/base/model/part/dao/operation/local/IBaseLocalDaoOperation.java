@@ -10,7 +10,7 @@ package com.mingyuechunqiu.agile.base.model.part.dao.operation.local;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseLocalOperation {
+public interface IBaseLocalDaoOperation {
 
     /**
      * 操作是否是无效的

@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.local;
 
-import com.mingyuechunqiu.agile.base.model.part.dao.operation.local.IBaseLocalOperation;
+import com.mingyuechunqiu.agile.base.model.part.dao.operation.local.IBaseLocalDaoOperation;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,32 +19,32 @@ import java.util.List;
  */
 public abstract class BaseAbstractLocalDao implements IBaseLocalDao {
 
-    protected List<IBaseLocalOperation> mLocalOperationList;
+    protected List<IBaseLocalDaoOperation> mLocalDaoOperationList;
 
     /**
      * 添加本地数据操作
      *
      * @param operation 本地数据操作
      */
-    protected void addLocalOperation(IBaseLocalOperation operation) {
+    protected void addLocalOperation(IBaseLocalDaoOperation operation) {
         if (operation == null || operation.isInvalid()) {
             return;
         }
-        if (mLocalOperationList == null) {
-            mLocalOperationList = new ArrayList<>();
+        if (mLocalDaoOperationList == null) {
+            mLocalDaoOperationList = new ArrayList<>();
         }
         //移除已经失效了的操作
-        if (mLocalOperationList.size() > 0) {
-            Iterator<IBaseLocalOperation> iterator = mLocalOperationList.iterator();
+        if (mLocalDaoOperationList.size() > 0) {
+            Iterator<IBaseLocalDaoOperation> iterator = mLocalDaoOperationList.iterator();
             while (iterator.hasNext()) {
-                IBaseLocalOperation o = iterator.next();
+                IBaseLocalDaoOperation o = iterator.next();
                 if (o != null && o.isInvalid()) {
                     iterator.remove();
                 }
             }
         }
-        if (!mLocalOperationList.contains(operation)) {
-            mLocalOperationList.add(operation);
+        if (!mLocalDaoOperationList.contains(operation)) {
+            mLocalDaoOperationList.add(operation);
         }
     }
 
@@ -53,27 +53,27 @@ public abstract class BaseAbstractLocalDao implements IBaseLocalDao {
      *
      * @param operation 本地数据操作
      */
-    protected void removeLocalOperation(IBaseLocalOperation operation) {
-        if (operation == null || mLocalOperationList == null || mLocalOperationList.size() == 0) {
+    protected void removeLocalOperation(IBaseLocalDaoOperation operation) {
+        if (operation == null || mLocalDaoOperationList == null || mLocalDaoOperationList.size() == 0) {
             return;
         }
         if (!operation.isInvalid()) {
             operation.release();
         }
-        mLocalOperationList.remove(operation);
+        mLocalDaoOperationList.remove(operation);
     }
 
     @Override
     public void release() {
-        if (mLocalOperationList == null) {
+        if (mLocalDaoOperationList == null) {
             return;
         }
-        for (IBaseLocalOperation operation : mLocalOperationList) {
+        for (IBaseLocalDaoOperation operation : mLocalDaoOperationList) {
             if (operation != null && !operation.isInvalid()) {
                 operation.release();
             }
         }
-        mLocalOperationList.clear();
-        mLocalOperationList = null;
+        mLocalDaoOperationList.clear();
+        mLocalDaoOperationList = null;
     }
 }

@@ -13,11 +13,11 @@ import android.support.annotation.NonNull;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractRemoteOperation<T> implements IBaseRemoteOperation {
+public abstract class BaseAbstractRemoteDaoOperation<T> implements IBaseRemoteDaoOperation {
 
     protected T mOperation;
 
-    public BaseAbstractRemoteOperation(@NonNull T operation) {
+    public BaseAbstractRemoteDaoOperation(@NonNull T operation) {
         mOperation = operation;
     }
 

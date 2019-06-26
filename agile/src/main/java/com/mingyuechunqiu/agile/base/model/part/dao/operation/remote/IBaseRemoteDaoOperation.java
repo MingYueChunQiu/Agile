@@ -13,7 +13,7 @@ import com.mingyuechunqiu.agile.base.model.part.dao.operation.IBaseDaoOperation;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseRemoteOperation extends IBaseDaoOperation {
+public interface IBaseRemoteDaoOperation extends IBaseDaoOperation {
 
     /**
      * 是否远程操作已经被取消
