@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.mingyuechunqiu.agilemvpframeproject">
+    package="com.mingyuechunqiu.agileproject">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
-        android:name=".MyApplication"
+        android:name="com.mingyuechunqiu.agileproject.MyApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,7 +24,7 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
 
-        <activity android:name=".feature.main.MainActivity">
+        <activity android:name="com.mingyuechunqiu.agileproject.feature.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
@@ -32,17 +32,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.mingyuechunqiu.agilemvpframe.ui.activity.WebViewActivity" />
-        <activity android:name=".feature.video.VideoActivity">
+        <activity android:name="com.mingyuechunqiu.agile.ui.activity.WebViewActivity" />
+        <activity android:name="com.mingyuechunqiu.agileproject.feature.video.VideoActivity">
 
         </activity>
-        <activity android:name=".feature.video.VideoDemoActivity">
+        <activity android:name="com.mingyuechunqiu.agileproject.feature.video.VideoDemoActivity">
 
         </activity>
-        <activity android:name=".feature.loading.DialogActivity">
+        <activity android:name="com.mingyuechunqiu.agileproject.feature.loading.DialogActivity">
 
         </activity>
-        <activity android:name=".feature.main.TestActivity">
+        <activity android:name="com.mingyuechunqiu.agileproject.feature.main.TestActivity">
 
         </activity>
     </application>

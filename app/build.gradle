@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 
 android {
@@ -19,6 +22,12 @@ android {
             // 还可以添加 'arm64-v8a'，'x86', 'x86_64', 'mips', 'mips64'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -34,8 +43,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation project(':agilemvpframe')
-    implementation 'com.haibin:calendarview:3.4.7'
+    implementation project(':agile')
+    implementation 'com.haibin:calendarview:3.6.2'
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.1.0'
     implementation 'com.lxj:xpopup:1.8.1'
+    implementation 'com.github.BzCoder:SmartMediaPicker:1.1.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
