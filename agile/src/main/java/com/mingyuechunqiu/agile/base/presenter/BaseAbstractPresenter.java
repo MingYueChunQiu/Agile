@@ -9,7 +9,7 @@ import android.support.annotation.StringRes;
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.model.BaseTokenNetModel;
 import com.mingyuechunqiu.agile.base.model.IBaseModel;
-import com.mingyuechunqiu.agile.base.presenter.engine.IPresenterEngine;
+import com.mingyuechunqiu.agile.base.presenter.engine.IBasePresenterEngine;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
 import com.mingyuechunqiu.agile.data.bean.BaseInfo;
 
@@ -31,7 +31,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     protected WeakReference<V> mViewRef;
     protected M mModel;
-    protected List<IPresenterEngine> mPresenterEngineList;
+    protected List<IBasePresenterEngine> mPresenterEngineList;
 
     @Override
     public void attachView(V view) {
@@ -126,7 +126,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     protected void releaseOnDetach() {
         release();
         if (mPresenterEngineList != null) {
-            for (IPresenterEngine engine : mPresenterEngineList) {
+            for (IBasePresenterEngine engine : mPresenterEngineList) {
                 if (engine != null) {
                     engine.release();
                 }
@@ -142,7 +142,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param engine engine单元模块
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addPresenterEngine(IPresenterEngine engine) {
+    protected boolean addPresenterEngine(IBasePresenterEngine engine) {
         if (engine == null) {
             return false;
         }
@@ -158,7 +158,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param engine engine单元模块
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removePresenterEngine(IPresenterEngine engine) {
+    protected boolean removePresenterEngine(IBasePresenterEngine engine) {
         if (engine == null || mPresenterEngineList == null) {
             return false;
         }

@@ -13,11 +13,11 @@ import android.support.annotation.NonNull;
  *     version: 1.0
  * </pre>
  */
-public abstract class AbstractLocalOperation<T> implements ILocalOperation {
+public abstract class BaseAbstractLocalOperation<T> implements IBaseLocalOperation {
 
     protected T mOperation;
 
-    public AbstractLocalOperation(@NonNull T operation) {
+    public BaseAbstractLocalOperation(@NonNull T operation) {
         mOperation = operation;
     }
 }

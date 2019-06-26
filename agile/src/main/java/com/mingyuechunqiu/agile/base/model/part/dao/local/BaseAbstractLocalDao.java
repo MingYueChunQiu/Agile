@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.local;
 
-import com.mingyuechunqiu.agile.base.model.part.dao.operation.local.ILocalOperation;
+import com.mingyuechunqiu.agile.base.model.part.dao.operation.local.IBaseLocalOperation;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,16 +17,16 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class AbstractLocalDao implements ILocalDao {
+public abstract class BaseAbstractLocalDao implements IBaseLocalDao {
 
-    protected List<ILocalOperation> mLocalOperationList;
+    protected List<IBaseLocalOperation> mLocalOperationList;
 
     /**
      * 添加本地数据操作
      *
      * @param operation 本地数据操作
      */
-    protected void addLocalOperation(ILocalOperation operation) {
+    protected void addLocalOperation(IBaseLocalOperation operation) {
         if (operation == null || operation.isInvalid()) {
             return;
         }
@@ -35,9 +35,9 @@ public abstract class AbstractLocalDao implements ILocalDao {
         }
         //移除已经失效了的操作
         if (mLocalOperationList.size() > 0) {
-            Iterator<ILocalOperation> iterator = mLocalOperationList.iterator();
+            Iterator<IBaseLocalOperation> iterator = mLocalOperationList.iterator();
             while (iterator.hasNext()) {
-                ILocalOperation o = iterator.next();
+                IBaseLocalOperation o = iterator.next();
                 if (o != null && o.isInvalid()) {
                     iterator.remove();
                 }
@@ -53,7 +53,7 @@ public abstract class AbstractLocalDao implements ILocalDao {
      *
      * @param operation 本地数据操作
      */
-    protected void removeLocalOperation(ILocalOperation operation) {
+    protected void removeLocalOperation(IBaseLocalOperation operation) {
         if (operation == null || mLocalOperationList == null || mLocalOperationList.size() == 0) {
             return;
         }
@@ -68,7 +68,7 @@ public abstract class AbstractLocalDao implements ILocalDao {
         if (mLocalOperationList == null) {
             return;
         }
-        for (ILocalOperation operation : mLocalOperationList) {
+        for (IBaseLocalOperation operation : mLocalOperationList) {
             if (operation != null && !operation.isInvalid()) {
                 operation.release();
             }

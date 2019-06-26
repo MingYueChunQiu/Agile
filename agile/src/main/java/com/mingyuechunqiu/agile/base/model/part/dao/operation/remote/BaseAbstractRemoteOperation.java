@@ -13,11 +13,11 @@ import android.support.annotation.NonNull;
  *     version: 1.0
  * </pre>
  */
-public abstract class AbstractNetworkOperation<T> implements INetworkOperation {
+public abstract class BaseAbstractRemoteOperation<T> implements IBaseRemoteOperation {
 
     protected T mOperation;
 
-    public AbstractNetworkOperation(@NonNull T operation) {
+    public BaseAbstractRemoteOperation(@NonNull T operation) {
         mOperation = operation;
     }
 

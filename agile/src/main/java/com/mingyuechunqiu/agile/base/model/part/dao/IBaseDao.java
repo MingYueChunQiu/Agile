@@ -10,7 +10,7 @@ package com.mingyuechunqiu.agile.base.model.part.dao;
  *     version: 1.0
  * </pre>
  */
-public interface IDao {
+public interface IBaseDao {
 
     void release();
 }

@@ -10,5 +10,5 @@ package com.mingyuechunqiu.agile.base.model.part.dao.operation;
  *     version: 1.0
  * </pre>
  */
-public interface IDaoOperation {
+public interface IBaseDaoOperation {
 }

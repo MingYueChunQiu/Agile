@@ -10,7 +10,7 @@ package com.mingyuechunqiu.agile.base.model.part;
  *     version: 1.0
  * </pre>
  */
-public interface IModelPart {
+public interface IBaseModelPart {
 
     /**
      * 销毁资源

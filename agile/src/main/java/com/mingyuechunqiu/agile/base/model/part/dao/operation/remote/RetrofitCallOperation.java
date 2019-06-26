@@ -15,7 +15,7 @@ import retrofit2.Call;
  *     version: 1.0
  * </pre>
  */
-public class RetrofitCallOperation extends AbstractNetworkOperation<Call> {
+public class RetrofitCallOperation extends BaseAbstractRemoteOperation<Call> {
 
     public RetrofitCallOperation(@NonNull Call operation) {
         super(operation);

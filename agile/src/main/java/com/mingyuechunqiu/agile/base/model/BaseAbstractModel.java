@@ -2,8 +2,8 @@ package com.mingyuechunqiu.agile.base.model;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
-import com.mingyuechunqiu.agile.base.model.part.dao.IDao;
-import com.mingyuechunqiu.agile.base.model.part.IModelPart;
+import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
+import com.mingyuechunqiu.agile.base.model.part.IBaseModelPart;
 import com.mingyuechunqiu.agile.data.bean.BaseInfo;
 
 import java.util.ArrayList;
@@ -25,8 +25,8 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
     protected final String TAG_FAILURE = getClass().getSimpleName() + " failure";//打印错误日志标签
 
     protected I mListener;
-    protected List<IModelPart> mModelPartList;
-    protected List<IDao> mDaoList;
+    protected List<IBaseModelPart> mModelPartList;
+    protected List<IBaseDao> mDaoList;
 
     public BaseAbstractModel(I listener) {
         attachListener(listener);
@@ -58,7 +58,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
         destroy();
         mListener = null;
         if (mModelPartList != null) {
-            for (IModelPart part : mModelPartList) {
+            for (IBaseModelPart part : mModelPartList) {
                 if (part != null) {
                     part.release();
                 }
@@ -67,7 +67,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
             mModelPartList = null;
         }
         if (mDaoList != null) {
-            for (IDao dao : mDaoList) {
+            for (IBaseDao dao : mDaoList) {
                 if (dao != null) {
                     dao.release();
                 }
@@ -99,7 +99,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param part part单元模块
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addModelPart(IModelPart part) {
+    protected boolean addModelPart(IBaseModelPart part) {
         if (part == null) {
             return false;
         }
@@ -115,7 +115,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param part part单元模块
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removeModelPart(IModelPart part) {
+    protected boolean removeModelPart(IBaseModelPart part) {
         if (part == null || mModelPartList == null) {
             return false;
         }
@@ -128,7 +128,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param dao dao单元
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addDao(IDao dao) {
+    protected boolean addDao(IBaseDao dao) {
         if (dao == null) {
             return false;
         }
@@ -144,7 +144,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param dao dao单元
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removeDao(IDao dao) {
+    protected boolean removeDao(IBaseDao dao) {
         if (dao == null || mDaoList == null) {
             return false;
         }

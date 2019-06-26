@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.base.model.part;
 
 
-import com.mingyuechunqiu.agile.base.model.part.dao.IDao;
+import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +17,15 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractModelPart implements IModelPart {
+public abstract class BaseAbstractModelPart implements IBaseModelPart {
 
-    protected List<IDao> mDaoList;
+    protected List<IBaseDao> mDaoList;
 
     @Override
     public void release() {
         destroy();
         if (mDaoList != null) {
-            for (IDao dao : mDaoList) {
+            for (IBaseDao dao : mDaoList) {
                 if (dao != null) {
                     dao.release();
                 }
@@ -41,7 +41,7 @@ public abstract class BaseAbstractModelPart implements IModelPart {
      * @param dao dao单元
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addDao(IDao dao) {
+    protected boolean addDao(IBaseDao dao) {
         if (dao == null) {
             return false;
         }
@@ -57,7 +57,7 @@ public abstract class BaseAbstractModelPart implements IModelPart {
      * @param dao dao单元
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removeDao(IDao dao) {
+    protected boolean removeDao(IBaseDao dao) {
         if (dao == null || mDaoList == null) {
             return false;
         }
