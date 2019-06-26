@@ -28,9 +28,9 @@ public abstract class BaseAbstractRetrofitDao<I extends IBaseListener> extends B
     }
 
     @Override
-    protected void superRelease() {
-        super.superRelease();
+    protected void postRelease() {
         mCallback = null;
+        super.postRelease();
     }
 
     /**
