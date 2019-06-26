@@ -44,6 +44,7 @@ view:
 		IBaseView
 	  	----IBaseDialogView
 	     	    ----IBaseNetView
+		    
 		IViewAttachPresenter<P>
 	
 presenter:	
@@ -53,7 +54,7 @@ presenter:
 		        ----BaseNetPresenter
 			    ----BaseCountDownPresenter（具体业务Presenter）
 	        ----engine
-		    ----IPresenterEngine
+		    ----IBasePresenterEngine
 		    
 model:		
 		IBaseModel
@@ -62,25 +63,29 @@ model:
 		        ----BaseTokenNetModel
 		
 		part 
-		----IModelPart
+		----IBaseModelPart
 		    ----BaseAbstractModelPart
 		    
 		dao
+		----IBaseDao
+		
 		----local
-		    ----ILocalDao
-		        ----AbstractLocalDao
+		    ----IBaseLocalDao
+		        ----BaseAbstractLocalDao
+			
 		----remote
-		    ----IRemoteDao
-		        ----AbstractRemoteDao
+		    ----IBaseRemoteDao
+		        ----BaseAbstractRemoteDao
+			
 		----operation
-		    ----IDaoOperation
+		    ----IBaseDaoOperation
 		    ----local
-		        ----ILocalOperation
-			    ----AbstractLocalOperation<T>
+		        ----IBaseLocalDaoOperation
+			    ----BaseAbstractLocalDaoOperation<T>
 		    ----remote
-		        ----INetworkOperation
-			    ----AbstractNetworkOperation<T>
-			        ----RetrofitCallOperation
+		        ----IBaseRemoteDaoOperation
+			    ----BaseAbstractRemoteDaoOperation<T>
+			        ----RetrofitCallDaoOperation
 				
 listener:	
 		IBaseListener
