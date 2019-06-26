@@ -72,6 +72,11 @@ public abstract class BaseAbstractRemoteDao<I extends IBaseListener> implements 
 
     @Override
     public void release() {
+        destroy();
+        superRelease();
+    }
+
+    protected void superRelease() {
         if (mRemoteDaoOperationList == null) {
             return;
         }
@@ -84,4 +89,9 @@ public abstract class BaseAbstractRemoteDao<I extends IBaseListener> implements 
         mRemoteDaoOperationList = null;
         mListener = null;
     }
+
+    /**
+     * 销毁资源
+     */
+    protected abstract void destroy();
 }
