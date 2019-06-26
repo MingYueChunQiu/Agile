@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.remote;
 
-import com.mingyuechunqiu.agile.base.model.part.operation.remote.INetworkOperation;
+import com.mingyuechunqiu.agile.base.model.part.dao.operation.remote.INetworkOperation;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,7 +33,7 @@ public abstract class AbstractRemoteDao implements IRemoteDao {
         if (mNetworkOperationList == null) {
             mNetworkOperationList = new ArrayList<>();
         }
-        //移除已经失效了的Retrofit回调
+        //移除已经失效了的操作
         if (mNetworkOperationList.size() > 0) {
             Iterator<INetworkOperation> iterator = mNetworkOperationList.iterator();
             while (iterator.hasNext()) {

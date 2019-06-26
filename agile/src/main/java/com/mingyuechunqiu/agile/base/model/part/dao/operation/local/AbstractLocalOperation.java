@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.base.model.part.operation.remote;
+package com.mingyuechunqiu.agile.base.model.part.dao.operation.local;
 
 import android.support.annotation.NonNull;
 
@@ -8,17 +8,16 @@ import android.support.annotation.NonNull;
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/6/26
- *     desc   : 网络调用操作
- *              实现INetworkOperation
+ *     desc   : 本地操作抽象基类
+ *              实现ILocalOperation
  *     version: 1.0
  * </pre>
  */
-public abstract class NetworkOperation<T> implements INetworkOperation {
+public abstract class AbstractLocalOperation<T> implements ILocalOperation {
 
     protected T mOperation;
 
-    public NetworkOperation(@NonNull T operation) {
+    public AbstractLocalOperation(@NonNull T operation) {
         mOperation = operation;
     }
-
 }

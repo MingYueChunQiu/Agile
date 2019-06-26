@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.base.model.part.operation.remote;
+package com.mingyuechunqiu.agile.base.model.part.dao.operation.remote;
 
 import android.support.annotation.NonNull;
 
@@ -15,7 +15,7 @@ import retrofit2.Call;
  *     version: 1.0
  * </pre>
  */
-public class RetrofitCallOperation extends NetworkOperation<Call> {
+public class RetrofitCallOperation extends AbstractNetworkOperation<Call> {
 
     public RetrofitCallOperation(@NonNull Call operation) {
         super(operation);
