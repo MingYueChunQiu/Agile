@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.local;
 
+import com.mingyuechunqiu.agile.base.framework.IBaseListener;
 import com.mingyuechunqiu.agile.base.model.part.dao.operation.local.IBaseLocalDaoOperation;
 
 import java.util.ArrayList;
@@ -12,14 +13,20 @@ import java.util.List;
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/6/26
- *     desc   : 本地Dao抽象基类
- *              实现ILocalDao
+ *     desc   : 本地Dao层抽象基类
+ *              实现IBaseLocalDao
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractLocalDao implements IBaseLocalDao {
+public abstract class BaseAbstractLocalDao<I extends IBaseListener> implements IBaseLocalDao {
+
+    protected I mListener;
 
     protected List<IBaseLocalDaoOperation> mLocalDaoOperationList;
+
+    public BaseAbstractLocalDao(I listener) {
+        mListener = listener;
+    }
 
     /**
      * 添加本地数据操作
@@ -75,5 +82,6 @@ public abstract class BaseAbstractLocalDao implements IBaseLocalDao {
         }
         mLocalDaoOperationList.clear();
         mLocalDaoOperationList = null;
+        mListener = null;
     }
 }

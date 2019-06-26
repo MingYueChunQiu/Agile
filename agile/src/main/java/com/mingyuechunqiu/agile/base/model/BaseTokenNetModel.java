@@ -38,20 +38,14 @@ public abstract class BaseTokenNetModel<I extends IBaseListener> extends BaseNet
     }
 
     /**
-     * 设置上下文
-     */
-    public void setContextRef(Context context) {
-        mContextRef = new WeakReference<>(context);
-    }
-
-    /**
      * 根据网络响应返回码，进行不同处理
      *
      * @param code     网络响应返回码
      * @param errorMsg 网络请求错误信息
-     * @return 返回code是返回成功还是失败
+     * @return 返回true表示响应成功，否则返回false失败
      */
-    protected boolean handleNetworkResponseCode(int code, String errorMsg) {
+    @Override
+    public boolean handleNetworkResponseCode(int code, String errorMsg) {
         if (code == URLConstants.CODE_SUCCESS) {
             return true;
         }
@@ -66,6 +60,13 @@ public abstract class BaseTokenNetModel<I extends IBaseListener> extends BaseNet
             mListener.onFailure(errorMsg);
         }
         return false;
+    }
+
+    /**
+     * 设置上下文
+     */
+    public void setContextRef(Context context) {
+        mContextRef = new WeakReference<>(context);
     }
 
     /**

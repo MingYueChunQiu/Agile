@@ -8,8 +8,8 @@ import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/3/14
- *     desc   : 本地Dao接口
- *              继承自IDao
+ *     desc   : 本地Dao层接口
+ *              继承自IBaseDao
  *     version: 1.0
  * </pre>
  */

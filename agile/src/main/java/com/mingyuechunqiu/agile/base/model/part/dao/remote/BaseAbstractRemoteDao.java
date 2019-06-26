@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.remote;
 
+import com.mingyuechunqiu.agile.base.framework.IBaseListener;
 import com.mingyuechunqiu.agile.base.model.part.dao.operation.remote.IBaseRemoteDaoOperation;
 
 import java.util.ArrayList;
@@ -12,14 +13,20 @@ import java.util.List;
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/6/26
- *     desc   : 远程Dao抽象基类
- *              实现IRemoteDao
+ *     desc   : 远程Dao层抽象基类
+ *              实现IBaseRemoteDao
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractRemoteDao implements IBaseRemoteDao {
+public abstract class BaseAbstractRemoteDao<I extends IBaseListener> implements IBaseRemoteDao {
+
+    protected I mListener;
 
     protected List<IBaseRemoteDaoOperation> mRemoteDaoOperationList;
+
+    public BaseAbstractRemoteDao(I listener) {
+        mListener = listener;
+    }
 
     /**
      * 添加远程操作
@@ -75,5 +82,6 @@ public abstract class BaseAbstractRemoteDao implements IBaseRemoteDao {
         }
         mRemoteDaoOperationList.clear();
         mRemoteDaoOperationList = null;
+        mListener = null;
     }
 }
