@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.remote;
 
-import com.mingyuechunqiu.agile.base.framework.IBaseListener;
+import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
 
 /**
  * <pre>
@@ -13,9 +13,5 @@ import com.mingyuechunqiu.agile.base.framework.IBaseListener;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractNetworkDao<I extends IBaseListener> extends BaseAbstractRemoteDao<I> {
-
-    public BaseAbstractNetworkDao(I listener) {
-        super(listener);
-    }
+public abstract class BaseAbstractNetworkDao<C extends IBaseDao.ModelDaoCallback> extends BaseAbstractRemoteDao<C> {
 }

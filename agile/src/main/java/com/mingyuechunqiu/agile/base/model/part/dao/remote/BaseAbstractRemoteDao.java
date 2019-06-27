@@ -1,6 +1,8 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.remote;
 
-import com.mingyuechunqiu.agile.base.framework.IBaseListener;
+import android.support.annotation.NonNull;
+
+import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
 import com.mingyuechunqiu.agile.base.model.part.dao.operation.remote.IBaseRemoteDaoOperation;
 
 import java.util.ArrayList;
@@ -18,14 +20,15 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractRemoteDao<I extends IBaseListener> implements IBaseRemoteDao {
+public abstract class BaseAbstractRemoteDao<C extends IBaseDao.ModelDaoCallback> implements IBaseRemoteDao<C> {
 
-    protected I mListener;
+    protected C mCallback;
 
     protected List<IBaseRemoteDaoOperation> mRemoteDaoOperationList;
 
-    public BaseAbstractRemoteDao(I listener) {
-        mListener = listener;
+    @Override
+    public void attachModelDaoCallback(@NonNull C callback) {
+        mCallback = callback;
     }
 
     /**
@@ -91,7 +94,7 @@ public abstract class BaseAbstractRemoteDao<I extends IBaseListener> implements 
     }
 
     protected void postRelease() {
-        mListener = null;
+        mCallback = null;
     }
 
     /**

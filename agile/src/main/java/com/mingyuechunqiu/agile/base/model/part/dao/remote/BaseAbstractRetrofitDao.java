@@ -1,9 +1,9 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.remote;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
+import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
 
 import retrofit2.Response;
 
@@ -18,25 +18,12 @@ import retrofit2.Response;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractRetrofitDao<I extends IBaseListener> extends BaseAbstractNetworkDao<I> {
-
-    protected OnModelDaoCallback mCallback;
-
-    public BaseAbstractRetrofitDao(@NonNull I listener, @NonNull OnModelDaoCallback callback) {
-        super(listener);
-        mCallback = callback;
-    }
-
-    @Override
-    protected void postRelease() {
-        mCallback = null;
-        super.postRelease();
-    }
+public abstract class BaseAbstractRetrofitDao<C extends IBaseDao.ModelDaoCallback> extends BaseAbstractNetworkDao<C> {
 
     /**
-     * Model层Dao对象回调
+     * Retrofit的Dao层对象回调
      */
-    public interface OnModelDaoCallback {
+    public interface ModelDaoRetrofitCallback<I extends IBaseListener> extends ModelDaoCallback<I> {
 
         /**
          * 检测Retrofit的网络响应是否为空

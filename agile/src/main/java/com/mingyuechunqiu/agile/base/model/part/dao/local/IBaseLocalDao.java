@@ -13,5 +13,5 @@ import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseLocalDao extends IBaseDao {
+public interface IBaseLocalDao<C extends IBaseDao.ModelDaoCallback> extends IBaseDao<C> {
 }

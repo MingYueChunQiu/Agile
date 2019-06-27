@@ -1,9 +1,11 @@
 package com.mingyuechunqiu.agile.base.model;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
+import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
 import com.mingyuechunqiu.agile.base.model.part.dao.remote.BaseAbstractRetrofitDao;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 
@@ -19,7 +21,7 @@ import retrofit2.Response;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstractModel<I> implements BaseAbstractRetrofitDao.OnModelDaoCallback {
+public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstractModel<I> implements BaseAbstractRetrofitDao.ModelDaoRetrofitCallback<I> {
 
     public BaseNetModel(I listener) {
         super(listener);
@@ -59,6 +61,11 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
         if (mListener != null) {
             mListener.onFailure(errorStringResId);
         }
+    }
+
+    @Override
+    public void onExecuteResult(@NonNull IBaseDao.ResultOperation<I> operation) {
+        operation.operate(mListener);
     }
 
     /**

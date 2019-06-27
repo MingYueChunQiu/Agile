@@ -1,6 +1,8 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.local;
 
-import com.mingyuechunqiu.agile.base.framework.IBaseListener;
+import android.support.annotation.NonNull;
+
+import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
 import com.mingyuechunqiu.agile.base.model.part.dao.operation.local.IBaseLocalDaoOperation;
 
 import java.util.ArrayList;
@@ -18,14 +20,15 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractLocalDao<I extends IBaseListener> implements IBaseLocalDao {
+public abstract class BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback> implements IBaseLocalDao<C> {
 
-    protected I mListener;
+    protected C mCallback;
 
     protected List<IBaseLocalDaoOperation> mLocalDaoOperationList;
 
-    public BaseAbstractLocalDao(I listener) {
-        mListener = listener;
+    @Override
+    public void attachModelDaoCallback(@NonNull C callback) {
+        mCallback = callback;
     }
 
     /**
@@ -72,6 +75,12 @@ public abstract class BaseAbstractLocalDao<I extends IBaseListener> implements I
 
     @Override
     public void release() {
+        preRelease();
+        destroy();
+        postRelease();
+    }
+
+    private void preRelease() {
         if (mLocalDaoOperationList == null) {
             return;
         }
@@ -82,6 +91,14 @@ public abstract class BaseAbstractLocalDao<I extends IBaseListener> implements I
         }
         mLocalDaoOperationList.clear();
         mLocalDaoOperationList = null;
-        mListener = null;
     }
+
+    protected void postRelease() {
+        mCallback = null;
+    }
+
+    /**
+     * 销毁资源
+     */
+    protected abstract void destroy();
 }
