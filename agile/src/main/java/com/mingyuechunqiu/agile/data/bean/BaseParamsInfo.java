@@ -9,9 +9,9 @@ package com.mingyuechunqiu.agile.data.bean;
  *     version: 1.0
  * </pre>
  */
-public class BaseInfo {
+public class BaseParamsInfo {
 
-    private int requestType;//网络请求类型
+    private int requestType;//请求类型
 
     public int getRequestType() {
         return requestType;

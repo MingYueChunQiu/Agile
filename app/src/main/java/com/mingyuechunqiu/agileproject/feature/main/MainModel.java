@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
-import com.mingyuechunqiu.agile.data.bean.BaseInfo;
+import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
 
 import java.util.Map;
 
@@ -28,7 +28,7 @@ class MainModel extends MainContract.Model<MainContract.Listener> {
     }
 
     @Override
-    protected void getRequest(BaseInfo info) {
+    protected void getRequest(BaseParamsInfo info) {
 
     }
 

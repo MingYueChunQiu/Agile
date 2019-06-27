@@ -6,7 +6,7 @@ import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.base.model.BaseNetModel;
 import com.mingyuechunqiu.agile.base.view.IBaseNetView;
-import com.mingyuechunqiu.agile.data.bean.BaseInfo;
+import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
 import com.mingyuechunqiu.agile.util.SharedPreferencesUtils;
 
@@ -31,7 +31,7 @@ public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNet
      * @param info 网络请求参数对象
      */
     @Override
-    public void setParamsInfo(BaseInfo info) {
+    public void setParamsInfo(BaseParamsInfo info) {
         if (mModel == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }

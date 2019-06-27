@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
-import com.mingyuechunqiu.agile.data.bean.BaseInfo;
+import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
 
 /**
  * <pre>
@@ -11,7 +11,7 @@ import com.mingyuechunqiu.agile.data.bean.BaseInfo;
  *     version: 1.0
  * </pre>
  */
-public class MainParamsInfo extends BaseInfo {
+public class MainParamsInfo extends BaseParamsInfo {
 
     private String name;
 

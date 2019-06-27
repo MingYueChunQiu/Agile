@@ -11,7 +11,7 @@ import com.mingyuechunqiu.agile.base.model.BaseTokenNetModel;
 import com.mingyuechunqiu.agile.base.model.IBaseModel;
 import com.mingyuechunqiu.agile.base.presenter.engine.IBasePresenterEngine;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
-import com.mingyuechunqiu.agile.data.bean.BaseInfo;
+import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      *
      * @param info 请求参数对象
      */
-    public void setParamsInfo(BaseInfo info) {
+    public void setParamsInfo(BaseParamsInfo info) {
         if (mModel == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }
@@ -210,7 +210,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      *
      * @param info 请求参数对象
      */
-    protected abstract void requestModel(BaseInfo info);
+    protected abstract void requestModel(BaseParamsInfo info);
 
     /**
      * 释放资源

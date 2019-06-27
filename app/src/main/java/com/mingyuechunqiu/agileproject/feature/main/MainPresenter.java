@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
-import com.mingyuechunqiu.agile.data.bean.BaseInfo;
+import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
 
 /**
  * <pre>
@@ -15,7 +15,7 @@ import com.mingyuechunqiu.agile.data.bean.BaseInfo;
 class MainPresenter extends MainContract.Presenter<MainContract.View, MainContract.Model> {
 
     @Override
-    protected void requestModel(BaseInfo info) {
+    protected void requestModel(BaseParamsInfo info) {
 
     }
 

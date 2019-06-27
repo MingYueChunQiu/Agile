@@ -4,7 +4,7 @@ import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
 import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
 import com.mingyuechunqiu.agile.base.model.part.IBaseModelPart;
-import com.mingyuechunqiu.agile.data.bean.BaseInfo;
+import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +82,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      *
      * @param info 网络请求参数对象
      */
-    public void setParamsInfo(BaseInfo info) {
+    public void setParamsInfo(BaseParamsInfo info) {
         if (mListener == null) {
             throw new IllegalArgumentException("Listener has not been set!");
         }
@@ -164,7 +164,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      *
      * @param info 网络请求参数对象
      */
-    protected abstract void getRequest(BaseInfo info);
+    protected abstract void getRequest(BaseParamsInfo info);
 
     /**
      * 销毁资源
