@@ -5,7 +5,6 @@ import android.support.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
-import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
 import com.mingyuechunqiu.agile.base.model.part.dao.remote.BaseAbstractRetrofitDao;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 
@@ -64,7 +63,7 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
     }
 
     @Override
-    public void onExecuteResult(@NonNull IBaseDao.ResultOperation<I> operation) {
+    public void onExecuteResult(@NonNull ResultOperation<I> operation) {
         operation.operate(mListener);
     }
 

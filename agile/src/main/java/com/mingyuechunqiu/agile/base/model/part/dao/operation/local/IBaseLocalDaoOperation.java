@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.operation.local;
 
+import com.mingyuechunqiu.agile.base.model.part.dao.operation.IBaseDaoOperation;
+
 /**
  * <pre>
  *     author : xyj
@@ -7,10 +9,11 @@ package com.mingyuechunqiu.agile.base.model.part.dao.operation.local;
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/6/26
  *     desc   : 本地操作父接口
+ *              继承自IBaseDaoOperation
  *     version: 1.0
  * </pre>
  */
-public interface IBaseLocalDaoOperation {
+public interface IBaseLocalDaoOperation extends IBaseDaoOperation {
 
     /**
      * 操作是否是无效的
@@ -20,7 +23,7 @@ public interface IBaseLocalDaoOperation {
     boolean isInvalid();
 
     /**
-     * 释放资源
+     * 清理资源
      */
-    void release();
+    void clear();
 }

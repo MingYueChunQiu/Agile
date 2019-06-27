@@ -11,4 +11,6 @@ package com.mingyuechunqiu.agile.base.model.part.dao.operation;
  * </pre>
  */
 public interface IBaseDaoOperation {
+
+    void release();
 }

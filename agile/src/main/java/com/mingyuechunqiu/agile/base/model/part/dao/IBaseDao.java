@@ -26,21 +26,6 @@ public interface IBaseDao<C extends IBaseDao.ModelDaoCallback> {
     void attachModelDaoCallback(@NonNull C callback);
 
     /**
-     * 结果处理操作
-     *
-     * @param <I> 操作回调接口类型
-     */
-    interface ResultOperation<I extends IBaseListener> {
-
-        /**
-         * 执行相关回调操作
-         *
-         * @param listener 回调
-         */
-        void operate(I listener);
-    }
-
-    /**
      * Model层Dao对象回调
      */
     interface ModelDaoCallback<I extends IBaseListener> {
@@ -51,5 +36,20 @@ public interface IBaseDao<C extends IBaseDao.ModelDaoCallback> {
          * @param operation 执行操作
          */
         void onExecuteResult(@NonNull ResultOperation<I> operation);
+
+        /**
+         * 结果处理操作
+         *
+         * @param <I> 操作回调接口类型
+         */
+        interface ResultOperation<I extends IBaseListener> {
+
+            /**
+             * 执行相关回调操作
+             *
+             * @param listener 回调
+             */
+            void operate(I listener);
+        }
     }
 }

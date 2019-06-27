@@ -91,7 +91,7 @@ public abstract class BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback> 
             return;
         }
         if (!operation.isInvalid()) {
-            operation.release();
+            operation.clear();
         }
         mLocalDaoOperationList.remove(operation);
     }
@@ -102,7 +102,7 @@ public abstract class BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback> 
         }
         for (IBaseLocalDaoOperation operation : mLocalDaoOperationList) {
             if (operation != null && !operation.isInvalid()) {
-                operation.release();
+                operation.clear();
             }
         }
         mLocalDaoOperationList.clear();

@@ -30,4 +30,9 @@ public class RetrofitCallDaoOperation extends BaseAbstractRemoteDaoOperation<Cal
     public void cancel() {
         mOperation.cancel();
     }
+
+    @Override
+    public void release() {
+        mOperation = null;
+    }
 }
