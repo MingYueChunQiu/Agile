@@ -26,9 +26,32 @@ public abstract class BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback> 
 
     protected List<IBaseLocalDaoOperation> mLocalDaoOperationList;
 
+    public BaseAbstractLocalDao() {
+    }
+
+    public BaseAbstractLocalDao(C callback) {
+        attachModelDaoCallback(callback);
+    }
+
     @Override
     public void attachModelDaoCallback(@NonNull C callback) {
         mCallback = callback;
+        onAttachModelDaoCallback(callback);
+    }
+
+    @Override
+    public void release() {
+        preRelease();
+        destroy();
+        postRelease();
+    }
+
+    /**
+     * 当和Model层Dao回调关联时调用
+     *
+     * @param callback 回调对象
+     */
+    protected void onAttachModelDaoCallback(@NonNull C callback) {
     }
 
     /**
@@ -73,14 +96,7 @@ public abstract class BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback> 
         mLocalDaoOperationList.remove(operation);
     }
 
-    @Override
-    public void release() {
-        preRelease();
-        destroy();
-        postRelease();
-    }
-
-    private void preRelease() {
+    protected void preRelease() {
         if (mLocalDaoOperationList == null) {
             return;
         }
