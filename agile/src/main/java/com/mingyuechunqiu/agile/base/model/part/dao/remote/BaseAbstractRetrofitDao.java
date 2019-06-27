@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.remote;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
@@ -19,6 +20,13 @@ import retrofit2.Response;
  * </pre>
  */
 public abstract class BaseAbstractRetrofitDao<C extends IBaseDao.ModelDaoCallback> extends BaseAbstractNetworkDao<C> {
+
+    public BaseAbstractRetrofitDao() {
+    }
+
+    public BaseAbstractRetrofitDao(@NonNull C callback) {
+        super(callback);
+    }
 
     /**
      * Retrofit的Dao层对象回调

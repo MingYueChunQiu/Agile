@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.remote;
 
+import android.support.annotation.NonNull;
+
 import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
 
 /**
@@ -14,4 +16,11 @@ import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
  * </pre>
  */
 public abstract class BaseAbstractNetworkDao<C extends IBaseDao.ModelDaoCallback> extends BaseAbstractRemoteDao<C> {
+
+    public BaseAbstractNetworkDao() {
+    }
+
+    public BaseAbstractNetworkDao(@NonNull C callback) {
+        super(callback);
+    }
 }
