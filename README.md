@@ -67,15 +67,17 @@ model:
 		    ----BaseAbstractModelPart
 		    
 		dao
-		----IBaseDao
+		----IBaseDao<C extends IBaseDao.ModelDaoCallback>
 		
 		----local
-		    ----IBaseLocalDao
-		        ----BaseAbstractLocalDao
+		    ----IBaseLocalDao<C extends IBaseDao.ModelDaoCallback>
+		        ----BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback>
 			
 		----remote
-		    ----IBaseRemoteDao
-		        ----BaseAbstractRemoteDao
+		    ----IBaseRemoteDao<C extends IBaseDao.ModelDaoCallback>
+		        ----BaseAbstractRemoteDao<C extends IBaseDao.ModelDaoCallback>
+			    ----BaseAbstractNetworkDao<C extends IBaseDao.ModelDaoCallback>
+			        ----BaseAbstractRetrofitDao<C extends IBaseDao.ModelDaoCallback>
 			
 		----operation
 		    ----IBaseDaoOperation
