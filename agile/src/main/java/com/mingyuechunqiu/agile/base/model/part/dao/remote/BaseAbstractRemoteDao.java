@@ -29,7 +29,7 @@ public abstract class BaseAbstractRemoteDao<C extends IBaseDao.ModelDaoCallback>
     public BaseAbstractRemoteDao() {
     }
 
-    public BaseAbstractRemoteDao(C callback) {
+    public BaseAbstractRemoteDao(@NonNull C callback) {
         attachModelDaoCallback(callback);
     }
 

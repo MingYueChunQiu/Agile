@@ -29,7 +29,7 @@ public abstract class BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback> 
     public BaseAbstractLocalDao() {
     }
 
-    public BaseAbstractLocalDao(C callback) {
+    public BaseAbstractLocalDao(@NonNull C callback) {
         attachModelDaoCallback(callback);
     }
 
