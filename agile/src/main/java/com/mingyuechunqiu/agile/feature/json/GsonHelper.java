@@ -34,19 +34,21 @@ import java.util.Set;
  *     version: 1.0
  * </pre>
  */
-public class GsonHelper implements JsonHelperable {
+class GsonHelper implements JsonHelperable {
+
+    private volatile Gson mGson;
 
     @Nullable
     @Override
     public String getJsonString(Object o) {
-        Gson gson = new Gson();
-        return o == null ? null : gson.toJson(o);
+        checkOrCreateGson();
+        return o == null ? null : mGson.toJson(o);
     }
 
     @Override
     public <T> T getJsonObject(String json, @NonNull Class<T> c) {
-        Gson gson = new Gson();
-        return gson.fromJson(json, c);
+        checkOrCreateGson();
+        return mGson.fromJson(json, c);
     }
 
     @Override
@@ -134,9 +136,9 @@ public class GsonHelper implements JsonHelperable {
     @Override
     public <T> List<T> getListFromJson(@NonNull JsonArray jsonArray, @NonNull Class<T> c) {
         List<T> list = new ArrayList<>();
-        Gson gson = new Gson();
+        checkOrCreateGson();
         for (JsonElement jsonElement : jsonArray) {
-            list.add(gson.fromJson(jsonElement, c));
+            list.add(mGson.fromJson(jsonElement, c));
         }
         return list;
     }
@@ -153,7 +155,7 @@ public class GsonHelper implements JsonHelperable {
         } else {
             return null;
         }
-        Gson gson = new Gson();
+        checkOrCreateGson();
         Map<String, Object> map = new HashMap<>();
         Set<Map.Entry<String, JsonElement>> entries = jsonObject.entrySet();
         for (Map.Entry<String, JsonElement> entry : entries) {
@@ -165,9 +167,20 @@ public class GsonHelper implements JsonHelperable {
                     map.put(key, list);
                 }
             } else if (jsonElement instanceof JsonObject) {
-                map.put(key, gson.fromJson(jsonElement, c));
+                map.put(key, mGson.fromJson(jsonElement, c));
             }
         }
         return map;
     }
+
+    private void checkOrCreateGson() {
+        if (mGson == null) {
+            synchronized (this) {
+                if (mGson == null) {
+                    mGson = new Gson();
+                }
+            }
+        }
+    }
+
 }
