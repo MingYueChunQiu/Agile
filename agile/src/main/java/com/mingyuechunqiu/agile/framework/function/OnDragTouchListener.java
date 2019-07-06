@@ -133,9 +133,10 @@ public class OnDragTouchListener implements View.OnTouchListener {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                int leftMargin = (int) ((float) animation.getAnimatedValue());
-                v.layout(leftMargin, top, right, bottom);
-                lp.setMargins(leftMargin, top, 0, 0);
+                left = (int) ((float) animation.getAnimatedValue());
+                right = left + v.getWidth();
+                v.layout(left, top, right, bottom);
+                lp.setMargins(left, top, 0, 0);
                 v.setLayoutParams(lp);
             }
         });
@@ -143,13 +144,11 @@ public class OnDragTouchListener implements View.OnTouchListener {
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
                 if (mListener != null) {
                     mListener.onDragged(v, (int) finalEnd, top);
                 }
             }
         });
-        animator.setInterpolator(new BounceInterpolator());
         animator.setDuration(400);
         animator.start();
     }
