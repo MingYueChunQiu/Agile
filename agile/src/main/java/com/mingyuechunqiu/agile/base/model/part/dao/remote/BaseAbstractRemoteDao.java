@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.remote;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
 import com.mingyuechunqiu.agile.base.model.part.dao.operation.remote.IBaseRemoteDaoOperation;

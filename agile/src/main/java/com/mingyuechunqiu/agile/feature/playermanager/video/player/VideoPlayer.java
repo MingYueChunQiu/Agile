@@ -3,7 +3,7 @@ package com.mingyuechunqiu.agile.feature.playermanager.video.player;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Surface;
 import android.view.SurfaceHolder;

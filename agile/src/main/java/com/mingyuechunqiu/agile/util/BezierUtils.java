@@ -1,8 +1,8 @@
 package com.mingyuechunqiu.agile.util;
 
 import android.graphics.PointF;
-import android.support.annotation.FloatRange;
-import android.support.annotation.NonNull;
+import androidx.annotation.FloatRange;
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;

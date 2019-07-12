@@ -2,7 +2,7 @@ package com.mingyuechunqiu.agile.framework.function;
 
 import android.app.Activity;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;

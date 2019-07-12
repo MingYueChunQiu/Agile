@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/agile_selector_pop_list">
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -14,18 +14,18 @@
         android:paddingRight="@dimen/dp_20"
         android:paddingBottom="@dimen/dp_5">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_pop_list_item_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <android.support.v7.widget.AppCompatImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/ibtn_pop_list_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/agile_close" />
-    </android.support.v7.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <View
         android:layout_width="match_parent"

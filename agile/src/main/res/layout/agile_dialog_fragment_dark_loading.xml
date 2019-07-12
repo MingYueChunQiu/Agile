@@ -8,7 +8,7 @@
     <!--设置点击焦点属性，拦截点击触摸事件，防止事件穿透到底层
         只针对下层为fragment有效，对直接放在父容器FrameLayout中的控件无效-->
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/ll_agile_dfg_dark_loading_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,13 +24,13 @@
             android:layout_height="wrap_content"
             android:indeterminateDrawable="@drawable/agile_rotate_darker_gray_to_white" />
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_agile_dfg_dark_loading_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
             android:text="@string/agile_prompt_loading"
             android:textColor="@android:color/white" />
-    </android.support.v7.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </RelativeLayout>

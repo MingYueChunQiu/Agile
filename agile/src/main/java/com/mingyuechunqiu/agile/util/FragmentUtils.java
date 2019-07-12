@@ -1,12 +1,12 @@
 package com.mingyuechunqiu.agile.util;
 
-import android.support.annotation.AnimRes;
-import android.support.annotation.AnimatorRes;
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import androidx.annotation.AnimRes;
+import androidx.annotation.AnimatorRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.mingyuechunqiu.agile.R;
 

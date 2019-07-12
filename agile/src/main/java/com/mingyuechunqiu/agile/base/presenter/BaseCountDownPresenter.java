@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.presenter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.base.framework.ICountDownListener;
 import com.mingyuechunqiu.agile.base.model.BaseNetModel;

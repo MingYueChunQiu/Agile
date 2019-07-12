@@ -3,7 +3,7 @@ package com.mingyuechunqiu.agile.feature.playermanager.video;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.feature.playermanager.video.ui.VideoContainerable;
 

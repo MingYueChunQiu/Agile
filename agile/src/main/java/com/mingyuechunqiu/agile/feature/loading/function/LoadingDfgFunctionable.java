@@ -1,9 +1,9 @@
 package com.mingyuechunqiu.agile.feature.loading.function;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 
 import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
 

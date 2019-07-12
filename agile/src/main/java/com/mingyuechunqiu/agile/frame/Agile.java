@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.frame;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 

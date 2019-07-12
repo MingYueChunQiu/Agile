@@ -4,15 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.AppCompatTextView;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.mingyuechunqiu.agile.feature.loading.data.Constants;
 import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
@@ -26,9 +27,6 @@ import com.mingyuechunqiu.agile.util.ToolbarUtils;
 import com.mingyuechunqiu.agileproject.R;
 
 import java.lang.ref.WeakReference;
-
-import me.bzcoder.mediapicker.SmartMediaPicker;
-import me.bzcoder.mediapicker.config.MediaPickerEnum;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_NAVIGATION_TITLE;
 import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_NAVIGATION_BG_COLOR;
@@ -272,31 +270,31 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 //                    }
 //                });
 
-                SmartMediaPicker.builder(this)
-                        //最大图片选择数目 如果不需要图片 将数目设置为0
-                        .withMaxImageSelectable(5)
-                        //最大视频选择数目 如果不需要视频 将数目设置为0
-                        .withMaxVideoSelectable(1)
-                        //图片选择器是否显示数字
-                        .withCountable(true)
-                        //最大视频长度
-                        .withMaxVideoLength(15 * 1000)
-                        //最大视频文件大小 单位MB
-                        .withMaxVideoSize(10)
-                        //最大图片高度 默认1920
-                        .withMaxHeight(1920)
-                        //最大图片宽度 默认1920
-                        .withMaxWidth(1920)
-                        //最大图片大小 单位MB
-                        .withMaxImageSize(5)
-                        //设置图片加载引擎
-                        .withImageEngine(new Glide4Engine())
-                        //前置摄像头拍摄是否镜像翻转图像 默认为true 与微信一致的话为false
-                        .withIsMirror(false)
-                        //弹出类别，默认弹出底部选择栏，也可以选择单独跳转
-                        .withMediaPickerType(MediaPickerEnum.BOTH)
-                        .build()
-                        .show();
+//                SmartMediaPicker.builder(this)
+//                        //最大图片选择数目 如果不需要图片 将数目设置为0
+//                        .withMaxImageSelectable(5)
+//                        //最大视频选择数目 如果不需要视频 将数目设置为0
+//                        .withMaxVideoSelectable(1)
+//                        //图片选择器是否显示数字
+//                        .withCountable(true)
+//                        //最大视频长度
+//                        .withMaxVideoLength(15 * 1000)
+//                        //最大视频文件大小 单位MB
+//                        .withMaxVideoSize(10)
+//                        //最大图片高度 默认1920
+//                        .withMaxHeight(1920)
+//                        //最大图片宽度 默认1920
+//                        .withMaxWidth(1920)
+//                        //最大图片大小 单位MB
+//                        .withMaxImageSize(5)
+//                        //设置图片加载引擎
+//                        .withImageEngine(new Glide4Engine())
+//                        //前置摄像头拍摄是否镜像翻转图像 默认为true 与微信一致的话为false
+//                        .withIsMirror(false)
+//                        //弹出类别，默认弹出底部选择栏，也可以选择单独跳转
+//                        .withMediaPickerType(MediaPickerEnum.BOTH)
+//                        .build()
+//                        .show();
                 break;
             case R.id.btn_main_hide:
                 dismissLoadingDialog();

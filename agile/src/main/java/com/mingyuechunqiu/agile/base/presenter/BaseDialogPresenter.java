@@ -1,8 +1,8 @@
 package com.mingyuechunqiu.agile.base.presenter;
 
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.base.model.BaseAbstractModel;
 import com.mingyuechunqiu.agile.base.view.IBaseDialogView;

@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.feature.loading.provider;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agile.feature.loading.function.LoadingDialogFragment;

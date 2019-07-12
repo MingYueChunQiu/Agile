@@ -2,8 +2,8 @@ package com.mingyuechunqiu.agile.feature.playermanager.video.ui;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.design.card.MaterialCardView;
+import androidx.annotation.NonNull;
+import com.google.android.material.card.MaterialCardView;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
 import android.view.TextureView;

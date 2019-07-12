@@ -1,10 +1,10 @@
 package com.mingyuechunqiu.agile.base.presenter;
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.OnLifecycleEvent;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.model.BaseTokenNetModel;

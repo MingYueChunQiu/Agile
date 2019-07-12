@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.io;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;

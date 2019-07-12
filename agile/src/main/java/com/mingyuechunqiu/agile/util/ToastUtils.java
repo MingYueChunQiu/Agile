@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.util;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import android.widget.Toast;
 
 import com.mingyuechunqiu.agile.frame.Agile;

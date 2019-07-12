@@ -1,8 +1,9 @@
 package com.mingyuechunqiu.agileproject.data.database.realmDB;
 
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Base64;
+
+import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.util.SharedPreferencesUtils;

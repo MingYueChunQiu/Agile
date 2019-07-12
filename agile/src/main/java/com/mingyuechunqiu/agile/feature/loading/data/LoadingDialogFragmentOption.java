@@ -2,9 +2,9 @@ package com.mingyuechunqiu.agile.feature.loading.data;
 
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.StyleRes;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.ColorInt;
+import androidx.annotation.StyleRes;
+import androidx.fragment.app.DialogFragment;
 
 import com.mingyuechunqiu.agile.feature.loading.function.LoadingDfgContainerable;
 

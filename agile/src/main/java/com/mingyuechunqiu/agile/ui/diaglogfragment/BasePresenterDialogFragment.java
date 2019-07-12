@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.ui.diaglogfragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.presenter.BaseDialogPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDialogView;

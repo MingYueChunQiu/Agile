@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.base.view;
 
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.presenter.BaseDialogPresenter;
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProviderable;

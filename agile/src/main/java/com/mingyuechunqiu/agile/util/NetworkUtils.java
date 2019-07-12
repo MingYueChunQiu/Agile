@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.R;

@@ -3,7 +3,7 @@ package com.mingyuechunqiu.agile.util;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.media.Image;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;

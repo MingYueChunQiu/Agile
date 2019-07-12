@@ -15,7 +15,7 @@ buildscript {
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:3.4.2'
 
         classpath "io.realm:realm-gradle-plugin:5.10.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

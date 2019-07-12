@@ -1,7 +1,8 @@
 package com.mingyuechunqiu.agileproject.feature.video;
 
-import android.support.annotation.Nullable;
 import android.widget.FrameLayout;
+
+import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;

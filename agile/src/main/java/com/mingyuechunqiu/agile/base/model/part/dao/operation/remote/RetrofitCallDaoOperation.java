@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.operation.remote;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import retrofit2.Call;
 

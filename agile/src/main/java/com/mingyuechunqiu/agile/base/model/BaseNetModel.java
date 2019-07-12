@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.base.model;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;

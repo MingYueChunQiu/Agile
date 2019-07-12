@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -20,7 +20,7 @@
         app:bl_unFocused_drawable="@drawable/sign_et_bg_focus"
         app:pcet_clear_btn_is_visible="true" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         app:pcet_clear_btn_is_visible="true"
         app:pcet_password_is_visible="true" />
 
-    <android.support.v7.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_web"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,13 +59,13 @@
         app:pdet_clear_button_is_visible="true"
         app:pdet_pull_down_is_visible="true" />
 
-    <android.support.v7.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_main_show"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/show_loading_fragment" />
 
-    <android.support.v7.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_main_hide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -94,4 +94,4 @@
         android:id="@+id/fl_main_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-</android.support.v7.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

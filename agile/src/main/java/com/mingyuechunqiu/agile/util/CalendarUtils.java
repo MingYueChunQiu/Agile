@@ -1,12 +1,14 @@
 package com.mingyuechunqiu.agile.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * <pre>
@@ -92,7 +94,7 @@ public class CalendarUtils {
         //如果毫秒数小于13位，则直接返回
         if (!checkIsMilliseconds(millisecond)) return null;
         Date date = new Date(millisecond);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         return format.format(date);
     }
 
@@ -107,7 +109,7 @@ public class CalendarUtils {
         if (!checkIsMilliseconds(millisecond)) return null;
         Date date = new Date(millisecond);
         //hh是12小时制，HH是24小时制
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
         return format.format(date);
     }
 
@@ -212,12 +214,13 @@ public class CalendarUtils {
      * @param milliseconds 毫秒数
      * @return 如果毫秒数符合规范，则返回格式化字符串，否则返回null
      */
+    @Nullable
     public static String getFormattedDay(long milliseconds) {
         if (!checkIsMilliseconds(milliseconds)) return null;
-        SimpleDateFormat format = new SimpleDateFormat("dd");
+        SimpleDateFormat format = new SimpleDateFormat("dd", Locale.getDefault());
         String day = format.format(new Date(milliseconds));
-        if (day.length() > 1 && day.substring(0).equals("0")) {
-            return day.substring(1, day.length());
+        if (day.length() > 1 && day.substring(0, 1).equals("0")) {
+            return day.substring(1);
         }
         return day;
     }

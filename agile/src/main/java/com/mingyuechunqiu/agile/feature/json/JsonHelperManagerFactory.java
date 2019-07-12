@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.feature.json;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * <pre>

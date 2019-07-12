@@ -4,13 +4,14 @@ import android.animation.ValueAnimator;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.card.MaterialCardView;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+
+import com.google.android.material.card.MaterialCardView;
 import com.mingyuechunqiu.agile.feature.playermanager.video.VideoPlayerOption;
 import com.mingyuechunqiu.agile.feature.playermanager.video.player.VideoPlayerManagerFactory;
 import com.mingyuechunqiu.agile.feature.playermanager.video.player.VideoPlayerManagerable;

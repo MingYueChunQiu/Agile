@@ -1,8 +1,8 @@
 package com.mingyuechunqiu.agile.feature.loading.provider;
 
-import android.support.annotation.IdRes;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
+import androidx.annotation.IdRes;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.mingyuechunqiu.agile.feature.loading.data.Constants;
 import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
