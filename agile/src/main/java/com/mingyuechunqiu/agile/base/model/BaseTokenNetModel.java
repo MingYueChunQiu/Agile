@@ -56,7 +56,7 @@ public abstract class BaseTokenNetModel<I extends IBaseListener> extends BaseNet
             callOnTokenInvalid();
         } else {
             LogManagerProvider.d(TAG, errorMsg);
-            callOnTokenError();
+            callOnResponseError(code, errorMsg);
             mListener.onFailure(errorMsg);
         }
         return false;
@@ -80,9 +80,12 @@ public abstract class BaseTokenNetModel<I extends IBaseListener> extends BaseNet
     protected abstract void callOnTokenInvalid();
 
     /**
-     * 当token发生未知异常时回调
+     * 当网络响应发生未知异常时回调
+     *
+     * @param code     错误码
+     * @param errorMsg 错误信息
      */
-    protected abstract void callOnTokenError();
+    protected abstract void callOnResponseError(int code, String errorMsg);
 
     /**
      * 当token失效重新获取后，由子类重写调用进行再次网络请求

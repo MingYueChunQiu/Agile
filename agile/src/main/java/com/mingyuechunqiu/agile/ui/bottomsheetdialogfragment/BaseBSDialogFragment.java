@@ -1,24 +1,25 @@
 package com.mingyuechunqiu.agile.ui.bottomsheetdialogfragment;
 
 import android.os.Bundle;
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import androidx.fragment.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.mingyuechunqiu.agile.R;
-import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.feature.loading.data.Constants;
 import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProvideFactory;
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProviderable;
+import com.mingyuechunqiu.agile.frame.Agile;
 
 /**
  * <pre>

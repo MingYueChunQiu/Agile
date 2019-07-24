@@ -131,18 +131,18 @@ public class FragmentUtils {
      * 显示及隐藏Fragment
      *
      * @param fragmentManager  碎片管理器
-     * @param hideFg           需要隐藏的Fragment
      * @param containerViewId  Fragment容器资源ID
      * @param showFg           需要显示的Fragment
+     * @param hideFg           需要隐藏的Fragment
      * @param enterAnimationId 入场动画
      * @param exitAnimationId  出场动画
      */
     public static void showAndHideFragment(FragmentManager fragmentManager, @IdRes int containerViewId,
-                                           Fragment hideFg, Fragment showFg,
+                                           Fragment showFg, Fragment hideFg,
                                            @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
-        FragmentUtils.hideFragment(fragmentManager, hideFg, enterAnimationId, exitAnimationId);
         FragmentUtils.showFragment(fragmentManager, containerViewId, showFg,
                 enterAnimationId, exitAnimationId);
+        FragmentUtils.hideFragment(fragmentManager, hideFg, enterAnimationId, exitAnimationId);
     }
 
     /**

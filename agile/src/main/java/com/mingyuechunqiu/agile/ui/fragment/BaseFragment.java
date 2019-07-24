@@ -2,13 +2,6 @@ package com.mingyuechunqiu.agile.ui.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,10 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+
 import com.mingyuechunqiu.agile.feature.loading.data.Constants;
+import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProvideFactory;
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProviderable;
-import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
@@ -83,7 +84,8 @@ public abstract class BaseFragment extends Fragment {
         }
         getActivity().getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_VISIBLE);
     }
 
     /**

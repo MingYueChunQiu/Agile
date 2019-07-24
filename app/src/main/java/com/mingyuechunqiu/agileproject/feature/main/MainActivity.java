@@ -136,10 +136,17 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+//        setDarkStatusBar();
+        setLightStatusBar();
+    }
+
+    @Override
     protected void initView(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.agile_layout_navigation);
-        mToolbar = findViewById(R.id.tb_navigation_bar);
-        mToolbar.setOnClickListener(new View.OnClickListener() {
+        tbBar = findViewById(R.id.tb_navigation_bar);
+        tbBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                MediaUtils.startPickVideo(MainActivity.this, 2);
@@ -150,7 +157,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         ivBack.setVisibility(View.VISIBLE);
         tvToolbarTitle.setText(R.string.app_name);
         tvToolbarTitle.setVisibility(View.VISIBLE);
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(tbBar);
         FrameLayout clContainer = findViewById(R.id.fl_navigation_container);
         View view = getLayoutInflater().inflate(R.layout.activity_main, null);
         clContainer.addView(view);
@@ -205,7 +212,8 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 //        ShowDialogFragment fragment = new ShowDialogFragment();
 //        fragment.show(getSupportFragmentManager(), ShowDialogFragment.class.getSimpleName());
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_main_container, new TestFragment())
+                .add(android.R.id.content, new StatusFragment())
+                .addToBackStack(null)
                 .commit();
     }
 

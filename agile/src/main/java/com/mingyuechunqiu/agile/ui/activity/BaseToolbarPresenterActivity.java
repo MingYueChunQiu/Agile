@@ -1,9 +1,10 @@
 package com.mingyuechunqiu.agile.ui.activity;
 
 import android.os.Bundle;
+import android.view.Menu;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import android.view.Menu;
 
 import com.mingyuechunqiu.agile.base.presenter.BaseNetPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseNetView;
@@ -23,14 +24,14 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
  */
 public abstract class BaseToolbarPresenterActivity<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BaseNetPresenterActivity<V, P> {
 
-    protected Toolbar mToolbar;
+    protected Toolbar tbBar;
     private ToolbarUtils.ToolbarBean mToolbarBean;
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mToolbarBean = setToolbarBean();
-        ToolbarUtils.initToolbar(mToolbar, getSupportActionBar(), mToolbarBean);
+        ToolbarUtils.initToolbar(tbBar, getSupportActionBar(), mToolbarBean);
     }
 
     @Override

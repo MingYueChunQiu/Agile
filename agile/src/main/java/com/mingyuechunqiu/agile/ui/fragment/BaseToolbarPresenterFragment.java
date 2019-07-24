@@ -1,16 +1,17 @@
 package com.mingyuechunqiu.agile.ui.fragment;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.mingyuechunqiu.agile.base.presenter.BaseNetPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseNetView;
@@ -30,7 +31,7 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
  */
 public abstract class BaseToolbarPresenterFragment<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BaseNetPresenterFragment<V, P> {
 
-    protected Toolbar mToolbar;
+    protected Toolbar tbBar;
     protected ToolbarUtils.ToolbarBean mToolbarBean;
 
     @Nullable
@@ -40,11 +41,11 @@ public abstract class BaseToolbarPresenterFragment<V extends IBaseNetView<P>, P 
         ActionBar actionBar = null;
         if (getActivity() != null && getActivity() instanceof AppCompatActivity) {
             setHasOptionsMenu(true);
-            ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+            ((AppCompatActivity) getActivity()).setSupportActionBar(tbBar);
             actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         }
         mToolbarBean = setToolbarBean();
-        ToolbarUtils.initToolbar(mToolbar, actionBar, mToolbarBean);
+        ToolbarUtils.initToolbar(tbBar, actionBar, mToolbarBean);
         return view;
     }
 

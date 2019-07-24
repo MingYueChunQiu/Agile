@@ -1,10 +1,11 @@
 package com.mingyuechunqiu.agile.util;
 
 import android.graphics.drawable.Drawable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
 
@@ -42,8 +43,8 @@ public class ToolbarUtils {
         if (toolbarBean.getLogoDrawable() != null) {
             toolbar.setLogo(toolbarBean.getLogoDrawable());
         }
-        if (toolbarBean.getIconClickListener() != null) {
-            toolbar.setNavigationOnClickListener(toolbarBean.getIconClickListener());
+        if (toolbarBean.getOnIconClickListener() != null) {
+            toolbar.setNavigationOnClickListener(toolbarBean.getOnIconClickListener());
         }
         //判断是否显示toolbar自身的标题
         boolean isHasCustomTitle = true;
@@ -75,8 +76,8 @@ public class ToolbarUtils {
             toolbar.getLayoutParams().height = toolbar.getLayoutParams().height + statusBarHeight;
             toolbar.setPadding(0, statusBarHeight, 0, 0);
         }
-        if (toolbarBean.getListener() != null) {
-            toolbar.setOnMenuItemClickListener(toolbarBean.getListener());
+        if (toolbarBean.getOnMenuItemClickListener() != null) {
+            toolbar.setOnMenuItemClickListener(toolbarBean.getOnMenuItemClickListener());
         }
     }
 
@@ -90,7 +91,7 @@ public class ToolbarUtils {
 
         private Drawable logoDrawable;//左侧logo图片
 
-        private View.OnClickListener iconClickListener;//图标点击事件
+        private View.OnClickListener onIconClickListener;//图标点击事件
 
         private String title;//标题
 
@@ -102,7 +103,7 @@ public class ToolbarUtils {
 
         private boolean isImmerse;//标记是否是沉浸式
 
-        private Toolbar.OnMenuItemClickListener listener;//菜单监听器
+        private Toolbar.OnMenuItemClickListener onMenuItemClickListener;//菜单监听器
 
         private int menuResId;//菜单资源ID
 
@@ -140,12 +141,12 @@ public class ToolbarUtils {
             this.logoDrawable = logoDrawable;
         }
 
-        public View.OnClickListener getIconClickListener() {
-            return iconClickListener;
+        public View.OnClickListener getOnIconClickListener() {
+            return onIconClickListener;
         }
 
-        public void setIconClickListener(View.OnClickListener iconClickListener) {
-            this.iconClickListener = iconClickListener;
+        public void setOnIconClickListener(View.OnClickListener onIconClickListener) {
+            this.onIconClickListener = onIconClickListener;
         }
 
         public String getTitle() {
@@ -188,12 +189,12 @@ public class ToolbarUtils {
             isImmerse = immerse;
         }
 
-        public Toolbar.OnMenuItemClickListener getListener() {
-            return listener;
+        public Toolbar.OnMenuItemClickListener getOnMenuItemClickListener() {
+            return onMenuItemClickListener;
         }
 
-        public void setListener(Toolbar.OnMenuItemClickListener listener) {
-            this.listener = listener;
+        public void setOnMenuItemClickListener(Toolbar.OnMenuItemClickListener onMenuItemClickListener) {
+            this.onMenuItemClickListener = onMenuItemClickListener;
         }
 
         public int getMenuResId() {
@@ -261,12 +262,12 @@ public class ToolbarUtils {
                 return this;
             }
 
-            public View.OnClickListener getIconClickListener() {
-                return mBean.iconClickListener;
+            public View.OnClickListener getOnIconClickListener() {
+                return mBean.onIconClickListener;
             }
 
-            public Builder setIconClickListener(View.OnClickListener iconClickListener) {
-                mBean.iconClickListener = iconClickListener;
+            public Builder setOnIconClickListener(View.OnClickListener iconClickListener) {
+                mBean.onIconClickListener = iconClickListener;
                 return this;
             }
 
@@ -315,12 +316,12 @@ public class ToolbarUtils {
                 return this;
             }
 
-            public Toolbar.OnMenuItemClickListener getListener() {
-                return mBean.listener;
+            public Toolbar.OnMenuItemClickListener getOnMenuItemClickListener() {
+                return mBean.onMenuItemClickListener;
             }
 
-            public Builder setListener(Toolbar.OnMenuItemClickListener listener) {
-                mBean.listener = listener;
+            public Builder setOnMenuItemClickListener(Toolbar.OnMenuItemClickListener listener) {
+                mBean.onMenuItemClickListener = listener;
                 return this;
             }
 

@@ -29,6 +29,6 @@ public abstract class BaseTokenNetModelImpl<I extends IBaseListener> extends Bas
     }
 
     @Override
-    protected void callOnTokenError() {
+    protected void callOnResponseError(int code, String errorMsg) {
     }
 }

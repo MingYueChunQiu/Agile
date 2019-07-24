@@ -89,7 +89,7 @@ model:
 			    ----BaseAbstractRemoteDaoOperation<T>
 			        ----RetrofitCallDaoOperation
 				
-listener:	
+onMenuItemClickListener:
 		IBaseListener
 		----ICountDownListener（具体业务接口）
 ```

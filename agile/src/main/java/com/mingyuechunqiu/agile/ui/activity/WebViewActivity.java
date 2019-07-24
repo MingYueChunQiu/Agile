@@ -97,7 +97,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
         setContentView(R.layout.agile_layout_navigation);
         FrameLayout container = findViewById(R.id.fl_navigation_container);
         View view = getLayoutInflater().inflate(R.layout.agile_fragment_web_view, container, false);
-        mToolbar = findViewById(R.id.tb_navigation_bar);
+        tbBar = findViewById(R.id.tb_navigation_bar);
         AppCompatTextView tvToolbarTitle = findViewById(R.id.tv_navigation_title);
         AppCompatImageView ivBack = findViewById(R.id.iv_navigation_left_icon);
         ivBack.setVisibility(View.VISIBLE);
@@ -110,7 +110,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
                 finish();
             }
         });
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(tbBar);
         mBundle = getIntent().getExtras();
         if (mBundle != null && mBundle.getBoolean(BUNDLE_TITLE_VISIBLE, false)) {
             tvToolbarTitle.setVisibility(View.VISIBLE);
@@ -126,7 +126,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
         if (mBundle != null) {
             int toolbarBgColor = mBundle.getInt(BUNDLE_NAVIGATION_BG_COLOR,
                     getResources().getColor(android.R.color.darker_gray));
-            mToolbar.setBackgroundColor(toolbarBgColor);
+            tbBar.setBackgroundColor(toolbarBgColor);
             if (mBundle.getBoolean(BUNDLE_IS_SET_LEFT_ICON_SIZE)) {
                 int width = mBundle.getInt(BUNDLE_LEFT_ICON_WIDTH, Toolbar.LayoutParams.WRAP_CONTENT);
                 int height = mBundle.getInt(BUNDLE_LEFT_ICON_HEIGHT, Toolbar.LayoutParams.WRAP_CONTENT);
