@@ -12,5 +12,17 @@ package com.mingyuechunqiu.agile.framework.function;
  */
 public interface TagCallback {
 
-    String getTag();
+    /**
+     * 获取所属Tag
+     *
+     * @return 返回Tag字符串
+     */
+    String getOwnerTag();
+
+    /**
+     * 设置所属Tag
+     *
+     * @param tag tag字符串
+     */
+    void setOwnerTag(String tag);
 }
