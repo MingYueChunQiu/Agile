@@ -142,6 +142,16 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 返回父fragment界面
      *
+     * @param fragment 当前fragment
+     * @return 如果成功进行回调则返回true，否则返回false
+     */
+    protected boolean returnToPreviousPageWithParentFg(@NonNull Fragment fragment) {
+        return returnToPreviousPageWithParentFg(fragment, null);
+    }
+
+    /**
+     * 返回父fragment界面
+     *
      * @param fragment    当前fragment
      * @param interceptor 对跳转参数进行拦截设置
      * @return 如果成功进行回调则返回true，否则返回false
@@ -149,6 +159,16 @@ public abstract class BaseFragment extends Fragment {
     protected boolean returnToPreviousPageWithParentFg(@NonNull Fragment fragment,
                                                        JumpPageInterceptor interceptor) {
         return returnToPreviousPageWithFragment(fragment, getParentFragment(), interceptor);
+    }
+
+    /**
+     * 返回目标fragment界面
+     *
+     * @param fragment 当前fragment
+     * @return 如果成功进行回调则返回true，否则返回false
+     */
+    protected boolean returnToPreviousPageWithTargetFg(@NonNull Fragment fragment) {
+        return returnToPreviousPageWithTargetFg(fragment, null);
     }
 
     /**
@@ -164,23 +184,23 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 返回上一个界面
+     * 返回前一个界面
      *
      * @param fragment    当前fragment
-     * @param parentFg    fragment的父fragment
+     * @param previousFg  fragment的父fragment
      * @param interceptor 对跳转参数进行拦截设置
      * @return 如果进行回调则返回true，否则返回false
      */
     protected boolean returnToPreviousPageWithFragment(@NonNull Fragment fragment,
-                                                       Fragment parentFg,
+                                                       Fragment previousFg,
                                                        JumpPageInterceptor interceptor) {
-        if (parentFg instanceof Callback) {
+        if (previousFg instanceof Callback) {
             Bundle bundle = new Bundle();
             bundle.putBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE, true);
             if (interceptor != null) {
                 interceptor.interceptJumpPage(bundle);
             }
-            ((Callback) parentFg).onCall(fragment, bundle);
+            ((Callback) previousFg).onCall(fragment, bundle);
             return true;
         }
         return false;
