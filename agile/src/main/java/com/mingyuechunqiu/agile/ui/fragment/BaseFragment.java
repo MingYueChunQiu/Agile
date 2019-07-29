@@ -157,7 +157,7 @@ public abstract class BaseFragment extends Fragment {
      * @return 如果成功进行回调则返回true，否则返回false
      */
     protected boolean returnToPreviousPageWithParentFg(@NonNull Fragment fragment,
-                                                       JumpPageInterceptor interceptor) {
+                                                       @Nullable JumpPageInterceptor interceptor) {
         return returnToPreviousPageWithFragment(fragment, getParentFragment(), interceptor);
     }
 
@@ -179,7 +179,7 @@ public abstract class BaseFragment extends Fragment {
      * @return 如果成功进行回调则返回true，否则返回false
      */
     protected boolean returnToPreviousPageWithTargetFg(@NonNull Fragment fragment,
-                                                       JumpPageInterceptor interceptor) {
+                                                       @Nullable JumpPageInterceptor interceptor) {
         return returnToPreviousPageWithFragment(fragment, getTargetFragment(), interceptor);
     }
 
@@ -192,8 +192,8 @@ public abstract class BaseFragment extends Fragment {
      * @return 如果进行回调则返回true，否则返回false
      */
     protected boolean returnToPreviousPageWithFragment(@NonNull Fragment fragment,
-                                                       Fragment previousFg,
-                                                       JumpPageInterceptor interceptor) {
+                                                       @Nullable Fragment previousFg,
+                                                       @Nullable JumpPageInterceptor interceptor) {
         if (previousFg instanceof Callback) {
             Bundle bundle = new Bundle();
             bundle.putBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE, true);
@@ -224,7 +224,7 @@ public abstract class BaseFragment extends Fragment {
      * @return 如果进行回调则返回true，否则返回false
      */
     protected boolean returnToPreviousPageWithActivity(@NonNull Fragment fragment,
-                                                       JumpPageInterceptor interceptor) {
+                                                       @Nullable JumpPageInterceptor interceptor) {
         FragmentActivity activity = fragment.getActivity();
         if (activity instanceof BaseFragment.Callback) {
             Bundle bundle = new Bundle();
@@ -243,7 +243,7 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param listener 按键监听器
      */
-    protected void addOnKeyDownListenerToActivity(OnKeyDownListener listener) {
+    protected void addOnKeyDownListenerToActivity(@Nullable OnKeyDownListener listener) {
         if (listener == null) {
             return;
         }

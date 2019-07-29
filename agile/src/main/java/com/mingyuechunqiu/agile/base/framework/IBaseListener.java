@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agile.base.framework;
 
+import androidx.annotation.StringRes;
+
 /**
  * <pre>
  *     author : xyj
@@ -23,6 +25,6 @@ public interface IBaseListener {
      *
      * @param stringResourceId 错误信息资源ID
      */
-    void onFailure(int stringResourceId);
+    void onFailure(@StringRes int stringResourceId);
 
 }

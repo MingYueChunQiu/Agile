@@ -2,6 +2,8 @@ package com.mingyuechunqiu.agile.base.presenter;
 
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.base.model.BaseNetModel;
@@ -31,7 +33,7 @@ public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNet
      * @param info 网络请求参数对象
      */
     @Override
-    public void setParamsInfo(BaseParamsInfo info) {
+    public void setParamsInfo(@Nullable BaseParamsInfo info) {
         if (mModel == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }
@@ -89,6 +91,11 @@ public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNet
         } else {
             return token;
         }
+    }
+
+    @Override
+    protected void requestModel(BaseParamsInfo info) {
+        mModel.setParamsInfo(info);
     }
 
     /**

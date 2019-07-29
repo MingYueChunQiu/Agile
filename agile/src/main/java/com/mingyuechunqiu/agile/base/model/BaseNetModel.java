@@ -56,7 +56,9 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
      */
     @Override
     public void onNetworkResponseFailed(Throwable t, @StringRes int errorStringResId) {
-        LogManagerProvider.d(TAG_FAILURE, t.getMessage());
+        if (t != null) {
+            LogManagerProvider.d(TAG_FAILURE, t.getMessage());
+        }
         if (mListener != null) {
             mListener.onFailure(errorStringResId);
         }
