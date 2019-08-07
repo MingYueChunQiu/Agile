@@ -8,12 +8,13 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.util.ScreenUtils;
@@ -397,41 +398,39 @@ public class CircleProgressButton extends View {
 
     private void initAttrs(@NonNull Context context, @Nullable AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleProgressButton);
-        if (a != null) {
-            mIdleCircleColor = a.getColor(R.styleable.CircleProgressButton_cpb_idle_circle_color,
-                    DEFAULT_IDLE_CIRCLE_COLOR);
-            mPressedCircleColor = a.getColor(R.styleable.CircleProgressButton_cpb_pressed_circle_color,
-                    DEFAULT_PRESSED_CIRCLE_COLOR);
-            mReleasedCircleColor = a.getColor(R.styleable.CircleProgressButton_cpb_released_circle_color,
-                    DEFAULT_RELEASED_CIRCLE_COLOR);
-            mIdleRingColor = a.getColor(R.styleable.CircleProgressButton_cpb_idle_ring_color,
-                    DEFAULT_IDLE_RING_COLOR);
-            mPressedRingColor = a.getColor(R.styleable.CircleProgressButton_cpb_pressed_ring_color,
-                    DEFAULT_PRESSED_RING_COLOR);
-            mReleasedRingColor = a.getColor(R.styleable.CircleProgressButton_cpb_released_ring_color,
-                    DEFAULT_RELEASED_RING_COLOR);
-            mIdleRingWidth = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_idle_ring_width,
-                    DEFAULT_IDLE_RING_WIDTH);
-            mPressedRingWidth = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_pressed_ring_width,
-                    DEFAULT_PRESSED_RING_WIDTH);
-            mReleasedRingWidth = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_pressed_ring_width,
-                    DEFAULT_RELEASED_RING_WIDTH);
-            mIdleInnerPadding = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_idle_inner_padding, DEFAULT_INNER_PADDING);
-            mPressedInnerPadding = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_pressed_inner_padding, DEFAULT_INNER_PADDING);
-            mReleasedInnerPadding = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_released_inner_padding, DEFAULT_INNER_PADDING);
-            mIdleRingVisible = a.getBoolean(R.styleable.CircleProgressButton_cpb_idle_ring_visible,
-                    true);
-            mPressedRingVisible = a.getBoolean(R.styleable.CircleProgressButton_cpb_pressed_ring_visible,
-                    true);
-            mReleasedRingVisible = a.getBoolean(R.styleable.CircleProgressButton_cpb_released_ring_visible,
-                    true);
-            mMinProgress = a.getInt(R.styleable.CircleProgressButton_cpb_min_progress, 0);
-            mMaxProgress = a.getInt(R.styleable.CircleProgressButton_cpb_max_progress, 100);
-            mCurrentProgress = a.getInt(R.styleable.CircleProgressButton_cpb_current_progress, 0);
-            mTimerMode = a.getBoolean(R.styleable.CircleProgressButton_cpb_is_timer_mode, true);
-            mProgressDuration = a.getInt(R.styleable.CircleProgressButton_cpb_progress_duration, DEFAULT_PROGRESS_DURATION);
-            a.recycle();
-        }
+        mIdleCircleColor = a.getColor(R.styleable.CircleProgressButton_cpb_idle_circle_color,
+                DEFAULT_IDLE_CIRCLE_COLOR);
+        mPressedCircleColor = a.getColor(R.styleable.CircleProgressButton_cpb_pressed_circle_color,
+                DEFAULT_PRESSED_CIRCLE_COLOR);
+        mReleasedCircleColor = a.getColor(R.styleable.CircleProgressButton_cpb_released_circle_color,
+                DEFAULT_RELEASED_CIRCLE_COLOR);
+        mIdleRingColor = a.getColor(R.styleable.CircleProgressButton_cpb_idle_ring_color,
+                DEFAULT_IDLE_RING_COLOR);
+        mPressedRingColor = a.getColor(R.styleable.CircleProgressButton_cpb_pressed_ring_color,
+                DEFAULT_PRESSED_RING_COLOR);
+        mReleasedRingColor = a.getColor(R.styleable.CircleProgressButton_cpb_released_ring_color,
+                DEFAULT_RELEASED_RING_COLOR);
+        mIdleRingWidth = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_idle_ring_width,
+                DEFAULT_IDLE_RING_WIDTH);
+        mPressedRingWidth = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_pressed_ring_width,
+                DEFAULT_PRESSED_RING_WIDTH);
+        mReleasedRingWidth = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_pressed_ring_width,
+                DEFAULT_RELEASED_RING_WIDTH);
+        mIdleInnerPadding = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_idle_inner_padding, DEFAULT_INNER_PADDING);
+        mPressedInnerPadding = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_pressed_inner_padding, DEFAULT_INNER_PADDING);
+        mReleasedInnerPadding = a.getDimensionPixelSize(R.styleable.CircleProgressButton_cpb_released_inner_padding, DEFAULT_INNER_PADDING);
+        mIdleRingVisible = a.getBoolean(R.styleable.CircleProgressButton_cpb_idle_ring_visible,
+                true);
+        mPressedRingVisible = a.getBoolean(R.styleable.CircleProgressButton_cpb_pressed_ring_visible,
+                true);
+        mReleasedRingVisible = a.getBoolean(R.styleable.CircleProgressButton_cpb_released_ring_visible,
+                true);
+        mMinProgress = a.getInt(R.styleable.CircleProgressButton_cpb_min_progress, 0);
+        mMaxProgress = a.getInt(R.styleable.CircleProgressButton_cpb_max_progress, 100);
+        mCurrentProgress = a.getInt(R.styleable.CircleProgressButton_cpb_current_progress, 0);
+        mTimerMode = a.getBoolean(R.styleable.CircleProgressButton_cpb_is_timer_mode, true);
+        mProgressDuration = a.getInt(R.styleable.CircleProgressButton_cpb_progress_duration, DEFAULT_PROGRESS_DURATION);
+        a.recycle();
     }
 
     /**

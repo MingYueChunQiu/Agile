@@ -8,14 +8,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.ListPopupWindow;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.PopupWindow;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.ListPopupWindow;
 
 import com.mingyuechunqiu.agile.R;
 
@@ -293,25 +294,23 @@ public class PullDownEditText extends AppCompatEditText {
         //抗锯齿和位图滤波
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PullDownEditText);
-        if (a != null) {
-            isPullDownVisible = a.getBoolean(R.styleable.PullDownEditText_pdet_pull_down_is_visible, false);
-            isClearVisible = a.getBoolean(R.styleable.PullDownEditText_pdet_clear_button_is_visible, false);
-            mPullDownResId = a.getResourceId(R.styleable.PullDownEditText_pdet_pull_down_drawable, DEFAULT_PULL_DOWN_RES_ID);
-            mRetractResId = a.getResourceId(R.styleable.PullDownEditText_pdet_retract_drawable, DEFAULT_RETRACT_RES_ID);
-            mClearResId = a.getResourceId(R.styleable.PullDownEditText_pdet_clear_button_drawable, DEFAULT_CLEAR_RES_ID);
-            mBtnPadding = a.getDimensionPixelSize(R.styleable.PullDownEditText_pdet_button_padding, DEFAULT_BUTTON_PADDING);
-            mBtnWidth = a.getDimensionPixelSize(R.styleable.PullDownEditText_pdet_button_width, DEFAULT_BUTTON_WIDTH);
-            mBtnRightMargin = a.getDimensionPixelSize(R.styleable.PullDownEditText_pdet_button_right_margin, DEFAULT_BUTTON_RIGHT_MARGIN);
-            if (isPullDownVisible) {
-                mBpPullDown = BitmapFactory.decodeResource(getResources(), mPullDownResId);
-                mBpRetract = BitmapFactory.decodeResource(getResources(), mRetractResId);
-            }
-            if (isClearVisible) {
-                mBpClear = BitmapFactory.decodeResource(getResources(), mClearResId);
-            }
-            isAutoHide = a.getBoolean(R.styleable.PullDownEditText_pdet_button_auto_hide, true);
-            a.recycle();
+        isPullDownVisible = a.getBoolean(R.styleable.PullDownEditText_pdet_pull_down_is_visible, false);
+        isClearVisible = a.getBoolean(R.styleable.PullDownEditText_pdet_clear_button_is_visible, false);
+        mPullDownResId = a.getResourceId(R.styleable.PullDownEditText_pdet_pull_down_drawable, DEFAULT_PULL_DOWN_RES_ID);
+        mRetractResId = a.getResourceId(R.styleable.PullDownEditText_pdet_retract_drawable, DEFAULT_RETRACT_RES_ID);
+        mClearResId = a.getResourceId(R.styleable.PullDownEditText_pdet_clear_button_drawable, DEFAULT_CLEAR_RES_ID);
+        mBtnPadding = a.getDimensionPixelSize(R.styleable.PullDownEditText_pdet_button_padding, DEFAULT_BUTTON_PADDING);
+        mBtnWidth = a.getDimensionPixelSize(R.styleable.PullDownEditText_pdet_button_width, DEFAULT_BUTTON_WIDTH);
+        mBtnRightMargin = a.getDimensionPixelSize(R.styleable.PullDownEditText_pdet_button_right_margin, DEFAULT_BUTTON_RIGHT_MARGIN);
+        if (isPullDownVisible) {
+            mBpPullDown = BitmapFactory.decodeResource(getResources(), mPullDownResId);
+            mBpRetract = BitmapFactory.decodeResource(getResources(), mRetractResId);
         }
+        if (isClearVisible) {
+            mBpClear = BitmapFactory.decodeResource(getResources(), mClearResId);
+        }
+        isAutoHide = a.getBoolean(R.styleable.PullDownEditText_pdet_button_auto_hide, true);
+        a.recycle();
         //给文字设置一个padding，避免文字和按钮重叠了
         mTextPadding = mBtnPadding * 4 + mBtnWidth * 2;
         //按钮出现和消失的动画

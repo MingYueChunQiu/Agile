@@ -51,4 +51,10 @@
         <attr name="cpb_progress_duration" format="integer" />
     </declare-styleable>
 
+    <!--滚动ViewPager样式-->
+    <declare-styleable name="ScrollViewPager">
+        <!--是否可以滚动-->
+        <attr name="svp_canScroll" format="boolean" />
+    </declare-styleable>
+
 </resources>

@@ -8,11 +8,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatEditText;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatEditText;
 
 import com.mingyuechunqiu.agile.R;
 
@@ -208,25 +209,23 @@ public class PasswordClearEditText extends AppCompatEditText {
         //抗锯齿和位图滤波
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PasswordClearEditText);
-        if (a != null) {
-            isPasswordVisible = a.getBoolean(R.styleable.PasswordClearEditText_pcet_password_is_visible, true);
-            isClearVisible = a.getBoolean(R.styleable.PasswordClearEditText_pcet_clear_btn_is_visible, false);
-            mEyeOpenResId = a.getResourceId(R.styleable.PasswordClearEditText_pcet_eye_open_drawable, DEFAULT_EYE_OPEN_RES_ID);
-            mEyeClosedResId = a.getResourceId(R.styleable.PasswordClearEditText_pcet_eye_close_drawable, DEFAULT_EYE_CLOSED_RES_ID);
-            mClearResId = a.getResourceId(R.styleable.PasswordClearEditText_pcet_clear_btn_drawable, DEFAULT_CLEAR_RES_ID);
-            mBtnPadding = a.getDimensionPixelSize(R.styleable.PasswordClearEditText_pcet_button_padding, DEFAULT_BUTTON_PADDING);
-            mBtnWidth = a.getDimensionPixelSize(R.styleable.PasswordClearEditText_pcet_button_width, DEFAULT_BUTTON_WIDTH);
-            mBtnRightMargin = a.getDimensionPixelSize(R.styleable.PasswordClearEditText_pcet_button_right_margin, DEFAULT_BUTTON_RIGHT_MARGIN);
-            if (isPasswordVisible) {
-                mBpEyeOpen = BitmapFactory.decodeResource(getResources(), mEyeOpenResId);
-                mBpEyeClosed = BitmapFactory.decodeResource(getResources(), mEyeClosedResId);
-            }
-            if (isClearVisible) {
-                mBpClear = BitmapFactory.decodeResource(getResources(), mClearResId);
-            }
-            isAutoHide = a.getBoolean(R.styleable.PasswordClearEditText_pcet_btn_auto_hide, true);
-            a.recycle();
+        isPasswordVisible = a.getBoolean(R.styleable.PasswordClearEditText_pcet_password_is_visible, true);
+        isClearVisible = a.getBoolean(R.styleable.PasswordClearEditText_pcet_clear_btn_is_visible, false);
+        mEyeOpenResId = a.getResourceId(R.styleable.PasswordClearEditText_pcet_eye_open_drawable, DEFAULT_EYE_OPEN_RES_ID);
+        mEyeClosedResId = a.getResourceId(R.styleable.PasswordClearEditText_pcet_eye_close_drawable, DEFAULT_EYE_CLOSED_RES_ID);
+        mClearResId = a.getResourceId(R.styleable.PasswordClearEditText_pcet_clear_btn_drawable, DEFAULT_CLEAR_RES_ID);
+        mBtnPadding = a.getDimensionPixelSize(R.styleable.PasswordClearEditText_pcet_button_padding, DEFAULT_BUTTON_PADDING);
+        mBtnWidth = a.getDimensionPixelSize(R.styleable.PasswordClearEditText_pcet_button_width, DEFAULT_BUTTON_WIDTH);
+        mBtnRightMargin = a.getDimensionPixelSize(R.styleable.PasswordClearEditText_pcet_button_right_margin, DEFAULT_BUTTON_RIGHT_MARGIN);
+        if (isPasswordVisible) {
+            mBpEyeOpen = BitmapFactory.decodeResource(getResources(), mEyeOpenResId);
+            mBpEyeClosed = BitmapFactory.decodeResource(getResources(), mEyeClosedResId);
         }
+        if (isClearVisible) {
+            mBpClear = BitmapFactory.decodeResource(getResources(), mClearResId);
+        }
+        isAutoHide = a.getBoolean(R.styleable.PasswordClearEditText_pcet_btn_auto_hide, true);
+        a.recycle();
         //给文字设置一个padding，避免文字和按钮重叠了
         mTextPadding = mBtnPadding * 4 + mBtnWidth * 2;
         if (!isPasswordVisible) {
