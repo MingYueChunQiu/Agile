@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agile.ui.fragment;
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -94,10 +95,11 @@ public abstract class BaseFragment extends Fragment {
      * @return 如果成功销毁返回true，否则返回false
      */
     protected boolean finishActivity() {
-        if (getActivity() == null) {
+        Activity activity = getActivity();
+        if (activity == null) {
             return false;
         }
-        getActivity().finish();
+        activity.finish();
         return true;
     }
 
@@ -106,7 +108,7 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param fragment 当前fragment
      */
-    protected void addBackKeyToPreFragmentWithActivity(final Fragment fragment) {
+    protected void addBackKeyToPreFragmentWithActivity(@NonNull final Fragment fragment) {
         if (getActivity() instanceof BaseActivity) {
             ((BaseActivity) getActivity()).addOnKeyDownListener(new OnKeyDownListener() {
                 @Override
@@ -125,7 +127,7 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param fragment 当前fragment
      */
-    protected void addBackKeyToPreFgWithParentFg(final Fragment fragment) {
+    protected void addBackKeyToPreFgWithParentFg(@NonNull final Fragment fragment) {
         if (getActivity() instanceof BaseActivity) {
             ((BaseActivity) getActivity()).addOnKeyDownListener(new OnKeyDownListener() {
                 @Override
