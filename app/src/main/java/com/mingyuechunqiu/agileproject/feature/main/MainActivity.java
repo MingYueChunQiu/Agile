@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.fragment.app.Fragment;
 
 import com.mingyuechunqiu.agile.feature.loading.data.Constants;
 import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
@@ -21,7 +22,9 @@ import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProviderable;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agile.ui.activity.WebViewActivity;
+import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agile.util.ExitApplicationManager;
+import com.mingyuechunqiu.agile.util.FragmentUtils;
 import com.mingyuechunqiu.agile.util.StringUtils;
 import com.mingyuechunqiu.agile.util.ToolbarUtils;
 import com.mingyuechunqiu.agileproject.R;
@@ -29,6 +32,7 @@ import com.mingyuechunqiu.agileproject.R;
 import java.lang.ref.WeakReference;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_NAVIGATION_TITLE;
+import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_NAVIGATION_BG_COLOR;
 import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_SHOW_BACK_DIALOG;
 import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_COLOR;
@@ -47,7 +51,9 @@ import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUN
  * </pre>
  */
 public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View<MainContract.Presenter>, MainContract.Presenter>
-        implements MainContract.View<MainContract.Presenter>, View.OnClickListener {
+        implements MainContract.View<MainContract.Presenter>, View.OnClickListener, BaseFragment.Callback {
+
+    private Fragment mSelectedFg;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -211,9 +217,9 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 //                new MainFragment());
 //        ShowDialogFragment fragment = new ShowDialogFragment();
 //        fragment.show(getSupportFragmentManager(), ShowDialogFragment.class.getSimpleName());
+        mSelectedFg = new StatusFragment();
         getSupportFragmentManager().beginTransaction()
-                .add(android.R.id.content, new StatusFragment())
-                .addToBackStack(null)
+                .add(android.R.id.content, mSelectedFg)
                 .commit();
     }
 
@@ -307,6 +313,17 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
             case R.id.btn_main_hide:
                 dismissLoadingDialog();
                 break;
+        }
+    }
+
+    @Override
+    public void onCall(Fragment fragment, Bundle bundle) {
+        if (bundle == null) {
+            return;
+        }
+        if (bundle.getBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE)) {
+            FragmentUtils.removeFragments(getSupportFragmentManager(), true,
+                    R.anim.agile_slide_in_left, R.anim.agile_slide_out_right, mSelectedFg);
         }
     }
 }

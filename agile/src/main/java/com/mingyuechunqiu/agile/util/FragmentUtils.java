@@ -187,7 +187,7 @@ public class FragmentUtils {
      */
     public static void removeFragments(@Nullable FragmentManager fragmentManager,
                                        @Nullable Fragment... fragments) {
-        removeFragments(fragmentManager, false, fragments);
+        removeFragments(fragmentManager, false, NO_ID, NO_ID, fragments);
     }
 
     /**
@@ -198,7 +198,7 @@ public class FragmentUtils {
      */
     public static void removeFragments(@Nullable FragmentManager fragmentManager,
                                        @Nullable List<Fragment> fragmentList) {
-        removeFragments(fragmentManager, false, fragmentList);
+        removeFragments(fragmentManager, false, NO_ID, NO_ID, fragmentList);
     }
 
     /**
@@ -211,10 +211,43 @@ public class FragmentUtils {
     public static void removeFragments(@Nullable FragmentManager fragmentManager,
                                        boolean allowStateLoss,
                                        @Nullable Fragment... fragments) {
+        removeFragments(fragmentManager, allowStateLoss, NO_ID, NO_ID, fragments);
+    }
+
+    /**
+     * 移除Fragment
+     *
+     * @param fragmentManager  Fragment管理器
+     * @param enterAnimationId 入场动画
+     * @param exitAnimationId  出场动画
+     * @param fragments        要移除的Fragment
+     */
+    public static void removeFragments(@Nullable FragmentManager fragmentManager,
+                                       @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId,
+                                       @Nullable Fragment... fragments) {
+        removeFragments(fragmentManager, false, enterAnimationId, exitAnimationId, fragments);
+    }
+
+    /**
+     * 移除Fragment
+     *
+     * @param fragmentManager  Fragment管理器
+     * @param allowStateLoss   是否允许丧失状态
+     * @param enterAnimationId 入场动画
+     * @param exitAnimationId  出场动画
+     * @param fragments        要移除的Fragment
+     */
+    public static void removeFragments(@Nullable FragmentManager fragmentManager,
+                                       boolean allowStateLoss,
+                                       @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId,
+                                       @Nullable Fragment... fragments) {
         if (fragmentManager == null || fragments == null || fragments.length == 0) {
             return;
         }
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+        if (enterAnimationId != NO_ID && exitAnimationId != NO_ID) {
+            transaction.setCustomAnimations(enterAnimationId, exitAnimationId);
+        }
         for (Fragment fragment : fragments) {
             if (fragment != null && fragment.isAdded()) {
                 transaction.remove(fragment);
@@ -237,11 +270,41 @@ public class FragmentUtils {
     public static void removeFragments(@Nullable FragmentManager fragmentManager,
                                        boolean allowStateLoss,
                                        @Nullable List<Fragment> fragmentList) {
+        removeFragments(fragmentManager, allowStateLoss, NO_ID, NO_ID, fragmentList);
+    }
+
+    /**
+     * 移除Fragment
+     *
+     * @param fragmentManager  Fragment管理器
+     * @param enterAnimationId 入场动画
+     * @param exitAnimationId  出场动画
+     * @param fragmentList     要移除的Fragment集合
+     */
+    public static void removeFragments(@Nullable FragmentManager fragmentManager,
+                                       @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId,
+                                       @Nullable List<Fragment> fragmentList) {
+        removeFragments(fragmentManager, false, enterAnimationId, exitAnimationId, fragmentList);
+    }
+
+    /**
+     * 移除Fragment
+     *
+     * @param fragmentManager  Fragment管理器
+     * @param allowStateLoss   是否允许丢失状态
+     * @param enterAnimationId 入场动画
+     * @param exitAnimationId  出场动画
+     * @param fragmentList     要移除的Fragment集合
+     */
+    public static void removeFragments(@Nullable FragmentManager fragmentManager,
+                                       boolean allowStateLoss,
+                                       @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId,
+                                       @Nullable List<Fragment> fragmentList) {
         if (fragmentList == null) {
             return;
         }
         Fragment[] fragments = new Fragment[fragmentList.size()];
-        removeFragments(fragmentManager, allowStateLoss, fragmentList.toArray(fragments));
+        removeFragments(fragmentManager, allowStateLoss, enterAnimationId, exitAnimationId, fragmentList.toArray(fragments));
     }
 
     /**
