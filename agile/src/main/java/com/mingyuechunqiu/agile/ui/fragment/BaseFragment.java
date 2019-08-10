@@ -38,6 +38,7 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_T
  */
 public abstract class BaseFragment extends Fragment {
 
+    protected boolean forbidBackToActivity, forbidBackToFragment;
     private Toast mToast;
     private LoadingDfgProviderable mLoadingDfgProvider;
 
@@ -54,6 +55,7 @@ public abstract class BaseFragment extends Fragment {
         releaseOnDestroyView();
         mToast = null;
         mLoadingDfgProvider = null;
+        forbidBackToActivity = forbidBackToFragment = false;
     }
 
     @Override
@@ -109,11 +111,12 @@ public abstract class BaseFragment extends Fragment {
      * @param fragment 当前fragment
      */
     protected void addBackKeyToPreFragmentWithActivity(@NonNull final Fragment fragment) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).addOnKeyDownListener(new OnKeyDownListener() {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof BaseActivity) {
+            ((BaseActivity) activity).addOnKeyDownListener(new OnKeyDownListener() {
                 @Override
                 public boolean onFragmentKeyDown(int i, KeyEvent keyEvent) {
-                    if (isVisible()) {
+                    if (isVisible() && !forbidBackToActivity) {
                         return returnToPreviousPageWithActivity(fragment);
                     }
                     return false;
@@ -128,11 +131,12 @@ public abstract class BaseFragment extends Fragment {
      * @param fragment 当前fragment
      */
     protected void addBackKeyToPreFgWithParentFg(@NonNull final Fragment fragment) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).addOnKeyDownListener(new OnKeyDownListener() {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof BaseActivity) {
+            ((BaseActivity) activity).addOnKeyDownListener(new OnKeyDownListener() {
                 @Override
                 public boolean onFragmentKeyDown(int i, KeyEvent keyEvent) {
-                    if (isVisible()) {
+                    if (isVisible() && !forbidBackToFragment) {
                         return returnToPreviousPageWithParentFg(fragment, null);
                     }
                     return false;
