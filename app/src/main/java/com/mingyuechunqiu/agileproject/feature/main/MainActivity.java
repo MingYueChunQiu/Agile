@@ -323,7 +323,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         }
         if (bundle.getBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE)) {
             FragmentUtils.removeFragments(getSupportFragmentManager(), true,
-                    R.anim.agile_slide_in_left, R.anim.agile_slide_out_right, mSelectedFg);
+                    R.anim.agile_alpha_slide_in_left, R.anim.agile_alpha_slide_out_right, mSelectedFg);
         }
     }
 }
