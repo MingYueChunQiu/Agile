@@ -38,6 +38,7 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_T
  */
 public abstract class BaseFragment extends Fragment {
 
+    //禁止返回界面flag
     protected boolean forbidBackToActivity, forbidBackToFragment;
     private Toast mToast;
     private LoadingDfgProviderable mLoadingDfgProvider;
