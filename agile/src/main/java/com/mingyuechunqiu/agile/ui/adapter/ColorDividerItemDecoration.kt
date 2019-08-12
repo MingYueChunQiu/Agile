@@ -20,7 +20,8 @@ import androidx.recyclerview.widget.RecyclerView
  * </pre>
  */
 class ColorDividerItemDecoration(
-        private var dividerSize: Int = 1, @ColorInt var dividerColor: Int = Color.parseColor("#dbdbdb"),
+        private val dividerSize: Int = 1, @ColorInt val dividerColor: Int = Color.parseColor("#dbdbdb"),
+        private val offset: Int = 0,
         private val orientation: Int = ORIENTATION_HORIZONTAL
 ) : RecyclerView.ItemDecoration() {
 
@@ -66,7 +67,7 @@ class ColorDividerItemDecoration(
     private fun drawHorizontalDivider(view: View, c: Canvas) {
         val top = view.top - dividerSize
         c.drawRect(
-                view.left.toFloat(), top.toFloat(), view.right.toFloat(),
+                view.left.toFloat() + offset, top.toFloat(), view.right.toFloat(),
                 view.top.toFloat(), mPaint
         )
     }
@@ -80,7 +81,7 @@ class ColorDividerItemDecoration(
     private fun drawVerticalDivider(view: View, c: Canvas) {
         val left = view.left - dividerSize
         c.drawRect(
-                left.toFloat(), view.top.toFloat(), view.left.toFloat(),
+                left.toFloat(), view.top.toFloat() + offset, view.left.toFloat(),
                 view.bottom.toFloat(), mPaint
         )
     }

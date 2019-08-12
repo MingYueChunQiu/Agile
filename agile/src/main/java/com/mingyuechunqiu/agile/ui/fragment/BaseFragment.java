@@ -111,7 +111,7 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param fragment 当前fragment
      */
-    protected void addBackKeyToPreFragmentWithActivity(@NonNull final Fragment fragment) {
+    protected void addBackKeyToPreviousPageWithActivity(@NonNull final Fragment fragment) {
         FragmentActivity activity = getActivity();
         if (activity instanceof BaseActivity) {
             ((BaseActivity) activity).addOnKeyDownListener(new OnKeyDownListener() {
@@ -131,7 +131,7 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param fragment 当前fragment
      */
-    protected void addBackKeyToPreFgWithParentFg(@NonNull final Fragment fragment) {
+    protected void addBackKeyToPreviousPageWithParentFg(@NonNull final Fragment fragment) {
         FragmentActivity activity = getActivity();
         if (activity instanceof BaseActivity) {
             ((BaseActivity) activity).addOnKeyDownListener(new OnKeyDownListener() {
