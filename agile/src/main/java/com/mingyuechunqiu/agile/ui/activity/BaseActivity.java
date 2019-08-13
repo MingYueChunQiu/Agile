@@ -36,7 +36,7 @@ import java.util.List;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    protected List<BaseFragment.OnKeyDownListener> mKeyDownListenerList;
+    protected List<BaseFragment.OnKeyEventListener> mKeyEventListenerList;
 
     private Toast mToast;
     private LoadingDfgProviderable mLoadingDfgProvider;
@@ -53,9 +53,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         dismissLoadingDialog();
         super.onDestroy();
         release();
-        if (mKeyDownListenerList != null) {
-            mKeyDownListenerList.clear();
-            mKeyDownListenerList = null;
+        if (mKeyEventListenerList != null) {
+            mKeyEventListenerList.clear();
+            mKeyEventListenerList = null;
         }
         mToast = null;
         mLoadingDfgProvider = null;
@@ -66,14 +66,14 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param listener fragment按键监听器
      */
-    public void addOnKeyDownListener(BaseFragment.OnKeyDownListener listener) {
+    public void addOnKeyEventListener(@Nullable BaseFragment.OnKeyEventListener listener) {
         if (listener == null) {
             return;
         }
-        if (mKeyDownListenerList == null) {
-            mKeyDownListenerList = new ArrayList<>();
+        if (mKeyEventListenerList == null) {
+            mKeyEventListenerList = new ArrayList<>();
         }
-        mKeyDownListenerList.add(listener);
+        mKeyEventListenerList.add(listener);
     }
 
     /**
@@ -82,15 +82,15 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param listener fragment按键监听器
      * @return 如果删除成功返回true，否则返回false
      */
-    public boolean removeOnKeyDownListener(BaseFragment.OnKeyDownListener listener) {
-        if (listener == null || mKeyDownListenerList == null) {
+    public boolean removeOnKeyEventListener(@Nullable BaseFragment.OnKeyEventListener listener) {
+        if (listener == null || mKeyEventListenerList == null) {
             return false;
         }
-        return mKeyDownListenerList.remove(listener);
+        return mKeyEventListenerList.remove(listener);
     }
 
-    public List<BaseFragment.OnKeyDownListener> getOnKeyDownListenerList() {
-        return mKeyDownListenerList;
+    public List<BaseFragment.OnKeyEventListener> getOnKeyEventListenerList() {
+        return mKeyEventListenerList;
     }
 
     /**
@@ -111,11 +111,11 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @return 如果有fragment阻止了事件继续传递则返回true，否则返回false
      */
     protected boolean dispatchOnKeyDownListener(int keyCode, KeyEvent event) {
-        if (mKeyDownListenerList == null || mKeyDownListenerList.size() == 0) {
+        if (mKeyEventListenerList == null || mKeyEventListenerList.size() == 0) {
             return false;
         }
         boolean isContinueTransfer = false;//是否继续传递
-        for (BaseFragment.OnKeyDownListener listener : mKeyDownListenerList) {
+        for (BaseFragment.OnKeyEventListener listener : mKeyEventListenerList) {
             if (listener.onFragmentKeyDown(keyCode, event)) {
                 isContinueTransfer = true;
             }

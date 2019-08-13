@@ -40,6 +40,7 @@ public abstract class BaseFragment extends Fragment {
 
     //禁止返回界面flag
     protected boolean forbidBackToActivity, forbidBackToFragment;
+    private OnKeyEventListener mBackKeyActivityListener, mBackKeyParentFgListener;
     private Toast mToast;
     private LoadingDfgProviderable mLoadingDfgProvider;
 
@@ -53,6 +54,10 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         dismissLoadingDialog();
         super.onDestroyView();
+        removeKeyEventListener(mBackKeyActivityListener);
+        removeKeyEventListener(mBackKeyParentFgListener);
+        mBackKeyActivityListener = null;
+        mBackKeyParentFgListener = null;
         releaseOnDestroyView();
         mToast = null;
         mLoadingDfgProvider = null;
@@ -114,15 +119,20 @@ public abstract class BaseFragment extends Fragment {
     protected void addBackKeyToPreviousPageWithActivity(@NonNull final Fragment fragment) {
         FragmentActivity activity = getActivity();
         if (activity instanceof BaseActivity) {
-            ((BaseActivity) activity).addOnKeyDownListener(new OnKeyDownListener() {
+            if (mBackKeyActivityListener != null) {
+                removeKeyEventListener(mBackKeyActivityListener);
+                mBackKeyActivityListener = null;
+            }
+            mBackKeyActivityListener = new OnKeyEventListener() {
                 @Override
-                public boolean onFragmentKeyDown(int i, KeyEvent keyEvent) {
+                public boolean onFragmentKeyDown(int keyCode, KeyEvent event) {
                     if (isVisible() && !forbidBackToActivity) {
                         return returnToPreviousPageWithActivity(fragment);
                     }
                     return false;
                 }
-            });
+            };
+            ((BaseActivity) activity).addOnKeyEventListener(mBackKeyActivityListener);
         }
     }
 
@@ -134,7 +144,11 @@ public abstract class BaseFragment extends Fragment {
     protected void addBackKeyToPreviousPageWithParentFg(@NonNull final Fragment fragment) {
         FragmentActivity activity = getActivity();
         if (activity instanceof BaseActivity) {
-            ((BaseActivity) activity).addOnKeyDownListener(new OnKeyDownListener() {
+            if (mBackKeyParentFgListener != null) {
+                removeKeyEventListener(mBackKeyParentFgListener);
+                mBackKeyParentFgListener = null;
+            }
+            mBackKeyParentFgListener = new OnKeyEventListener() {
                 @Override
                 public boolean onFragmentKeyDown(int i, KeyEvent keyEvent) {
                     if (isVisible() && !forbidBackToFragment) {
@@ -142,7 +156,23 @@ public abstract class BaseFragment extends Fragment {
                     }
                     return false;
                 }
-            });
+            };
+            ((BaseActivity) activity).addOnKeyEventListener(mBackKeyParentFgListener);
+        }
+    }
+
+    /**
+     * 移除按键监听器
+     *
+     * @param listener 按键监听器
+     */
+    protected void removeKeyEventListener(@Nullable OnKeyEventListener listener) {
+        if (listener == null) {
+            return;
+        }
+        FragmentActivity activity = getActivity();
+        if (activity instanceof BaseActivity) {
+            ((BaseActivity) activity).removeOnKeyEventListener(listener);
         }
     }
 
@@ -250,12 +280,12 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param listener 按键监听器
      */
-    protected void addOnKeyDownListenerToActivity(@Nullable OnKeyDownListener listener) {
+    protected void addOnKeyDownListenerToActivity(@Nullable OnKeyEventListener listener) {
         if (listener == null) {
             return;
         }
         if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).addOnKeyDownListener(listener);
+            ((BaseActivity) getActivity()).addOnKeyEventListener(listener);
         }
     }
 
@@ -421,7 +451,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 按键监听器
      */
-    public interface OnKeyDownListener {
+    public interface OnKeyEventListener {
 
         /**
          * 当触发按键事件时回调
