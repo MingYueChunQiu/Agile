@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agile.util;
 import androidx.annotation.AnimRes;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -39,7 +40,7 @@ public class FragmentUtils {
      * @param fragment        替换的Fragment
      */
     public static void replaceFragment(
-            FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment) {
+            @Nullable FragmentManager fragmentManager, @IdRes int containerViewId, @Nullable Fragment fragment) {
         replaceFragment(fragmentManager, containerViewId, fragment, false, null, true,
                 R.anim.agile_alpha_slide_in_right, R.anim.agile_alpha_slide_out_left,
                 NO_ID, NO_ID);
@@ -60,8 +61,8 @@ public class FragmentUtils {
      * @param popExitAnimationId  弹出退出动画
      */
     public static void replaceFragment(
-            FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment,
-            boolean addToBackStack, String backStackName, boolean allowStateLoss,
+            @Nullable FragmentManager fragmentManager, @IdRes int containerViewId, @Nullable Fragment fragment,
+            boolean addToBackStack, @Nullable String backStackName, boolean allowStateLoss,
             @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId,
             @AnimatorRes @AnimRes int popEnterAnimationId, @AnimatorRes @AnimRes int popExitAnimationId) {
         updateFragment(fragmentManager, containerViewId, fragment, addToBackStack, backStackName, allowStateLoss,
@@ -79,7 +80,7 @@ public class FragmentUtils {
      * @param enterAnimationId 入场动画
      * @param exitAnimationId  出场动画
      */
-    public static void updateFragment(FragmentManager manager, @IdRes int containerViewId, Fragment fragment,
+    public static void updateFragment(@Nullable FragmentManager manager, @IdRes int containerViewId, @Nullable Fragment fragment,
                                       boolean allowStateLoss, int type,
                                       @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         updateFragment(manager, containerViewId, fragment, false, null, allowStateLoss, type,
@@ -89,17 +90,20 @@ public class FragmentUtils {
     /**
      * 更新布局中的Fragment
      *
-     * @param manager          fragment管理器
-     * @param containerViewId  父布局id
-     * @param fragment         要更新的新fragment
-     * @param addToBackStack   是否添加到栈中
-     * @param allowStateLoss   是否允许丢失状态
-     * @param type             更新的方式类型
-     * @param enterAnimationId 入场动画
-     * @param exitAnimationId  出场动画
+     * @param manager             fragment管理器
+     * @param containerViewId     父布局id
+     * @param fragment            要更新的新fragment
+     * @param addToBackStack      是否添加到栈中
+     * @param backStackName       后退栈名称
+     * @param allowStateLoss      是否允许丢失状态
+     * @param type                更新的方式类型
+     * @param enterAnimationId    入场动画
+     * @param exitAnimationId     出场动画
+     * @param popEnterAnimationId 弹出进入动画
+     * @param popExitAnimationId  弹出退出动画
      */
-    public static void updateFragment(FragmentManager manager, @IdRes int containerViewId, Fragment fragment,
-                                      boolean addToBackStack, String backStackName,
+    public static void updateFragment(@Nullable FragmentManager manager, @IdRes int containerViewId, @Nullable Fragment fragment,
+                                      boolean addToBackStack, @Nullable String backStackName,
                                       boolean allowStateLoss, int type,
                                       @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId,
                                       @AnimatorRes @AnimRes int popEnterAnimationId, @AnimatorRes @AnimRes int popExitAnimationId) {
@@ -120,7 +124,7 @@ public class FragmentUtils {
      * @param enterAnimationId 入场动画
      * @param exitAnimationId  出场动画
      */
-    public static void showFragment(FragmentManager manager, @IdRes int containerViewId, Fragment fragment,
+    public static void showFragment(@Nullable FragmentManager manager, @IdRes int containerViewId, @Nullable Fragment fragment,
                                     @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         if (manager == null || fragment == null) {
             return;
@@ -142,7 +146,7 @@ public class FragmentUtils {
      * @param enterAnimationId 入场动画
      * @param exitAnimationId  出场动画
      */
-    public static void hideFragment(FragmentManager fragmentManager, Fragment fragment,
+    public static void hideFragment(@Nullable FragmentManager fragmentManager, @Nullable Fragment fragment,
                                     @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         if (fragment != null && !fragment.isHidden()) {
             FragmentUtils.updateFragment(fragmentManager, FragmentUtils.NO_ID, fragment, true,
@@ -160,8 +164,8 @@ public class FragmentUtils {
      * @param enterAnimationId 入场动画
      * @param exitAnimationId  出场动画
      */
-    public static void showAndHideFragment(FragmentManager fragmentManager, @IdRes int containerViewId,
-                                           Fragment hideFg, Fragment showFg,
+    public static void showAndHideFragment(@Nullable FragmentManager fragmentManager, @IdRes int containerViewId,
+                                           @Nullable Fragment hideFg, @Nullable Fragment showFg,
                                            @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         if (fragmentManager == null) {
             return;
@@ -318,10 +322,10 @@ public class FragmentUtils {
      * @param type            更新的方式类型
      * @param transaction     事务
      */
-    private static void handleTransaction(@IdRes int containerViewId, Fragment fragment,
-                                          boolean addToBackStack, String backStackName,
-                                          boolean allowStateLoss, int type, FragmentTransaction transaction) {
-        if (fragment == null || transaction == null) {
+    private static void handleTransaction(@IdRes int containerViewId, @Nullable Fragment fragment,
+                                          boolean addToBackStack, @Nullable String backStackName,
+                                          boolean allowStateLoss, int type, @NonNull FragmentTransaction transaction) {
+        if (fragment == null) {
             return;
         }
         switch (type) {
