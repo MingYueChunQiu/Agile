@@ -22,6 +22,7 @@ import com.mingyuechunqiu.agile.feature.loading.data.Constants;
 import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProvideFactory;
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProviderable;
+import com.mingyuechunqiu.agile.framework.function.TransferDataCallback;
 import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
@@ -412,6 +413,51 @@ public abstract class BaseFragment extends Fragment {
     protected LoadingDialogFragmentOption interceptLoadingFragmentOption(
             @Nullable LoadingDialogFragmentOption option, Constants.ModeType modeType) {
         return modeType == Constants.ModeType.TYPE_NOT_SET ? null : option;
+    }
+
+    /**
+     * 回调父类Fragment传递数据
+     *
+     * @param callback 传递数据回调
+     */
+    protected void callParentFragment(@Nullable TransferDataCallback callback) {
+        callFragment(getParentFragment(), callback);
+    }
+
+    /**
+     * 回调目标Fragment传递数据
+     *
+     * @param callback 传递数据回调
+     */
+    protected void callTargetFragment(@Nullable TransferDataCallback callback) {
+        callFragment(getTargetFragment(), callback);
+    }
+
+    /**
+     * 回调指定Fragment传递数据
+     *
+     * @param fragment 指定Fragment
+     * @param callback 传递数据回调
+     */
+    protected void callFragment(@Nullable Fragment fragment, @Nullable TransferDataCallback callback) {
+        if (fragment == null) {
+            return;
+        }
+        if (fragment instanceof Callback) {
+            ((Callback) fragment).onCall(this, callback == null ? null : callback.transferData());
+        }
+    }
+
+    /**
+     * 回调Activity传递数据
+     *
+     * @param callback 传递数据回调
+     */
+    protected void callActivity(@Nullable TransferDataCallback callback) {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof Callback) {
+            ((Callback) activity).onCall(this, callback == null ? null : callback.transferData());
+        }
     }
 
     /**

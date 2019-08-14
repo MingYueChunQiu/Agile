@@ -29,7 +29,7 @@ import static com.mingyuechunqiu.agile.util.FragmentUtils.TransactionTypeConstan
  */
 public class FragmentUtils {
 
-    public static final int NO_ID = -1;//无效资源ID
+    public static final int NO_ID = 0;//无效资源ID(-1会导致资源崩溃Unable to find resource ID #0xffffffff)
 
     /**
      * 替换Fragment，默认添加到栈中
@@ -40,27 +40,32 @@ public class FragmentUtils {
      */
     public static void replaceFragment(
             FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment) {
-        replaceFragment(fragmentManager, containerViewId, fragment, false, true,
-                R.anim.agile_alpha_slide_in_right, R.anim.agile_alpha_slide_out_left);
+        replaceFragment(fragmentManager, containerViewId, fragment, false, null, true,
+                R.anim.agile_alpha_slide_in_right, R.anim.agile_alpha_slide_out_left,
+                NO_ID, NO_ID);
     }
 
     /**
      * 替换Fragment
      *
-     * @param fragmentManager  fragment管理器
-     * @param containerViewId  容器ID
-     * @param fragment         替换的Fragment
-     * @param addToBackStack   是否添加到栈中
-     * @param allowStateLoss   是否允许丢失状态
-     * @param enterAnimationId 入场动画
-     * @param exitAnimationId  出场动画
+     * @param fragmentManager     fragment管理器
+     * @param containerViewId     容器ID
+     * @param fragment            替换的Fragment
+     * @param addToBackStack      是否添加到栈中
+     * @param backStackName       后退栈名称
+     * @param allowStateLoss      是否允许丢失状态
+     * @param enterAnimationId    入场动画
+     * @param exitAnimationId     出场动画
+     * @param popEnterAnimationId 弹出进入动画
+     * @param popExitAnimationId  弹出退出动画
      */
     public static void replaceFragment(
             FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment,
-            boolean addToBackStack, boolean allowStateLoss,
-            @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
-        updateFragment(fragmentManager, containerViewId, fragment, addToBackStack, allowStateLoss,
-                TYPE_REPLACE, enterAnimationId, exitAnimationId);
+            boolean addToBackStack, String backStackName, boolean allowStateLoss,
+            @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId,
+            @AnimatorRes @AnimRes int popEnterAnimationId, @AnimatorRes @AnimRes int popExitAnimationId) {
+        updateFragment(fragmentManager, containerViewId, fragment, addToBackStack, backStackName, allowStateLoss,
+                TYPE_REPLACE, enterAnimationId, exitAnimationId, popEnterAnimationId, popExitAnimationId);
     }
 
     /**
@@ -69,16 +74,16 @@ public class FragmentUtils {
      * @param manager          fragment管理器
      * @param containerViewId  父布局id
      * @param fragment         要更新的新fragment
-     * @param addToBackStack   是否添加到栈中
      * @param allowStateLoss   是否允许丢失状态
      * @param type             更新的方式类型
      * @param enterAnimationId 入场动画
      * @param exitAnimationId  出场动画
      */
     public static void updateFragment(FragmentManager manager, @IdRes int containerViewId, Fragment fragment,
-                                      boolean addToBackStack, boolean allowStateLoss, int type,
+                                      boolean allowStateLoss, int type,
                                       @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
-        updateFragment(manager, containerViewId, fragment, addToBackStack, null, allowStateLoss, type, enterAnimationId, exitAnimationId);
+        updateFragment(manager, containerViewId, fragment, false, null, allowStateLoss, type,
+                enterAnimationId, exitAnimationId, NO_ID, NO_ID);
     }
 
     /**
@@ -96,14 +101,13 @@ public class FragmentUtils {
     public static void updateFragment(FragmentManager manager, @IdRes int containerViewId, Fragment fragment,
                                       boolean addToBackStack, String backStackName,
                                       boolean allowStateLoss, int type,
-                                      @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
+                                      @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId,
+                                      @AnimatorRes @AnimRes int popEnterAnimationId, @AnimatorRes @AnimRes int popExitAnimationId) {
         if (manager == null || fragment == null) {
             return;
         }
         FragmentTransaction transaction = manager.beginTransaction();
-        if (enterAnimationId != NO_ID && exitAnimationId != NO_ID) {
-            transaction.setCustomAnimations(enterAnimationId, exitAnimationId);
-        }
+        transaction.setCustomAnimations(enterAnimationId, exitAnimationId, popEnterAnimationId, popExitAnimationId);
         handleTransaction(containerViewId, fragment, addToBackStack, backStackName, allowStateLoss, type, transaction);
     }
 
@@ -122,10 +126,10 @@ public class FragmentUtils {
             return;
         }
         if (fragment.isAdded()) {
-            FragmentUtils.updateFragment(manager, containerViewId, fragment, false, true,
+            updateFragment(manager, containerViewId, fragment, true,
                     TYPE_SHOW, enterAnimationId, exitAnimationId);
         } else {
-            FragmentUtils.updateFragment(manager, containerViewId, fragment, false, true,
+            updateFragment(manager, containerViewId, fragment, true,
                     TYPE_ADD, enterAnimationId, exitAnimationId);
         }
     }
@@ -141,7 +145,7 @@ public class FragmentUtils {
     public static void hideFragment(FragmentManager fragmentManager, Fragment fragment,
                                     @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         if (fragment != null && !fragment.isHidden()) {
-            FragmentUtils.updateFragment(fragmentManager, FragmentUtils.NO_ID, fragment, false, true,
+            FragmentUtils.updateFragment(fragmentManager, FragmentUtils.NO_ID, fragment, true,
                     TYPE_HIDE, enterAnimationId, exitAnimationId);
         }
     }
@@ -163,9 +167,7 @@ public class FragmentUtils {
             return;
         }
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        if (enterAnimationId != NO_ID && exitAnimationId != NO_ID) {
-            transaction.setCustomAnimations(enterAnimationId, exitAnimationId);
-        }
+        transaction.setCustomAnimations(enterAnimationId, exitAnimationId);
         if (hideFg != null) {
             transaction.hide(hideFg);
         }
@@ -245,9 +247,7 @@ public class FragmentUtils {
             return;
         }
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        if (enterAnimationId != NO_ID && exitAnimationId != NO_ID) {
-            transaction.setCustomAnimations(enterAnimationId, exitAnimationId);
-        }
+        transaction.setCustomAnimations(enterAnimationId, exitAnimationId);
         for (Fragment fragment : fragments) {
             if (fragment != null && fragment.isAdded()) {
                 transaction.remove(fragment);
@@ -334,6 +334,9 @@ public class FragmentUtils {
             case TYPE_ADD:
                 if (!fragment.isAdded()) {
                     transaction.add(containerViewId, fragment, fragment.getClass().getSimpleName());
+                    if (addToBackStack) {
+                        transaction.addToBackStack(backStackName);
+                    }
                 }
                 break;
             case TYPE_SHOW:
