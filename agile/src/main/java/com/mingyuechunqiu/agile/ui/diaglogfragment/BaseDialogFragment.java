@@ -194,45 +194,80 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
      * 回调父类Fragment传递数据
      *
      * @param callback 传递数据回调
+     * @return 如果进行回调则返回true，否则返回false
      */
-    protected void callParentFragment(@Nullable TransferDataCallback callback) {
-        callFragment(getParentFragment(), callback);
+    protected boolean callParentFragment(@Nullable TransferDataCallback callback) {
+        return callFragment(getParentFragment(), callback);
     }
 
     /**
      * 回调目标Fragment传递数据
      *
      * @param callback 传递数据回调
+     * @return 如果进行回调则返回true，否则返回false
      */
-    protected void callTargetFragment(@Nullable TransferDataCallback callback) {
-        callFragment(getTargetFragment(), callback);
+    protected boolean callTargetFragment(@Nullable TransferDataCallback callback) {
+        return callFragment(getTargetFragment(), callback);
     }
 
     /**
      * 回调指定Fragment传递数据
      *
-     * @param fragment 指定Fragment
-     * @param callback 传递数据回调
+     * @param callbackFragment 被回调的fragment
+     * @param callback         传递数据回调
+     * @return 如果进行回调则返回true，否则返回false
      */
-    protected void callFragment(@Nullable Fragment fragment, @Nullable TransferDataCallback callback) {
+    protected boolean callFragment(@Nullable Fragment callbackFragment, @Nullable TransferDataCallback callback) {
+        return callFragment(this, callbackFragment, callback);
+    }
+
+    /**
+     * 回调指定Fragment传递数据
+     *
+     * @param fragment         指定的Fragment
+     * @param callbackFragment 被回调的fragment
+     * @param callback         传递数据回调
+     * @return 如果进行回调则返回true，否则返回false
+     */
+    protected boolean callFragment(@Nullable DialogFragment fragment, @Nullable Fragment callbackFragment,
+                                   @Nullable TransferDataCallback callback) {
         if (fragment == null) {
-            return;
+            return false;
         }
-        if (fragment instanceof Callback) {
-            ((Callback) fragment).onCall(this, callback == null ? null : callback.transferData());
+        if (callbackFragment instanceof Callback) {
+            ((Callback) callbackFragment).onCall(fragment, callback == null ? null : callback.transferData());
+            return true;
         }
+        return false;
     }
 
     /**
      * 回调Activity传递数据
      *
      * @param callback 传递数据回调
+     * @return 如果进行回调则返回true，否则返回false
      */
-    protected void callActivity(@Nullable TransferDataCallback callback) {
+    protected boolean callActivity(@Nullable TransferDataCallback callback) {
+        return callActivity(this, callback);
+    }
+
+    /**
+     * 回调Activity传递数据
+     *
+     * @param fragment 指定的Fragment
+     * @param callback 传递数据回调
+     * @return 如果进行回调则返回true，否则返回false
+     */
+    protected boolean callActivity(@Nullable DialogFragment fragment, @Nullable TransferDataCallback callback) {
+        if (fragment == null) {
+            return false;
+        }
         FragmentActivity activity = getActivity();
         if (activity instanceof Callback) {
-            ((Callback) activity).onCall(this, callback == null ? null : callback.transferData());
+            ((Callback) activity).onCall(fragment, callback == null ? null : callback.transferData());
+            return true;
         }
+        return false;
     }
 
     /**
