@@ -157,6 +157,22 @@ public class FragmentUtils {
     /**
      * 显示及隐藏Fragment
      *
+     * @param fragmentManager 碎片管理器
+     * @param containerViewId Fragment容器资源ID
+     * @param hideFg          需要隐藏的Fragment
+     * @param showFg          需要显示的Fragment
+     */
+    public static void showAndHideFragment(@Nullable FragmentManager fragmentManager, @IdRes int containerViewId,
+                                           @Nullable Fragment hideFg, @Nullable Fragment showFg) {
+        showAndHideFragment(fragmentManager, containerViewId, hideFg, showFg,
+                true, null, true,
+                R.anim.agile_slide_in_right, R.anim.agile_slide_out_left,
+                R.anim.agile_slide_in_left, R.anim.agile_slide_out_right);
+    }
+
+    /**
+     * 显示及隐藏Fragment
+     *
      * @param fragmentManager  碎片管理器
      * @param containerViewId  Fragment容器资源ID
      * @param hideFg           需要隐藏的Fragment

@@ -25,6 +25,8 @@ import com.noober.background.BackgroundLibrary;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
+
 /**
  * <pre>
  *     author : xyj
@@ -261,6 +263,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected LoadingDialogFragmentOption interceptLoadingFragmentOption(
             @Nullable LoadingDialogFragmentOption option, Constants.ModeType modeType) {
         return modeType == Constants.ModeType.TYPE_NOT_SET ? null : option;
+    }
+
+    /**
+     * 检查是否是返回上一页数据包
+     *
+     * @param bundle 数据包
+     * @return 如果是返回true，否则返回false
+     */
+    protected boolean checkIsReturnToPreviousPageBundle(@Nullable Bundle bundle) {
+        if (bundle == null) {
+            return false;
+        }
+        return bundle.getBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE);
     }
 
     /**
