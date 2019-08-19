@@ -279,6 +279,23 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * 弹出添加的界面
+     *
+     * @return 成功弹出返回true，否则返回false
+     */
+    protected boolean popAddedPage() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager == null) {
+            return false;
+        }
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 释放资源
      */
     protected abstract void release();

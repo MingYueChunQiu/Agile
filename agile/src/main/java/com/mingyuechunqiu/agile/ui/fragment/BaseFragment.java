@@ -556,6 +556,20 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
+     * 弹出添加的界面
+     *
+     * @return 成功弹出返回true，否则返回false
+     */
+    protected boolean popAddedPage() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 释放资源（在onDestroyView时调用）
      */
     protected abstract void releaseOnDestroyView();
