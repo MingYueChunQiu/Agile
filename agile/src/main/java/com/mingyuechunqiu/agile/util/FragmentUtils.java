@@ -167,11 +167,37 @@ public class FragmentUtils {
     public static void showAndHideFragment(@Nullable FragmentManager fragmentManager, @IdRes int containerViewId,
                                            @Nullable Fragment hideFg, @Nullable Fragment showFg,
                                            @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
+        showAndHideFragment(fragmentManager, containerViewId, hideFg, showFg,
+                false, null, true,
+                enterAnimationId, exitAnimationId, NO_ID, NO_ID);
+    }
+
+    /**
+     * 显示及隐藏Fragment
+     *
+     * @param fragmentManager     碎片管理器
+     * @param containerViewId     Fragment容器资源ID
+     * @param hideFg              需要隐藏的Fragment
+     * @param showFg              需要显示的Fragment
+     * @param addToBackStack      是否添加到栈中
+     * @param backStackName       后退栈名称
+     * @param allowStateLoss      是否允许丢失状态
+     * @param enterAnimationId    入场动画
+     * @param exitAnimationId     出场动画
+     * @param popEnterAnimationId 弹出进入动画
+     * @param popExitAnimationId  弹出退出动画
+     */
+    public static void showAndHideFragment(@Nullable FragmentManager fragmentManager, @IdRes int containerViewId,
+                                           @Nullable Fragment hideFg, @Nullable Fragment showFg,
+                                           boolean addToBackStack, @Nullable String backStackName,
+                                           boolean allowStateLoss,
+                                           @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId,
+                                           @AnimatorRes @AnimRes int popEnterAnimationId, @AnimatorRes @AnimRes int popExitAnimationId) {
         if (fragmentManager == null) {
             return;
         }
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(enterAnimationId, exitAnimationId);
+        transaction.setCustomAnimations(enterAnimationId, exitAnimationId, popEnterAnimationId, popExitAnimationId);
         if (hideFg != null) {
             transaction.hide(hideFg);
         }
@@ -182,7 +208,14 @@ public class FragmentUtils {
                 transaction.add(containerViewId, showFg, showFg.getClass().getSimpleName());
             }
         }
-        transaction.commitAllowingStateLoss();
+        if (addToBackStack) {
+            transaction.addToBackStack(backStackName);
+        }
+        if (allowStateLoss) {
+            transaction.commitAllowingStateLoss();
+        } else {
+            transaction.commit();
+        }
     }
 
     /**

@@ -25,12 +25,7 @@
         tools:replace="android:allowBackup">
 
         <activity android:name="com.mingyuechunqiu.agileproject.feature.main.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name="com.mingyuechunqiu.agile.ui.activity.WebViewActivity" />
         <activity android:name="com.mingyuechunqiu.agileproject.feature.video.VideoActivity">
@@ -44,6 +39,14 @@
         </activity>
         <activity android:name="com.mingyuechunqiu.agileproject.feature.main.TestActivity">
 
+        </activity>
+        <activity android:name=".feature.main.JumpActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
