@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,30 +30,40 @@ public class JumpActivity extends AppCompatActivity implements BaseFragment.Call
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.agile_layout_frame);
-        mSelectedFg = new JumpFragment1();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_agile_frame_container, mSelectedFg)
-                .commitAllowingStateLoss();
+        mSelectedFg = new MainFragment();
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.fl_agile_frame_container, mSelectedFg)
+//                .commitAllowingStateLoss();
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), R.id.fl_agile_frame_container, mSelectedFg);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Fragment test = new JumpContainerFragment();
+                FragmentUtils.showAndHideFragment(getSupportFragmentManager(), R.id.fl_agile_frame_container,
+                        mSelectedFg, test);
+                mSelectedFg = test;
+            }
+        }, 2000);
     }
 
     @Override
     public void onCall(Fragment fragment, @Nullable Bundle bundle) {
-//        if (fragment.getClass().getSimpleName().equals(JumpFragment2.class.getSimpleName())) {
-//            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-//                getSupportFragmentManager().popBackStack();
-//            }
-////            getSupportFragmentManager().beginTransaction()
-////                    .setCustomAnimations(R.anim.agile_slide_in_right, R.anim.agile_slide_out_left)
-////                    .show(mCurrentFg)
-////                    .commitAllowingStateLoss();
-//            return;
-//        }
+        if (fragment.getClass().getSimpleName().equals(JumpFragment2.class.getSimpleName())) {
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                getSupportFragmentManager().popBackStack();
+            }
+//            getSupportFragmentManager().beginTransaction()
+//                    .setCustomAnimations(R.anim.agile_slide_in_right, R.anim.agile_slide_out_left)
+//                    .show(mCurrentFg)
+//                    .commitAllowingStateLoss();
+            return;
+        }
 //        getSupportFragmentManager().beginTransaction()
 //                .setCustomAnimations(R.anim.agile_slide_in_right, R.anim.agile_slide_out_left)
 //                .hide(mSelectedFg)
 //                .commitAllowingStateLoss();
 
-        mCurrentFg = new JumpFragment2();
+//        mCurrentFg = new JumpFragment2();
 //        getSupportFragmentManager().beginTransaction()
 //                .setCustomAnimations(R.anim.agile_slide_in_right, R.anim.agile_slide_out_left,
 //                        R.anim.agile_slide_in_left, R.anim.agile_slide_out_right)

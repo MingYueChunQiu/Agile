@@ -42,8 +42,7 @@ public class FragmentUtils {
     public static void replaceFragment(
             @Nullable FragmentManager fragmentManager, @IdRes int containerViewId, @Nullable Fragment fragment) {
         replaceFragment(fragmentManager, containerViewId, fragment, false, null, true,
-                R.anim.agile_alpha_slide_in_right, R.anim.agile_alpha_slide_out_left,
-                NO_ID, NO_ID);
+                NO_ID, NO_ID, NO_ID, NO_ID);
     }
 
     /**
@@ -111,7 +110,12 @@ public class FragmentUtils {
             return;
         }
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.setCustomAnimations(enterAnimationId, exitAnimationId, popEnterAnimationId, popExitAnimationId);
+        if (enterAnimationId != NO_ID && exitAnimationId != NO_ID &&
+                popEnterAnimationId != NO_ID && popExitAnimationId != NO_ID) {
+            transaction.setCustomAnimations(enterAnimationId, exitAnimationId, popEnterAnimationId, popExitAnimationId);
+        } else if (enterAnimationId != NO_ID && exitAnimationId != NO_ID) {
+            transaction.setCustomAnimations(enterAnimationId, exitAnimationId);
+        }
         handleTransaction(containerViewId, fragment, addToBackStack, backStackName, allowStateLoss, type, transaction);
     }
 
@@ -129,13 +133,8 @@ public class FragmentUtils {
         if (manager == null || fragment == null) {
             return;
         }
-        if (fragment.isAdded()) {
-            updateFragment(manager, containerViewId, fragment, true,
-                    TYPE_SHOW, enterAnimationId, exitAnimationId);
-        } else {
-            updateFragment(manager, containerViewId, fragment, true,
-                    TYPE_ADD, enterAnimationId, exitAnimationId);
-        }
+        updateFragment(manager, containerViewId, fragment, true,
+                fragment.isAdded() ? TYPE_SHOW : TYPE_ADD, enterAnimationId, exitAnimationId);
     }
 
     /**
@@ -213,7 +212,12 @@ public class FragmentUtils {
             return;
         }
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(enterAnimationId, exitAnimationId, popEnterAnimationId, popExitAnimationId);
+        if (enterAnimationId != NO_ID && exitAnimationId != NO_ID &&
+                popEnterAnimationId != NO_ID && popExitAnimationId != NO_ID) {
+            transaction.setCustomAnimations(enterAnimationId, exitAnimationId, popEnterAnimationId, popExitAnimationId);
+        } else if (enterAnimationId != NO_ID && exitAnimationId != NO_ID) {
+            transaction.setCustomAnimations(enterAnimationId, exitAnimationId);
+        }
         if (hideFg != null) {
             transaction.hide(hideFg);
         }
@@ -300,7 +304,9 @@ public class FragmentUtils {
             return;
         }
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(enterAnimationId, exitAnimationId);
+        if (enterAnimationId != NO_ID && exitAnimationId != NO_ID) {
+            transaction.setCustomAnimations(enterAnimationId, exitAnimationId);
+        }
         for (Fragment fragment : fragments) {
             if (fragment != null && fragment.isAdded()) {
                 transaction.remove(fragment);
