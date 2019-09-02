@@ -172,7 +172,7 @@ class LoadingDialogFragmentProvider implements LoadingDfgProviderable {
     }
 
     @Override
-    public void addOrShowLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option) {
+    public void showLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option) {
         if (manager == null || getDialogFragment().isVisible()) {
             return;
         }

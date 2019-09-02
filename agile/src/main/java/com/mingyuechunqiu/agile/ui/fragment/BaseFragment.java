@@ -370,7 +370,7 @@ public abstract class BaseFragment extends Fragment {
      * @param cancelable 是否可以取消
      */
     protected void showLoadingDialog(@Nullable String hint, boolean cancelable) {
-        LoadingDialogFragmentOption option = getLoadingDialog().getLoadingFragmentOption();
+        LoadingDialogFragmentOption option = getCurrentLoadingDialog().getLoadingFragmentOption();
         option.setText(hint);
         option.setCancelWithOutside(cancelable);
         showLoadingDialog(interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_DIALOG));
@@ -399,6 +399,18 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
+     * 添加显示加载对话框
+     *
+     * @param manager     Fragment管理器
+     * @param containerId 对话框所属布局ID
+     * @param option      加载对话框配置信息对象
+     */
+    protected void showLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option) {
+        getCurrentLoadingDialog().showLoadingDialog(manager, containerId,
+                interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_FRAGMENT));
+    }
+
+    /**
      * 关闭加载对话框
      */
     protected void dismissLoadingDialog() {
@@ -408,24 +420,12 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 添加显示加载对话框
-     *
-     * @param manager     Fragment管理器
-     * @param containerId 对话框所属布局ID
-     * @param option      加载对话框配置信息对象
-     */
-    protected void addOrShowLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option) {
-        getLoadingDialog().addOrShowLoadingDialog(manager, containerId,
-                interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_FRAGMENT));
-    }
-
-    /**
      * 隐藏加载对话框
      *
      * @param manager Fragment管理器
      */
     protected void hideLoadingDialog(FragmentManager manager) {
-        getLoadingDialog().hideLoadingDialog(manager);
+        getCurrentLoadingDialog().hideLoadingDialog(manager);
     }
 
     /**
@@ -434,7 +434,7 @@ public abstract class BaseFragment extends Fragment {
      * @param manager Fragment管理器
      */
     protected void removeLoadingDialog(FragmentManager manager) {
-        getLoadingDialog().removeLoadingDialog(manager);
+        getCurrentLoadingDialog().removeLoadingDialog(manager);
     }
 
     /**
@@ -443,7 +443,7 @@ public abstract class BaseFragment extends Fragment {
      * @return 返回加载Fragment实例
      */
     @NonNull
-    protected LoadingDfgProviderable getLoadingDialog() {
+    protected LoadingDfgProviderable getCurrentLoadingDialog() {
         if (mLoadingDfgProvider == null) {
             mLoadingDfgProvider = LoadingDfgProvideFactory.newInstance();
         }

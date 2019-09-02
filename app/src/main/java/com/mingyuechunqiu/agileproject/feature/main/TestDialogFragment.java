@@ -43,18 +43,13 @@ public class TestDialogFragment extends BasePresenterDialogFragment<MainContract
     }
 
     @Override
-    public void addOrShowLoadingDialog(int containerId, LoadingDialogFragmentOption option) {
-
-    }
-
-    @Override
-    public void hideLoadingDialog() {
-
-    }
-
-    @Override
     public LoadingDfgProviderable getLoadingDialog() {
         return null;
+    }
+
+    @Override
+    public void showLoadingDialog(int containerId, LoadingDialogFragmentOption option) {
+
     }
 
     @Override

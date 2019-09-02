@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.annotation.StyleRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
@@ -51,15 +52,27 @@ public class ToolbarUtils {
         if (!TextUtils.isEmpty(toolbarBean.getTitle())) {
             //因为在onCreate()中修改title的值，都会被重置成android:label的值
             toolbar.setTitle(toolbarBean.getTitle());
-            if (toolbarBean.getTitleColor() != NO_RESOURCE_ID) {
-                toolbar.setTitleTextColor(toolbarBean.getTitleColor());
+            if (toolbarBean.getTitleTextAppearance() == NO_RESOURCE_ID) {
+
+                if (toolbarBean.getTitleColor() != NO_RESOURCE_ID) {
+                    toolbar.setTitleTextColor(toolbarBean.getTitleColor());
+                }
+
+            } else {
+                toolbar.setTitleTextAppearance(toolbar.getContext(), toolbarBean.getTitleTextAppearance());
             }
             isHasCustomTitle = false;
         }
         if (!TextUtils.isEmpty(toolbarBean.getSubTitle())) {
             toolbar.setSubtitle(toolbarBean.getSubTitle());
-            if (toolbarBean.getSubTitleColor() != NO_RESOURCE_ID) {
-                toolbar.setSubtitleTextColor(toolbarBean.getSubTitleColor());
+            if (toolbarBean.getSubTitleTextAppearance() == NO_RESOURCE_ID) {
+
+                if (toolbarBean.getSubTitleColor() != NO_RESOURCE_ID) {
+                    toolbar.setSubtitleTextColor(toolbarBean.getSubTitleColor());
+                }
+
+            } else {
+                toolbar.setSubtitleTextAppearance(toolbar.getContext(), toolbarBean.getSubTitleTextAppearance());
             }
             isHasCustomTitle = false;
         }
@@ -101,7 +114,13 @@ public class ToolbarUtils {
 
         private int subTitleColor;//副标题文本颜色
 
-        private boolean isImmerse;//标记是否是沉浸式
+        private @StyleRes
+        int titleTextAppearance;//标题文本样式
+
+        private @StyleRes
+        int subTitleTextAppearance;//副标题文本样式
+
+        private boolean immerse;//标记是否是沉浸式
 
         private Toolbar.OnMenuItemClickListener onMenuItemClickListener;//菜单监听器
 
@@ -181,12 +200,28 @@ public class ToolbarUtils {
             this.subTitleColor = subTitleColor;
         }
 
+        public int getTitleTextAppearance() {
+            return titleTextAppearance;
+        }
+
+        public void setTitleTextAppearance(@StyleRes int titleTextAppearance) {
+            this.titleTextAppearance = titleTextAppearance;
+        }
+
+        public int getSubTitleTextAppearance() {
+            return subTitleTextAppearance;
+        }
+
+        public void setSubTitleTextAppearance(@StyleRes int subTitleTextAppearance) {
+            this.subTitleTextAppearance = subTitleTextAppearance;
+        }
+
         public boolean isImmerse() {
-            return isImmerse;
+            return immerse;
         }
 
         public void setImmerse(boolean immerse) {
-            isImmerse = immerse;
+            this.immerse = immerse;
         }
 
         public Toolbar.OnMenuItemClickListener getOnMenuItemClickListener() {
@@ -307,12 +342,30 @@ public class ToolbarUtils {
                 return this;
             }
 
+            public int getTitleTextAppearance() {
+                return mBean.titleTextAppearance;
+            }
+
+            public Builder setTitleTextAppearance(@StyleRes int titleTextAppearance) {
+                mBean.titleTextAppearance = titleTextAppearance;
+                return this;
+            }
+
+            public int getSubTitleTextAppearance() {
+                return mBean.subTitleTextAppearance;
+            }
+
+            public Builder setSubTitleTextAppearance(@StyleRes int subTitleTextAppearance) {
+                mBean.subTitleTextAppearance = subTitleTextAppearance;
+                return this;
+            }
+
             public boolean isImmerse() {
-                return mBean.isImmerse;
+                return mBean.immerse;
             }
 
             public Builder setImmerse(boolean immerse) {
-                mBean.isImmerse = immerse;
+                mBean.immerse = immerse;
                 return this;
             }
 

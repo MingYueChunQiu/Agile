@@ -53,7 +53,7 @@ public class DialogActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_add_loading:
-                addOrShowLoadingDialog(getSupportFragmentManager(), R.id.fl_loading_container, null);
+                showLoadingDialog(getSupportFragmentManager(), R.id.fl_loading_container, null);
                 break;
             case R.id.btn_hide_loading:
                 hideLoadingDialog(getSupportFragmentManager());

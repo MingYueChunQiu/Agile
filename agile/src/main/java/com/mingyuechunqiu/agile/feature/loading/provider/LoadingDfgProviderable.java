@@ -35,7 +35,7 @@ public interface LoadingDfgProviderable extends LoadingDialogFragmentable {
      * @param containerId 对话框所属布局ID
      * @param option      加载对话框配置信息对象
      */
-    void addOrShowLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option);
+    void showLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option);
 
     /**
      * 隐藏加载对话框

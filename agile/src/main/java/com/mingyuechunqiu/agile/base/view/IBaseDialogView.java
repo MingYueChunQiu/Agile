@@ -35,22 +35,17 @@ public interface IBaseDialogView<P extends BaseDialogPresenter> extends IBaseVie
     void showLoadingDialog(@Nullable LoadingDialogFragmentOption option);
 
     /**
-     * 关闭加载对话框（默认关闭时允许丢失状态）
-     */
-    void dismissLoadingDialog();
-
-    /**
      * 添加显示加载对话框
      *
      * @param containerId 对话框所属布局ID
      * @param option      加载对话框配置信息对象
      */
-    void addOrShowLoadingDialog(@IdRes int containerId, LoadingDialogFragmentOption option);
+    void showLoadingDialog(@IdRes int containerId, LoadingDialogFragmentOption option);
 
     /**
-     * 隐藏加载对话框
+     * 关闭加载对话框（默认关闭时允许丢失状态）
      */
-    void hideLoadingDialog();
+    void dismissLoadingDialog();
 
     /**
      * 获取加载Fragment提供者实例

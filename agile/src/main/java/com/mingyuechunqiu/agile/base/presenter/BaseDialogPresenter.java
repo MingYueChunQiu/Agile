@@ -44,32 +44,23 @@ public abstract class BaseDialogPresenter<V extends IBaseDialogView, M extends B
     }
 
     /**
-     * 关闭加载对话框
-     */
-    protected void dismissLoadingDialog() {
-        if (!checkViewRefIsNull()) {
-            mViewRef.get().dismissLoadingDialog();
-        }
-    }
-
-    /**
      * 添加显示加载对话框
      *
      * @param containerId 对话框所属布局ID
      * @param option      加载对话框配置信息对象
      */
-    protected void addOrShowLoadingDialog(@IdRes int containerId, LoadingDialogFragmentOption option) {
+    protected void showLoadingDialog(@IdRes int containerId, LoadingDialogFragmentOption option) {
         if (!checkViewRefIsNull()) {
-            mViewRef.get().addOrShowLoadingDialog(containerId, option);
+            mViewRef.get().showLoadingDialog(containerId, option);
         }
     }
 
     /**
-     * 隐藏加载对话框
+     * 关闭加载对话框
      */
-    protected void hideLoadingDialog() {
+    protected void dismissLoadingDialog() {
         if (!checkViewRefIsNull()) {
-            mViewRef.get().hideLoadingDialog();
+            mViewRef.get().dismissLoadingDialog();
         }
     }
 

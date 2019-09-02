@@ -36,7 +36,7 @@ public class DialogFragmentTest extends BaseFragment {
     @Override
     protected View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        addOrShowLoadingDialog(getChildFragmentManager(), R.id.fl_fragment_main_loading, null);
+        showLoadingDialog(getChildFragmentManager(), R.id.fl_fragment_main_loading, null);
         return view;
     }
 }

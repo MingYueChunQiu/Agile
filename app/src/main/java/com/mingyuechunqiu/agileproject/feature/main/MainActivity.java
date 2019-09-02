@@ -108,13 +108,8 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void addOrShowLoadingDialog(int containerId, LoadingDialogFragmentOption option) {
-        super.addOrShowLoadingDialog(getSupportFragmentManager(), containerId, option);
-    }
-
-    @Override
-    public void hideLoadingDialog() {
-        super.hideLoadingDialog(getSupportFragmentManager());
+    public void showLoadingDialog(int containerId, LoadingDialogFragmentOption option) {
+        super.showLoadingDialog(getSupportFragmentManager(), containerId, option);
     }
 
     @Override
@@ -122,10 +117,9 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         super.showLoadingDialog(option);
     }
 
-    @NonNull
     @Override
     public LoadingDfgProviderable getLoadingDialog() {
-        return super.getLoadingDialog();
+        return super.getCurrentLoadingDialog();
     }
 
     @Override
@@ -262,16 +256,16 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_main_show:
-//                getLoadingDialog().resetLoadingDialog();
+//                getCurrentLoadingDialog().resetLoadingDialog();
 //                getLoadingFragment().setLoadingBackground(new ColorDrawable(Color.RED));
 ////                getLoadingFragment().setContainerBackground(new ColorDrawable(Color.DKGRAY));
 //                getLoadingFragment().setLoadingMessageColor(Color.BLUE);
 //                getLoadingFragment().setLoadingMessage("O(∩_∩)O哈哈~");
 //                showLoadingDialog(null);
-//                getLoadingDialog().setThemeType(Constants.ThemeType.DARK_THEME);
+//                getCurrentLoadingDialog().setThemeType(Constants.ThemeType.DARK_THEME);
 
 //                showLoadingDialog("蜂王浆", true);
-//                getLoadingDialog().setOnLoadingOptionListener(new LoadingDialogFragmentOption.OnLoadingOptionListener() {
+//                getCurrentLoadingDialog().setOnLoadingOptionListener(new LoadingDialogFragmentOption.OnLoadingOptionListener() {
 //                    @Override
 //                    public boolean onClickKeyBack(DialogInterface dialog) {
 //                        showToast("单位");

@@ -56,18 +56,13 @@ public class TestBottomDialogFragment extends BasePresenterBSDialogFragment<Main
     }
 
     @Override
-    public void addOrShowLoadingDialog(int containerId, LoadingDialogFragmentOption option) {
-
-    }
-
-    @Override
-    public void hideLoadingDialog() {
+    public void showLoadingDialog(int containerId, LoadingDialogFragmentOption option) {
 
     }
 
     @Override
     public LoadingDfgProviderable getLoadingDialog() {
-        return null;
+        return super.getCurrentLoadingDialog();
     }
 
     @Override
