@@ -110,6 +110,10 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
      * @param option 加载配置参数信息对象
      */
     protected void showLoadingDialog(@Nullable LoadingDialogFragmentOption option) {
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager == null) {
+            return;
+        }
         LoadingDialogFragmentOption temp = interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_DIALOG);
         if (mLoadingDfgProvider == null) {
             mLoadingDfgProvider = LoadingDfgProvideFactory.newInstance(temp);
@@ -123,7 +127,17 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
             }
         }
         //除隐藏对话框再显示用getDialog().show()，其他都直接用show()
-        mLoadingDfgProvider.showLoadingDialog(getFragmentManager());
+        mLoadingDfgProvider.showLoadingDialog(fragmentManager);
+    }
+
+    /**
+     * 添加显示加载对话框
+     *
+     * @param containerId 对话框所属布局ID
+     * @param option      加载对话框配置信息对象
+     */
+    protected void showLoadingDialog(@IdRes int containerId, @Nullable LoadingDialogFragmentOption option) {
+        showLoadingDialog(getChildFragmentManager(), containerId, option);
     }
 
     /**
@@ -133,7 +147,10 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
      * @param containerId 对话框所属布局ID
      * @param option      加载对话框配置信息对象
      */
-    protected void showLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option) {
+    protected void showLoadingDialog(@Nullable FragmentManager manager, @IdRes int containerId, @Nullable LoadingDialogFragmentOption option) {
+        if (manager == null) {
+            return;
+        }
         getCurrentLoadingDialog().showLoadingDialog(manager, containerId,
                 interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_FRAGMENT));
     }

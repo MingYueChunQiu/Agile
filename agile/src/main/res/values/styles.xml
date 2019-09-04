@@ -16,13 +16,13 @@
 
     <!--带动画弹出的透明背景加载对话框显示样式-->
     <style name="Dialog_Loading.Transparent.Animation" parent="Dialog_Loading.Transparent">
-        <item name="android:windowAnimationStyle">@style/PopupDialogAnim</item>
+        <item name="android:windowAnimationStyle">@style/PopupAnimation</item>
     </style>
 
-    <!--弹出对话框动画样式-->
-    <style name="PopupDialogAnim" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/agile_dialog_show_overshoot</item>
-        <item name="android:windowExitAnimation">@anim/agile_dialog_hide_anticipate</item>
+    <!--弹出动画-->
+    <style name="PopupAnimation">
+        <item name="android:windowEnterAnimation">@anim/agile_pop_in_fade_scale</item>
+        <item name="android:windowExitAnimation">@anim/agile_pop_out_fade_scale</item>
     </style>
 
 </resources>
