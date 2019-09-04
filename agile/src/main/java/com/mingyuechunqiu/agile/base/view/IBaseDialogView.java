@@ -40,7 +40,7 @@ public interface IBaseDialogView<P extends BaseDialogPresenter> extends IBaseVie
      * @param containerId 对话框所属布局ID
      * @param option      加载对话框配置信息对象
      */
-    void showLoadingDialog(@IdRes int containerId, LoadingDialogFragmentOption option);
+    void showLoadingDialog(@IdRes int containerId, @Nullable LoadingDialogFragmentOption option);
 
     /**
      * 关闭加载对话框（默认关闭时允许丢失状态）
