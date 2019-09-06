@@ -1,8 +1,10 @@
 package com.mingyuechunqiu.agile.util;
 
 import android.content.Context;
-import androidx.annotation.StringRes;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.frame.Agile;
 
@@ -32,11 +34,20 @@ public class ToastUtils {
      * @param context 上下文
      * @param hint    提示信息
      */
-    public static void showToast(Context context, String hint) {
+    public static void showToast(@Nullable Context context, String hint) {
+        showToast(context, hint, false);
+    }
+
+    /**
+     * @param context      上下文
+     * @param hint         提示信息
+     * @param longDuration 提示信息持续时间长短，true表示长时间，false表示短时间
+     */
+    public static void showToast(@Nullable Context context, String hint, boolean longDuration) {
         if (context == null) {
             return;
         }
-        Toast.makeText(context, hint, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, hint, longDuration ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -54,10 +65,20 @@ public class ToastUtils {
      * @param context     上下文
      * @param stringResId 提示信息资源id
      */
-    public static void showToast(Context context, @StringRes int stringResId) {
+    public static void showToast(@Nullable Context context, @StringRes int stringResId) {
+        showToast(context, stringResId, false);
+    }
+
+    /**
+     * 发送提示信息
+     *
+     * @param context     上下文
+     * @param stringResId 提示信息资源id
+     */
+    public static void showToast(@Nullable Context context, @StringRes int stringResId, boolean longDuration) {
         if (context == null) {
             return;
         }
-        Toast.makeText(context, stringResId, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, stringResId, longDuration ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
     }
 }

@@ -4,10 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.widget.Toast;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
+import com.mingyuechunqiu.agile.util.ToastUtils;
 
 /**
  * <pre>
@@ -25,14 +25,16 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (context == null || intent == null) {
+            return;
+        }
         if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
-            if (!NetworkUtils.checkNetState(context)) {
-                Toast.makeText(context, context.getString(R.string.agile_network_disconnected),
-                        Toast.LENGTH_SHORT).show();
+            if (!NetworkUtils.checkNetworkIsConnected()) {
+                ToastUtils.showToast(context, R.string.agile_network_disconnected);
                 return;
             }
             if (!isFirstNetConnected) {
-                Toast.makeText(context, R.string.agile_network_connected, Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(context, R.string.agile_network_connected);
             } else {
                 isFirstNetConnected = false;
             }

@@ -71,9 +71,13 @@ public class JumpActivity extends AppCompatActivity implements BaseFragment.Call
 //                .add(R.id.fl_agile_frame_container, mCurrentFg)
 //                .addToBackStack(null)
 //                .commitAllowingStateLoss();
-        FragmentUtils.showAndHideFragment(getSupportFragmentManager(), R.id.fl_agile_frame_container,
-                mSelectedFg, mCurrentFg, true, null, true,
-                R.anim.agile_slide_in_right, R.anim.agile_slide_out_left,
-                R.anim.agile_slide_in_left, R.anim.agile_slide_out_right);
+//        FragmentUtils.showAndHideFragment(getSupportFragmentManager(), R.id.fl_agile_frame_container,
+//                mSelectedFg, mCurrentFg, true, null, true,
+//                R.anim.agile_slide_in_right, R.anim.agile_slide_out_left,
+//                R.anim.agile_slide_in_left, R.anim.agile_slide_out_right);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fl_agile_frame_container, new MainFragment())
+                .commitAllowingStateLoss();
+//        startActivity(new Intent(this, MainActivity.class));
     }
 }

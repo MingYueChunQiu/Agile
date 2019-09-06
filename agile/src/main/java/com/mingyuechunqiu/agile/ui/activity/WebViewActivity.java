@@ -8,11 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -25,6 +20,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.presenter.BaseNetPresenter;
@@ -138,7 +139,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
         pbProgress = view.findViewById(R.id.pb_web);
         initWebView();
 
-        if (!NetworkUtils.checkNetState(this)) {
+        if (!NetworkUtils.checkNetworkIsConnected()) {
             showToast(R.string.agile_network_disconnected);
             return;
         }

@@ -7,10 +7,13 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.R;
+import com.mingyuechunqiu.agile.frame.Agile;
 
 import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_DISCONNECTED;
 import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_MOBILE;
@@ -23,26 +26,23 @@ import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NE
  *     e-mail : xiyujieit@163.com
  *     time   : 2017/12/27
  *     desc   : 操作网络的工具类
- *              公共方法：
- *                      1.checkNetState：检测手机网络状态连接
  *     version: 1.0
  * </pre>
  */
 public class NetworkUtils {
 
-    private static ConnectivityManager sConnMgr;//连接管理器
+    private static volatile ConnectivityManager sConnMgr;//连接管理器
 
     /**
      * 提供给外界调用的检测手机网络状态连接方法
      *
-     * @param context 获取系统连接管理器的上下文
      * @return 返回手机的网络连接检测结果
      */
-    public static boolean checkNetState(Context context) {
+    public static boolean checkNetworkIsConnected() {
         if (Build.VERSION.SDK_INT < 21) {
-            return checkNetStateWith21(context);
+            return checkNetStateWith21();
         }
-        return checkNetStateWith21OrNew(context);
+        return checkNetStateWith21OrNew();
     }
 
     /**
@@ -51,7 +51,7 @@ public class NetworkUtils {
      * @return 分为未连接、未知、WiFi、移动网络四种类型
      */
     public static int getNetworkType() {
-        if (!checkNetState(Agile.getAppContext())) {
+        if (!checkNetworkIsConnected()) {
             return NET_TYPE_DISCONNECTED;
         }
         NetworkInfo networkInfo = sConnMgr.getActiveNetworkInfo();
@@ -73,65 +73,8 @@ public class NetworkUtils {
      * @param context 获取系统连接管理器的上下文
      * @return 返回获取到的系统连接管理器
      */
-    public static ConnectivityManager getConnectivityManager(Context context) {
-        if (sConnMgr == null) {
-            synchronized (NetworkUtils.class) {
-                if (sConnMgr == null) {
-                    sConnMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                }
-            }
-        }
-        return sConnMgr;
-    }
-
-    /**
-     * 检测连接管理器实例是否存在，如果不存在则通过系统进行获取
-     *
-     * @param context 获取系统连接管理器的上下文
-     */
-    private static void checkConnMgr(Context context) {
-        if (sConnMgr == null) {
-            sConnMgr = getConnectivityManager(context);
-        }
-    }
-
-    /**
-     * 检测当前手机的网络连接状态（适用于Android21以下版本）
-     *
-     * @param context 获取系统连接管理器的上下文
-     * @return 返回手机的网络连接检测结果
-     */
-    private static boolean checkNetStateWith21(Context context) {
-        checkConnMgr(context);
-        NetworkInfo wifiInfo = sConnMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        boolean isWifiConnected = wifiInfo != null && wifiInfo.isConnected();
-        NetworkInfo mobileInfo = sConnMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        boolean isMobileConnected = mobileInfo != null && mobileInfo.isConnected();
-        return isWifiConnected || isMobileConnected;
-    }
-
-    /**
-     * 检测当前手机的网络连接状态（适用于Android21及以上版本）
-     *
-     * @param context 获取系统连接管理器的上下文
-     * @return 返回手机的网络连接检测结果
-     */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static boolean checkNetStateWith21OrNew(Context context) {
-        checkConnMgr(context);
-        Network[] networks = sConnMgr.getAllNetworks();
-        if (networks == null) {
-            return false;
-        }
-        for (Network network : networks) {
-            if (network != null) {
-                NetworkInfo networkInfo = sConnMgr.getNetworkInfo(network);
-                if (networkInfo != null && networkInfo.isConnected()) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public static ConnectivityManager getConnectivityManager(@NonNull Context context) {
+        return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
     /**
@@ -165,12 +108,9 @@ public class NetworkUtils {
      * @param listener       检测网络类型监听器
      * @param selectListener 流量连接选择监听器
      */
-    public static void checkNetworkType(Context context, int networkType,
-                                        OnCheckNetworkTypeListener listener,
-                                        final OnSelectConnectInMobileListener selectListener) {
-        if (listener == null) {
-            return;
-        }
+    public static void checkNetworkType(@Nullable Context context, int networkType,
+                                        @NonNull OnCheckNetworkTypeListener listener,
+                                        @Nullable final OnSelectConnectInMobileListener selectListener) {
         if (networkType == NET_TYPE_DISCONNECTED) {
             listener.onDisconnectNetwork();
         } else {
@@ -203,6 +143,53 @@ public class NetworkUtils {
      */
     public static boolean checkNetworkTypeIsMobile(int networkType) {
         return networkType == NET_TYPE_MOBILE;
+    }
+
+    /**
+     * 检测连接管理器实例是否存在，如果不存在则通过系统进行获取
+     */
+    private static void checkConnMgr() {
+        if (sConnMgr == null) {
+            synchronized (NetworkUtils.class) {
+                if (sConnMgr == null) {
+                    sConnMgr = getConnectivityManager(Agile.getAppContext());
+                }
+            }
+        }
+    }
+
+    /**
+     * 检测当前手机的网络连接状态（适用于Android21以下版本）
+     *
+     * @return 返回手机的网络连接检测结果
+     */
+    private static boolean checkNetStateWith21() {
+        checkConnMgr();
+        NetworkInfo wifiInfo = sConnMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        boolean isWifiConnected = wifiInfo != null && wifiInfo.isConnected();
+        NetworkInfo mobileInfo = sConnMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        boolean isMobileConnected = mobileInfo != null && mobileInfo.isConnected();
+        return isWifiConnected || isMobileConnected;
+    }
+
+    /**
+     * 检测当前手机的网络连接状态（适用于Android21及以上版本）
+     *
+     * @return 返回手机的网络连接检测结果
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private static boolean checkNetStateWith21OrNew() {
+        checkConnMgr();
+        Network[] networks = sConnMgr.getAllNetworks();
+        for (Network network : networks) {
+            if (network != null) {
+                NetworkInfo networkInfo = sConnMgr.getNetworkInfo(network);
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

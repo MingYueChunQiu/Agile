@@ -64,15 +64,14 @@ public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNet
     /**
      * 检测网络请求
      *
-     * @return 当界面被回收和网络中断时返回false，否则返回true
+     * @return 当网络连接中断时返回false，否则返回true
      */
     protected boolean judgeNetwork() {
-        if (!checkViewRefIsNull()) {
-            if (!NetworkUtils.checkNetState(mViewRef.get().getCurrentContext())) {
-                mViewRef.get().showToast(R.string.agile_network_disconnected);
-                return false;
-            }
+        if (NetworkUtils.checkNetworkIsConnected()) {
             return true;
+        }
+        if (!checkViewRefIsNull()) {
+            mViewRef.get().showToast(R.string.agile_network_disconnected);
         }
         return false;
     }

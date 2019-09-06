@@ -25,6 +25,9 @@ public class NetworkConnectedTypeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (intent == null) {
+            return;
+        }
         if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
             if (mListener == null) {
                 return;
