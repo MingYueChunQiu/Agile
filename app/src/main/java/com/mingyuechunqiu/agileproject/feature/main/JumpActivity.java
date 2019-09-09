@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -75,9 +76,9 @@ public class JumpActivity extends AppCompatActivity implements BaseFragment.Call
 //                mSelectedFg, mCurrentFg, true, null, true,
 //                R.anim.agile_slide_in_right, R.anim.agile_slide_out_left,
 //                R.anim.agile_slide_in_left, R.anim.agile_slide_out_right);
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_agile_frame_container, new MainFragment())
-                .commitAllowingStateLoss();
-//        startActivity(new Intent(this, MainActivity.class));
+//        getSupportFragmentManager().beginTransaction()
+//                .add(R.id.fl_agile_frame_container, new MainFragment())
+//                .commitAllowingStateLoss();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
