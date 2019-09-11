@@ -1,8 +1,10 @@
 package com.mingyuechunqiu.agile.frame;
 
-import com.mingyuechunqiu.agile.frame.engine.GlideImageEngine;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.mingyuechunqiu.agile.frame.data.remote.AgileNetworkConfig;
-import com.mingyuechunqiu.agile.framework.engine.IImageEngine;
+import com.mingyuechunqiu.agile.frame.engine.bitmap.IImageEngine;
 
 /**
  * <pre>
@@ -15,32 +17,33 @@ import com.mingyuechunqiu.agile.framework.engine.IImageEngine;
  */
 public class AgileFrameConfigure {
 
-    private AgileNetworkConfig networkConfig;//网络框架配置信息对象
-    private IImageEngine imageEngine;//图片显示引擎
+    private Builder mBuilder;
 
     public AgileFrameConfigure() {
-        //设置默认配置
-        networkConfig = new AgileNetworkConfig();
-        imageEngine = new GlideImageEngine();
+        this(null);
+    }
+
+    public AgileFrameConfigure(@Nullable Builder builder) {
+        mBuilder = builder;
+        if (mBuilder == null) {
+            mBuilder = new Builder();
+        }
     }
 
     public AgileNetworkConfig getNetworkConfig() {
-        return networkConfig;
+        return mBuilder.networkConfig;
     }
 
-    public void setNetworkConfig(AgileNetworkConfig networkConfig) {
-        this.networkConfig = networkConfig;
+    public void setNetworkConfig(@NonNull AgileNetworkConfig networkConfig) {
+        mBuilder.networkConfig = networkConfig;
     }
 
     public IImageEngine getImageEngine() {
-        return imageEngine;
+        return mBuilder.imageEngine;
     }
 
-    public void setImageEngine(IImageEngine imageEngine) {
-        if (this.imageEngine == imageEngine || imageEngine == null) {
-            return;
-        }
-        this.imageEngine = imageEngine;
+    public void setImageEngine(@NonNull IImageEngine imageEngine) {
+        mBuilder.imageEngine = imageEngine;
     }
 
     /**
@@ -48,31 +51,33 @@ public class AgileFrameConfigure {
      */
     public static class Builder {
 
-        private AgileFrameConfigure mConfigure;
+        private AgileNetworkConfig networkConfig;//网络框架配置信息对象
+        private IImageEngine imageEngine;//图片显示引擎
 
         public Builder() {
-            mConfigure = new AgileFrameConfigure();
+            //设置默认配置
+            networkConfig = new AgileNetworkConfig();
         }
 
         public AgileFrameConfigure build() {
-            return mConfigure;
+            return new AgileFrameConfigure(this);
         }
 
         public AgileNetworkConfig getNetworkConfig() {
-            return mConfigure.networkConfig;
+            return networkConfig;
         }
 
-        public Builder setNetworkConfig(AgileNetworkConfig networkConfig) {
-            mConfigure.setNetworkConfig(networkConfig);
+        public Builder setNetworkConfig(@NonNull AgileNetworkConfig networkConfig) {
+            this.networkConfig = networkConfig;
             return this;
         }
 
         public IImageEngine getImageEngine() {
-            return mConfigure.imageEngine;
+            return imageEngine;
         }
 
-        public Builder setImageEngine(IImageEngine imageEngine) {
-            mConfigure.setImageEngine(imageEngine);
+        public Builder setImageEngine(@NonNull IImageEngine imageEngine) {
+            this.imageEngine = imageEngine;
             return this;
         }
     }
