@@ -21,7 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 
-
+# 混肴
 # 指定代码的压缩级别 0 - 7(指定代码进行迭代优化的次数，在Android里面默认是5，这条指令也只有在可以优化时起作用。)
 -optimizationpasses 5
 # 混淆时不会产生形形色色的类名(混淆时不使用大小写混合类名)
