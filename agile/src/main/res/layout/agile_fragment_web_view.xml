@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <ProgressBar
-        android:id="@+id/pb_web"
+        android:id="@+id/pb_agile_web"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_2"
@@ -13,7 +13,7 @@
         android:progressDrawable="@drawable/agile_pb_web_layer_list" />
 
     <WebView
-        android:id="@+id/wv_web"
+        android:id="@+id/wv_agile_web"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

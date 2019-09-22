@@ -135,8 +135,8 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
             }
         }
         container.addView(view);
-        wvWeb = view.findViewById(R.id.wv_web);
-        pbProgress = view.findViewById(R.id.pb_web);
+        wvWeb = view.findViewById(R.id.wv_agile_web);
+        pbProgress = view.findViewById(R.id.pb_agile_web);
         initWebView();
 
         if (!NetworkUtils.checkNetworkIsConnected()) {
