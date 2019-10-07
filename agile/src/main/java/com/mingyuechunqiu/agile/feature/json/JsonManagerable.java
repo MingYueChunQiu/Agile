@@ -11,5 +11,5 @@ package com.mingyuechunqiu.agile.feature.json;
  *     version: 1.0
  * </pre>
  */
-public interface JsonHelperManagerable extends JsonHelperable {
+interface JsonManagerable extends JsonHelperable {
 }

@@ -3,7 +3,10 @@ package com.mingyuechunqiu.agile.util;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.media.Image;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
@@ -29,7 +32,7 @@ import java.nio.ByteBuffer;
  *     version: 1.0
  * </pre>
  */
-public class BitmapUtils {
+public final class BitmapUtils {
 
     /**
      * 将图片保存到本地文件
@@ -38,7 +41,7 @@ public class BitmapUtils {
      * @param file   图片存储文件
      * @return 如果成功进行保存返回true，否则返回false
      */
-    public static boolean saveBitmapToFile(Bitmap bitmap, File file) {
+    public static boolean saveBitmapToFile(@Nullable Bitmap bitmap, @Nullable File file) {
         if (bitmap == null || file == null) {
             return false;
         }
@@ -63,7 +66,7 @@ public class BitmapUtils {
      * @return 提取图片成功返回Bitmap，否则返回null
      */
     @Nullable
-    public static Bitmap getBitmapFromImage(Image image) {
+    public static Bitmap getBitmapFromImage(@Nullable Image image) {
         if (image == null) {
             return null;
         }
@@ -90,7 +93,7 @@ public class BitmapUtils {
      * @param waterMask 水印图片
      * @return 带水印的图片创建成功返回Bitmap，否则返回null
      */
-    public static Bitmap drawWaterMask(Bitmap src, Bitmap waterMask) {
+    public static Bitmap drawWaterMask(@Nullable Bitmap src, @Nullable Bitmap waterMask) {
         if (src == null || waterMask == null) {
             return null;
         }
@@ -113,11 +116,9 @@ public class BitmapUtils {
      * @param filePath  保存文件路径
      * @param listener  下载图片监听器
      */
-    public static void saveBitmapToLocal(String bitmapUrl, String filePath, OnDownloadBitmapListener listener) {
+    public static void saveBitmapToLocal(@Nullable String bitmapUrl, @Nullable String filePath, @NonNull OnDownloadBitmapListener listener) {
         if (TextUtils.isEmpty(bitmapUrl) || TextUtils.isEmpty(filePath)) {
-            if (listener != null) {
-                listener.onDownloadBitmapFailed("parameters not set");
-            }
+            listener.onDownloadBitmapFailed("parameters not set");
             return;
         }
         BufferedInputStream bis = null;
@@ -139,21 +140,15 @@ public class BitmapUtils {
                     bos.write(bytes, 0, length);
                 }
             }
-            if (listener != null) {
-                listener.onDownloadBitmapSuccess(file);
-            }
+            listener.onDownloadBitmapSuccess(file);
         } catch (MalformedURLException e) {
             e.printStackTrace();
             LogManagerProvider.d("downloadBitmap", e.getMessage());
-            if (listener != null) {
-                listener.onDownloadBitmapFailed(e.getMessage());
-            }
+            listener.onDownloadBitmapFailed(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
             LogManagerProvider.d("downloadBitmap", e.getMessage());
-            if (listener != null) {
-                listener.onDownloadBitmapFailed(e.getMessage());
-            }
+            listener.onDownloadBitmapFailed(e.getMessage());
         } finally {
             if (connection != null) {
                 connection.disconnect();

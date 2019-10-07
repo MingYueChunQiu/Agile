@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agile.util;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -23,7 +24,7 @@ import java.util.regex.Pattern;
  *     version: 1.0
  * </pre>
  */
-public class StringUtils {
+public final class StringUtils {
 
     /**
      * 对字符串进行MD5加密
@@ -31,7 +32,11 @@ public class StringUtils {
      * @param msg 需要加密的字符串
      * @return MD5值
      */
-    public static String encryMD5(String msg) {
+    @Nullable
+    public static String encryMD5(@Nullable String msg) {
+        if (TextUtils.isEmpty(msg)) {
+            return null;
+        }
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(msg.getBytes());
@@ -49,7 +54,8 @@ public class StringUtils {
      * @param bytes 需要转换的字节数组
      * @return 16进制字符串
      */
-    public static String bytesToHex(byte[] bytes) {
+    @Nullable
+    public static String bytesToHex(@Nullable byte[] bytes) {
         if (bytes == null || bytes.length <= 0) {
             return null;
         }
@@ -69,7 +75,10 @@ public class StringUtils {
      * @param s 需要判断的字符串
      * @return 判断结果
      */
-    public static boolean judgeIsNumeric(String s) {
+    public static boolean judgeIsNumeric(@Nullable String s) {
+        if (TextUtils.isEmpty(s)) {
+            return false;
+        }
         Pattern pattern = Pattern.compile("[0-9]*");
         return pattern.matcher(s).matches();
     }
@@ -80,7 +89,8 @@ public class StringUtils {
      * @param phoneNumber 需要进行安全设置的手机号码
      * @return 加密完成的字符串
      */
-    public static String securePhoneNumber(String phoneNumber) {
+    @Nullable
+    public static String securePhoneNumber(@Nullable String phoneNumber) {
         if (TextUtils.isEmpty(phoneNumber)) {
             return null;
         }
@@ -101,19 +111,18 @@ public class StringUtils {
      * @return 返回Span
      */
     @Nullable
-    public static SpannableStringBuilder createColorUrlSpan(final String source, final String urlText,
-                                                            final String url, int color,
-                                                            final OnClickUrlLinkListener listener) {
-        if (TextUtils.isEmpty(source) || urlText == null || !source.contains(urlText)) {
+    public static SpannableStringBuilder createColorUrlSpan(@Nullable final String source, @Nullable final String urlText,
+                                                            @Nullable final String url, int color,
+                                                            @NonNull final OnClickUrlLinkListener listener) {
+        if (TextUtils.isEmpty(source) || TextUtils.isEmpty(urlText) || !source.contains(urlText)
+                || TextUtils.isEmpty(url)) {
             return null;
         }
         SpannableStringBuilder ssb = new SpannableStringBuilder(source);
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                if (listener != null) {
-                    listener.onClickUrlLink(source, urlText, url);
-                }
+                listener.onClickUrlLink(source, urlText, url);
             }
         };
         int start = source.indexOf(urlText);
@@ -131,6 +140,6 @@ public class StringUtils {
      */
     public interface OnClickUrlLinkListener {
 
-        void onClickUrlLink(String source, String urlText, String url);
+        void onClickUrlLink(@NonNull String source, @NonNull String urlText, @NonNull String url);
     }
 }

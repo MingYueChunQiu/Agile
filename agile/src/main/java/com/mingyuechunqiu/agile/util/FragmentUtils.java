@@ -28,7 +28,7 @@ import static com.mingyuechunqiu.agile.util.FragmentUtils.TransactionTypeConstan
  *     version: 1.0
  * </pre>
  */
-public class FragmentUtils {
+public final class FragmentUtils {
 
     public static final int NO_ID = 0;//无效资源ID(-1会导致资源崩溃Unable to find resource ID #0xffffffff)
 

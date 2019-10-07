@@ -3,6 +3,8 @@ package com.mingyuechunqiu.agile.util;
 import android.app.Activity;
 import android.content.Intent;
 
+import androidx.annotation.Nullable;
+
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.service.NetworkStateService;
 
@@ -33,7 +35,7 @@ public class ExitApplicationManager {
      *
      * @param activity Activity
      */
-    public static void addActivity(Activity activity) {
+    public static void addActivity(@Nullable Activity activity) {
         if (activity == null) {
             return;
         }

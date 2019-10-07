@@ -3,6 +3,8 @@ package com.mingyuechunqiu.agile.util;
 import android.content.Context;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
 import java.util.Set;
 
 /**
@@ -14,86 +16,86 @@ import java.util.Set;
  *     version: 1.0
  * </pre>
  */
-public class SharedPreferencesUtils {
+public final class SharedPreferencesUtils {
 
-    public static boolean putBoolean(Context context, String name, String key, boolean value) {
+    public static boolean putBoolean(@Nullable Context context, @Nullable String name, @Nullable String key, boolean value) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return false;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().putBoolean(key, value).commit();
     }
 
-    public static boolean getBoolean(Context context, String name, String key, boolean defValue) {
+    public static boolean getBoolean(@Nullable Context context, @Nullable String name, @Nullable String key, boolean defValue) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return false;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).getBoolean(key, defValue);
     }
 
-    public static boolean putInt(Context context, String name, String key, int value) {
+    public static boolean putInt(@Nullable Context context, @Nullable String name, @Nullable String key, int value) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return false;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().putInt(key, value).commit();
     }
 
-    public static int getInt(Context context, String name, String key, int defValue) {
+    public static int getInt(@Nullable Context context, @Nullable String name, @Nullable String key, int defValue) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return -1;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).getInt(key, defValue);
     }
 
-    public static boolean putLong(Context context, String name, String key, long value) {
+    public static boolean putLong(@Nullable Context context, @Nullable String name, @Nullable String key, long value) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return false;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().putLong(key, value).commit();
     }
 
-    public static long getLong(Context context, String name, String key, long defValue) {
+    public static long getLong(@Nullable Context context, @Nullable String name, @Nullable String key, long defValue) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return -1;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).getLong(key, defValue);
     }
 
-    public static boolean putFloat(Context context, String name, String key, float value) {
+    public static boolean putFloat(@Nullable Context context, @Nullable String name, @Nullable String key, float value) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return false;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().putFloat(key, value).commit();
     }
 
-    public static float getFloat(Context context, String name, String key, float defValue) {
+    public static float getFloat(@Nullable Context context, @Nullable String name, @Nullable String key, float defValue) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return -1;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).getFloat(key, defValue);
     }
 
-    public static boolean putString(Context context, String name, String key, String value) {
+    public static boolean putString(@Nullable Context context, @Nullable String name, @Nullable String key, String value) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return false;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().putString(key, value).commit();
     }
 
-    public static String getString(Context context, String name, String key, String defValue) {
+    public static String getString(@Nullable Context context, @Nullable String name, @Nullable String key, String defValue) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return null;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).getString(key, defValue);
     }
 
-    public static boolean putStringSet(Context context, String name, String key, Set<String> value) {
+    public static boolean putStringSet(@Nullable Context context, @Nullable String name, @Nullable String key, Set<String> value) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return false;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().putStringSet(key, value).commit();
     }
 
-    public static Set<String> getStringSet(Context context, String name, String key, Set<String> defValue) {
+    public static Set<String> getStringSet(@Nullable Context context, @Nullable String name, @Nullable String key, Set<String> defValue) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return null;
         }
@@ -107,7 +109,7 @@ public class SharedPreferencesUtils {
      * @param name    配置名称
      * @return 是否清楚成功
      */
-    public static boolean clearAll(Context context, String name) {
+    public static boolean clearAll(@Nullable Context context, @Nullable String name) {
         if (context == null || TextUtils.isEmpty(name)) {
             return false;
         }

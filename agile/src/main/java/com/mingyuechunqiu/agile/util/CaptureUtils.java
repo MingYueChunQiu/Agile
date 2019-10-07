@@ -15,7 +15,9 @@ import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.SystemClock;
+
 import androidx.annotation.Nullable;
+
 import android.util.DisplayMetrics;
 import android.view.Surface;
 
@@ -30,7 +32,7 @@ import java.nio.ByteBuffer;
  *     version: 1.0
  * </pre>
  */
-public class CaptureUtils {
+public final class CaptureUtils {
 
     /**
      * 开始屏幕捕捉
@@ -39,12 +41,15 @@ public class CaptureUtils {
      * @param requestCode 屏幕捕捉请求码
      * @return 是否成功请求屏幕捕捉
      */
-    public static boolean startCapture(Activity activity, int requestCode) {
+    public static boolean startCapture(@Nullable Activity activity, int requestCode) {
         if (activity == null) {
             return false;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             MediaProjectionManager manager = (MediaProjectionManager) activity.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+            if (manager == null) {
+                return false;
+            }
             activity.startActivityForResult(manager.createScreenCaptureIntent(), requestCode);
             return true;
         }
@@ -61,9 +66,10 @@ public class CaptureUtils {
      * @return 截屏图片
      */
     @Nullable
-    public static Bitmap getCaptureImage(Context context, MediaProjectionManager manager,
-                                         int resultCode, Intent data) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+    public static Bitmap getCaptureImage(@Nullable Context context, @Nullable MediaProjectionManager manager,
+                                         int resultCode, @Nullable Intent data) {
+        if (context == null || manager == null || data == null ||
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return null;
         }
         MediaProjection mediaProjection = manager.getMediaProjection(resultCode, data);
@@ -94,8 +100,10 @@ public class CaptureUtils {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             MediaFormat mediaFormat = MediaFormat.createAudioFormat("video/acc", width, height);
-            mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT,
-                    MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT,
+                        MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+            }
             mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, 60000);
             mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, 30);
             mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 10);
@@ -107,12 +115,12 @@ public class CaptureUtils {
     /**
      * 获取屏幕捕捉的画面类
      *
-     * @param mediaCodec
-     * @param format
-     * @return
+     * @param mediaCodec 多媒体编码参数
+     * @param format     多媒体格式信息
+     * @return 返回捕捉画面
      */
     @Nullable
-    public static Surface getVideoSurface(MediaCodec mediaCodec, MediaFormat format) {
+    public static Surface getVideoSurface(@Nullable MediaCodec mediaCodec, @Nullable MediaFormat format) {
         if (mediaCodec == null || format == null) {
             return null;
         }
@@ -129,26 +137,28 @@ public class CaptureUtils {
      * 对各帧上视频进行编码
      *
      * @param index      帧索引
-     * @param mediaCodec
-     * @param bufferInfo
+     * @param mediaCodec 多媒体编码参数
+     * @param bufferInfo 缓冲信息
      * @return 返回缓冲字节
      */
     @Nullable
-    public static ByteBuffer encodeToVideoTrace(int index, MediaCodec mediaCodec,
-                                                MediaCodec.BufferInfo bufferInfo) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ByteBuffer encodedData = mediaCodec.getOutputBuffer(index);
-            if ((bufferInfo.flags & MediaCodec.BUFFER_FLAG_CODEC_CONFIG) != 0) {
-                bufferInfo.size = 0;
-            }
-            if (bufferInfo.size == 0) {
-                encodedData = null;
-            }
-            if (encodedData != null) {
-                encodedData.position(bufferInfo.offset);
-                encodedData.limit(bufferInfo.offset + bufferInfo.size);
-                return encodedData;
-            }
+    public static ByteBuffer encodeToVideoTrace(int index, @Nullable MediaCodec mediaCodec,
+                                                @Nullable MediaCodec.BufferInfo bufferInfo) {
+        if (mediaCodec == null || bufferInfo == null ||
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return null;
+        }
+        ByteBuffer encodedData = mediaCodec.getOutputBuffer(index);
+        if ((bufferInfo.flags & MediaCodec.BUFFER_FLAG_CODEC_CONFIG) != 0) {
+            bufferInfo.size = 0;
+        }
+        if (bufferInfo.size == 0) {
+            encodedData = null;
+        }
+        if (encodedData != null) {
+            encodedData.position(bufferInfo.offset);
+            encodedData.limit(bufferInfo.offset + bufferInfo.size);
+            return encodedData;
         }
         return null;
     }

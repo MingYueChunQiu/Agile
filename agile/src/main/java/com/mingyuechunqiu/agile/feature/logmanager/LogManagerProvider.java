@@ -10,7 +10,7 @@ package com.mingyuechunqiu.agile.feature.logmanager;
  *     version: 1.0
  * </pre>
  */
-public class LogManagerProvider {
+public final class LogManagerProvider {
 
     //日志存储所在文件夹
     public static final String DIRECTORY_LOG_NAME = "Log";
@@ -23,34 +23,37 @@ public class LogManagerProvider {
     public static final int ERROR = 0;
     public static final int HIDDEN = -1;//隐藏日志级别
 
-    private static volatile LogManagerable sLogManagerable;
+    private static volatile LogManagerable sInstance;
+
+    private LogManagerProvider() {
+    }
 
     public static void setLogManagerable(LogManagerable logManagerable) {
-        sLogManagerable = logManagerable;
+        sInstance = logManagerable;
     }
 
     public static LogManagerable getLogManagerable() {
-        return sLogManagerable;
+        return sInstance;
     }
 
     public static int getCurrentLogLevel() {
         checkOrCreateLogManager();
-        return sLogManagerable.getCurrentLogLevel();
+        return sInstance.getCurrentLogLevel();
     }
 
     public static void setCurrentLogLevel(int currentLogLevel) {
         checkOrCreateLogManager();
-        sLogManagerable.setCurrentLogLevel(currentLogLevel);
+        sInstance.setCurrentLogLevel(currentLogLevel);
     }
 
     public static synchronized void showLog(boolean showLog) {
         checkOrCreateLogManager();
-        sLogManagerable.showLog(showLog);
+        sInstance.showLog(showLog);
     }
 
     public static void v(String tag, String msg) {
         checkOrCreateLogManager();
-        sLogManagerable.v(tag, msg);
+        sInstance.v(tag, msg);
     }
 
     public static void saveVerboseToLocal(String tag, String msg, String title, String filePath) {
@@ -59,12 +62,12 @@ public class LogManagerProvider {
 
     public static void saveVerboseToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
         checkOrCreateLogManager();
-        sLogManagerable.saveVerboseToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+        sInstance.saveVerboseToLocal(tag, msg, title, filePath, ignoreLogSwitch);
     }
 
     public static void d(String tag, String msg) {
         checkOrCreateLogManager();
-        sLogManagerable.d(tag, msg);
+        sInstance.d(tag, msg);
     }
 
     public static void saveDebugToLocal(String tag, String msg, String title, String filePath) {
@@ -73,12 +76,12 @@ public class LogManagerProvider {
 
     public static void saveDebugToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
         checkOrCreateLogManager();
-        sLogManagerable.saveDebugToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+        sInstance.saveDebugToLocal(tag, msg, title, filePath, ignoreLogSwitch);
     }
 
     public static void i(String tag, String msg) {
         checkOrCreateLogManager();
-        sLogManagerable.i(tag, msg);
+        sInstance.i(tag, msg);
     }
 
     public static void saveInfoToLocal(String tag, String msg, String title, String filePath) {
@@ -87,12 +90,12 @@ public class LogManagerProvider {
 
     public static void saveInfoToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
         checkOrCreateLogManager();
-        sLogManagerable.saveInfoToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+        sInstance.saveInfoToLocal(tag, msg, title, filePath, ignoreLogSwitch);
     }
 
     public static void w(String tag, String msg) {
         checkOrCreateLogManager();
-        sLogManagerable.w(tag, msg);
+        sInstance.w(tag, msg);
     }
 
     public static void saveWarnToLocal(String tag, String msg, String title, String filePath) {
@@ -101,12 +104,12 @@ public class LogManagerProvider {
 
     public static void saveWarnToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
         checkOrCreateLogManager();
-        sLogManagerable.saveWarnToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+        sInstance.saveWarnToLocal(tag, msg, title, filePath, ignoreLogSwitch);
     }
 
     public static void e(String tag, String msg) {
         checkOrCreateLogManager();
-        sLogManagerable.e(tag, msg);
+        sInstance.e(tag, msg);
     }
 
     public static void saveErrorToLocal(String tag, String msg, String title, String filePath) {
@@ -115,17 +118,17 @@ public class LogManagerProvider {
 
     public static void saveErrorToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
         checkOrCreateLogManager();
-        sLogManagerable.saveErrorToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+        sInstance.saveErrorToLocal(tag, msg, title, filePath, ignoreLogSwitch);
     }
 
     /**
      * 检查或者创建日志管理实例
      */
     private static void checkOrCreateLogManager() {
-        if (sLogManagerable == null) {
+        if (sInstance == null) {
             synchronized (LogManagerProvider.class) {
-                if (sLogManagerable == null) {
-                    sLogManagerable = new LogManager();
+                if (sInstance == null) {
+                    sInstance = new LogManager();
                 }
             }
         }

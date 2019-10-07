@@ -4,7 +4,10 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 
 import com.mingyuechunqiu.agile.frame.Agile;
@@ -20,7 +23,7 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public class AppUtils {
+public final class AppUtils {
 
     /**
      * 检测应用是否在前台显示
@@ -52,7 +55,7 @@ public class AppUtils {
      * @param className Activity的类名
      * @return 如果在前台显示返回true，否则返回false
      */
-    public static boolean checkActivityIsForeground(Context context, String className) {
+    public static boolean checkActivityIsForeground(@Nullable Context context, @Nullable String className) {
         if (context == null || TextUtils.isEmpty(className)) {
             return false;
         }
@@ -64,7 +67,10 @@ public class AppUtils {
         if (list == null || list.size() == 0 || list.get(0) == null) {
             return false;
         }
-        ComponentName cpn = list.get(0).topActivity;
+        ComponentName cpn = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            cpn = list.get(0).topActivity;
+        }
         return cpn != null && className.equals(cpn.getClassName());
     }
 

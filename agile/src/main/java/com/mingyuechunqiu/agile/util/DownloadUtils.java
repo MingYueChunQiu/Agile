@@ -23,7 +23,7 @@ import java.io.File;
  *     version: 1.0
  * </pre>
  */
-public class DownloadUtils {
+public final class DownloadUtils {
 
     public static final int DOWNLOAD_ERROR = -1;//下载请求失败
 
@@ -38,7 +38,7 @@ public class DownloadUtils {
      * @param name    文件存储名称
      * @return 返回下载文件id
      */
-    public static long requestDownload(DownloadManager manager, String url, String name) {
+    public static long requestDownload(@Nullable DownloadManager manager, @Nullable String url, @Nullable String name) {
         if (manager == null || TextUtils.isEmpty(url)) {
             return DOWNLOAD_ERROR;
         }
@@ -79,7 +79,7 @@ public class DownloadUtils {
      * @param id      下载文件id
      * @return 如果解析指针成功，则返回解析对象，否则返回null
      */
-    public static DownloadCursorBean queryDownload(DownloadManager manager, long id) {
+    public static DownloadCursorBean queryDownload(@Nullable DownloadManager manager, long id) {
         if (manager == null || id == DOWNLOAD_ERROR) {
             return null;
         }
@@ -105,7 +105,7 @@ public class DownloadUtils {
      * @param bean 存储指针解析的对象
      * @return 返回百分比进度
      */
-    public static int getProgress(DownloadCursorBean bean) {
+    public static int getProgress(@Nullable DownloadCursorBean bean) {
         if (bean == null) {
             return DOWNLOAD_ERROR;
         }
@@ -126,7 +126,7 @@ public class DownloadUtils {
      * @param id      下载文件id
      * @return 返回百分比进度
      */
-    public static int getProgress(DownloadManager manager, long id) {
+    public static int getProgress(@Nullable DownloadManager manager, long id) {
         return getProgress(queryDownload(manager, id));
     }
 
@@ -150,7 +150,7 @@ public class DownloadUtils {
      * @param file 存储目的文件的父文件
      * @return 如果删除成功返回true，否则返回false
      */
-    private static boolean deleteResidualOldFile(File file) {
+    private static boolean deleteResidualOldFile(@Nullable File file) {
         if (file != null && file.exists() && !file.delete()) {
             ToastUtils.showToast("删除残留旧版本apk失败！");
             return false;

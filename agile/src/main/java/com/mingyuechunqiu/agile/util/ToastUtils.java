@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.util;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,14 +18,14 @@ import com.mingyuechunqiu.agile.frame.Agile;
  *     version: 1.0
  * </pre>
  */
-public class ToastUtils {
+public final class ToastUtils {
 
     /**
      * 使用应用的全局context发送toast
      *
      * @param hint 提示信息
      */
-    public static void showToast(String hint) {
+    public static void showToast(@Nullable String hint) {
         showToast(Agile.getAppContext(), hint);
     }
 
@@ -34,7 +35,7 @@ public class ToastUtils {
      * @param context 上下文
      * @param hint    提示信息
      */
-    public static void showToast(@Nullable Context context, String hint) {
+    public static void showToast(@Nullable Context context, @Nullable String hint) {
         showToast(context, hint, false);
     }
 
@@ -43,8 +44,8 @@ public class ToastUtils {
      * @param hint         提示信息
      * @param longDuration 提示信息持续时间长短，true表示长时间，false表示短时间
      */
-    public static void showToast(@Nullable Context context, String hint, boolean longDuration) {
-        if (context == null) {
+    public static void showToast(@Nullable Context context, @Nullable String hint, boolean longDuration) {
+        if (context == null || TextUtils.isEmpty(hint)) {
             return;
         }
         Toast.makeText(context, hint, longDuration ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();

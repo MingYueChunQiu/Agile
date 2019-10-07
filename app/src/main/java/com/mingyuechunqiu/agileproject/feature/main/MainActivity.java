@@ -165,7 +165,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         actvUrl.setText(StringUtils.createColorUrlSpan("我已阅读并同意《云海螺用户注册协议》",
                 "《云海螺用户注册协议》", "http://www.ehailuo.com", Color.RED, new StringUtils.OnClickUrlLinkListener() {
                     @Override
-                    public void onClickUrlLink(String source, String urlText, String url) {
+                    public void onClickUrlLink(@NonNull String source, @NonNull String urlText, @NonNull String url) {
                         showToast("点击了链接" + url);
                     }
                 }));
@@ -231,7 +231,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                 "《云海螺用户注册协议》", "http://www.ehailuo.com",
                 v.getResources().getColor(android.R.color.holo_red_dark), new StringUtils.OnClickUrlLinkListener() {
                     @Override
-                    public void onClickUrlLink(String s, String s1, String s2) {
+                    public void onClickUrlLink(@NonNull String s, @NonNull String s1, @NonNull String s2) {
                         LogManagerProvider.d("放大", s2 + " " + (ref.get() == null));
                         if (ref.get() != null) {
                             Intent intent = new Intent(ref.get(), WebViewActivity.class);

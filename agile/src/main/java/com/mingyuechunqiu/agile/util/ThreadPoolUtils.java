@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agile.util;
 
+import androidx.annotation.Nullable;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -9,11 +11,11 @@ import java.util.concurrent.Executors;
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/4/25
- *     desc   :
+ *     desc   : 线程池工具类
  *     version: 1.0
  * </pre>
  */
-public class ThreadPoolUtils {
+public final class ThreadPoolUtils {
 
     private static volatile ExecutorService sExecutorService;
 
@@ -22,11 +24,14 @@ public class ThreadPoolUtils {
      *
      * @param runnable 任务执行体
      */
-    public static void executeAction(Runnable runnable) {
+    public static void executeAction(@Nullable Runnable runnable) {
+        if (runnable == null) {
+            return;
+        }
         if (sExecutorService != null && sExecutorService.isShutdown()) {
             sExecutorService = null;
         }
-        getCachedThreadPools();
+        checkOrCreateCacheThreadPool();
         sExecutorService.submit(runnable);
     }
 
@@ -48,11 +53,9 @@ public class ThreadPoolUtils {
     }
 
     /**
-     * 创建缓存线程池
-     *
-     * @return 返回调度器
+     * 检查或创建缓存线程池
      */
-    private static ExecutorService getCachedThreadPools() {
+    private static void checkOrCreateCacheThreadPool() {
         if (sExecutorService == null) {
             synchronized (ThreadPoolUtils.class) {
                 if (sExecutorService == null) {
@@ -60,6 +63,5 @@ public class ThreadPoolUtils {
                 }
             }
         }
-        return sExecutorService;
     }
 }

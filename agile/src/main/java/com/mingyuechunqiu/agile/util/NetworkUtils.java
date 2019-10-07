@@ -29,7 +29,7 @@ import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NE
  *     version: 1.0
  * </pre>
  */
-public class NetworkUtils {
+public final class NetworkUtils {
 
     private static volatile ConnectivityManager sConnMgr;//连接管理器
 
@@ -83,7 +83,7 @@ public class NetworkUtils {
      * @param context  对话框所处上下文
      * @param listener 检测网络类型回调接口
      */
-    public static void checkNetworkType(Context context, OnCheckNetworkTypeListener listener) {
+    public static void checkNetworkType(@Nullable Context context, @NonNull OnCheckNetworkTypeListener listener) {
         checkNetworkType(context, listener, null);
     }
 
@@ -94,9 +94,9 @@ public class NetworkUtils {
      * @param typeListener   检测网络类型监听器
      * @param selectListener 流量连接选择监听器
      */
-    public static void checkNetworkType(Context context,
-                                        final OnCheckNetworkTypeListener typeListener,
-                                        OnSelectConnectInMobileListener selectListener) {
+    public static void checkNetworkType(@Nullable Context context,
+                                        @NonNull OnCheckNetworkTypeListener typeListener,
+                                        @Nullable OnSelectConnectInMobileListener selectListener) {
         checkNetworkType(context, getNetworkType(), typeListener, selectListener);
     }
 

@@ -17,7 +17,7 @@ import com.mingyuechunqiu.agile.feature.loading.function.LoadingDialogFragmentab
  *     version: 1.0
  * </pre>
  */
-public class LoadingDfgProvideFactory {
+public final class LoadingDfgProvideFactory {
 
     /**
      * 创建加载Fragment提供者实例

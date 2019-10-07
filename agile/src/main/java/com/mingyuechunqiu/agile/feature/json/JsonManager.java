@@ -18,11 +18,11 @@ import java.util.Map;
  *     version: 1.0
  * </pre>
  */
-class JsonHelperManager implements JsonHelperManagerable {
+class JsonManager implements JsonManagerable {
 
     private JsonHelperable mHelper;
 
-    JsonHelperManager(JsonHelperable helper) {
+    JsonManager(JsonHelperable helper) {
         mHelper = helper;
         if (mHelper == null) {
             mHelper = new GsonHelper();

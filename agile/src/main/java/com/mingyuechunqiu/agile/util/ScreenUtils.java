@@ -3,7 +3,10 @@ package com.mingyuechunqiu.agile.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +23,7 @@ import android.widget.TextView;
  * </pre>
  */
 
-public class ScreenUtils {
+public final class ScreenUtils {
 
     /**
      * 获取item平均宽度
@@ -76,7 +79,7 @@ public class ScreenUtils {
      * @param right        右边距
      * @param bottom       下边距
      */
-    public static void setMargins(ViewGroup.MarginLayoutParams layoutParams, Resources resources,
+    public static void setMargins(@Nullable ViewGroup.MarginLayoutParams layoutParams, @Nullable Resources resources,
                                   int left, int top, int right, int bottom) {
         if (layoutParams == null || resources == null) {
             return;
@@ -122,7 +125,7 @@ public class ScreenUtils {
      *
      * @param activity 软键盘所在界面
      */
-    public static void hideFocusedSoftInput(Activity activity) {
+    public static void hideFocusedSoftInput(@Nullable Activity activity) {
         if (activity == null) {
             return;
         }

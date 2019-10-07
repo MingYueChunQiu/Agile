@@ -1,7 +1,9 @@
 package com.mingyuechunqiu.agile.feature.playermanager.video.player;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
+
 import android.view.ViewGroup;
 
 import com.mingyuechunqiu.agile.feature.playermanager.video.VideoPlayerOption;
@@ -17,7 +19,10 @@ import com.mingyuechunqiu.agile.feature.playermanager.video.ui.VideoContainer;
  *     version: 1.0
  * </pre>
  */
-public class VideoPlayerManagerFactory {
+public final class VideoPlayerManagerFactory {
+
+    private VideoPlayerManagerFactory() {
+    }
 
     /**
      * 使用默认的布局和视频播放类来配置管理器

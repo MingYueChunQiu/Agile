@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.util;
 
 import android.graphics.PointF;
+
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 
@@ -17,7 +18,7 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public class BezierUtils {
+public final class BezierUtils {
 
     /**
      * 计算贝塞尔曲线点

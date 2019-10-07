@@ -19,7 +19,7 @@ import java.util.Locale;
  *     version: 1.0
  * </pre>
  */
-public class CalendarUtils {
+public final class CalendarUtils {
 
     //一天的毫秒数
     public static final long DAY_MILLISECOND = 24 * 60 * 60 * 1000L;
@@ -300,10 +300,7 @@ public class CalendarUtils {
      * @return 是则返回true，否则返回false
      */
     private static boolean checkIsSecondTimestamp(String timestamp) {
-        if (TextUtils.isEmpty(timestamp) || timestamp.length() != 10) {
-            return false;
-        }
-        return true;
+        return !TextUtils.isEmpty(timestamp) && timestamp.length() == 10;
     }
 
     /**
@@ -313,10 +310,7 @@ public class CalendarUtils {
      * @return 如果符合则返回true，否则返回false
      */
     private static boolean checkIsMilliseconds(long millisecond) {
-        if (millisecond < 10 * 12) {
-            return false;
-        }
-        return true;
+        return millisecond >= 10 * 12;
     }
 
     /**
@@ -324,7 +318,7 @@ public class CalendarUtils {
      *
      * @param calendar 需要重置的日历
      */
-    private static void resetTime(Calendar calendar) {
+    private static void resetTime(@NonNull Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);

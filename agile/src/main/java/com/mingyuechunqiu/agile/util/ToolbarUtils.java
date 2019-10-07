@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -19,7 +20,7 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
  *     version: 1.0
  * </pre>
  */
-public class ToolbarUtils {
+public final class ToolbarUtils {
 
     /**
      * 初始化活动条
@@ -28,7 +29,7 @@ public class ToolbarUtils {
      * @param actionBar   活动条
      * @param toolbarBean 工具条信息对象
      */
-    public static void initToolbar(Toolbar toolbar, ActionBar actionBar, ToolbarBean toolbarBean) {
+    public static void initToolbar(@Nullable Toolbar toolbar, @Nullable ActionBar actionBar, @Nullable ToolbarBean toolbarBean) {
         if (toolbar == null || toolbarBean == null) {
             return;
         }

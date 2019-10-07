@@ -8,11 +8,16 @@ import androidx.annotation.NonNull;
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/2/21
- *     desc   : Json处理帮助类管理器工厂
+ *     desc   : Json管理器提供类
  *     version: 1.0
  * </pre>
  */
-public class JsonHelperManagerFactory {
+public final class JsonManagerProvider {
+
+    private static volatile JsonManagerable sInstance;
+
+    private JsonManagerProvider() {
+    }
 
     /**
      * 获取Json帮助类管理器实例（默认使用Gson处理Json）
@@ -20,7 +25,7 @@ public class JsonHelperManagerFactory {
      * @return 返回Json帮助类管理器实例
      */
     @NonNull
-    public static JsonHelperManagerable getInstance() {
+    public static JsonManagerable getInstance() {
         return getInstance(new GsonHelper());
     }
 
@@ -31,8 +36,14 @@ public class JsonHelperManagerFactory {
      * @return 返回Json帮助类管理器实例
      */
     @NonNull
-    public static JsonHelperManagerable getInstance(JsonHelperable helper) {
-        return new JsonHelperManager(helper);
+    public static JsonManagerable getInstance(@NonNull JsonHelperable helper) {
+        if (sInstance == null) {
+            synchronized (JsonManagerProvider.class) {
+                if (sInstance == null) {
+                    sInstance = new JsonManager(helper);
+                }
+            }
+        }
+        return sInstance;
     }
-
 }
