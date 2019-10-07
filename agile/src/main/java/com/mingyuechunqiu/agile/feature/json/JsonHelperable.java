@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.feature.json;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.gson.JsonArray;
 
@@ -25,7 +26,8 @@ public interface JsonHelperable {
      * @param o java对象
      * @return 如果转换成功返回字符串，否则返回null
      */
-    String getJsonString(Object o);
+    @Nullable
+    String getJsonString(@Nullable Object o);
 
     /**
      * 根据json字符串获取json对象
@@ -35,7 +37,8 @@ public interface JsonHelperable {
      * @param <T>  json对象泛型约束
      * @return 返回json对象
      */
-    <T> T getJsonObject(String json, @NonNull Class<T> c);
+    @Nullable
+    <T> T getJsonObject(@Nullable String json, @NonNull Class<T> c);
 
     /**
      * 将字符串写入文件
@@ -43,7 +46,7 @@ public interface JsonHelperable {
      * @param json     Json字符串
      * @param filePath 文件路径
      */
-    void writeJsonStringToFile(String json, String filePath);
+    void writeJsonStringToFile(@Nullable String json, @Nullable String filePath);
 
     /**
      * 从文件中读取json
@@ -53,7 +56,8 @@ public interface JsonHelperable {
      * @param <T>      json对象泛型约束
      * @return 读取转换成功返回json对象，否则返回null
      */
-    <T> T readJsonFromFile(String filePath, @NonNull Class<T> c);
+    @Nullable
+    <T> T readJsonFromFile(@Nullable String filePath, @NonNull Class<T> c);
 
     /**
      * 从文件中读取json字符串
@@ -63,7 +67,8 @@ public interface JsonHelperable {
      * @param <T>      json对象类型
      * @return 转换成功返回json对象，否则返回null
      */
-    <T> List<T> readListFromFile(String fileName, @NonNull Class<T> c);
+    @Nullable
+    <T> List<T> readListFromFile(@Nullable String fileName, @NonNull Class<T> c);
 
     /**
      * 根据Json字符串获取列表
@@ -73,7 +78,8 @@ public interface JsonHelperable {
      * @param <T>  列表元素泛型类型
      * @return 如果转换成功返回List对象，否则返回null
      */
-    <T> List<T> getListFromJson(String json, @NonNull Class<T> c);
+    @Nullable
+    <T> List<T> getListFromJson(@Nullable String json, @NonNull Class<T> c);
 
     /**
      * 将json字符串转换成list集合
@@ -83,6 +89,7 @@ public interface JsonHelperable {
      * @param <T>       值的泛型类型
      * @return 返回list集合
      */
+    @Nullable
     <T> List<T> getListFromJson(@NonNull JsonArray jsonArray, @NonNull Class<T> c);
 
     /**
@@ -93,5 +100,6 @@ public interface JsonHelperable {
      * @param <T>  值的泛型类型
      * @return 返回map集合
      */
-    <T> Map<String, Object> getMapFromJson(String json, @NonNull Class<T> c);
+    @Nullable
+    <T> Map<String, Object> getMapFromJson(@Nullable String json, @NonNull Class<T> c);
 }

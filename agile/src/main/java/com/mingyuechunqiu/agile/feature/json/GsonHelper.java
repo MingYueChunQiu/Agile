@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agile.feature.json;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -40,19 +41,26 @@ class GsonHelper implements JsonHelperable {
 
     @Nullable
     @Override
-    public String getJsonString(Object o) {
+    public String getJsonString(@Nullable Object o) {
+        if (o == null) {
+            return null;
+        }
         checkOrCreateGson();
-        return o == null ? null : mGson.toJson(o);
+        return mGson.toJson(o);
     }
 
+    @Nullable
     @Override
-    public <T> T getJsonObject(String json, @NonNull Class<T> c) {
+    public <T> T getJsonObject(@Nullable String json, @NonNull Class<T> c) {
+        if (TextUtils.isEmpty(json)) {
+            return null;
+        }
         checkOrCreateGson();
         return mGson.fromJson(json, c);
     }
 
     @Override
-    public void writeJsonStringToFile(String json, String filePath) {
+    public void writeJsonStringToFile(@Nullable String json, @Nullable String filePath) {
         if (TextUtils.isEmpty(json) || TextUtils.isEmpty(filePath) || !IOUtils.checkIsFileOrCreate(filePath)) {
             return;
         }
@@ -69,7 +77,7 @@ class GsonHelper implements JsonHelperable {
 
     @Nullable
     @Override
-    public <T> T readJsonFromFile(String filePath, @NonNull Class<T> c) {
+    public <T> T readJsonFromFile(@Nullable String filePath, @NonNull Class<T> c) {
         if (TextUtils.isEmpty(filePath)) {
             return null;
         }
@@ -94,7 +102,7 @@ class GsonHelper implements JsonHelperable {
 
     @Nullable
     @Override
-    public <T> List<T> readListFromFile(String fileName, @NonNull Class<T> c) {
+    public <T> List<T> readListFromFile(@Nullable String fileName, @NonNull Class<T> c) {
         if (TextUtils.isEmpty(fileName)) {
             return null;
         }
@@ -121,8 +129,9 @@ class GsonHelper implements JsonHelperable {
         return null;
     }
 
+    @Nullable
     @Override
-    public <T> List<T> getListFromJson(String json, @NonNull Class<T> c) {
+    public <T> List<T> getListFromJson(@Nullable String json, @NonNull Class<T> c) {
         if (TextUtils.isEmpty(json)) {
             return null;
         }
@@ -133,6 +142,7 @@ class GsonHelper implements JsonHelperable {
         return null;
     }
 
+    @Nullable
     @Override
     public <T> List<T> getListFromJson(@NonNull JsonArray jsonArray, @NonNull Class<T> c) {
         List<T> list = new ArrayList<>();
@@ -143,8 +153,9 @@ class GsonHelper implements JsonHelperable {
         return list;
     }
 
+    @Nullable
     @Override
-    public <T> Map<String, Object> getMapFromJson(String json, @NonNull Class<T> c) {
+    public <T> Map<String, Object> getMapFromJson(@Nullable String json, @NonNull Class<T> c) {
         if (TextUtils.isEmpty(json)) {
             return null;
         }

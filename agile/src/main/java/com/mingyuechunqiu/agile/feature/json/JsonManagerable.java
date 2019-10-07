@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agile.feature.json;
 
+import androidx.annotation.NonNull;
+
 /**
  * <pre>
  *     author : xyj
@@ -12,4 +14,6 @@ package com.mingyuechunqiu.agile.feature.json;
  * </pre>
  */
 interface JsonManagerable extends JsonHelperable {
+
+    void setJsonHelper(@NonNull JsonHelperable helper);
 }
