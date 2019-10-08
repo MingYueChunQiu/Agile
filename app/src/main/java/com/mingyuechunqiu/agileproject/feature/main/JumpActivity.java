@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.mingyuechunqiu.agile.feature.json.JsonManagerProvider;
 import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agile.util.FragmentUtils;
 import com.mingyuechunqiu.agileproject.R;

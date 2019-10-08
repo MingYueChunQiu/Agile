@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
  *     version: 1.0
  * </pre>
  */
-interface JsonManagerable extends JsonHelperable {
+public interface JsonManagerable extends JsonHelperable {
 
     void setJsonHelper(@NonNull JsonHelperable helper);
 }
