@@ -49,7 +49,7 @@ public final class ToolbarUtils {
             toolbar.setNavigationOnClickListener(toolbarBean.getOnIconClickListener());
         }
         //判断是否显示toolbar自身的标题
-        boolean isHasCustomTitle = true;
+        boolean isHasCustomTitle = false;
         if (!TextUtils.isEmpty(toolbarBean.getTitle())) {
             //因为在onCreate()中修改title的值，都会被重置成android:label的值
             toolbar.setTitle(toolbarBean.getTitle());
@@ -62,7 +62,7 @@ public final class ToolbarUtils {
             } else {
                 toolbar.setTitleTextAppearance(toolbar.getContext(), toolbarBean.getTitleTextAppearance());
             }
-            isHasCustomTitle = false;
+            isHasCustomTitle = true;
         }
         if (!TextUtils.isEmpty(toolbarBean.getSubTitle())) {
             toolbar.setSubtitle(toolbarBean.getSubTitle());
@@ -75,8 +75,9 @@ public final class ToolbarUtils {
             } else {
                 toolbar.setSubtitleTextAppearance(toolbar.getContext(), toolbarBean.getSubTitleTextAppearance());
             }
-            isHasCustomTitle = false;
+            isHasCustomTitle = true;
         }
+
         if (isHasCustomTitle) {
             //禁止活动条自身的标题显示
             if (actionBar != null) {

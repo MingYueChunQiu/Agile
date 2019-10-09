@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentActivity;
 
 import com.mingyuechunqiu.agile.base.presenter.BaseNetPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseNetView;
@@ -39,10 +40,11 @@ public abstract class BaseToolbarPresenterFragment<V extends IBaseNetView<P>, P 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         ActionBar actionBar = null;
-        if (getActivity() != null && getActivity() instanceof AppCompatActivity) {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof AppCompatActivity) {
             setHasOptionsMenu(true);
-            ((AppCompatActivity) getActivity()).setSupportActionBar(tbBar);
-            actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            ((AppCompatActivity) activity).setSupportActionBar(tbBar);
+            actionBar = ((AppCompatActivity) activity).getSupportActionBar();
         }
         mToolbarBean = setToolbarBean();
         ToolbarUtils.initToolbar(tbBar, actionBar, mToolbarBean);
@@ -50,7 +52,7 @@ public abstract class BaseToolbarPresenterFragment<V extends IBaseNetView<P>, P 
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         if (mToolbarBean == null) {
             return;
