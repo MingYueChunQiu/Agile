@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -49,7 +50,7 @@ public class JumpActivity extends AppCompatActivity implements BaseFragment.Call
     }
 
     @Override
-    public void onCall(Fragment fragment, @Nullable Bundle bundle) {
+    public void onCall(@NonNull Fragment fragment, @Nullable Bundle bundle) {
         if (fragment.getClass().getSimpleName().equals(JumpFragment2.class.getSimpleName())) {
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 getSupportFragmentManager().popBackStack();

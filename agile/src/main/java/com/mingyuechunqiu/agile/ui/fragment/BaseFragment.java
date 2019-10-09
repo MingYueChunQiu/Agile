@@ -617,7 +617,7 @@ public abstract class BaseFragment extends Fragment {
          * @param fragment 传递Fragment自身给其所在的Activity使用
          * @param bundle   用于Fragment向Activity传递数据
          */
-        void onCall(Fragment fragment, @Nullable Bundle bundle);
+        void onCall(@NonNull Fragment fragment, @Nullable Bundle bundle);
     }
 
     /**

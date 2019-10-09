@@ -43,7 +43,7 @@ public class JumpContainerFragment extends BaseFragment implements BaseFragment.
     }
 
     @Override
-    public void onCall(Fragment fragment, @Nullable Bundle bundle) {
+    public void onCall(@NonNull Fragment fragment, @Nullable Bundle bundle) {
         if (!popAddedPage()) {
             returnToPreviousPageWithActivity();
         }

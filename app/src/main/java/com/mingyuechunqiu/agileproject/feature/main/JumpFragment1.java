@@ -46,7 +46,7 @@ public class JumpFragment1 extends Fragment implements BaseFragment.Callback {
     }
 
     @Override
-    public void onCall(Fragment fragment, @Nullable Bundle bundle) {
+    public void onCall(@NonNull Fragment fragment, @Nullable Bundle bundle) {
         if (getChildFragmentManager().getBackStackEntryCount() > 0) {
             getChildFragmentManager().popBackStack();
         }

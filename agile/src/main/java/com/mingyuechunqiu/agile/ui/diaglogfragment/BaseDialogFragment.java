@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agile.ui.diaglogfragment;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -43,10 +44,7 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //去掉对话框的背景，以便设置自已样式的背景
-        if (getDialog().getWindow() != null) {
-            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
+        setDialogBackground();
         return initView(inflater, container, savedInstanceState);
     }
 
@@ -63,6 +61,17 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     public void onDestroy() {
         super.onDestroy();
         releaseOnDestroy();
+    }
+
+    /**
+     * 设置对话框背景
+     */
+    protected void setDialogBackground() {
+        //去掉对话框的背景，以便设置自已样式的背景
+        Dialog dialog = getDialog();
+        if (dialog != null && dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
     }
 
     /**
@@ -318,6 +327,6 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
          * @param fragment 传递Fragment自身给其所在的Activity使用
          * @param bundle   用于Fragment向Activity传递数据
          */
-        void onCall(DialogFragment fragment, Bundle bundle);
+        void onCall(@NonNull DialogFragment fragment, @Nullable Bundle bundle);
     }
 }

@@ -33,6 +33,7 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_T
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2018/05/16
  *     desc   : 所有AppCompatActivity的基类
+ *              继承自AppCompatActivity
  *     version: 1.0
  * </pre>
  */
@@ -192,9 +193,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void showLoadingDialog(@Nullable LoadingDialogFragmentOption option) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager == null) {
-            return;
-        }
         LoadingDialogFragmentOption temp = interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_DIALOG);
         if (mLoadingDfgProvider == null) {
             mLoadingDfgProvider = LoadingDfgProvideFactory.newInstance(temp);
@@ -299,9 +297,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected boolean popAddedPage() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager == null) {
-            return false;
-        }
         if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
             return true;

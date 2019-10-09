@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agile.ui.bottomsheetdialogfragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -42,9 +43,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (getDialog().getWindow() != null) {
-            getDialog().getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.agile_shape_dialog));
-        }
+        setDialogBackground();
         return initView(inflater, container, savedInstanceState);
     }
 
@@ -82,6 +81,16 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      * 释放资源（在onDestroy时调用）
      */
     protected abstract void releaseOnDestroy();
+
+    /**
+     * 设置对话框背景
+     */
+    protected void setDialogBackground() {
+        Dialog dialog = getDialog();
+        if (dialog != null && dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.agile_shape_dialog));
+        }
+    }
 
     /**
      * 显示提示信息
@@ -313,7 +322,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
          * @param fragment 回调的fragment
          * @param bundle   传递的参数值
          */
-        void onCall(BottomSheetDialogFragment fragment, Bundle bundle);
+        void onCall(@NonNull BottomSheetDialogFragment fragment, @Nullable Bundle bundle);
 
     }
 }

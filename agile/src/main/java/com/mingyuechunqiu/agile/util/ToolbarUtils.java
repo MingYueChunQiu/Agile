@@ -4,6 +4,10 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.MenuRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.ActionBar;
@@ -78,7 +82,7 @@ public final class ToolbarUtils {
             isHasCustomTitle = true;
         }
 
-        if (isHasCustomTitle) {
+        if (toolbarBean.isHideDisplayTitle() || isHasCustomTitle) {
             //禁止活动条自身的标题显示
             if (actionBar != null) {
                 actionBar.setDisplayShowTitleEnabled(false);
@@ -98,303 +102,335 @@ public final class ToolbarUtils {
 
     public static class ToolbarBean {
 
-        private int navigationIconResId;//左侧导航图标资源ID
+        private Builder mBuilder;
 
-        private Drawable navigationIcon;//左侧导航图标
-
-        private int logoResId;//左侧logo图标资源ID
-
-        private Drawable logoDrawable;//左侧logo图片
-
-        private View.OnClickListener onIconClickListener;//图标点击事件
-
-        private String title;//标题
-
-        private int titleColor;//标题文本颜色
-
-        private String subTitle;//副标题
-
-        private int subTitleColor;//副标题文本颜色
-
-        private @StyleRes
-        int titleTextAppearance;//标题文本样式
-
-        private @StyleRes
-        int subTitleTextAppearance;//副标题文本样式
-
-        private boolean immerse;//标记是否是沉浸式
-
-        private Toolbar.OnMenuItemClickListener onMenuItemClickListener;//菜单监听器
-
-        private int menuResId;//菜单资源ID
-
-        private boolean clearActivityMenu;//用于fragment是否清楚activity的toolbar菜单资源
-
-        public int getNavigationIconResId() {
-            return navigationIconResId;
+        public ToolbarBean() {
+            this(new Builder());
         }
 
-        public void setNavigationIconResId(int navigationIconResId) {
-            this.navigationIconResId = navigationIconResId;
+        public ToolbarBean(@NonNull Builder builder) {
+            mBuilder = builder;
+        }
+
+        public int getNavigationIconResId() {
+            return mBuilder.navigationIconResId;
+        }
+
+        public void setNavigationIconResId(@DrawableRes int navigationIconResId) {
+            mBuilder.navigationIconResId = navigationIconResId;
         }
 
         public Drawable getNavigationIcon() {
-            return navigationIcon;
+            return mBuilder.navigationIcon;
         }
 
         public void setNavigationIcon(Drawable navigationIcon) {
-            this.navigationIcon = navigationIcon;
+            mBuilder.navigationIcon = navigationIcon;
         }
 
         public int getLogoResId() {
-            return logoResId;
+            return mBuilder.logoResId;
         }
 
-        public void setLogoResId(int logoResId) {
-            this.logoResId = logoResId;
+        public void setLogoResId(@DrawableRes int logoResId) {
+            mBuilder.logoResId = logoResId;
         }
 
         public Drawable getLogoDrawable() {
-            return logoDrawable;
+            return mBuilder.logoDrawable;
         }
 
         public void setLogoDrawable(Drawable logoDrawable) {
-            this.logoDrawable = logoDrawable;
+            mBuilder.logoDrawable = logoDrawable;
         }
 
         public View.OnClickListener getOnIconClickListener() {
-            return onIconClickListener;
+            return mBuilder.onIconClickListener;
         }
 
-        public void setOnIconClickListener(View.OnClickListener onIconClickListener) {
-            this.onIconClickListener = onIconClickListener;
+        public void setOnIconClickListener(@Nullable View.OnClickListener onIconClickListener) {
+            mBuilder.onIconClickListener = onIconClickListener;
+        }
+
+        public boolean isHideDisplayTitle() {
+            return mBuilder.hideDisplayTitle;
+        }
+
+        public void setHideDisplayTitle(boolean hideDisplayTitle) {
+            mBuilder.hideDisplayTitle = hideDisplayTitle;
         }
 
         public String getTitle() {
-            return title;
+            return mBuilder.title;
         }
 
-        public void setTitle(String title) {
-            this.title = title;
+        public void setTitle(@Nullable String title) {
+            mBuilder.title = title;
         }
 
         public int getTitleColor() {
-            return titleColor;
+            return mBuilder.titleColor;
         }
 
-        public void setTitleColor(int titleColor) {
-            this.titleColor = titleColor;
+        public void setTitleColor(@ColorInt int titleColor) {
+            mBuilder.titleColor = titleColor;
         }
 
         public String getSubTitle() {
-            return subTitle;
+            return mBuilder.subTitle;
         }
 
-        public void setSubTitle(String subTitle) {
-            this.subTitle = subTitle;
+        public void setSubTitle(@Nullable String subTitle) {
+            mBuilder.subTitle = subTitle;
         }
 
         public int getSubTitleColor() {
-            return subTitleColor;
+            return mBuilder.subTitleColor;
         }
 
-        public void setSubTitleColor(int subTitleColor) {
-            this.subTitleColor = subTitleColor;
+        public void setSubTitleColor(@ColorInt int subTitleColor) {
+            mBuilder.subTitleColor = subTitleColor;
         }
 
         public int getTitleTextAppearance() {
-            return titleTextAppearance;
+            return mBuilder.titleTextAppearance;
         }
 
         public void setTitleTextAppearance(@StyleRes int titleTextAppearance) {
-            this.titleTextAppearance = titleTextAppearance;
+            mBuilder.titleTextAppearance = titleTextAppearance;
         }
 
         public int getSubTitleTextAppearance() {
-            return subTitleTextAppearance;
+            return mBuilder.subTitleTextAppearance;
         }
 
         public void setSubTitleTextAppearance(@StyleRes int subTitleTextAppearance) {
-            this.subTitleTextAppearance = subTitleTextAppearance;
+            mBuilder.subTitleTextAppearance = subTitleTextAppearance;
         }
 
         public boolean isImmerse() {
-            return immerse;
+            return mBuilder.immerse;
         }
 
         public void setImmerse(boolean immerse) {
-            this.immerse = immerse;
+            mBuilder.immerse = immerse;
         }
 
         public Toolbar.OnMenuItemClickListener getOnMenuItemClickListener() {
-            return onMenuItemClickListener;
+            return mBuilder.onMenuItemClickListener;
         }
 
-        public void setOnMenuItemClickListener(Toolbar.OnMenuItemClickListener onMenuItemClickListener) {
-            this.onMenuItemClickListener = onMenuItemClickListener;
+        public void setOnMenuItemClickListener(@Nullable Toolbar.OnMenuItemClickListener onMenuItemClickListener) {
+            mBuilder.onMenuItemClickListener = onMenuItemClickListener;
         }
 
         public int getMenuResId() {
-            return menuResId;
+            return mBuilder.menuResId;
         }
 
-        public void setMenuResId(int menuResId) {
-            this.menuResId = menuResId;
+        public void setMenuResId(@MenuRes int menuResId) {
+            mBuilder.menuResId = menuResId;
         }
 
         public boolean isClearActivityMenu() {
-            return clearActivityMenu;
+            return mBuilder.clearActivityMenu;
         }
 
         public void setClearActivityMenu(boolean clearActivityMenu) {
-            this.clearActivityMenu = clearActivityMenu;
+            mBuilder.clearActivityMenu = clearActivityMenu;
         }
 
         //链式调用
         public static class Builder {
 
-            private ToolbarBean mBean;
+            @DrawableRes
+            private int navigationIconResId;//左侧导航图标资源ID
+
+            private Drawable navigationIcon;//左侧导航图标
+
+            @DrawableRes
+            private int logoResId;//左侧logo图标资源ID
+
+            private Drawable logoDrawable;//左侧logo图片
+
+            private View.OnClickListener onIconClickListener;//图标点击事件
+
+            private boolean hideDisplayTitle;//隐藏系统默认标题
+
+            private String title;//标题
+
+            @ColorInt
+            private int titleColor;//标题文本颜色
+
+            private String subTitle;//副标题
+
+            @ColorInt
+            private int subTitleColor;//副标题文本颜色
+
+            private @StyleRes
+            int titleTextAppearance;//标题文本样式
+
+            private @StyleRes
+            int subTitleTextAppearance;//副标题文本样式
+
+            private boolean immerse;//标记是否是沉浸式
+
+            private Toolbar.OnMenuItemClickListener onMenuItemClickListener;//菜单监听器
+
+            @MenuRes
+            private int menuResId;//菜单资源ID
+
+            private boolean clearActivityMenu;//用于fragment是否清楚activity的toolbar菜单资源
 
             public Builder() {
-                mBean = new ToolbarBean();
+                hideDisplayTitle = true;
             }
 
             public ToolbarBean build() {
-                return mBean;
+                return new ToolbarBean(this);
             }
 
             public int getNavigationIconResId() {
-                return mBean.navigationIconResId;
+                return this.navigationIconResId;
             }
 
-            public Builder setNavigationIconResId(int navigationIconResId) {
-                mBean.navigationIconResId = navigationIconResId;
+            public Builder setNavigationIconResId(@DrawableRes int navigationIconResId) {
+                this.navigationIconResId = navigationIconResId;
                 return this;
             }
 
             public Drawable getNavigationIcon() {
-                return mBean.navigationIcon;
+                return this.navigationIcon;
             }
 
             public Builder setNavigationIcon(Drawable navigationIcon) {
-                mBean.navigationIcon = navigationIcon;
+                this.navigationIcon = navigationIcon;
                 return this;
             }
 
             public int getLogoResId() {
-                return mBean.logoResId;
+                return this.logoResId;
             }
 
-            public Builder setLogoResId(int logoResId) {
-                mBean.logoResId = logoResId;
+            public Builder setLogoResId(@DrawableRes int logoResId) {
+                this.logoResId = logoResId;
                 return this;
             }
 
             public Drawable getLogoDrawable() {
-                return mBean.logoDrawable;
+                return this.logoDrawable;
             }
 
             public Builder setLogoDrawable(Drawable logoDrawable) {
-                mBean.logoDrawable = logoDrawable;
+                this.logoDrawable = logoDrawable;
                 return this;
             }
 
             public View.OnClickListener getOnIconClickListener() {
-                return mBean.onIconClickListener;
+                return this.onIconClickListener;
             }
 
-            public Builder setOnIconClickListener(View.OnClickListener iconClickListener) {
-                mBean.onIconClickListener = iconClickListener;
+            public Builder setOnIconClickListener(@Nullable View.OnClickListener iconClickListener) {
+                this.onIconClickListener = iconClickListener;
+                return this;
+            }
+
+            public boolean isHideDisplayTitle() {
+                return hideDisplayTitle;
+            }
+
+            public Builder setHideDisplayTitle(boolean hideDisplayTitle) {
+                this.hideDisplayTitle = hideDisplayTitle;
                 return this;
             }
 
             public String getTitle() {
-                return mBean.title;
+                return this.title;
             }
 
-            public Builder setTitle(String title) {
-                mBean.title = title;
+            public Builder setTitle(@Nullable String title) {
+                this.title = title;
                 return this;
             }
 
             public int getTitleColor() {
-                return mBean.titleColor;
+                return this.titleColor;
             }
 
-            public Builder setTitleColor(int titleColor) {
-                mBean.titleColor = titleColor;
+            public Builder setTitleColor(@ColorInt int titleColor) {
+                this.titleColor = titleColor;
                 return this;
             }
 
             public String getSubTitle() {
-                return mBean.subTitle;
+                return this.subTitle;
             }
 
-            public Builder setSubTitle(String subTitle) {
-                mBean.subTitle = subTitle;
+            public Builder setSubTitle(@Nullable String subTitle) {
+                this.subTitle = subTitle;
                 return this;
             }
 
             public int getSubTitleColor() {
-                return mBean.subTitleColor;
+                return this.subTitleColor;
             }
 
-            public Builder setSubTitleColor(int subTitleColor) {
-                mBean.subTitleColor = subTitleColor;
+            public Builder setSubTitleColor(@ColorInt int subTitleColor) {
+                this.subTitleColor = subTitleColor;
                 return this;
             }
 
             public int getTitleTextAppearance() {
-                return mBean.titleTextAppearance;
+                return this.titleTextAppearance;
             }
 
             public Builder setTitleTextAppearance(@StyleRes int titleTextAppearance) {
-                mBean.titleTextAppearance = titleTextAppearance;
+                this.titleTextAppearance = titleTextAppearance;
                 return this;
             }
 
             public int getSubTitleTextAppearance() {
-                return mBean.subTitleTextAppearance;
+                return this.subTitleTextAppearance;
             }
 
             public Builder setSubTitleTextAppearance(@StyleRes int subTitleTextAppearance) {
-                mBean.subTitleTextAppearance = subTitleTextAppearance;
+                this.subTitleTextAppearance = subTitleTextAppearance;
                 return this;
             }
 
             public boolean isImmerse() {
-                return mBean.immerse;
+                return this.immerse;
             }
 
             public Builder setImmerse(boolean immerse) {
-                mBean.immerse = immerse;
+                this.immerse = immerse;
                 return this;
             }
 
             public Toolbar.OnMenuItemClickListener getOnMenuItemClickListener() {
-                return mBean.onMenuItemClickListener;
+                return this.onMenuItemClickListener;
             }
 
-            public Builder setOnMenuItemClickListener(Toolbar.OnMenuItemClickListener listener) {
-                mBean.onMenuItemClickListener = listener;
+            public Builder setOnMenuItemClickListener(@Nullable Toolbar.OnMenuItemClickListener listener) {
+                this.onMenuItemClickListener = listener;
                 return this;
             }
 
             public int getMenuResId() {
-                return mBean.menuResId;
+                return this.menuResId;
             }
 
-            public Builder setMenuResId(int menuResId) {
-                mBean.menuResId = menuResId;
+            public Builder setMenuResId(@MenuRes int menuResId) {
+                this.menuResId = menuResId;
                 return this;
             }
 
             public boolean isClearActivityMenu() {
-                return mBean.clearActivityMenu;
+                return this.clearActivityMenu;
             }
 
             public Builder setClearActivityMenu(boolean clearActivityMenu) {
-                mBean.clearActivityMenu = clearActivityMenu;
+                this.clearActivityMenu = clearActivityMenu;
                 return this;
             }
         }

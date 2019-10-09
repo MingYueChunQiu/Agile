@@ -311,7 +311,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void onCall(Fragment fragment, Bundle bundle) {
+    public void onCall(@NonNull Fragment fragment, Bundle bundle) {
         if (bundle == null) {
             return;
         }
