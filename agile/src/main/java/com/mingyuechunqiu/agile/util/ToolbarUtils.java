@@ -82,11 +82,14 @@ public final class ToolbarUtils {
             isHasCustomTitle = true;
         }
 
-        if (toolbarBean.isHideDisplayTitle() || isHasCustomTitle) {
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(toolbarBean.isEnableDisplayHomeAsUp());
             //禁止活动条自身的标题显示
-            if (actionBar != null) {
-                actionBar.setDisplayShowTitleEnabled(false);
-            }
+            actionBar.setDisplayShowTitleEnabled(!toolbarBean.isHideDisplayTitle() || isHasCustomTitle);
+        }
+
+        if (toolbarBean.getOverflowIcon() != null) {
+            toolbar.setOverflowIcon(toolbarBean.getOverflowIcon());
         }
         if (toolbarBean.isImmerse()) {
             //因为沉侵式布局会让活动条侵入到状态栏中，为了不影响活动条显示内容，
@@ -126,6 +129,14 @@ public final class ToolbarUtils {
 
         public void setNavigationIcon(Drawable navigationIcon) {
             mBuilder.navigationIcon = navigationIcon;
+        }
+
+        public boolean isEnableDisplayHomeAsUp() {
+            return mBuilder.enableDisplayHomeAsUp;
+        }
+
+        public void setEnableDisplayHomeAsUp(boolean enableDisplayHomeAsUp) {
+            mBuilder.enableDisplayHomeAsUp = enableDisplayHomeAsUp;
         }
 
         public int getLogoResId() {
@@ -240,6 +251,14 @@ public final class ToolbarUtils {
             mBuilder.clearActivityMenu = clearActivityMenu;
         }
 
+        public Drawable getOverflowIcon() {
+            return mBuilder.overflowIcon;
+        }
+
+        public void setOverflowIcon(@Nullable Drawable overflowIcon) {
+            mBuilder.overflowIcon = overflowIcon;
+        }
+
         //链式调用
         public static class Builder {
 
@@ -247,6 +266,8 @@ public final class ToolbarUtils {
             private int navigationIconResId;//左侧导航图标资源ID
 
             private Drawable navigationIcon;//左侧导航图标
+
+            private boolean enableDisplayHomeAsUp;//是否启用默认系统返回键
 
             @DrawableRes
             private int logoResId;//左侧logo图标资源ID
@@ -282,6 +303,8 @@ public final class ToolbarUtils {
 
             private boolean clearActivityMenu;//用于fragment是否清楚activity的toolbar菜单资源
 
+            private Drawable overflowIcon;//溢出图标
+
             public Builder() {
                 hideDisplayTitle = true;
             }
@@ -305,6 +328,15 @@ public final class ToolbarUtils {
 
             public Builder setNavigationIcon(Drawable navigationIcon) {
                 this.navigationIcon = navigationIcon;
+                return this;
+            }
+
+            public boolean isEnableDisplayHomeAsUp() {
+                return enableDisplayHomeAsUp;
+            }
+
+            public Builder setEnableDisplayHomeAsUp(boolean enableDisplayHomeAsUp) {
+                this.enableDisplayHomeAsUp = enableDisplayHomeAsUp;
                 return this;
             }
 
@@ -431,6 +463,15 @@ public final class ToolbarUtils {
 
             public Builder setClearActivityMenu(boolean clearActivityMenu) {
                 this.clearActivityMenu = clearActivityMenu;
+                return this;
+            }
+
+            public Drawable getOverflowIcon() {
+                return overflowIcon;
+            }
+
+            public Builder setOverflowIcon(@Nullable Drawable overflowIcon) {
+                this.overflowIcon = overflowIcon;
                 return this;
             }
         }

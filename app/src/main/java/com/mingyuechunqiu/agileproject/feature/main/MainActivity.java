@@ -126,6 +126,8 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     protected ToolbarUtils.ToolbarBean setToolbarBean() {
         return new ToolbarUtils.ToolbarBean.Builder()
                 .setImmerse(true)
+                .setNavigationIconResId(R.drawable.agile_arrow_back_pressed)
+                .setTitle("分为非")
                 .build();
     }
 

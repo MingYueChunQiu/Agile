@@ -30,6 +30,7 @@ public abstract class BaseToolbarPresenterActivity<V extends IBaseNetView<P>, P 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        setSupportActionBar(tbBar);
         mToolbarBean = setToolbarBean();
         ToolbarUtils.initToolbar(tbBar, getSupportActionBar(), mToolbarBean);
     }
