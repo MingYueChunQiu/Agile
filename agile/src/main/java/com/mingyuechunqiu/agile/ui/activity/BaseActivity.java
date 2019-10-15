@@ -12,18 +12,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.mingyuechunqiu.agile.feature.loading.data.Constants;
 import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProvideFactory;
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProviderable;
+import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
 import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agile.util.ExitApplicationManager;
 import com.noober.background.BackgroundLibrary;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 
@@ -39,7 +47,7 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_T
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    protected List<BaseFragment.OnKeyEventListener> mKeyEventListenerList;
+    protected Map<Fragment, List<OnKeyEventListener>> mKeyEventListenerMap;
 
     private Toast mToast;
     private LoadingDfgProviderable mLoadingDfgProvider;
@@ -56,9 +64,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         dismissLoadingDialog();
         super.onDestroy();
         release();
-        if (mKeyEventListenerList != null) {
-            mKeyEventListenerList.clear();
-            mKeyEventListenerList = null;
+        if (mKeyEventListenerMap != null) {
+            mKeyEventListenerMap.clear();
+            mKeyEventListenerMap = null;
         }
         mToast = null;
         mLoadingDfgProvider = null;
@@ -69,14 +77,25 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param listener fragment按键监听器
      */
-    public void addOnKeyEventListener(@Nullable BaseFragment.OnKeyEventListener listener) {
-        if (listener == null) {
-            return;
+    public void addOnKeyEventListener(@NonNull Fragment fragment, @NonNull OnKeyEventListener listener) {
+        if (mKeyEventListenerMap == null) {
+            mKeyEventListenerMap = new ConcurrentHashMap<>();
         }
-        if (mKeyEventListenerList == null) {
-            mKeyEventListenerList = new ArrayList<>();
+        List<OnKeyEventListener> list;
+        if (mKeyEventListenerMap.containsKey(fragment)) {
+            list = mKeyEventListenerMap.get(fragment);
+            if (list == null) {
+                list = new ArrayList<>();
+                list.add(listener);
+                mKeyEventListenerMap.put(fragment, list);
+            } else {
+                list.add(listener);
+            }
+        } else {
+            list = new ArrayList<>();
+            list.add(listener);
+            mKeyEventListenerMap.put(fragment, list);
         }
-        mKeyEventListenerList.add(listener);
     }
 
     /**
@@ -85,15 +104,38 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param listener fragment按键监听器
      * @return 如果删除成功返回true，否则返回false
      */
-    public boolean removeOnKeyEventListener(@Nullable BaseFragment.OnKeyEventListener listener) {
-        if (listener == null || mKeyEventListenerList == null) {
+    public boolean removeOnKeyEventListener(@Nullable OnKeyEventListener listener) {
+        if (listener == null || mKeyEventListenerMap == null) {
             return false;
         }
-        return mKeyEventListenerList.remove(listener);
+        for (List<OnKeyEventListener> list : mKeyEventListenerMap.values()) {
+            if (list.contains(listener)) {
+                return list.remove(listener);
+            }
+        }
+        return false;
     }
 
-    public List<BaseFragment.OnKeyEventListener> getOnKeyEventListenerList() {
-        return mKeyEventListenerList;
+    public void removeOnKeyEventListener(@NonNull Fragment fragment) {
+        if (mKeyEventListenerMap == null) {
+            return;
+        }
+        Iterator<Map.Entry<Fragment, List<OnKeyEventListener>>> iterator = mKeyEventListenerMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Fragment, List<OnKeyEventListener>> entry = iterator.next();
+            if (entry.getKey() == fragment) {
+                iterator.remove();
+                break;
+            }
+        }
+    }
+
+    @NonNull
+    public Map<Fragment, List<OnKeyEventListener>> getOnKeyEventListenerList() {
+        if (mKeyEventListenerMap == null) {
+            mKeyEventListenerMap = new ConcurrentHashMap<>();
+        }
+        return mKeyEventListenerMap;
     }
 
     /**
@@ -113,17 +155,19 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param event   按键事件
      * @return 如果有fragment阻止了事件继续传递则返回true，否则返回false
      */
-    protected boolean dispatchOnKeyDownListener(int keyCode, KeyEvent event) {
-        if (mKeyEventListenerList == null || mKeyEventListenerList.size() == 0) {
+    protected boolean dispatchOnKeyEventListener(int keyCode, KeyEvent event) {
+        if (mKeyEventListenerMap == null || mKeyEventListenerMap.size() == 0) {
             return false;
         }
-        boolean isContinueTransfer = false;//是否继续传递
-        for (BaseFragment.OnKeyEventListener listener : mKeyEventListenerList) {
-            if (listener.onFragmentKeyDown(keyCode, event)) {
-                isContinueTransfer = true;
+        boolean isForbidTransfer = false;//是否禁止继续传递
+        for (List<OnKeyEventListener> list : mKeyEventListenerMap.values()) {
+            for (OnKeyEventListener listener : list) {
+                if (listener.onKeyEvent(keyCode, event)) {
+                    isForbidTransfer = true;
+                }
             }
         }
-        return isContinueTransfer;
+        return isForbidTransfer;
     }
 
     /**

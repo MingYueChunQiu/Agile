@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.framework.function;
+package com.mingyuechunqiu.agile.framework.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

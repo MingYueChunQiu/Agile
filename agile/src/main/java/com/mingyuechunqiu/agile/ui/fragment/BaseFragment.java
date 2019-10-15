@@ -23,6 +23,7 @@ import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProvideFactory;
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProviderable;
 import com.mingyuechunqiu.agile.framework.function.TransferDataCallback;
+import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
 import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
@@ -53,6 +54,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        removeAllOnKeyEventListeners();
         dismissLoadingDialog();
         super.onDestroyView();
         removeKeyEventListener(mBackKeyActivityListener);
@@ -149,14 +151,14 @@ public abstract class BaseFragment extends Fragment {
             }
             mBackKeyParentFgListener = new OnKeyEventListener() {
                 @Override
-                public boolean onFragmentKeyDown(int i, KeyEvent keyEvent) {
+                public boolean onKeyEvent(int i, KeyEvent keyEvent) {
                     if (isVisible() && !forbidBackToFragment) {
                         return returnToPreviousPageWithParentFg(interceptor);
                     }
                     return false;
                 }
             };
-            ((BaseActivity) activity).addOnKeyEventListener(mBackKeyParentFgListener);
+            ((BaseActivity) activity).addOnKeyEventListener(this, mBackKeyParentFgListener);
         }
     }
 
@@ -181,14 +183,14 @@ public abstract class BaseFragment extends Fragment {
             }
             mBackKeyActivityListener = new OnKeyEventListener() {
                 @Override
-                public boolean onFragmentKeyDown(int keyCode, KeyEvent event) {
+                public boolean onKeyEvent(int keyCode, KeyEvent event) {
                     if (isVisible() && !forbidBackToActivity) {
                         return returnToPreviousPageWithActivity(interceptor);
                     }
                     return false;
                 }
             };
-            ((BaseActivity) activity).addOnKeyEventListener(mBackKeyActivityListener);
+            ((BaseActivity) activity).addOnKeyEventListener(this, mBackKeyActivityListener);
         }
     }
 
@@ -327,13 +329,10 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param listener 按键监听器
      */
-    protected void addOnKeyDownListenerToActivity(@Nullable OnKeyEventListener listener) {
-        if (listener == null) {
-            return;
-        }
+    protected void addOnKeyEventListenerToActivity(@NonNull OnKeyEventListener listener) {
         FragmentActivity activity = getActivity();
         if (activity instanceof BaseActivity) {
-            ((BaseActivity) activity).addOnKeyEventListener(listener);
+            ((BaseActivity) activity).addOnKeyEventListener(this, listener);
         }
     }
 
@@ -587,6 +586,16 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
+     * 移除所有的按键监听器
+     */
+    private void removeAllOnKeyEventListeners() {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof BaseActivity) {
+            ((BaseActivity) activity).removeOnKeyEventListener(this);
+        }
+    }
+
+    /**
      * 释放资源（在onDestroyView时调用）
      */
     protected abstract void releaseOnDestroyView();
@@ -618,21 +627,6 @@ public abstract class BaseFragment extends Fragment {
          * @param bundle   用于Fragment向Activity传递数据
          */
         void onCall(@NonNull Fragment fragment, @Nullable Bundle bundle);
-    }
-
-    /**
-     * 按键监听器
-     */
-    public interface OnKeyEventListener {
-
-        /**
-         * 当触发按键事件时回调
-         *
-         * @param keyCode 键值
-         * @param event   按键事件
-         * @return 如果自己处理完成，不需要Activity继续处理返回true，否则返回false
-         */
-        boolean onFragmentKeyDown(int keyCode, KeyEvent event);
     }
 
     /**

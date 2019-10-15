@@ -25,6 +25,9 @@ import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProvideFactory;
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProviderable;
 import com.mingyuechunqiu.agile.framework.function.TransferDataCallback;
+import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
+import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
+import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 
 /**
  * <pre>
@@ -50,6 +53,7 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
 
     @Override
     public void onDestroyView() {
+        removeAllOnKeyEventListeners();
         dismissLoadingDialog();
         super.onDestroyView();
         releaseOnDestroyView();
@@ -297,6 +301,18 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     }
 
     /**
+     * 添加按键监听事件
+     *
+     * @param listener 按键监听器
+     */
+    protected void addOnKeyEventListenerToActivity(@NonNull OnKeyEventListener listener) {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof BaseActivity) {
+            ((BaseActivity) activity).addOnKeyEventListener(this, listener);
+        }
+    }
+
+    /**
      * 释放资源（在onDestroyView时调用）
      */
     protected abstract void releaseOnDestroyView();
@@ -315,6 +331,16 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
      * @return 返回创建的填充View
      */
     protected abstract View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
+
+    /**
+     * 移除所有的按键监听器
+     */
+    private void removeAllOnKeyEventListeners() {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof BaseActivity) {
+            ((BaseActivity) activity).removeOnKeyEventListener(this);
+        }
+    }
 
     /**
      * 供Activity实现的回调接口，实现对Fragment的调用

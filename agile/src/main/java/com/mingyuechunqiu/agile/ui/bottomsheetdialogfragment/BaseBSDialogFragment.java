@@ -24,6 +24,8 @@ import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProvideFactor
 import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProviderable;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.framework.function.TransferDataCallback;
+import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
+import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
 
 /**
  * <pre>
@@ -49,6 +51,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
 
     @Override
     public void onDestroyView() {
+        removeAllOnKeyEventListeners();
         dismissLoadingDialog();
         super.onDestroyView();
         releaseOnDestroyView();
@@ -312,6 +315,28 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 添加按键监听事件
+     *
+     * @param listener 按键监听器
+     */
+    protected void addOnKeyEventListenerToActivity(@NonNull OnKeyEventListener listener) {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof BaseActivity) {
+            ((BaseActivity) activity).addOnKeyEventListener(this, listener);
+        }
+    }
+
+    /**
+     * 移除所有的按键监听器
+     */
+    private void removeAllOnKeyEventListeners() {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof BaseActivity) {
+            ((BaseActivity) activity).removeOnKeyEventListener(this);
+        }
     }
 
     public interface Callback {
