@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Toast;
 
 import androidx.annotation.IdRes;
@@ -25,6 +26,7 @@ import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProviderable;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.framework.function.TransferDataCallback;
 import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
+import com.mingyuechunqiu.agile.framework.ui.WindowHandler;
 import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
 
 /**
@@ -89,9 +91,27 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      * 设置对话框背景
      */
     protected void setDialogBackground() {
+        setDialogWindow(new WindowHandler() {
+            @Override
+            public void onHandle(@NonNull Window window) {
+                window.setBackgroundDrawable(getResources().getDrawable(R.drawable.agile_shape_dialog));
+            }
+        });
+    }
+
+    /**
+     * 设置对话框窗口
+     *
+     * @param handler 处理器
+     */
+    protected void setDialogWindow(@NonNull WindowHandler handler) {
         Dialog dialog = getDialog();
-        if (dialog != null && dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.agile_shape_dialog));
+        if (dialog == null) {
+            return;
+        }
+        Window window = dialog.getWindow();
+        if (window != null) {
+            handler.onHandle(window);
         }
     }
 

@@ -42,7 +42,6 @@ public abstract class BaseFragment extends Fragment {
 
     //禁止返回界面flag
     private boolean forbidBackToActivity, forbidBackToFragment;
-    private OnKeyEventListener mBackKeyActivityListener, mBackKeyParentFgListener;
     private Toast mToast;
     private LoadingDfgProviderable mLoadingDfgProvider;
 
@@ -57,10 +56,6 @@ public abstract class BaseFragment extends Fragment {
         removeAllOnKeyEventListeners();
         dismissLoadingDialog();
         super.onDestroyView();
-        removeKeyEventListener(mBackKeyActivityListener);
-        removeKeyEventListener(mBackKeyParentFgListener);
-        mBackKeyActivityListener = null;
-        mBackKeyParentFgListener = null;
         releaseOnDestroyView();
         mToast = null;
         mLoadingDfgProvider = null;
@@ -145,20 +140,15 @@ public abstract class BaseFragment extends Fragment {
     protected void addBackKeyToPreviousPageWithParentFg(@Nullable final JumpPageInterceptor interceptor) {
         FragmentActivity activity = getActivity();
         if (activity instanceof BaseActivity) {
-            if (mBackKeyParentFgListener != null) {
-                removeKeyEventListener(mBackKeyParentFgListener);
-                mBackKeyParentFgListener = null;
-            }
-            mBackKeyParentFgListener = new OnKeyEventListener() {
+            ((BaseActivity) activity).addOnKeyEventListener(this, new OnKeyEventListener() {
                 @Override
-                public boolean onKeyEvent(int i, KeyEvent keyEvent) {
+                public boolean onKeyEvent(int keyCode, KeyEvent event) {
                     if (isVisible() && !forbidBackToFragment) {
                         return returnToPreviousPageWithParentFg(interceptor);
                     }
                     return false;
                 }
-            };
-            ((BaseActivity) activity).addOnKeyEventListener(this, mBackKeyParentFgListener);
+            });
         }
     }
 
@@ -177,11 +167,7 @@ public abstract class BaseFragment extends Fragment {
     protected void addBackKeyToPreviousPageWithActivity(@Nullable final JumpPageInterceptor interceptor) {
         FragmentActivity activity = getActivity();
         if (activity instanceof BaseActivity) {
-            if (mBackKeyActivityListener != null) {
-                removeKeyEventListener(mBackKeyActivityListener);
-                mBackKeyActivityListener = null;
-            }
-            mBackKeyActivityListener = new OnKeyEventListener() {
+            ((BaseActivity) activity).addOnKeyEventListener(this, new OnKeyEventListener() {
                 @Override
                 public boolean onKeyEvent(int keyCode, KeyEvent event) {
                     if (isVisible() && !forbidBackToActivity) {
@@ -189,8 +175,7 @@ public abstract class BaseFragment extends Fragment {
                     }
                     return false;
                 }
-            };
-            ((BaseActivity) activity).addOnKeyEventListener(this, mBackKeyActivityListener);
+            });
         }
     }
 
