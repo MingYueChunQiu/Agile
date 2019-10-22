@@ -576,7 +576,7 @@ public abstract class BaseFragment extends Fragment {
     private void removeAllOnKeyEventListeners() {
         FragmentActivity activity = getActivity();
         if (activity instanceof BaseActivity) {
-            ((BaseActivity) activity).removeOnKeyEventListener(this);
+            ((BaseActivity) activity).removeOnKeyEventListeners(this);
         }
     }
 

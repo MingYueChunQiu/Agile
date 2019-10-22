@@ -116,7 +116,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         return false;
     }
 
-    public void removeOnKeyEventListener(@NonNull Fragment fragment) {
+    /**
+     * 移除与Fragment键关联的所有按键监听器
+     *
+     * @param fragment 与按键监听器相关联的Fragment
+     */
+    public void removeOnKeyEventListeners(@NonNull Fragment fragment) {
         if (mKeyEventListenerMap == null) {
             return;
         }

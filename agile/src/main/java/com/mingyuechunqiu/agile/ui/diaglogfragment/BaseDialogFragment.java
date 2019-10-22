@@ -29,7 +29,6 @@ import com.mingyuechunqiu.agile.framework.function.TransferDataCallback;
 import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
 import com.mingyuechunqiu.agile.framework.ui.WindowHandler;
 import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
-import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 
 /**
  * <pre>
@@ -358,7 +357,7 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     private void removeAllOnKeyEventListeners() {
         FragmentActivity activity = getActivity();
         if (activity instanceof BaseActivity) {
-            ((BaseActivity) activity).removeOnKeyEventListener(this);
+            ((BaseActivity) activity).removeOnKeyEventListeners(this);
         }
     }
 
