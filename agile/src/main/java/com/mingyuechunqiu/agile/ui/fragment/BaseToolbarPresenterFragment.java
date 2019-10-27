@@ -33,7 +33,7 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
 public abstract class BaseToolbarPresenterFragment<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BaseNetPresenterFragment<V, P> {
 
     protected Toolbar tbBar;
-    protected ToolbarUtils.ToolbarBean mToolbarBean;
+    protected ToolbarUtils.ToolbarConfigure mToolbarConfigure;
 
     @Nullable
     @Override
@@ -46,29 +46,29 @@ public abstract class BaseToolbarPresenterFragment<V extends IBaseNetView<P>, P 
             ((AppCompatActivity) activity).setSupportActionBar(tbBar);
             actionBar = ((AppCompatActivity) activity).getSupportActionBar();
         }
-        mToolbarBean = setToolbarBean();
-        ToolbarUtils.initToolbar(tbBar, actionBar, mToolbarBean);
+        mToolbarConfigure = setToolbarConfigure();
+        ToolbarUtils.initToolbar(tbBar, actionBar, mToolbarConfigure);
         return view;
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (mToolbarBean == null) {
+        if (mToolbarConfigure == null) {
             return;
         }
-        if (mToolbarBean.isClearActivityMenu()) {
+        if (mToolbarConfigure.isClearActivityMenu()) {
             menu.clear();
         }
-        if (mToolbarBean.getMenuResId() != NO_RESOURCE_ID) {
-            inflater.inflate(mToolbarBean.getMenuResId(), menu);
+        if (mToolbarConfigure.getMenuResId() != NO_RESOURCE_ID) {
+            inflater.inflate(mToolbarConfigure.getMenuResId(), menu);
         }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mToolbarBean = null;
+        mToolbarConfigure = null;
     }
 
     /**
@@ -76,5 +76,5 @@ public abstract class BaseToolbarPresenterFragment<V extends IBaseNetView<P>, P 
      *
      * @return 返回创建好的ToolbarBean
      */
-    protected abstract ToolbarUtils.ToolbarBean setToolbarBean();
+    protected abstract ToolbarUtils.ToolbarConfigure setToolbarConfigure();
 }

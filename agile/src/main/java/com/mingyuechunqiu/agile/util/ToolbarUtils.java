@@ -29,89 +29,89 @@ public final class ToolbarUtils {
     /**
      * 初始化活动条
      *
-     * @param toolbar     工具条
-     * @param actionBar   活动条
-     * @param toolbarBean 工具条信息对象
+     * @param toolbar          工具条
+     * @param actionBar        活动条
+     * @param toolbarConfigure 工具条信息对象
      */
-    public static void initToolbar(@Nullable Toolbar toolbar, @Nullable ActionBar actionBar, @Nullable ToolbarBean toolbarBean) {
-        if (toolbar == null || toolbarBean == null) {
+    public static void initToolbar(@Nullable Toolbar toolbar, @Nullable ActionBar actionBar, @Nullable ToolbarConfigure toolbarConfigure) {
+        if (toolbar == null || toolbarConfigure == null) {
             return;
         }
-        if (toolbarBean.getNavigationIcon() != null) {
-            toolbar.setNavigationIcon(toolbarBean.getNavigationIcon());
+        if (toolbarConfigure.getNavigationIcon() != null) {
+            toolbar.setNavigationIcon(toolbarConfigure.getNavigationIcon());
         }
-        if (toolbarBean.getNavigationIconResId() != NO_RESOURCE_ID) {
-            toolbar.setNavigationIcon(toolbarBean.getNavigationIconResId());
+        if (toolbarConfigure.getNavigationIconResId() != NO_RESOURCE_ID) {
+            toolbar.setNavigationIcon(toolbarConfigure.getNavigationIconResId());
         }
-        if (toolbarBean.getLogoResId() != NO_RESOURCE_ID) {
-            toolbar.setLogo(toolbarBean.getLogoResId());
+        if (toolbarConfigure.getLogoResId() != NO_RESOURCE_ID) {
+            toolbar.setLogo(toolbarConfigure.getLogoResId());
         }
-        if (toolbarBean.getLogoDrawable() != null) {
-            toolbar.setLogo(toolbarBean.getLogoDrawable());
+        if (toolbarConfigure.getLogoDrawable() != null) {
+            toolbar.setLogo(toolbarConfigure.getLogoDrawable());
         }
-        if (toolbarBean.getOnIconClickListener() != null) {
-            toolbar.setNavigationOnClickListener(toolbarBean.getOnIconClickListener());
+        if (toolbarConfigure.getOnIconClickListener() != null) {
+            toolbar.setNavigationOnClickListener(toolbarConfigure.getOnIconClickListener());
         }
         //判断是否显示toolbar自身的标题
         boolean isHasCustomTitle = false;
-        if (!TextUtils.isEmpty(toolbarBean.getTitle())) {
+        if (!TextUtils.isEmpty(toolbarConfigure.getTitle())) {
             //因为在onCreate()中修改title的值，都会被重置成android:label的值
-            toolbar.setTitle(toolbarBean.getTitle());
-            if (toolbarBean.getTitleTextAppearance() == NO_RESOURCE_ID) {
+            toolbar.setTitle(toolbarConfigure.getTitle());
+            if (toolbarConfigure.getTitleTextAppearance() == NO_RESOURCE_ID) {
 
-                if (toolbarBean.getTitleColor() != NO_RESOURCE_ID) {
-                    toolbar.setTitleTextColor(toolbarBean.getTitleColor());
+                if (toolbarConfigure.getTitleColor() != NO_RESOURCE_ID) {
+                    toolbar.setTitleTextColor(toolbarConfigure.getTitleColor());
                 }
 
             } else {
-                toolbar.setTitleTextAppearance(toolbar.getContext(), toolbarBean.getTitleTextAppearance());
+                toolbar.setTitleTextAppearance(toolbar.getContext(), toolbarConfigure.getTitleTextAppearance());
             }
             isHasCustomTitle = true;
         }
-        if (!TextUtils.isEmpty(toolbarBean.getSubTitle())) {
-            toolbar.setSubtitle(toolbarBean.getSubTitle());
-            if (toolbarBean.getSubTitleTextAppearance() == NO_RESOURCE_ID) {
+        if (!TextUtils.isEmpty(toolbarConfigure.getSubTitle())) {
+            toolbar.setSubtitle(toolbarConfigure.getSubTitle());
+            if (toolbarConfigure.getSubTitleTextAppearance() == NO_RESOURCE_ID) {
 
-                if (toolbarBean.getSubTitleColor() != NO_RESOURCE_ID) {
-                    toolbar.setSubtitleTextColor(toolbarBean.getSubTitleColor());
+                if (toolbarConfigure.getSubTitleColor() != NO_RESOURCE_ID) {
+                    toolbar.setSubtitleTextColor(toolbarConfigure.getSubTitleColor());
                 }
 
             } else {
-                toolbar.setSubtitleTextAppearance(toolbar.getContext(), toolbarBean.getSubTitleTextAppearance());
+                toolbar.setSubtitleTextAppearance(toolbar.getContext(), toolbarConfigure.getSubTitleTextAppearance());
             }
             isHasCustomTitle = true;
         }
 
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(toolbarBean.isEnableDisplayHomeAsUp());
+            actionBar.setDisplayHomeAsUpEnabled(toolbarConfigure.isEnableDisplayHomeAsUp());
             //禁止活动条自身的标题显示
-            actionBar.setDisplayShowTitleEnabled(!toolbarBean.isHideDisplayTitle() || isHasCustomTitle);
+            actionBar.setDisplayShowTitleEnabled(!toolbarConfigure.isHideDisplayTitle() || isHasCustomTitle);
         }
 
-        if (toolbarBean.getOverflowIcon() != null) {
-            toolbar.setOverflowIcon(toolbarBean.getOverflowIcon());
+        if (toolbarConfigure.getOverflowIcon() != null) {
+            toolbar.setOverflowIcon(toolbarConfigure.getOverflowIcon());
         }
-        if (toolbarBean.isImmerse()) {
+        if (toolbarConfigure.isImmerse()) {
             //因为沉侵式布局会让活动条侵入到状态栏中，为了不影响活动条显示内容，
             //让活动条高度增加并且内容下移
             int statusBarHeight = ScreenUtils.getStatusBarHeight(toolbar.getContext());
             toolbar.getLayoutParams().height = toolbar.getLayoutParams().height + statusBarHeight;
             toolbar.setPadding(0, statusBarHeight, 0, 0);
         }
-        if (toolbarBean.getOnMenuItemClickListener() != null) {
-            toolbar.setOnMenuItemClickListener(toolbarBean.getOnMenuItemClickListener());
+        if (toolbarConfigure.getOnMenuItemClickListener() != null) {
+            toolbar.setOnMenuItemClickListener(toolbarConfigure.getOnMenuItemClickListener());
         }
     }
 
-    public static class ToolbarBean {
+    public static class ToolbarConfigure {
 
         private Builder mBuilder;
 
-        public ToolbarBean() {
+        public ToolbarConfigure() {
             this(new Builder());
         }
 
-        public ToolbarBean(@NonNull Builder builder) {
+        public ToolbarConfigure(@NonNull Builder builder) {
             mBuilder = builder;
         }
 
@@ -309,8 +309,8 @@ public final class ToolbarUtils {
                 hideDisplayTitle = true;
             }
 
-            public ToolbarBean build() {
-                return new ToolbarBean(this);
+            public ToolbarConfigure build() {
+                return new ToolbarConfigure(this);
             }
 
             public int getNavigationIconResId() {

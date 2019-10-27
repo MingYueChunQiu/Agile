@@ -208,8 +208,8 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
     }
 
     @Override
-    protected ToolbarUtils.ToolbarBean setToolbarBean() {
-        return new ToolbarUtils.ToolbarBean.Builder()
+    protected ToolbarUtils.ToolbarConfigure setToolbarConfigure() {
+        return new ToolbarUtils.ToolbarConfigure.Builder()
                 .setImmerse(true)
                 .build();
     }

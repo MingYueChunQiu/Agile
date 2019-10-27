@@ -25,8 +25,8 @@ import com.mingyuechunqiu.agileproject.R;
 public class ToolbarActivity extends BaseToolbarPresenterActivity {
 
     @Override
-    protected ToolbarUtils.ToolbarBean setToolbarBean() {
-        return new ToolbarUtils.ToolbarBean.Builder()
+    protected ToolbarUtils.ToolbarConfigure setToolbarConfigure() {
+        return new ToolbarUtils.ToolbarConfigure.Builder()
                 .setImmerse(true)
                 .setNavigationIconResId(R.drawable.agile_arrow_back_press)
                 .setTitle("分为非")

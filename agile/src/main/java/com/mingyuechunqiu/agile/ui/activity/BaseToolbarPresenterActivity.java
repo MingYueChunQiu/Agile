@@ -25,20 +25,20 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
 public abstract class BaseToolbarPresenterActivity<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BaseNetPresenterActivity<V, P> {
 
     protected Toolbar tbBar;
-    private ToolbarUtils.ToolbarBean mToolbarBean;
+    private ToolbarUtils.ToolbarConfigure mToolbarConfigure;
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setSupportActionBar(tbBar);
-        mToolbarBean = setToolbarBean();
-        ToolbarUtils.initToolbar(tbBar, getSupportActionBar(), mToolbarBean);
+        mToolbarConfigure = setToolbarConfigure();
+        ToolbarUtils.initToolbar(tbBar, getSupportActionBar(), mToolbarConfigure);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (mToolbarBean != null && mToolbarBean.getMenuResId() != NO_RESOURCE_ID) {
-            getMenuInflater().inflate(mToolbarBean.getMenuResId(), menu);
+        if (mToolbarConfigure != null && mToolbarConfigure.getMenuResId() != NO_RESOURCE_ID) {
+            getMenuInflater().inflate(mToolbarConfigure.getMenuResId(), menu);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -48,5 +48,5 @@ public abstract class BaseToolbarPresenterActivity<V extends IBaseNetView<P>, P 
      *
      * @return 返回创建好的ToolbarBean
      */
-    protected abstract ToolbarUtils.ToolbarBean setToolbarBean();
+    protected abstract ToolbarUtils.ToolbarConfigure setToolbarConfigure();
 }
