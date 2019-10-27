@@ -31,75 +31,75 @@ public final class ToolbarUtils {
      *
      * @param toolbar          工具条
      * @param actionBar        活动条
-     * @param toolbarConfigure 工具条信息对象
+     * @param configure 工具条信息对象
      */
-    public static void initToolbar(@Nullable Toolbar toolbar, @Nullable ActionBar actionBar, @Nullable ToolbarConfigure toolbarConfigure) {
-        if (toolbar == null || toolbarConfigure == null) {
+    public static void initToolbar(@Nullable Toolbar toolbar, @Nullable ActionBar actionBar, @Nullable ToolbarConfigure configure) {
+        if (toolbar == null || configure == null) {
             return;
         }
-        if (toolbarConfigure.getNavigationIcon() != null) {
-            toolbar.setNavigationIcon(toolbarConfigure.getNavigationIcon());
+        if (configure.getNavigationIcon() != null) {
+            toolbar.setNavigationIcon(configure.getNavigationIcon());
         }
-        if (toolbarConfigure.getNavigationIconResId() != NO_RESOURCE_ID) {
-            toolbar.setNavigationIcon(toolbarConfigure.getNavigationIconResId());
+        if (configure.getNavigationIconResId() != NO_RESOURCE_ID) {
+            toolbar.setNavigationIcon(configure.getNavigationIconResId());
         }
-        if (toolbarConfigure.getLogoResId() != NO_RESOURCE_ID) {
-            toolbar.setLogo(toolbarConfigure.getLogoResId());
+        if (configure.getLogoResId() != NO_RESOURCE_ID) {
+            toolbar.setLogo(configure.getLogoResId());
         }
-        if (toolbarConfigure.getLogoDrawable() != null) {
-            toolbar.setLogo(toolbarConfigure.getLogoDrawable());
+        if (configure.getLogoDrawable() != null) {
+            toolbar.setLogo(configure.getLogoDrawable());
         }
-        if (toolbarConfigure.getOnIconClickListener() != null) {
-            toolbar.setNavigationOnClickListener(toolbarConfigure.getOnIconClickListener());
+        if (configure.getOnIconClickListener() != null) {
+            toolbar.setNavigationOnClickListener(configure.getOnIconClickListener());
         }
         //判断是否显示toolbar自身的标题
         boolean isHasCustomTitle = false;
-        if (!TextUtils.isEmpty(toolbarConfigure.getTitle())) {
+        if (!TextUtils.isEmpty(configure.getTitle())) {
             //因为在onCreate()中修改title的值，都会被重置成android:label的值
-            toolbar.setTitle(toolbarConfigure.getTitle());
-            if (toolbarConfigure.getTitleTextAppearance() == NO_RESOURCE_ID) {
+            toolbar.setTitle(configure.getTitle());
+            if (configure.getTitleTextAppearance() == NO_RESOURCE_ID) {
 
-                if (toolbarConfigure.getTitleColor() != NO_RESOURCE_ID) {
-                    toolbar.setTitleTextColor(toolbarConfigure.getTitleColor());
+                if (configure.getTitleColor() != NO_RESOURCE_ID) {
+                    toolbar.setTitleTextColor(configure.getTitleColor());
                 }
 
             } else {
-                toolbar.setTitleTextAppearance(toolbar.getContext(), toolbarConfigure.getTitleTextAppearance());
+                toolbar.setTitleTextAppearance(toolbar.getContext(), configure.getTitleTextAppearance());
             }
             isHasCustomTitle = true;
         }
-        if (!TextUtils.isEmpty(toolbarConfigure.getSubTitle())) {
-            toolbar.setSubtitle(toolbarConfigure.getSubTitle());
-            if (toolbarConfigure.getSubTitleTextAppearance() == NO_RESOURCE_ID) {
+        if (!TextUtils.isEmpty(configure.getSubTitle())) {
+            toolbar.setSubtitle(configure.getSubTitle());
+            if (configure.getSubTitleTextAppearance() == NO_RESOURCE_ID) {
 
-                if (toolbarConfigure.getSubTitleColor() != NO_RESOURCE_ID) {
-                    toolbar.setSubtitleTextColor(toolbarConfigure.getSubTitleColor());
+                if (configure.getSubTitleColor() != NO_RESOURCE_ID) {
+                    toolbar.setSubtitleTextColor(configure.getSubTitleColor());
                 }
 
             } else {
-                toolbar.setSubtitleTextAppearance(toolbar.getContext(), toolbarConfigure.getSubTitleTextAppearance());
+                toolbar.setSubtitleTextAppearance(toolbar.getContext(), configure.getSubTitleTextAppearance());
             }
             isHasCustomTitle = true;
         }
 
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(toolbarConfigure.isEnableDisplayHomeAsUp());
+            actionBar.setDisplayHomeAsUpEnabled(configure.isEnableDisplayHomeAsUp());
             //禁止活动条自身的标题显示
-            actionBar.setDisplayShowTitleEnabled(!toolbarConfigure.isHideDisplayTitle() || isHasCustomTitle);
+            actionBar.setDisplayShowTitleEnabled(!configure.isHideDisplayTitle() || isHasCustomTitle);
         }
 
-        if (toolbarConfigure.getOverflowIcon() != null) {
-            toolbar.setOverflowIcon(toolbarConfigure.getOverflowIcon());
+        if (configure.getOverflowIcon() != null) {
+            toolbar.setOverflowIcon(configure.getOverflowIcon());
         }
-        if (toolbarConfigure.isImmerse()) {
+        if (configure.isImmerse()) {
             //因为沉侵式布局会让活动条侵入到状态栏中，为了不影响活动条显示内容，
             //让活动条高度增加并且内容下移
             int statusBarHeight = ScreenUtils.getStatusBarHeight(toolbar.getContext());
             toolbar.getLayoutParams().height = toolbar.getLayoutParams().height + statusBarHeight;
             toolbar.setPadding(0, statusBarHeight, 0, 0);
         }
-        if (toolbarConfigure.getOnMenuItemClickListener() != null) {
-            toolbar.setOnMenuItemClickListener(toolbarConfigure.getOnMenuItemClickListener());
+        if (configure.getOnMenuItemClickListener() != null) {
+            toolbar.setOnMenuItemClickListener(configure.getOnMenuItemClickListener());
         }
     }
 
