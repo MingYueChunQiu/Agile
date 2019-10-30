@@ -2,7 +2,8 @@
 a agile android framework for MVP.
 一个Android高效框架，提供公共框架、方法，进行敏捷开发。
 
-最新v0.3.31:</br>
+最新v0.3.32:</br>
+   v0.3.31:</br>
 	1.优化调整</br>
 
 最新v0.3.30:</br>
@@ -22,7 +23,7 @@ allprojects {
 2.Add the dependency
 ```
 dependencies {
-	        implementation 'com.github.MingYueChunQiu:Agile:0.3.30'
+	        implementation 'com.github.MingYueChunQiu:Agile:最新版本'
 	}
 ```
 
