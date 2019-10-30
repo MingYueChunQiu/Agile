@@ -12,11 +12,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * <pre>
- *     author : xyj
- *     e-mail : xiyujieit@163.com
- *     time   : 2017/12/26
- *     desc   : Retrofit的管理器，用于获取全局唯一Retrofit，执行网络请求
- *     version: 1.0
+ *       author :    MingYueChunQiu
+ *       Github :    https://github.com/MingYueChunQiu
+ *       e-mail :    xiyujieit@163.com
+ *       time   :    2017/12/26
+ *       desc   :    Retrofit的管理器，用于获取全局唯一Retrofit，执行网络请求
+ *       version:    1.0
  * </pre>
  */
 public abstract class BaseRetrofitManager {

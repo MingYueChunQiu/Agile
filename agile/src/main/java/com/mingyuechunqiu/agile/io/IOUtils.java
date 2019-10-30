@@ -1,7 +1,8 @@
 package com.mingyuechunqiu.agile.io;
 
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 
@@ -144,7 +145,7 @@ public class IOUtils {
      * @param filePath 文件路径
      * @return 如果删除成功返回true， 否则返回false
      */
-    public static boolean deleteFile(String filePath) {
+    public static boolean deleteFile(@Nullable String filePath) {
         if (TextUtils.isEmpty(filePath)) {
             return false;
         }
@@ -153,6 +154,30 @@ public class IOUtils {
             return file.delete();
         }
         return false;
+    }
+
+    /**
+     * 删除目录
+     *
+     * @param file 文件参数
+     * @return 如果删除成功返回true，否则返回false
+     */
+    public static boolean deleteDirectory(@Nullable File file) {
+        if (file == null) {
+            return false;
+        }
+        if (file.isFile()) {
+            return file.delete();
+        }
+        File[] files = file.listFiles();
+        if (files == null) {
+            return true;
+        }
+        boolean flag = true;
+        for (File f : files) {
+            flag &= deleteDirectory(f);
+        }
+        return flag && file.delete();
     }
 
     /**

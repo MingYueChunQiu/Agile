@@ -2,10 +2,11 @@ package com.mingyuechunqiu.agile.framework.function;
 
 import android.app.Activity;
 import android.graphics.Rect;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.util.ScreenUtils;
 
@@ -13,9 +14,9 @@ import java.lang.ref.WeakReference;
 
 /**
  * <pre>
- *     author : xyj
+ *     author : MingYueChunQiu
  *     Github : https://github.com/MingYueChunQiu
- *     e-mail : yujie.xi@ehailuo.com
+ *     e-mail : xiyujieit@163.com
  *     time   : 2018/12/26
  *     desc   : 软键盘状态改变监听器
  *     version: 1.0

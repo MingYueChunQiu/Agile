@@ -191,17 +191,17 @@
 # for DexGuard only
 #-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
-# EventBus ----------------------------------------------------------
--keepattributes *Annotation*
--keepclassmembers class * {
-    @org.greenrobot.eventbus.Subscribe <methods>;
-}
--keep enum org.greenrobot.eventbus.ThreadMode { *; }
-
-# Only required if you use AsyncExecutor
--keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
-    <init>(java.lang.Throwable);
-}
+## EventBus ----------------------------------------------------------
+#-keepattributes *Annotation*
+#-keepclassmembers class * {
+#    @org.greenrobot.eventbus.Subscribe <methods>;
+#}
+#-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+#
+## Only required if you use AsyncExecutor
+#-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+#    <init>(java.lang.Throwable);
+#}
 
 # Retrofit2 ----------------------------------------------------------
 # Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
