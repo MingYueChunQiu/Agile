@@ -2,6 +2,11 @@
 a agile android framework for MVP.
 一个Android高效框架，提供公共框架、方法，进行敏捷开发。
 
+最新v0.3.30:</br>
+    1.新增FTP和Socket功能模块</br>
+    2.调整api对外提供依赖包（只有RoundCornerDialogHelper、RecorderManager、MediaPicker三个）</br>
+    3.完善混肴规则，已提供无需外部添加
+
 已重构架构，规范命名，引入Kotlin
 1.Add it in your root build.gradle at the end of repositories:
 ```
@@ -15,7 +20,7 @@ allprojects {
 2.Add the dependency
 ```
 dependencies {
-	        implementation 'com.github.MingYueChunQiu:Agile:最新版本'
+	        implementation 'com.github.MingYueChunQiu:Agile:0.3.30'
 	}
 ```
 
@@ -124,7 +129,9 @@ bottomSheetDialogFragment:
 
 (3).feature包下:
 
-目前暂时提供如下功能：&nbsp;
+目前暂时提供如下功能：&nbsp;</br>
+        remote远程包下：1.FTP处理</br>
+                       2.Socket处理</br>
 	json包：提供了对json的相关处理</br>
 	loading：提供了加载Fragment的功能</br>
 	logmanager：提供了日志功能</br>
