@@ -127,6 +127,8 @@
     public <init>(android.content.Context, android.util.AttributeSet, int);
 }
 
+-keep class com.mingyuechunqiu.agile.**{*;}
+
 #
 #----------------------------- WebView(项目中没有可以忽略) -----------------------------
 #
