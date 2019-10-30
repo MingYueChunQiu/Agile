@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.coorchice.library.SuperTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_agile_video_container_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,10 +38,20 @@
             android:layout_marginLeft="@dimen/dp_4"
             android:layout_marginTop="@dimen/dp_4"
             android:text="@string/title"
-            app:stv_text_fill_color="@android:color/white"
-            app:stv_text_stroke="true"
-            app:stv_text_stroke_color="@android:color/darker_gray"
-            app:stv_text_stroke_width="@dimen/dp_1" />
+            android:textColor="@android:color/white" />
+
+        <!--        <com.coorchice.library.SuperTextView-->
+        <!--            android:id="@+id/tv_agile_video_container_title"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="@dimen/dp_4"-->
+        <!--            android:layout_marginLeft="@dimen/dp_4"-->
+        <!--            android:layout_marginTop="@dimen/dp_4"-->
+        <!--            android:text="@string/title"-->
+        <!--            app:stv_text_fill_color="@android:color/white"-->
+        <!--            app:stv_text_stroke="true"-->
+        <!--            app:stv_text_stroke_color="@android:color/darker_gray"-->
+        <!--            app:stv_text_stroke_width="@dimen/dp_1" />-->
 
         <ProgressBar
             android:id="@+id/pb_agile_video_container_loading"
