@@ -48,13 +48,8 @@ dependencies {
     implementation 'pub.devrel:easypermissions:2.0.1'
     implementation 'com.noober.background:core:1.5.1'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
-    //    implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation group: 'commons-net', name: 'commons-net', version: '3.6'
-
-    //作为基础依赖包，使用api对外提供使用的依赖供外界使用
-    api 'com.github.MingYueChunQiu:RoundCornerDialogHelper:0.2.2'
-    api 'com.github.MingYueChunQiu:RecorderManager:0.2.28'
-    api 'com.github.MingYueChunQiu:MediaPicker:0.1.8'
+    implementation 'com.github.MingYueChunQiu:RoundCornerDialogHelper:0.2.2'
 }
 
 repositories {

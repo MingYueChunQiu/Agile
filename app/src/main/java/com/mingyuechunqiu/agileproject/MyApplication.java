@@ -3,6 +3,8 @@ package com.mingyuechunqiu.agileproject;
 import android.app.Application;
 import android.content.Context;
 
+import androidx.multidex.MultiDex;
+
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.frame.AgileFrameConfigure;
 import com.mingyuechunqiu.agile.frame.data.remote.AgileNetworkConfig;
@@ -30,6 +32,12 @@ public class MyApplication extends Application {
      */
     public static Context getAppContext() {
         return sContext;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     @Override
