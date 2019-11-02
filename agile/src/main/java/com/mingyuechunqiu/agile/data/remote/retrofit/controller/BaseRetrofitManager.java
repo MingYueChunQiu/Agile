@@ -1,5 +1,8 @@
 package com.mingyuechunqiu.agile.data.remote.retrofit.controller;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.frame.AgileFrameConfigure;
 
@@ -43,16 +46,18 @@ public abstract class BaseRetrofitManager {
      *
      * @return 返回OkHttpClient实例对象
      */
+    @NonNull
     protected OkHttpClient getDefaultOkHttpClient() {
-        AgileFrameConfigure configure = Agile.getConfigure();
-        return new OkHttpClient.Builder()
-                .connectTimeout(configure.getNetworkConfig().getConnectNetTimeout() <= 0 ?
-                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getConnectNetTimeout(), TimeUnit.SECONDS)
-                .readTimeout(configure.getNetworkConfig().getReadNetTimeout() <= 0 ?
-                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getReadNetTimeout(), TimeUnit.SECONDS)
-                .writeTimeout(configure.getNetworkConfig().getWriteNetTimeout() <= 0 ?
-                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getWriteNetTimeout(), TimeUnit.SECONDS)
-                .build();
+        OkHttpClient.Builder builder = initOkHttpClientBuilder(initDefaultOkHttpClientBuilder());
+        if (builder == null) {
+            builder = initDefaultOkHttpClientBuilder();
+        }
+        return builder.build();
+    }
+
+    @Nullable
+    protected OkHttpClient.Builder initOkHttpClientBuilder(@NonNull OkHttpClient.Builder builder) {
+        return builder;
     }
 
     /**
@@ -87,4 +92,20 @@ public abstract class BaseRetrofitManager {
      */
     protected abstract String getTestBaseUrl();
 
+    /**
+     * 初始化OkHttpClient建造者
+     *
+     * @return 返回建造者
+     */
+    @NonNull
+    private OkHttpClient.Builder initDefaultOkHttpClientBuilder() {
+        AgileFrameConfigure configure = Agile.getConfigure();
+        return new OkHttpClient.Builder()
+                .connectTimeout(configure.getNetworkConfig().getConnectNetTimeout() <= 0 ?
+                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getConnectNetTimeout(), TimeUnit.SECONDS)
+                .readTimeout(configure.getNetworkConfig().getReadNetTimeout() <= 0 ?
+                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getReadNetTimeout(), TimeUnit.SECONDS)
+                .writeTimeout(configure.getNetworkConfig().getWriteNetTimeout() <= 0 ?
+                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getWriteNetTimeout(), TimeUnit.SECONDS);
+    }
 }

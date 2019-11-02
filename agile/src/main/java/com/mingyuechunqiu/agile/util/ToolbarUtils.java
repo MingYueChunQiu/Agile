@@ -26,11 +26,14 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
  */
 public final class ToolbarUtils {
 
+    private ToolbarUtils() {
+    }
+
     /**
      * 初始化活动条
      *
-     * @param toolbar          工具条
-     * @param actionBar        活动条
+     * @param toolbar   工具条
+     * @param actionBar 活动条
      * @param configure 工具条信息对象
      */
     public static void initToolbar(@Nullable Toolbar toolbar, @Nullable ActionBar actionBar, @Nullable ToolbarConfigure configure) {
