@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.feature.loading.data;
+package com.mingyuechunqiu.agile.feature.statusview.bean;
 
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -6,7 +6,8 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.StyleRes;
 import androidx.fragment.app.DialogFragment;
 
-import com.mingyuechunqiu.agile.feature.loading.function.LoadingDfgContainerable;
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
+import com.mingyuechunqiu.agile.feature.statusview.function.LoadingDfgContainerable;
 
 /**
  * <pre>
@@ -18,10 +19,9 @@ import com.mingyuechunqiu.agile.feature.loading.function.LoadingDfgContainerable
  *     version: 1.0
  * </pre>
  */
-public class LoadingDialogFragmentOption {
+public class StatusViewOption {
 
     private LoadingDfgContainerable containerable;//对话框布局容器（使用了自定义容器，主题类型属性将不起作用）
-    private Constants.ThemeType themeType;//对话框主题类型
     private boolean cancelWithOutside;//是否能触摸外围区域取消对话框
     private int dialogWidth, dialogHeight;//对话框宽高
     private Drawable loadingBackground;//加载背景图像
@@ -33,7 +33,7 @@ public class LoadingDialogFragmentOption {
     private int textAppearance;//文本样式
     private OnLoadingOptionListener loadingOptionListener;//加载相关监听器
 
-    public LoadingDialogFragmentOption() {
+    public StatusViewOption() {
         showLoadingText = true;
     }
 
@@ -43,14 +43,6 @@ public class LoadingDialogFragmentOption {
 
     public void setContainerable(LoadingDfgContainerable containerable) {
         this.containerable = containerable;
-    }
-
-    public Constants.ThemeType getThemeType() {
-        return themeType;
-    }
-
-    public void setThemeType(Constants.ThemeType themeType) {
-        this.themeType = themeType;
     }
 
     public boolean isCancelWithOutside() {
@@ -146,13 +138,13 @@ public class LoadingDialogFragmentOption {
      */
     public static class Builder {
 
-        private LoadingDialogFragmentOption mOption;
+        private StatusViewOption mOption;
 
         public Builder() {
-            mOption = new LoadingDialogFragmentOption();
+            mOption = new StatusViewOption();
         }
 
-        public LoadingDialogFragmentOption build() {
+        public StatusViewOption build() {
             return mOption;
         }
 
@@ -162,15 +154,6 @@ public class LoadingDialogFragmentOption {
 
         public Builder setContainerable(LoadingDfgContainerable containerable) {
             mOption.containerable = containerable;
-            return this;
-        }
-
-        public Constants.ThemeType getThemeType() {
-            return mOption.themeType;
-        }
-
-        public Builder setThemeType(Constants.ThemeType themeType) {
-            mOption.themeType = themeType;
             return this;
         }
 

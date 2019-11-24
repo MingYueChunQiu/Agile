@@ -6,7 +6,7 @@ import androidx.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.base.model.BaseAbstractModel;
 import com.mingyuechunqiu.agile.base.view.IBaseDialogView;
-import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 
 /**
  * <pre>
@@ -37,7 +37,7 @@ public abstract class BaseDialogPresenter<V extends IBaseDialogView, M extends B
      *
      * @param option 加载配置参数信息对象
      */
-    protected void showLoadingDialog(@Nullable LoadingDialogFragmentOption option) {
+    protected void showLoadingDialog(@Nullable StatusViewOption option) {
         if (!checkViewRefIsNull()) {
             mViewRef.get().showLoadingDialog(option);
         }
@@ -49,7 +49,7 @@ public abstract class BaseDialogPresenter<V extends IBaseDialogView, M extends B
      * @param containerId 对话框所属布局ID
      * @param option      加载对话框配置信息对象
      */
-    protected void showLoadingDialog(@IdRes int containerId, LoadingDialogFragmentOption option) {
+    protected void showLoadingDialog(@IdRes int containerId, StatusViewOption option) {
         if (!checkViewRefIsNull()) {
             mViewRef.get().showLoadingDialog(containerId, option);
         }

@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.feature.loading.function;
+package com.mingyuechunqiu.agile.feature.statusview.function;
 
 import android.view.View;
 import android.widget.ProgressBar;

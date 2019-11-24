@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.feature.loading.function;
+package com.mingyuechunqiu.agile.feature.statusview.function;
 
 import androidx.fragment.app.FragmentManager;
 
@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager;
  *     version: 1.0
  * </pre>
  */
-interface LoadingDfgControlable {
+interface ILoadingDfgControl {
 
     /**
      * 显示加载对话框

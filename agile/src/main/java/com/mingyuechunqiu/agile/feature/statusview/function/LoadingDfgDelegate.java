@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.feature.loading.function;
+package com.mingyuechunqiu.agile.feature.statusview.function;
 
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;
@@ -13,7 +13,7 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-class LoadingDfgDelegate implements LoadingDfgFunctionable {
+class LoadingDfgDelegate implements ILoadingDfgFunction {
 
     private final List<Runnable> mActions = new ArrayList<>();
 
@@ -39,7 +39,7 @@ class LoadingDfgDelegate implements LoadingDfgFunctionable {
     private WeakReference<ProgressBar> pbLoadingRef;
     private WeakReference<TextView> tvTextRef;
 
-    private LoadingDialogFragmentOption mOption;
+    private StatusViewOption mOption;
     private Handler mHandler;
 
     /**
@@ -238,13 +238,13 @@ class LoadingDfgDelegate implements LoadingDfgFunctionable {
     }
 
     @Override
-    public void setOnLoadingOptionListener(LoadingDialogFragmentOption.OnLoadingOptionListener listener) {
+    public void setOnLoadingOptionListener(StatusViewOption.OnLoadingOptionListener listener) {
         checkOrCreateOption();
         mOption.setOnLoadingOptionListener(listener);
     }
 
     @Override
-    public void setLoadingFragmentOption(LoadingDialogFragmentOption option) {
+    public void setLoadingFragmentOption(StatusViewOption option) {
         if (option == null) {
             return;
         }
@@ -262,7 +262,7 @@ class LoadingDfgDelegate implements LoadingDfgFunctionable {
 
     @NonNull
     @Override
-    public LoadingDialogFragmentOption getLoadingFragmentOption() {
+    public StatusViewOption getLoadingFragmentOption() {
         checkOrCreateOption();
         return mOption;
     }
@@ -288,7 +288,7 @@ class LoadingDfgDelegate implements LoadingDfgFunctionable {
      */
     private void checkOrCreateOption() {
         if (mOption == null) {
-            mOption = new LoadingDialogFragmentOption();
+            mOption = new StatusViewOption();
         }
     }
 

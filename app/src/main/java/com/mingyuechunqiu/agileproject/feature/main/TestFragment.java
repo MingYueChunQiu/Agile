@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
-import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProviderable;
+import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
+import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.ui.fragment.BasePresenterFragment;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -34,7 +34,7 @@ public class TestFragment extends BasePresenterFragment<MainContract.View<MainCo
     }
 
     @Override
-    public void showLoadingDialog(@Nullable LoadingDialogFragmentOption option) {
+    public void showLoadingDialog(@Nullable StatusViewOption option) {
 
     }
 
@@ -44,12 +44,12 @@ public class TestFragment extends BasePresenterFragment<MainContract.View<MainCo
     }
 
     @Override
-    public LoadingDfgProviderable getLoadingDialog() {
+    public IStatusViewManager getLoadingDialog() {
         return null;
     }
 
     @Override
-    public void showLoadingDialog(int containerId, LoadingDialogFragmentOption option) {
+    public void showLoadingDialog(int containerId, StatusViewOption option) {
 
     }
 

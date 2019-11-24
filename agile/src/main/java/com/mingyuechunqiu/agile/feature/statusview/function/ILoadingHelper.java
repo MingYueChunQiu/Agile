@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.feature.loading.function;
+package com.mingyuechunqiu.agile.feature.statusview.function;
 
 import androidx.fragment.app.DialogFragment;
 
@@ -9,11 +9,11 @@ import androidx.fragment.app.DialogFragment;
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2019/1/24
  *     desc   : 加载Fragment主接口（用户实现此接口）
- *              继承LoadingDfgFunctionable, LoadingDfgControlable
+ *              继承LoadingDfgFunctionable, ILoadingDfgControl
  *     version: 1.0
  * </pre>
  */
-public interface LoadingDialogFragmentable extends LoadingDfgFunctionable, LoadingDfgControlable {
+public interface ILoadingHelper extends ILoadingDfgFunction, ILoadingDfgControl {
 
     DialogFragment getDialogFragment();
 }

@@ -1,11 +1,11 @@
-package com.mingyuechunqiu.agile.feature.loading.function;
+package com.mingyuechunqiu.agile.feature.statusview.function;
 
 import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 
-import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 
 /**
  * <pre>
@@ -17,7 +17,7 @@ import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption
  *     version: 1.0
  * </pre>
  */
-interface LoadingDfgFunctionable {
+interface ILoadingDfgFunction {
 
     /**
      * 释放资源
@@ -93,19 +93,19 @@ interface LoadingDfgFunctionable {
      *
      * @param listener 加载相关监听器
      */
-    void setOnLoadingOptionListener(LoadingDialogFragmentOption.OnLoadingOptionListener listener);
+    void setOnLoadingOptionListener(StatusViewOption.OnLoadingOptionListener listener);
 
     /**
      * 设置加载配置信息
      *
      * @param option 配置信息对象
      */
-    void setLoadingFragmentOption(LoadingDialogFragmentOption option);
+    void setLoadingFragmentOption(StatusViewOption option);
 
     /**
      * 获取配置信息
      *
      * @return 返回配置信息对象
      */
-    LoadingDialogFragmentOption getLoadingFragmentOption();
+    StatusViewOption getLoadingFragmentOption();
 }

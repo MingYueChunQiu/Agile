@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.feature.loading.data;
+package com.mingyuechunqiu.agile.feature.statusview.constants;
 
 /**
  * <pre>
@@ -10,16 +10,19 @@ package com.mingyuechunqiu.agile.feature.loading.data;
  *     version: 1.0
  * </pre>
  */
-public class Constants {
-
-    //对话框主题类型（默认提供浅色和深色两种主题）
-    public enum ThemeType {
-        LIGHT_THEME, DARK_THEME
-    }
+public class StatusViewConstants {
 
     //模式类型
     public enum ModeType {
         //未设置，对话框模式，Fragment模式
         TYPE_NOT_SET, TYPE_DIALOG, TYPE_FRAGMENT
+    }
+
+    /**
+     * 状态类型
+     */
+    public enum StatusType {
+        //加载，空，网络异常，错误，自定义
+        TYPE_LOADING, TYPE_EMPTY, TYPE_NETWORK_ANOMALY, TYPE_ERROR, TYPE_CUSTOM
     }
 }

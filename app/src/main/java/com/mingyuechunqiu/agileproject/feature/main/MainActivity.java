@@ -16,9 +16,9 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
-import com.mingyuechunqiu.agile.feature.loading.data.Constants;
-import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
-import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProviderable;
+import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
+import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agile.ui.activity.WebViewActivity;
@@ -108,17 +108,17 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void showLoadingDialog(int containerId, LoadingDialogFragmentOption option) {
+    public void showLoadingDialog(int containerId, StatusViewOption option) {
         super.showLoadingDialog(getSupportFragmentManager(), containerId, option);
     }
 
     @Override
-    public void showLoadingDialog(@Nullable LoadingDialogFragmentOption option) {
+    public void showLoadingDialog(@Nullable StatusViewOption option) {
         super.showLoadingDialog(option);
     }
 
     @Override
-    public LoadingDfgProviderable getLoadingDialog() {
+    public IStatusViewManager getLoadingDialog() {
         return super.getCurrentLoadingDialog();
     }
 
@@ -186,14 +186,14 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         AppCompatButton btnHide = view.findViewById(R.id.btn_main_hide);
         btnShow.setOnClickListener(this);
         btnHide.setOnClickListener(this);
-        LoadingDialogFragmentOption option = new LoadingDialogFragmentOption.Builder()
+        StatusViewOption option = new StatusViewOption.Builder()
 //                .setLoadingBackground(new ColorDrawable(Color.RED))
 //                .setText("放大")
-                .setThemeType(Constants.ThemeType.DARK_THEME)
+                .setThemeType(StatusViewConstants.ThemeType.DARK_THEME)
 //                .setDialogWidth(400)
 //                .setDialogHeight(500)
                 .setCancelWithOutside(true)
-//                .setOnLoadingOptionListener(new LoadingDialogFragmentOption.OnLoadingOptionListener() {
+//                .setOnLoadingOptionListener(new StatusViewOption.OnLoadingOptionListener() {
 //                    @Override
 //                    public void onClickKeyBack(DialogInterface dialog) {
 //                        showToast("哈哈");
@@ -264,10 +264,10 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 //                getLoadingFragment().setLoadingMessageColor(Color.BLUE);
 //                getLoadingFragment().setLoadingMessage("O(∩_∩)O哈哈~");
 //                showLoadingDialog(null);
-//                getCurrentLoadingDialog().setThemeType(Constants.ThemeType.DARK_THEME);
+//                getCurrentLoadingDialog().setThemeType(StatusViewConstants.ThemeType.DARK_THEME);
 
 //                showLoadingDialog("蜂王浆", true);
-//                getCurrentLoadingDialog().setOnLoadingOptionListener(new LoadingDialogFragmentOption.OnLoadingOptionListener() {
+//                getCurrentLoadingDialog().setOnLoadingOptionListener(new StatusViewOption.OnLoadingOptionListener() {
 //                    @Override
 //                    public boolean onClickKeyBack(DialogInterface dialog) {
 //                        showToast("单位");

@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.DialogFragment;
 
-import com.mingyuechunqiu.agile.feature.loading.data.Constants;
-import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -45,11 +45,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         AppCompatButton btnHide = view.findViewById(R.id.btn_fragment_main_hide);
         btnShow.setOnClickListener(this);
         btnHide.setOnClickListener(this);
-        LoadingDialogFragmentOption option = new LoadingDialogFragmentOption.Builder()
+        StatusViewOption option = new StatusViewOption.Builder()
                 .setDialogWidth(200)
                 .setDialogHeight(600)
                 .setCancelWithOutside(true)
-                .setOnLoadingOptionListener(new LoadingDialogFragmentOption.OnLoadingOptionListener() {
+                .setOnLoadingOptionListener(new StatusViewOption.OnLoadingOptionListener() {
                     @Override
                     public boolean onClickKeyBack(DialogInterface dialog) {
 //                        dismissLoadingDialog();
@@ -75,11 +75,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_fragment_main_show:
 //                showLoadingDialog("被我", false);
-                showLoadingDialog(new LoadingDialogFragmentOption.Builder()
+                showLoadingDialog(new StatusViewOption.Builder()
                         .setDialogWidth(500)
                         .setDialogHeight(400)
                         .setCancelWithOutside(true)
-                        .setOnLoadingOptionListener(new LoadingDialogFragmentOption.OnLoadingOptionListener() {
+                        .setOnLoadingOptionListener(new StatusViewOption.OnLoadingOptionListener() {
                             @Override
                             public boolean onClickKeyBack(DialogInterface dialog) {
 //                                dismissLoadingDialog();
@@ -92,7 +92,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                                 showToast("VB我vwe");
                             }
                         })
-                        .setThemeType(Constants.ThemeType.DARK_THEME).build());
+                        .setThemeType(StatusViewConstants.ThemeType.DARK_THEME).build());
                 break;
             case R.id.btn_fragment_main_hide:
                 dismissLoadingDialog();

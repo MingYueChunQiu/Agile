@@ -19,10 +19,10 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.mingyuechunqiu.agile.R;
-import com.mingyuechunqiu.agile.feature.loading.data.Constants;
-import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
-import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProvideFactory;
-import com.mingyuechunqiu.agile.feature.loading.provider.LoadingDfgProviderable;
+import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
+import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
+import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.framework.function.TransferDataCallback;
 import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
@@ -42,7 +42,7 @@ import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
 public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
 
     private Toast mToast;
-    private LoadingDfgProviderable mLoadingDfgProvider;
+    private IStatusViewManager mLoadingDfgProvider;
 
     @Nullable
     @Override
@@ -148,10 +148,10 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      * @param cancelable 是否可以取消
      */
     protected void showLoadingDialog(@Nullable String hint, boolean cancelable) {
-        LoadingDialogFragmentOption option = getCurrentLoadingDialog().getLoadingFragmentOption();
+        StatusViewOption option = getCurrentLoadingDialog().getLoadingFragmentOption();
         option.setText(hint);
         option.setCancelWithOutside(cancelable);
-        showLoadingDialog(interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_DIALOG));
+        showLoadingDialog(interceptLoadingFragmentOption(option, StatusViewConstants.ModeType.TYPE_DIALOG));
     }
 
     /**
@@ -159,14 +159,14 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      *
      * @param option 加载配置参数信息对象
      */
-    protected void showLoadingDialog(@Nullable LoadingDialogFragmentOption option) {
+    protected void showLoadingDialog(@Nullable StatusViewOption option) {
         FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager == null) {
             return;
         }
-        LoadingDialogFragmentOption temp = interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_DIALOG);
+        StatusViewOption temp = interceptLoadingFragmentOption(option, StatusViewConstants.ModeType.TYPE_DIALOG);
         if (mLoadingDfgProvider == null) {
-            mLoadingDfgProvider = LoadingDfgProvideFactory.newInstance(temp);
+            mLoadingDfgProvider = StatusViewManagerProvider.newInstance(temp);
         } else {
             //在这儿默认逻辑为如果option为空，代表不变
             if (temp != null) {
@@ -186,7 +186,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      * @param containerId 对话框所属布局ID
      * @param option      加载对话框配置信息对象
      */
-    protected void showLoadingDialog(@IdRes int containerId, @Nullable LoadingDialogFragmentOption option) {
+    protected void showLoadingDialog(@IdRes int containerId, @Nullable StatusViewOption option) {
         showLoadingDialog(getChildFragmentManager(), containerId, option);
     }
 
@@ -197,12 +197,12 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      * @param containerId 对话框所属布局ID
      * @param option      加载对话框配置信息对象
      */
-    protected void showLoadingDialog(@Nullable FragmentManager manager, @IdRes int containerId, @Nullable LoadingDialogFragmentOption option) {
+    protected void showLoadingDialog(@Nullable FragmentManager manager, @IdRes int containerId, @Nullable StatusViewOption option) {
         if (manager == null) {
             return;
         }
         getCurrentLoadingDialog().showLoadingDialog(manager, containerId,
-                interceptLoadingFragmentOption(option, Constants.ModeType.TYPE_FRAGMENT));
+                interceptLoadingFragmentOption(option, StatusViewConstants.ModeType.TYPE_FRAGMENT));
     }
 
     /**
@@ -238,9 +238,9 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      * @return 返回加载Fragment实例
      */
     @NonNull
-    protected LoadingDfgProviderable getCurrentLoadingDialog() {
+    protected IStatusViewManager getCurrentLoadingDialog() {
         if (mLoadingDfgProvider == null) {
-            mLoadingDfgProvider = LoadingDfgProvideFactory.newInstance();
+            mLoadingDfgProvider = StatusViewManagerProvider.newInstance();
         }
         return mLoadingDfgProvider;
     }
@@ -252,9 +252,9 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      * @param modeType 加载对话框模式
      * @return 返回进行过拦截处理的加载对话框配置信息对象
      */
-    protected LoadingDialogFragmentOption interceptLoadingFragmentOption(
-            @Nullable LoadingDialogFragmentOption option, Constants.ModeType modeType) {
-        return modeType == Constants.ModeType.TYPE_NOT_SET ? null : option;
+    protected StatusViewOption interceptLoadingFragmentOption(
+            @Nullable StatusViewOption option, StatusViewConstants.ModeType modeType) {
+        return modeType == StatusViewConstants.ModeType.TYPE_NOT_SET ? null : option;
     }
 
     /**

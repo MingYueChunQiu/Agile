@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.feature.loading.function;
+package com.mingyuechunqiu.agile.feature.statusview.function;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -19,8 +19,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mingyuechunqiu.agile.R;
-import com.mingyuechunqiu.agile.feature.loading.data.Constants;
-import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
+import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 
 /**
  * <pre>
@@ -34,7 +34,7 @@ import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption
  *     version: 1.0
  * </pre>
  */
-public class LoadingDialogFragment extends DialogFragment implements LoadingDialogFragmentable {
+public class LoadingDialogFragment extends DialogFragment implements ILoadingHelper {
 
     private LoadingDfgDelegate mDelegate;
 
@@ -59,7 +59,7 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
      * @return 返回加载Fragment实例
      */
     @NonNull
-    public static LoadingDialogFragment newInstance(LoadingDialogFragmentOption option) {
+    public static LoadingDialogFragment newInstance(StatusViewOption option) {
         LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
         loadingDialogFragment.setLoadingFragmentOption(option);
         return loadingDialogFragment;
@@ -89,7 +89,7 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
             pbLoading = containerable.getProgressBar();
             tvText = containerable.getTextView();
         } else {
-            if (mDelegate.getLoadingFragmentOption().getThemeType() == Constants.ThemeType.DARK_THEME) {
+            if (mDelegate.getLoadingFragmentOption().getThemeType() == StatusViewConstants.ThemeType.DARK_THEME) {
                 view = inflater.inflate(R.layout.agile_dialog_fragment_dark_loading, container, false);
                 loadingContainer = view.findViewById(R.id.ll_agile_dfg_dark_loading_container);
                 pbLoading = view.findViewById(R.id.pb_agile_dfg_dark_loading_progress);
@@ -147,7 +147,7 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
      * @param option 配置信息对象
      */
     @Override
-    public void setLoadingFragmentOption(LoadingDialogFragmentOption option) {
+    public void setLoadingFragmentOption(StatusViewOption option) {
         checkOrCreateLoadingDfgDelegate();
         mDelegate.setLoadingFragmentOption(option);
     }
@@ -158,7 +158,7 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
      * @return 返回配置信息对象
      */
     @Override
-    public LoadingDialogFragmentOption getLoadingFragmentOption() {
+    public StatusViewOption getLoadingFragmentOption() {
         checkOrCreateLoadingDfgDelegate();
         return mDelegate.getLoadingFragmentOption();
     }
@@ -256,7 +256,7 @@ public class LoadingDialogFragment extends DialogFragment implements LoadingDial
     }
 
     @Override
-    public void setOnLoadingOptionListener(LoadingDialogFragmentOption.OnLoadingOptionListener listener) {
+    public void setOnLoadingOptionListener(StatusViewOption.OnLoadingOptionListener listener) {
         checkOrCreateLoadingDfgDelegate();
         mDelegate.setOnLoadingOptionListener(listener);
     }

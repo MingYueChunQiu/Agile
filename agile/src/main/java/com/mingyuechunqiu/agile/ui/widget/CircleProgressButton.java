@@ -121,10 +121,10 @@ public class CircleProgressButton extends View {
         int currentY = getHeight() / 2;
         canvas.drawCircle(currentX, currentY, radius, mCirclePaint);
         if (getRingVisible()) {
-            mRectF.set(currentX - radius - ringWidth / 2 - mInnerPadding,
-                    currentY - radius - ringWidth / 2 - mInnerPadding,
-                    currentX + radius + ringWidth / 2 + mInnerPadding,
-                    currentY + radius + ringWidth / 2 + mInnerPadding);
+            mRectF.set(currentX - radius - ringWidth * 1.0F / 2 - mInnerPadding,
+                    currentY - radius - ringWidth * 1.0F / 2 - mInnerPadding,
+                    currentX + radius + ringWidth * 1.0F / 2 + mInnerPadding,
+                    currentY + radius + ringWidth * 1.0F / 2 + mInnerPadding);
             canvas.save();
             canvas.rotate(-90, currentX, currentY);
             canvas.drawArc(mRectF, 0, mEndAngle, false, mRingPaint);

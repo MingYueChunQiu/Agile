@@ -1,12 +1,10 @@
-package com.mingyuechunqiu.agile.feature.loading.provider;
+package com.mingyuechunqiu.agile.feature.statusview.function;
 
 import androidx.annotation.IdRes;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.mingyuechunqiu.agile.feature.loading.data.Constants;
-import com.mingyuechunqiu.agile.feature.loading.data.LoadingDialogFragmentOption;
-import com.mingyuechunqiu.agile.feature.loading.function.LoadingDialogFragmentable;
+import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 
 /**
  * <pre>
@@ -19,14 +17,7 @@ import com.mingyuechunqiu.agile.feature.loading.function.LoadingDialogFragmentab
  *     version: 1.0
  * </pre>
  */
-public interface LoadingDfgProviderable extends LoadingDialogFragmentable {
-
-    /**
-     * 设置对话框主题样式
-     *
-     * @param themeType 对话框主题样式
-     */
-    void setThemeType(Constants.ThemeType themeType);
+public interface IStatusViewManager extends ILoadingHelper {
 
     /**
      * 添加显示加载对话框
@@ -35,7 +26,7 @@ public interface LoadingDfgProviderable extends LoadingDialogFragmentable {
      * @param containerId 对话框所属布局ID
      * @param option      加载对话框配置信息对象
      */
-    void showLoadingDialog(FragmentManager manager, @IdRes int containerId, LoadingDialogFragmentOption option);
+    void showLoadingDialog(FragmentManager manager, @IdRes int containerId, StatusViewOption option);
 
     /**
      * 隐藏加载对话框
