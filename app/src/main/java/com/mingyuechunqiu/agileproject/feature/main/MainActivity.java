@@ -193,7 +193,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 //                .setDialogWidth(400)
 //                .setDialogHeight(500)
                 .setCancelWithOutside(true)
-//                .setOnLoadingOptionListener(new StatusViewOption.OnLoadingOptionListener() {
+//                .setOnStatusViewDialogListener(new StatusViewOption.OnStatusViewDialogListener() {
 //                    @Override
 //                    public void onClickKeyBack(DialogInterface dialog) {
 //                        showToast("哈哈");
@@ -267,7 +267,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 //                getCurrentLoadingDialog().setThemeType(StatusViewConstants.ThemeType.DARK_THEME);
 
 //                showLoadingDialog("蜂王浆", true);
-//                getCurrentLoadingDialog().setOnLoadingOptionListener(new StatusViewOption.OnLoadingOptionListener() {
+//                getCurrentLoadingDialog().setOnStatusViewDialogListener(new StatusViewOption.OnStatusViewDialogListener() {
 //                    @Override
 //                    public boolean onClickKeyBack(DialogInterface dialog) {
 //                        showToast("单位");

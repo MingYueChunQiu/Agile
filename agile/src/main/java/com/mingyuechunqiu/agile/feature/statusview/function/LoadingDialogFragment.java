@@ -256,7 +256,7 @@ public class LoadingDialogFragment extends DialogFragment implements ILoadingHel
     }
 
     @Override
-    public void setOnLoadingOptionListener(StatusViewOption.OnLoadingOptionListener listener) {
+    public void setOnLoadingOptionListener(StatusViewOption.OnStatusViewDialogListener listener) {
         checkOrCreateLoadingDfgDelegate();
         mDelegate.setOnLoadingOptionListener(listener);
     }

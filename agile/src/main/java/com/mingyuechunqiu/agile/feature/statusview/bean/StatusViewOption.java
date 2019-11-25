@@ -2,11 +2,12 @@ package com.mingyuechunqiu.agile.feature.statusview.bean;
 
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 import androidx.fragment.app.DialogFragment;
 
-import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.LoadingDfgContainerable;
 
 /**
@@ -21,116 +22,118 @@ import com.mingyuechunqiu.agile.feature.statusview.function.LoadingDfgContainera
  */
 public class StatusViewOption {
 
-    private LoadingDfgContainerable containerable;//对话框布局容器（使用了自定义容器，主题类型属性将不起作用）
-    private boolean cancelWithOutside;//是否能触摸外围区域取消对话框
-    private int dialogWidth, dialogHeight;//对话框宽高
-    private Drawable loadingBackground;//加载背景图像
-    private Drawable indeterminateDrawable;//无进度图像
-    private boolean showLoadingText;//是否显示加载文本（默认显示）
-    private Drawable textBackground;//文本背景图像
-    private String text;//加载文本
-    private int textColor;//文本颜色
-    private int textAppearance;//文本样式
-    private OnLoadingOptionListener loadingOptionListener;//加载相关监听器
+    private Builder mBuilder;
 
-    public StatusViewOption() {
-        showLoadingText = true;
+    private StatusViewOption() {
+        this(new Builder());
+    }
+
+    private StatusViewOption(@NonNull Builder builder) {
+        mBuilder = builder;
     }
 
     public LoadingDfgContainerable getContainerable() {
-        return containerable;
+        return mBuilder.containerable;
     }
 
     public void setContainerable(LoadingDfgContainerable containerable) {
-        this.containerable = containerable;
+        mBuilder.containerable = containerable;
     }
 
     public boolean isCancelWithOutside() {
-        return cancelWithOutside;
+        return mBuilder.cancelWithOutside;
     }
 
     public void setCancelWithOutside(boolean cancelWithOutside) {
-        this.cancelWithOutside = cancelWithOutside;
+        mBuilder.cancelWithOutside = cancelWithOutside;
     }
 
     public int getDialogWidth() {
-        return dialogWidth;
+        return mBuilder.dialogWidth;
     }
 
     public void setDialogWidth(int dialogWidth) {
-        this.dialogWidth = dialogWidth;
+        mBuilder.dialogWidth = dialogWidth;
     }
 
     public int getDialogHeight() {
-        return dialogHeight;
+        return mBuilder.dialogHeight;
     }
 
     public void setDialogHeight(int dialogHeight) {
-        this.dialogHeight = dialogHeight;
+        mBuilder.dialogHeight = dialogHeight;
     }
 
     public Drawable getLoadingBackground() {
-        return loadingBackground;
+        return mBuilder.loadingBackground;
     }
 
     public void setLoadingBackground(Drawable loadingBackground) {
-        this.loadingBackground = loadingBackground;
+        mBuilder.loadingBackground = loadingBackground;
     }
 
     public Drawable getIndeterminateDrawable() {
-        return indeterminateDrawable;
+        return mBuilder.indeterminateDrawable;
     }
 
     public void setIndeterminateDrawable(Drawable indeterminateDrawable) {
-        this.indeterminateDrawable = indeterminateDrawable;
+        mBuilder.indeterminateDrawable = indeterminateDrawable;
     }
 
     public boolean isShowLoadingText() {
-        return showLoadingText;
+        return mBuilder.showLoadingText;
     }
 
     public void setShowLoadingText(boolean showLoadingText) {
-        this.showLoadingText = showLoadingText;
+        mBuilder.showLoadingText = showLoadingText;
     }
 
     public Drawable getTextBackground() {
-        return textBackground;
+        return mBuilder.textBackground;
     }
 
     public void setTextBackground(Drawable textBackground) {
-        this.textBackground = textBackground;
+        mBuilder.textBackground = textBackground;
     }
 
     public String getText() {
-        return text;
+        return mBuilder.text;
     }
 
     public void setText(String text) {
-        this.text = text;
+        mBuilder.text = text;
     }
 
     public int getTextColor() {
-        return textColor;
+        return mBuilder.textColor;
     }
 
     public void setTextColor(@ColorInt int textColor) {
-        this.textColor = textColor;
+        mBuilder.textColor = textColor;
     }
 
     public int getTextAppearance() {
-        return textAppearance;
+        return mBuilder.textAppearance;
     }
 
     public void setTextAppearance(@StyleRes int textAppearance) {
-        this.textAppearance = textAppearance;
+        mBuilder.textAppearance = textAppearance;
     }
 
-    public OnLoadingOptionListener getOnLoadingOptionListener() {
-        return loadingOptionListener;
+    public OnStatusViewDialogListener getOnLoadingOptionListener() {
+        return mBuilder.dialogListener;
     }
 
-    public void setOnLoadingOptionListener(OnLoadingOptionListener listener) {
-        this.loadingOptionListener = listener;
+    public void setOnLoadingOptionListener(OnStatusViewDialogListener listener) {
+        mBuilder.dialogListener = listener;
+    }
+
+    public OnStatusViewButtonListener getOnStatusViewButtonListener() {
+        return mBuilder.buttonListener;
+    }
+
+    public void setOnStatusViewButtonListener(OnStatusViewButtonListener buttonListener) {
+        mBuilder.buttonListener = buttonListener;
     }
 
     /**
@@ -138,121 +141,141 @@ public class StatusViewOption {
      */
     public static class Builder {
 
-        private StatusViewOption mOption;
+        private LoadingDfgContainerable containerable;//对话框布局容器（使用了自定义容器，主题类型属性将不起作用）
+        private boolean cancelWithOutside;//是否能触摸外围区域取消对话框
+        private int dialogWidth, dialogHeight;//对话框宽高
+        private Drawable loadingBackground;//加载背景图像
+        private Drawable indeterminateDrawable;//无进度图像
+        private boolean showLoadingText;//是否显示加载文本（默认显示）
+        private Drawable textBackground;//文本背景图像
+        private String text;//加载文本
+        private int textColor;//文本颜色
+        private int textAppearance;//文本样式
+        private OnStatusViewDialogListener dialogListener;//加载相关监听器
+        private OnStatusViewButtonListener buttonListener;//按钮监听器
 
         public Builder() {
-            mOption = new StatusViewOption();
+            showLoadingText = true;
         }
 
         public StatusViewOption build() {
-            return mOption;
+            return new StatusViewOption(this);
         }
 
         public LoadingDfgContainerable getContainerable() {
-            return mOption.containerable;
+            return containerable;
         }
 
         public Builder setContainerable(LoadingDfgContainerable containerable) {
-            mOption.containerable = containerable;
+            this.containerable = containerable;
             return this;
         }
 
         public boolean isCancelWithOutside() {
-            return mOption.cancelWithOutside;
+            return cancelWithOutside;
         }
 
         public Builder setCancelWithOutside(boolean cancelWithOutside) {
-            mOption.cancelWithOutside = cancelWithOutside;
+            this.cancelWithOutside = cancelWithOutside;
             return this;
         }
 
         public int getDialogWidth() {
-            return mOption.dialogWidth;
+            return dialogWidth;
         }
 
         public Builder setDialogWidth(int dialogWidth) {
-            mOption.dialogWidth = dialogWidth;
+            this.dialogWidth = dialogWidth;
             return this;
         }
 
         public int getDialogHeight() {
-            return mOption.dialogHeight;
+            return dialogHeight;
         }
 
         public Builder setDialogHeight(int dialogHeight) {
-            mOption.dialogHeight = dialogHeight;
+            this.dialogHeight = dialogHeight;
             return this;
         }
 
         public Drawable getLoadingBackground() {
-            return mOption.loadingBackground;
+            return loadingBackground;
         }
 
         public Builder setLoadingBackground(Drawable loadingBackground) {
-            mOption.loadingBackground = loadingBackground;
+            this.loadingBackground = loadingBackground;
             return this;
         }
 
         public Drawable getIndeterminateDrawable() {
-            return mOption.indeterminateDrawable;
+            return indeterminateDrawable;
         }
 
         public Builder setIndeterminateDrawable(Drawable indeterminateDrawable) {
-            mOption.indeterminateDrawable = indeterminateDrawable;
+            this.indeterminateDrawable = indeterminateDrawable;
             return this;
         }
 
         public boolean isShowLoadingText() {
-            return mOption.showLoadingText;
+            return showLoadingText;
         }
 
         public Builder setShowLoadingText(boolean showLoadingText) {
-            mOption.showLoadingText = showLoadingText;
+            this.showLoadingText = showLoadingText;
             return this;
         }
 
         public Drawable getTextBackground() {
-            return mOption.textBackground;
+            return textBackground;
         }
 
         public Builder setTextBackground(Drawable textBackground) {
-            mOption.textBackground = textBackground;
+            this.textBackground = textBackground;
             return this;
         }
 
         public String getText() {
-            return mOption.text;
+            return text;
         }
 
         public Builder setText(String text) {
-            mOption.text = text;
+            this.text = text;
             return this;
         }
 
         public int getTextColor() {
-            return mOption.textColor;
+            return textColor;
         }
 
         public Builder setTextColor(@ColorInt int textColor) {
-            mOption.textColor = textColor;
+            this.textColor = textColor;
             return this;
         }
 
         public int getTextAppearance() {
-            return mOption.textAppearance;
+            return textAppearance;
         }
 
         public Builder setTextAppearance(@StyleRes int textAppearance) {
-            mOption.textAppearance = textAppearance;
+            this.textAppearance = textAppearance;
             return this;
         }
 
-        public OnLoadingOptionListener getOnLoadingOptionListener() {
-            return mOption.loadingOptionListener;
+        public OnStatusViewDialogListener getOnStatusViewDialogListener() {
+            return dialogListener;
         }
 
-        public Builder setOnLoadingOptionListener(OnLoadingOptionListener listener) {
-            mOption.loadingOptionListener = listener;
+        public Builder setOnStatusViewDialogListener(OnStatusViewDialogListener listener) {
+            this.dialogListener = listener;
+            return this;
+        }
+
+        public OnStatusViewButtonListener getOnStatusViewButtonListener() {
+            return buttonListener;
+        }
+
+        public Builder setOnStatusViewButtonListener(OnStatusViewButtonListener buttonListener) {
+            this.buttonListener = buttonListener;
             return this;
         }
     }
@@ -260,7 +283,7 @@ public class StatusViewOption {
     /**
      * 加载相关监听器
      */
-    public interface OnLoadingOptionListener {
+    public interface OnStatusViewDialogListener {
 
         /**
          * 当点击返回键时回调
@@ -276,5 +299,17 @@ public class StatusViewOption {
          * @param dialogFragment 对话框实例
          */
         void onDismissListener(DialogFragment dialogFragment);
+
+    }
+
+    /**
+     * 状态视图按钮监听器
+     */
+    public interface OnStatusViewButtonListener {
+
+        /**
+         * 当点击重新加载按钮时回调
+         */
+        void onClickReload();
     }
 }

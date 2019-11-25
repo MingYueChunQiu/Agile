@@ -93,7 +93,7 @@ interface ILoadingDfgFunction {
      *
      * @param listener 加载相关监听器
      */
-    void setOnLoadingOptionListener(StatusViewOption.OnLoadingOptionListener listener);
+    void setOnLoadingOptionListener(StatusViewOption.OnStatusViewDialogListener listener);
 
     /**
      * 设置加载配置信息

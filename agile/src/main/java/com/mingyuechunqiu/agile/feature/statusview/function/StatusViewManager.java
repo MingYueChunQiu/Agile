@@ -140,7 +140,7 @@ class StatusViewManager implements IStatusViewManager {
     }
 
     @Override
-    public void setOnLoadingOptionListener(StatusViewOption.OnLoadingOptionListener listener) {
+    public void setOnLoadingOptionListener(StatusViewOption.OnStatusViewDialogListener listener) {
         checkOrCreateLoadingHelper();
         mLoadingHelper.setOnLoadingOptionListener(listener);
     }

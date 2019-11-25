@@ -238,7 +238,7 @@ class LoadingDfgDelegate implements ILoadingDfgFunction {
     }
 
     @Override
-    public void setOnLoadingOptionListener(StatusViewOption.OnLoadingOptionListener listener) {
+    public void setOnLoadingOptionListener(StatusViewOption.OnStatusViewDialogListener listener) {
         checkOrCreateOption();
         mOption.setOnLoadingOptionListener(listener);
     }

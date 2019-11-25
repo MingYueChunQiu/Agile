@@ -49,7 +49,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                 .setDialogWidth(200)
                 .setDialogHeight(600)
                 .setCancelWithOutside(true)
-                .setOnLoadingOptionListener(new StatusViewOption.OnLoadingOptionListener() {
+                .setOnStatusViewDialogListener(new StatusViewOption.OnStatusViewDialogListener() {
                     @Override
                     public boolean onClickKeyBack(DialogInterface dialog) {
 //                        dismissLoadingDialog();
@@ -79,7 +79,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                         .setDialogWidth(500)
                         .setDialogHeight(400)
                         .setCancelWithOutside(true)
-                        .setOnLoadingOptionListener(new StatusViewOption.OnLoadingOptionListener() {
+                        .setOnStatusViewDialogListener(new StatusViewOption.OnStatusViewDialogListener() {
                             @Override
                             public boolean onClickKeyBack(DialogInterface dialog) {
 //                                dismissLoadingDialog();
