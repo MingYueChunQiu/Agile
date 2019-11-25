@@ -17,6 +17,7 @@
     <dimen name="dp_60">60dp</dimen>
     <dimen name="dp_70">70dp</dimen>
     <dimen name="dp_80">80dp</dimen>
+    <dimen name="dp_100">100dp</dimen>
     <dimen name="dp_110">110dp</dimen>
     <dimen name="dp_180">180dp</dimen>
 
@@ -26,6 +27,7 @@
     <dimen name="font_16">16sp</dimen>
     <dimen name="font_18">18sp</dimen>
     <dimen name="font_20">20sp</dimen>
+    <dimen name="font_22">22sp</dimen>
     <dimen name="font_24">24sp</dimen>
     <dimen name="font_30">30sp</dimen>
 

@@ -94,7 +94,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
         setDialogWindow(new WindowHandler() {
             @Override
             public void onHandle(@NonNull Window window) {
-                window.setBackgroundDrawable(getResources().getDrawable(R.drawable.agile_shape_dialog));
+                window.setBackgroundDrawable(getResources().getDrawable(R.drawable.agile_shape_round_corners_10_white));
             }
         });
     }

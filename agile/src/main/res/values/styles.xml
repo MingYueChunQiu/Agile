@@ -3,7 +3,7 @@
 
     <!--加载对话框显示样式-->
     <style name="Dialog_Loading" parent="Theme.AppCompat.Dialog">
-        <item name="android:windowBackground">@drawable/agile_shape_dialog</item>
+        <item name="android:windowBackground">@drawable/agile_shape_round_corners_10_white</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowIsFloating">true</item>

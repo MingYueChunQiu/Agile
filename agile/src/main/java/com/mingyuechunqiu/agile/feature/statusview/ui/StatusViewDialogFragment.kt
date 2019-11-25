@@ -10,15 +10,15 @@ import com.mingyuechunqiu.agile.ui.diaglogfragment.BaseDialogFragment
 
 /**
  * <pre>
- * Project:    Agile
+ *      Project:    Agile
  *
- * Author:     xiyujie
- * Github:     https://github.com/MingYueChunQiu
- * Email:      xiyujieit@163.com
- * Time:       2019-11-24 19:36
- * Desc:
- * Version:    1.0
-</pre> *
+ *      Author:     xiyujie
+ *      Github:     https://github.com/MingYueChunQiu
+ *      Email:      xiyujieit@163.com
+ *      Time:       2019-11-24 19:36
+ *      Desc:
+ *      Version:    1.0
+ * </pre>
  */
 class StatusViewDialogFragment : BaseDialogFragment() {
 

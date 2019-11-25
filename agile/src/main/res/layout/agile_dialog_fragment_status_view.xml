@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rl_agile_dfg_light_loading_container"
+    android:id="@+id/rl_agile_dfg_status_view_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
@@ -11,7 +11,7 @@
         只针对下层为fragment有效，对直接放在父容器FrameLayout中的控件无效-->
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_agile_dfg_light_loading_container"
+        android:id="@+id/ll_agile_dfg_status_view_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -19,21 +19,36 @@
         android:elevation="@dimen/dp_10"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="@dimen/dp_20"
+        android:paddingLeft="@dimen/dp_30"
+        android:paddingTop="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_30"
+        android:paddingBottom="@dimen/dp_20"
         tools:targetApi="lollipop">
 
         <ProgressBar
-            android:id="@+id/pb_agile_dfg_light_loading_progress"
+            android:id="@+id/pb_agile_dfg_status_view_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_agile_dfg_light_loading_text"
+            android:id="@+id/tv_agile_dfg_status_view_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
             android:text="@string/agile_prompt_loading"
             android:textColor="@android:color/black" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_agile_dfg_status_view_reload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/agile_shape_round_corners_10_gray"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_4"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_4"
+            android:text="@string/reload" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </RelativeLayout>

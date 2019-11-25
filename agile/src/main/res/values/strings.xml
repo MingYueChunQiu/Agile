@@ -20,5 +20,6 @@
     <string name="cancel">取消</string>
     <string name="set_permission">设置权限</string>
     <string name="set">设置</string>
+    <string name="reload">重新加载</string>
 
 </resources>
