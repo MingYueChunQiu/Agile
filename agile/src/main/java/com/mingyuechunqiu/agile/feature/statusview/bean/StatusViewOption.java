@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 import androidx.fragment.app.DialogFragment;
 
+import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewContainer;
 import com.mingyuechunqiu.agile.feature.statusview.function.LoadingDfgContainerable;
 
 /**
@@ -32,12 +33,12 @@ public class StatusViewOption {
         mBuilder = builder;
     }
 
-    public LoadingDfgContainerable getContainerable() {
-        return mBuilder.containerable;
+    public IStatusViewContainer getStatusViewContainer() {
+        return mBuilder.container;
     }
 
-    public void setContainerable(LoadingDfgContainerable containerable) {
-        mBuilder.containerable = containerable;
+    public void setStatusViewContainer(IStatusViewContainer container) {
+        mBuilder.container = container;
     }
 
     public boolean isCancelWithOutside() {
@@ -141,7 +142,7 @@ public class StatusViewOption {
      */
     public static class Builder {
 
-        private LoadingDfgContainerable containerable;//对话框布局容器（使用了自定义容器，主题类型属性将不起作用）
+        private IStatusViewContainer container;//对话框布局容器
         private boolean cancelWithOutside;//是否能触摸外围区域取消对话框
         private int dialogWidth, dialogHeight;//对话框宽高
         private Drawable loadingBackground;//加载背景图像
@@ -162,12 +163,12 @@ public class StatusViewOption {
             return new StatusViewOption(this);
         }
 
-        public LoadingDfgContainerable getContainerable() {
-            return containerable;
+        public IStatusViewContainer getStatusViewContainer() {
+            return container;
         }
 
-        public Builder setContainerable(LoadingDfgContainerable containerable) {
-            this.containerable = containerable;
+        public Builder setStatusViewContainer(IStatusViewContainer container) {
+            this.container = container;
             return this;
         }
 
