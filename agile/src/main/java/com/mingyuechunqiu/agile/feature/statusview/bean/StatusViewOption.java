@@ -3,13 +3,11 @@ package com.mingyuechunqiu.agile.feature.statusview.bean;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 
-import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.StyleRes;
 import androidx.fragment.app.DialogFragment;
 
 import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewContainer;
-import com.mingyuechunqiu.agile.feature.statusview.function.LoadingDfgContainerable;
 
 /**
  * <pre>
@@ -17,7 +15,7 @@ import com.mingyuechunqiu.agile.feature.statusview.function.LoadingDfgContainera
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2019/1/23
- *     desc   : 加载配置参数类
+ *     desc   : 状态视图配置信息类
  *     version: 1.0
  * </pre>
  */
@@ -25,11 +23,11 @@ public class StatusViewOption {
 
     private Builder mBuilder;
 
-    private StatusViewOption() {
+    public StatusViewOption() {
         this(new Builder());
     }
 
-    private StatusViewOption(@NonNull Builder builder) {
+    public StatusViewOption(@NonNull Builder builder) {
         mBuilder = builder;
     }
 
@@ -65,60 +63,68 @@ public class StatusViewOption {
         mBuilder.dialogHeight = dialogHeight;
     }
 
-    public Drawable getLoadingBackground() {
-        return mBuilder.loadingBackground;
+    public boolean isShowStatusViewFloating() {
+        return mBuilder.showStatusViewFloating;
     }
 
-    public void setLoadingBackground(Drawable loadingBackground) {
-        mBuilder.loadingBackground = loadingBackground;
+    public void setShowStatusViewFloating(boolean showStatusViewFloating) {
+        mBuilder.showStatusViewFloating = showStatusViewFloating;
     }
 
-    public Drawable getIndeterminateDrawable() {
-        return mBuilder.indeterminateDrawable;
+    public int getContainerBackgroundResId() {
+        return mBuilder.containerBackgroundResId;
     }
 
-    public void setIndeterminateDrawable(Drawable indeterminateDrawable) {
-        mBuilder.indeterminateDrawable = indeterminateDrawable;
+    public void setContainerBackgroundResId(@DrawableRes int containerBackgroundResId) {
+        mBuilder.containerBackgroundResId = containerBackgroundResId;
     }
 
-    public boolean isShowLoadingText() {
-        return mBuilder.showLoadingText;
+    public Drawable getContainerBackground() {
+        return mBuilder.containerBackground;
     }
 
-    public void setShowLoadingText(boolean showLoadingText) {
-        mBuilder.showLoadingText = showLoadingText;
+    public void setContainerBackground(Drawable containerBackground) {
+        mBuilder.containerBackground = containerBackground;
     }
 
-    public Drawable getTextBackground() {
-        return mBuilder.textBackground;
+    public Drawable getProgressDrawable() {
+        return mBuilder.progressDrawable;
     }
 
-    public void setTextBackground(Drawable textBackground) {
-        mBuilder.textBackground = textBackground;
+    public void setProgressDrawable(Drawable progressDrawable) {
+        mBuilder.progressDrawable = progressDrawable;
     }
 
-    public String getText() {
-        return mBuilder.text;
+    public boolean isShowContentText() {
+        return mBuilder.showContentText;
     }
 
-    public void setText(String text) {
-        mBuilder.text = text;
+    public void setShowContentText(boolean showContentText) {
+        mBuilder.showContentText = showContentText;
     }
 
-    public int getTextColor() {
-        return mBuilder.textColor;
+    public boolean isShowReloadText() {
+        return mBuilder.showReloadText;
     }
 
-    public void setTextColor(@ColorInt int textColor) {
-        mBuilder.textColor = textColor;
+    public void setShowReloadText(boolean showReloadText) {
+        mBuilder.showReloadText = showReloadText;
     }
 
-    public int getTextAppearance() {
-        return mBuilder.textAppearance;
+    public StatusViewTextOption getContentOption() {
+        return mBuilder.contentOption;
     }
 
-    public void setTextAppearance(@StyleRes int textAppearance) {
-        mBuilder.textAppearance = textAppearance;
+    public void setContentOption(StatusViewTextOption contentOption) {
+        mBuilder.contentOption = contentOption;
+    }
+
+    public StatusViewTextOption getReloadOption() {
+        return mBuilder.reloadOption;
+    }
+
+    public void setReloadOption(StatusViewTextOption reloadOption) {
+        mBuilder.reloadOption = reloadOption;
     }
 
     public OnStatusViewDialogListener getOnLoadingOptionListener() {
@@ -145,18 +151,20 @@ public class StatusViewOption {
         private IStatusViewContainer container;//对话框布局容器
         private boolean cancelWithOutside;//是否能触摸外围区域取消对话框
         private int dialogWidth, dialogHeight;//对话框宽高
-        private Drawable loadingBackground;//加载背景图像
-        private Drawable indeterminateDrawable;//无进度图像
-        private boolean showLoadingText;//是否显示加载文本（默认显示）
-        private Drawable textBackground;//文本背景图像
-        private String text;//加载文本
-        private int textColor;//文本颜色
-        private int textAppearance;//文本样式
+        private boolean showStatusViewFloating;//是否设置状态视图悬浮
+        private @DrawableRes
+        int containerBackgroundResId;//容器背景图像资源ID
+        private Drawable containerBackground;//容器背景图像
+        private Drawable progressDrawable;//无进度图像
+        private boolean showContentText;//是否显示内容文本（默认显示）
+        private boolean showReloadText;//是否显示加载文本
+        private StatusViewTextOption contentOption;//内容配置信息对象
+        private StatusViewTextOption reloadOption;//重新加载配置对象
         private OnStatusViewDialogListener dialogListener;//加载相关监听器
         private OnStatusViewButtonListener buttonListener;//按钮监听器
 
         public Builder() {
-            showLoadingText = true;
+            showContentText = true;
         }
 
         public StatusViewOption build() {
@@ -199,66 +207,75 @@ public class StatusViewOption {
             return this;
         }
 
-        public Drawable getLoadingBackground() {
-            return loadingBackground;
+        public boolean isShowStatusViewFloating() {
+            return showStatusViewFloating;
         }
 
-        public Builder setLoadingBackground(Drawable loadingBackground) {
-            this.loadingBackground = loadingBackground;
+        public Builder setShowStatusViewFloating(boolean showStatusViewFloating) {
+            this.showStatusViewFloating = showStatusViewFloating;
             return this;
         }
 
-        public Drawable getIndeterminateDrawable() {
-            return indeterminateDrawable;
+        public int getContainerBackgroundResId() {
+            return containerBackgroundResId;
         }
 
-        public Builder setIndeterminateDrawable(Drawable indeterminateDrawable) {
-            this.indeterminateDrawable = indeterminateDrawable;
+        public Builder setContainerBackgroundResId(@DrawableRes int containerBackgroundResId) {
+            this.containerBackgroundResId = containerBackgroundResId;
             return this;
         }
 
-        public boolean isShowLoadingText() {
-            return showLoadingText;
+        public Drawable getContainerBackground() {
+            return containerBackground;
         }
 
-        public Builder setShowLoadingText(boolean showLoadingText) {
-            this.showLoadingText = showLoadingText;
+        public Builder setContainerBackground(Drawable containerBackground) {
+            this.containerBackground = containerBackground;
             return this;
         }
 
-        public Drawable getTextBackground() {
-            return textBackground;
+        public Drawable getProgressDrawable() {
+            return progressDrawable;
         }
 
-        public Builder setTextBackground(Drawable textBackground) {
-            this.textBackground = textBackground;
+        public Builder setProgressDrawable(Drawable progressDrawable) {
+            this.progressDrawable = progressDrawable;
             return this;
         }
 
-        public String getText() {
-            return text;
+        public boolean isShowContentText() {
+            return showContentText;
         }
 
-        public Builder setText(String text) {
-            this.text = text;
+        public Builder setShowContentText(boolean showContentText) {
+            this.showContentText = showContentText;
             return this;
         }
 
-        public int getTextColor() {
-            return textColor;
+        public boolean isShowReloadText() {
+            return showReloadText;
         }
 
-        public Builder setTextColor(@ColorInt int textColor) {
-            this.textColor = textColor;
+        public Builder setShowReloadText(boolean showReloadText) {
+            this.showReloadText = showReloadText;
             return this;
         }
 
-        public int getTextAppearance() {
-            return textAppearance;
+        public StatusViewTextOption getContentOption() {
+            return contentOption;
         }
 
-        public Builder setTextAppearance(@StyleRes int textAppearance) {
-            this.textAppearance = textAppearance;
+        public Builder setContentOption(StatusViewTextOption contentOption) {
+            this.contentOption = contentOption;
+            return this;
+        }
+
+        public StatusViewTextOption getReloadOption() {
+            return reloadOption;
+        }
+
+        public Builder setReloadOption(StatusViewTextOption reloadOption) {
+            this.reloadOption = reloadOption;
             return this;
         }
 

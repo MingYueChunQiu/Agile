@@ -16,10 +16,10 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
-import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agile.ui.activity.WebViewActivity;
 import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
@@ -103,26 +103,6 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void dismissLoadingDialog() {
-        super.dismissLoadingDialog();
-    }
-
-    @Override
-    public void showLoadingDialog(int containerId, StatusViewOption option) {
-        super.showLoadingDialog(getSupportFragmentManager(), containerId, option);
-    }
-
-    @Override
-    public void showLoadingDialog(@Nullable StatusViewOption option) {
-        super.showLoadingDialog(option);
-    }
-
-    @Override
-    public IStatusViewManager getLoadingDialog() {
-        return super.getCurrentLoadingDialog();
-    }
-
-    @Override
     protected ToolbarUtils.ToolbarConfigure setToolbarConfigure() {
         return new ToolbarUtils.ToolbarConfigure.Builder()
                 .setImmerse(true)
@@ -189,7 +169,6 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         StatusViewOption option = new StatusViewOption.Builder()
 //                .setLoadingBackground(new ColorDrawable(Color.RED))
 //                .setText("放大")
-                .setThemeType(StatusViewConstants.ThemeType.DARK_THEME)
 //                .setDialogWidth(400)
 //                .setDialogHeight(500)
                 .setCancelWithOutside(true)
@@ -258,6 +237,9 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_main_show:
+//                showLoadingDialog("测试", true);
+                showStatusView(StatusViewConstants.StatusType.TYPE_ERROR, getSupportFragmentManager(),
+                        R.id.fl_main_container, null);
 //                getCurrentLoadingDialog().resetLoadingDialog();
 //                getLoadingFragment().setLoadingBackground(new ColorDrawable(Color.RED));
 ////                getLoadingFragment().setContainerBackground(new ColorDrawable(Color.DKGRAY));
@@ -307,7 +289,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 //                        .show();
                 break;
             case R.id.btn_main_hide:
-                dismissLoadingDialog();
+                dismissStatusView();
                 break;
         }
     }
@@ -321,5 +303,16 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
             FragmentUtils.removeFragments(getSupportFragmentManager(), true,
                     R.anim.agile_alpha_slide_in_left, R.anim.agile_alpha_slide_out_right, mSelectedFg);
         }
+    }
+
+    @NonNull
+    @Override
+    public IStatusViewManager getStatusViewManager() {
+        return super.getStatusViewManager();
+    }
+
+    @Override
+    public void dismissStatusView() {
+        super.dismissStatusView();
     }
 }

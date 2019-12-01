@@ -17,8 +17,8 @@ import androidx.fragment.app.FragmentManager;
 
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
-import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
+import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
 import com.mingyuechunqiu.agile.util.ExitApplicationManager;
 import com.noober.background.BackgroundLibrary;
@@ -46,7 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Map<Fragment, List<OnKeyEventListener>> mKeyEventListenerMap;
 
     private Toast mToast;
-    private IStatusViewManager mLoadingDfgProvider;
+    private IStatusViewManager mStatusViewManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        dismissLoadingDialog();
+        dismissStatusView();
         super.onDestroy();
         release();
         if (mKeyEventListenerMap != null) {
@@ -65,7 +65,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             mKeyEventListenerMap = null;
         }
         mToast = null;
-        mLoadingDfgProvider = null;
+        mStatusViewManager = null;
     }
 
     /**
@@ -225,101 +225,68 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param cancelable 是否可以取消
      */
     protected void showLoadingDialog(@Nullable String hint, boolean cancelable) {
-        StatusViewOption option = getCurrentLoadingDialog().getLoadingFragmentOption();
-        option.setText(hint);
+        StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
+        option.getContentOption().setText(hint);
         option.setCancelWithOutside(cancelable);
-        showLoadingDialog(interceptLoadingFragmentOption(option, StatusViewConstants.ModeType.TYPE_DIALOG));
+        showStatusView(StatusViewConstants.StatusType.TYPE_LOADING,
+                getSupportFragmentManager(), option);
     }
 
     /**
-     * 显示加载Fragment
+     * 显示状态视图
      *
-     * @param option 加载配置参数信息对象
+     * @param type    状态视图类型
+     * @param manager Fragment管理器
+     * @param option  状态视图配置信息类
      */
-    protected void showLoadingDialog(@Nullable StatusViewOption option) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        StatusViewOption temp = interceptLoadingFragmentOption(option, StatusViewConstants.ModeType.TYPE_DIALOG);
-        if (mLoadingDfgProvider == null) {
-            mLoadingDfgProvider = StatusViewManagerProvider.newInstance(temp);
-        } else {
-            //在这儿默认逻辑为如果option为空，代表不变
-            if (temp != null) {
-                mLoadingDfgProvider.setLoadingFragmentOption(temp);
-            }
-            if (mLoadingDfgProvider.showLoadingDialog()) {
-                return;
-            }
-        }
-        //除隐藏对话框再显示用getDialog().show()，其他都直接用show()
-        mLoadingDfgProvider.showLoadingDialog(fragmentManager);
-    }
-
-    /**
-     * 添加显示加载对话框
-     *
-     * @param containerId 对话框所属布局ID
-     * @param option      加载对话框配置信息对象
-     */
-    protected void showLoadingDialog(@IdRes int containerId, @Nullable StatusViewOption option) {
-        showLoadingDialog(getSupportFragmentManager(), containerId, option);
-    }
-
-    /**
-     * 添加显示加载对话框
-     *
-     * @param manager     Fragment管理器
-     * @param containerId 对话框所属布局ID
-     * @param option      加载对话框配置信息对象
-     */
-    protected void showLoadingDialog(@Nullable FragmentManager manager, @IdRes int containerId, @Nullable StatusViewOption option) {
+    protected void showStatusView(@NonNull StatusViewConstants.StatusType type,
+                                  @Nullable FragmentManager manager,
+                                  @Nullable StatusViewOption option) {
         if (manager == null) {
             return;
         }
-        getCurrentLoadingDialog().showLoadingDialog(manager, containerId,
-                interceptLoadingFragmentOption(option, StatusViewConstants.ModeType.TYPE_FRAGMENT));
+        dismissStatusView();
+        getStatusViewManager().showStatusView(type, manager, option);
     }
 
     /**
-     * 关闭加载对话框
+     * 显示状态视图
+     *
+     * @param type        状态视图类型
+     * @param manager     Fragment管理器
+     * @param containerId 状态视图添加布局ID
+     * @param option      状态视图配置信息类
      */
-    protected void dismissLoadingDialog() {
-        if (mLoadingDfgProvider != null) {
-            mLoadingDfgProvider.dismissLoadingDialog(true);
+    protected void showStatusView(@NonNull StatusViewConstants.StatusType type, @Nullable FragmentManager manager,
+                                  @IdRes int containerId, @Nullable StatusViewOption option) {
+        if (manager == null) {
+            return;
         }
+        dismissStatusView();
+        getStatusViewManager().showStatusView(type, manager, containerId, option);
     }
 
     /**
-     * 隐藏加载对话框
-     *
-     * @param manager Fragment管理器
+     * 关闭状态视图
      */
-    protected void hideLoadingDialog(FragmentManager manager) {
-        getCurrentLoadingDialog().hideLoadingDialog(manager);
+    protected void dismissStatusView() {
+        if (mStatusViewManager != null) {
+            mStatusViewManager.dismissStatusView(true);
+        }
+        mStatusViewManager = null;
     }
 
     /**
-     * 获取加载Fragment实例
+     * 获取获取状态视图管理器实例
      *
-     * @return 返回加载Fragment实例
+     * @return 返回获取状态视图管理器实例
      */
     @NonNull
-    protected IStatusViewManager getCurrentLoadingDialog() {
-        if (mLoadingDfgProvider == null) {
-            mLoadingDfgProvider = StatusViewManagerProvider.newInstance();
+    protected IStatusViewManager getStatusViewManager() {
+        if (mStatusViewManager == null) {
+            mStatusViewManager = StatusViewManagerProvider.newInstance();
         }
-        return mLoadingDfgProvider;
-    }
-
-    /**
-     * 拦截加载对话框配置信息对象
-     *
-     * @param option   加载对话框配置信息对象
-     * @param modeType 加载对话框模式
-     * @return 返回进行过拦截处理的加载对话框配置信息对象
-     */
-    protected StatusViewOption interceptLoadingFragmentOption(
-            @Nullable StatusViewOption option, StatusViewConstants.ModeType modeType) {
-        return modeType == StatusViewConstants.ModeType.TYPE_NOT_SET ? null : option;
+        return mStatusViewManager;
     }
 
     /**

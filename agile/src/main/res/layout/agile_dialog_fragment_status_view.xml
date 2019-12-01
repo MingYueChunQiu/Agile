@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_agile_dfg_status_view_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,14 +15,12 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@drawable/agile_shape_round_corners_10_white"
-        android:elevation="@dimen/dp_10"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/dp_30"
+        android:paddingLeft="@dimen/dp_40"
         android:paddingTop="@dimen/dp_20"
-        android:paddingRight="@dimen/dp_30"
-        android:paddingBottom="@dimen/dp_20"
-        tools:targetApi="lollipop">
+        android:paddingRight="@dimen/dp_40"
+        android:paddingBottom="@dimen/dp_20">
 
         <ProgressBar
             android:id="@+id/pb_agile_dfg_status_view_progress"

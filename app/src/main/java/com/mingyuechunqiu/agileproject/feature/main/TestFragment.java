@@ -34,26 +34,6 @@ public class TestFragment extends BasePresenterFragment<MainContract.View<MainCo
     }
 
     @Override
-    public void showLoadingDialog(@Nullable StatusViewOption option) {
-
-    }
-
-    @Override
-    public void dismissLoadingDialog() {
-
-    }
-
-    @Override
-    public IStatusViewManager getLoadingDialog() {
-        return null;
-    }
-
-    @Override
-    public void showLoadingDialog(int containerId, StatusViewOption option) {
-
-    }
-
-    @Override
     protected void releaseOnDestroyView() {
 
     }
@@ -99,5 +79,16 @@ public class TestFragment extends BasePresenterFragment<MainContract.View<MainCo
     @Override
     public MainContract.Presenter initPresenter() {
         return new MainPresenter();
+    }
+
+    @NonNull
+    @Override
+    public IStatusViewManager getStatusViewManager() {
+        return super.getStatusViewManager();
+    }
+
+    @Override
+    public void dismissStatusView() {
+
     }
 }

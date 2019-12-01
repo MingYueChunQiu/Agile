@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -36,7 +37,7 @@ public class DialogFragmentTest extends BaseFragment {
     @Override
     protected View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        showLoadingDialog(getChildFragmentManager(), R.id.fl_fragment_main_loading, null);
+        showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getChildFragmentManager(), R.id.fl_fragment_main_loading, null);
         return view;
     }
 }

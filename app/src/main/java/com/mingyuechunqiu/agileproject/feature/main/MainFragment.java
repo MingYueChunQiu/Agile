@@ -62,11 +62,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                     }
                 })
                 .build();
-        showLoadingDialog(option);
-//        LoadingDialogFragment loadingDialogFragment = LoadingDialogFragment.newInstance();
-//        loadingDialogFragment.setCancelable(false);
-//        loadingDialogFragment.setDialogSize(200, 400);
-//        loadingDialogFragment.show(getFragmentManager(), LoadingDialogFragment.class.getSimpleName());
+        showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getFragmentManager(), option);
         return view;
     }
 
@@ -75,7 +71,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_fragment_main_show:
 //                showLoadingDialog("被我", false);
-                showLoadingDialog(new StatusViewOption.Builder()
+                showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getFragmentManager(), new StatusViewOption.Builder()
                         .setDialogWidth(500)
                         .setDialogHeight(400)
                         .setCancelWithOutside(true)
@@ -91,11 +87,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                             public void onDismissListener(DialogFragment dialogFragment) {
                                 showToast("VB我vwe");
                             }
-                        })
-                        .setThemeType(StatusViewConstants.ThemeType.DARK_THEME).build());
+                        }).build());
                 break;
             case R.id.btn_fragment_main_hide:
-                dismissLoadingDialog();
+                dismissStatusView();
                 break;
         }
     }

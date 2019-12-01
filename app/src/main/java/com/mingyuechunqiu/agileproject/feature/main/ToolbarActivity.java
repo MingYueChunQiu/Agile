@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agile.util.ToolbarUtils;
 import com.mingyuechunqiu.agileproject.R;
@@ -61,6 +62,8 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
     protected void initView(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.activity_toolbar_test);
         tbBar = findViewById(R.id.tb_toolbar_test);
+        showStatusView(StatusViewConstants.StatusType.TYPE_ERROR, getSupportFragmentManager(),
+                R.id.fl_toolbar_test_container, null);
     }
 
     @Override

@@ -25,7 +25,7 @@ import static com.mingyuechunqiu.agile.constants.UserConstants.TOKEN;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNetModel> extends BaseDialogPresenter<V, M> {
+public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNetModel> extends BaseStatusViewPresenter<V, M> {
 
     /**
      * 带参数的网络请求

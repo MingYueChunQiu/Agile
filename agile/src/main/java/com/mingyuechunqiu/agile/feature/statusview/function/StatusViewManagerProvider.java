@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 
 /**
  * <pre>
@@ -30,35 +31,29 @@ public final class StatusViewManagerProvider {
      */
     @NonNull
     public static IStatusViewManager newInstance() {
-        return newInstance(LoadingDialogFragment.newInstance());
+        return newInstance(new StatusViewHelper());
     }
 
     /**
-     * 创建加载Fragment提供者实例
+     * 创建状态视图管理器实例对象
      *
-     * @return 返回实例对象
+     * @param helper 用户提供的状态视图辅助类
+     * @return 返回状态视图管理器实例对象
      */
     @NonNull
-    public static IStatusViewManager newInstance(@Nullable StatusViewOption option) {
-        return newInstance(LoadingDialogFragment.newInstance(option));
-    }
-
-    /**
-     * 创建加载Fragment提供者实例
-     *
-     * @param helper 用户提供的加载Fragment实现类
-     * @return 返回实例对象
-     */
-    @NonNull
-    public static IStatusViewManager newInstance(ILoadingHelper helper) {
+    public static IStatusViewManager newInstance(IStatusViewHelper helper) {
         return new StatusViewManager(helper);
     }
 
-    public static StatusViewConfigure getGlobalConfigur() {
+    public static StatusViewConfigure getGlobalConfigure() {
         return sConfigure;
     }
 
     public static void applyGlobalConfigure(@Nullable StatusViewConfigure configure) {
         StatusViewManagerProvider.sConfigure = configure;
+    }
+
+    public static StatusViewOption getGlobalStatusViewOptionByType(@NonNull StatusViewConstants.StatusType type) {
+        return StatusViewHandler.getGlobalStatusViewOptionByType(type);
     }
 }

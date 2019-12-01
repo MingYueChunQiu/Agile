@@ -137,7 +137,13 @@ public final class DownloadUtils {
      */
     @Nullable
     public static String getDownloadApkDirectory() {
-        File parentFile = Agile.getAppContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        File parentFile = null;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            parentFile = Agile.getAppContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        }
+        if (parentFile == null) {
+            parentFile = Agile.getAppContext().getFilesDir();
+        }
         if (parentFile != null) {
             return parentFile.getAbsolutePath() + File.separator + "Apk";
         }

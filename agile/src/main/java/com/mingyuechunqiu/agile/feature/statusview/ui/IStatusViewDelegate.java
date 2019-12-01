@@ -1,5 +1,14 @@
 package com.mingyuechunqiu.agile.feature.statusview.ui;
 
+import android.view.View;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
+
 /**
  * <pre>
  *      Project:    Agile
@@ -14,11 +23,19 @@ package com.mingyuechunqiu.agile.feature.statusview.ui;
  */
 interface IStatusViewDelegate {
 
-    void showLoadingStatus();
+    StatusViewOption getStatusViewOption();
 
-    void showNetworkAnomalyStatus();
+    void setModeType(@NonNull StatusViewConstants.ModeType type);
 
-    void showErrorStatus();
+    @NonNull
+    StatusViewConstants.ModeType getModeType();
 
-    void showCustomStatus();
+    void setStatusType(@NonNull StatusViewConstants.StatusType type);
+
+    @NonNull
+    StatusViewConstants.StatusType getStatusType();
+
+    void applyOption(@Nullable View vContainer, @Nullable View vProgress, @Nullable TextView tvContent, @Nullable TextView tvReload);
+
+    void release();
 }

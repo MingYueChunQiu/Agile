@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.view;
 
-import com.mingyuechunqiu.agile.base.presenter.BaseDialogPresenter;
+import com.mingyuechunqiu.agile.base.presenter.BaseStatusViewPresenter;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 
 /**
@@ -13,12 +13,17 @@ import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseDialogView<P extends BaseDialogPresenter> extends IBaseView<P> {
+public interface IBaseStatusView<P extends BaseStatusViewPresenter> extends IBaseView<P> {
 
     /**
-     * 获取加载Fragment提供者实例
+     * 获取状态视图管理器实例
      *
-     * @return 返回加载Fragment提供者实例
+     * @return 返回状态视图管理器实例
      */
-    IStatusViewManager getLoadingDialog();
+    IStatusViewManager getStatusViewManager();
+
+    /**
+     * 关闭状态视图
+     */
+    void dismissStatusView();
 }

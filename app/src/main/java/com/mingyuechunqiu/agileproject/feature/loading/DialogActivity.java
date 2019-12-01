@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -53,16 +54,16 @@ public class DialogActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_add_loading:
-                showLoadingDialog(getSupportFragmentManager(), R.id.fl_loading_container, null);
+                showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getSupportFragmentManager(), R.id.fl_loading_container, null);
                 break;
             case R.id.btn_hide_loading:
-                hideLoadingDialog(getSupportFragmentManager());
+                dismissStatusView();
                 break;
             case R.id.btn_show_loading:
                 showLoadingDialog(null, true);
                 break;
             case R.id.btn_dismiss_loading:
-                dismissLoadingDialog();
+                dismissStatusView();
                 break;
             case R.id.btn_loading_test:
                 showToast("能点击到");

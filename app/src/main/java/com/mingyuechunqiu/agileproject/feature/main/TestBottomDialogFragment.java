@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.ui.bottomsheetdialogfragment.BasePresenterBSDialogFragment;
 
@@ -40,29 +42,15 @@ public class TestBottomDialogFragment extends BasePresenterBSDialogFragment<Main
 
     }
 
+    @NonNull
     @Override
-    public void showLoadingDialog(@Nullable String hint, boolean cancelable) {
-
+    public IStatusViewManager getStatusViewManager() {
+        return super.getStatusViewManager();
     }
 
     @Override
-    public void showLoadingDialog(@Nullable StatusViewOption option) {
-
-    }
-
-    @Override
-    public void dismissLoadingDialog() {
-
-    }
-
-    @Override
-    public void showLoadingDialog(int containerId, StatusViewOption option) {
-
-    }
-
-    @Override
-    public IStatusViewManager getLoadingDialog() {
-        return super.getCurrentLoadingDialog();
+    public void dismissStatusView() {
+        super.dismissStatusView();
     }
 
     @Override

@@ -10,12 +10,15 @@ package com.mingyuechunqiu.agile.feature.statusview.constants;
  *     version: 1.0
  * </pre>
  */
-public class StatusViewConstants {
+public final class StatusViewConstants {
+
+    private StatusViewConstants() {
+    }
 
     //模式类型
     public enum ModeType {
-        //未设置，对话框模式，Fragment模式
-        TYPE_NOT_SET, TYPE_DIALOG, TYPE_FRAGMENT
+        //无效模式，对话框模式，Fragment模式
+        TYPE_INVALID, TYPE_DIALOG, TYPE_FRAGMENT
     }
 
     /**

@@ -27,6 +27,14 @@ public interface IStatusViewContainer {
     int getCustomLayoutId();
 
     /**
+     * 获取包裹显示内容的容器资源ID
+     *
+     * @return 返回资源ID
+     */
+    @IdRes
+    int getContainerId();
+
+    /**
      * 获取进度条控件ID
      *
      * @return 返回控件资源ID

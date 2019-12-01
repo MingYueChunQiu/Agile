@@ -3,8 +3,8 @@ package com.mingyuechunqiu.agile.ui.bottomsheetdialogfragment;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.presenter.BaseDialogPresenter;
-import com.mingyuechunqiu.agile.base.view.IBaseDialogView;
+import com.mingyuechunqiu.agile.base.presenter.BaseStatusViewPresenter;
+import com.mingyuechunqiu.agile.base.view.IBaseStatusView;
 import com.mingyuechunqiu.agile.base.view.IViewAttachPresenter;
 
 /**
@@ -17,7 +17,7 @@ import com.mingyuechunqiu.agile.base.view.IViewAttachPresenter;
  *     version: 1.0
  * </pre>
  */
-public abstract class BasePresenterBSDialogFragment<V extends IBaseDialogView<P>, P extends BaseDialogPresenter> extends BaseBSDialogFragment
+public abstract class BasePresenterBSDialogFragment<V extends IBaseStatusView<P>, P extends BaseStatusViewPresenter> extends BaseBSDialogFragment
         implements IViewAttachPresenter<P> {
 
     protected P mPresenter;
