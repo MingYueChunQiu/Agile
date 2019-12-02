@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.feature.statusview.ui
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.mingyuechunqiu.agile.R
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
 import com.mingyuechunqiu.agile.ui.diaglogfragment.BaseDialogFragment
+
 
 /**
  * <pre>
@@ -32,13 +34,29 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
     private var mDelegate: IStatusViewDelegate? = null
     private var mManager: FragmentManager? = null
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.let {
+            if (mDelegate?.statusViewOption?.dialogWidth ?: 0 <= 0 && mDelegate?.statusViewOption?.dialogHeight ?: 0 <= 0) {
+                return@let
+            }
+            val width = if (mDelegate?.statusViewOption?.dialogWidth ?: 0 <= 0) it.attributes?.width
+                    ?: 0 else mDelegate?.statusViewOption?.dialogWidth ?: 0
+            val height = if (mDelegate?.statusViewOption?.dialogHeight ?: 0 <= 0) it.attributes?.height
+                    ?: 0 else mDelegate?.statusViewOption?.dialogHeight ?: 0
+            if (width > 0 && height > 0) {
+                it.setLayout(width, height)
+            }
+        }
+    }
+
     override fun releaseOnDestroyView() {
-        mDelegate = null
-        mManager = null
     }
 
     override fun releaseOnDestroy() {
-
+        mDelegate?.statusViewOption?.onStatusViewDialogListener?.onDismissListener(this)
+        mDelegate = null
+        mManager = null
     }
 
     override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,6 +80,8 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
                 it.onStatusViewButtonListener?.onClickReload()
             }
         }
+
+        applyDialogConfigure()
         mDelegate?.applyOption(vContainer, vProgress, tvContent, tvReload)
         return vLayout
     }
@@ -112,6 +132,27 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
 
     override fun getStatusMode(): StatusViewConstants.StatusType {
         return mDelegate?.statusType ?: StatusViewConstants.StatusType.TYPE_LOADING
+    }
+
+    /**
+     * 应用对话框配置
+     */
+    private fun applyDialogConfigure() {
+        dialog?.let {
+            it.setCanceledOnTouchOutside(mDelegate?.statusViewOption?.isCancelWithOutside ?: false)
+            it.setOnKeyListener { dialog, keyCode, _ ->
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (mDelegate == null) {
+                        return@setOnKeyListener false
+                    }
+                    //拦截返回键事件，是否要做额外处理
+                    mDelegate?.statusViewOption?.onStatusViewDialogListener?.let { listener ->
+                        return@setOnKeyListener listener.onClickKeyBack(dialog)
+                    }
+                }
+                false
+            }
+        }
     }
 
     companion object {

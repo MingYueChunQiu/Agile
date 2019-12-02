@@ -64,7 +64,7 @@ final class StatusViewHandler {
     private static StatusViewOption getLoadingStatusViewOption() {
         return new StatusViewOption.Builder()
                 .setContentOption(new StatusViewTextOption.Builder()
-                        .setText("加载中")
+                        .setText("正在加载中……")
                         .build())
                 .setCancelWithOutside(false)
                 .build();
@@ -92,7 +92,7 @@ final class StatusViewHandler {
         return new StatusViewOption.Builder()
                 .setShowReloadText(true)
                 .setContentOption(new StatusViewTextOption.Builder()
-                        .setText("出现异常")
+                        .setText("发生异常")
                         .build())
                 .build();
     }

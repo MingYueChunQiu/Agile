@@ -224,12 +224,22 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param hint       提示文本
      * @param cancelable 是否可以取消
      */
-    protected void showLoadingDialog(@Nullable String hint, boolean cancelable) {
+    protected void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
         StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
         option.getContentOption().setText(hint);
         option.setCancelWithOutside(cancelable);
         showStatusView(StatusViewConstants.StatusType.TYPE_LOADING,
                 getSupportFragmentManager(), option);
+    }
+
+    /**
+     * 显示加载状态视图
+     *
+     * @param containerId 状态视图添加布局ID
+     */
+    protected void showLoadingStatusView(@IdRes int containerId) {
+        showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getSupportFragmentManager(),
+                containerId, null);
     }
 
     /**

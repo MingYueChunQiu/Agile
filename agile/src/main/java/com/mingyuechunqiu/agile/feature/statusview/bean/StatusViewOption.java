@@ -127,11 +127,11 @@ public class StatusViewOption {
         mBuilder.reloadOption = reloadOption;
     }
 
-    public OnStatusViewDialogListener getOnLoadingOptionListener() {
+    public OnStatusViewDialogListener getOnStatusViewDialogListener() {
         return mBuilder.dialogListener;
     }
 
-    public void setOnLoadingOptionListener(OnStatusViewDialogListener listener) {
+    public void setOnStatusViewDialogListener(OnStatusViewDialogListener listener) {
         mBuilder.dialogListener = listener;
     }
 

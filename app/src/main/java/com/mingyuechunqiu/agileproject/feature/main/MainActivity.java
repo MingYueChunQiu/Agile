@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,18 +9,21 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
+import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agile.ui.activity.WebViewActivity;
 import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
@@ -98,8 +102,8 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void showLoadingDialog(String hint, boolean cancelable) {
-        super.showLoadingDialog(hint, cancelable);
+    public void showLoadingStatusView(String hint, boolean cancelable) {
+        super.showLoadingStatusView(hint, cancelable);
     }
 
     @Override
@@ -186,7 +190,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 //                    }
 //                })
                 .build();
-//        showLoadingDialog(option);
+//        showLoadingStatusView(option);
 
 //        FragmentUtils.replaceFragment(getSupportFragmentManager(), R.id.fl_navigation_container,
 //                new MainFragment());
@@ -237,18 +241,37 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_main_show:
-//                showLoadingDialog("测试", true);
-                showStatusView(StatusViewConstants.StatusType.TYPE_ERROR, getSupportFragmentManager(),
-                        R.id.fl_main_container, null);
+                StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_NETWORK_ANOMALY);
+                option.setOnStatusViewDialogListener(new StatusViewOption.OnStatusViewDialogListener() {
+                    @Override
+                    public boolean onClickKeyBack(DialogInterface dialog) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onDismissListener(DialogFragment dialogFragment) {
+                        Toast.makeText(MainActivity.this, "关闭", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                option.setOnStatusViewButtonListener(new StatusViewOption.OnStatusViewButtonListener() {
+                    @Override
+                    public void onClickReload() {
+                        Toast.makeText(MainActivity.this, "重点", Toast.LENGTH_SHORT).show();
+                    }
+                });
+//                showLoadingStatusView("测试", false);
+                showStatusView(StatusViewConstants.StatusType.TYPE_NETWORK_ANOMALY, getSupportFragmentManager(), option);
+//                showLoadingStatusView(R.id.fl_main_container);
+
 //                getCurrentLoadingDialog().resetLoadingDialog();
 //                getLoadingFragment().setLoadingBackground(new ColorDrawable(Color.RED));
 ////                getLoadingFragment().setContainerBackground(new ColorDrawable(Color.DKGRAY));
 //                getLoadingFragment().setLoadingMessageColor(Color.BLUE);
 //                getLoadingFragment().setLoadingMessage("O(∩_∩)O哈哈~");
-//                showLoadingDialog(null);
+//                showLoadingStatusView(null);
 //                getCurrentLoadingDialog().setThemeType(StatusViewConstants.ThemeType.DARK_THEME);
 
-//                showLoadingDialog("蜂王浆", true);
+//                showLoadingStatusView("蜂王浆", true);
 //                getCurrentLoadingDialog().setOnStatusViewDialogListener(new StatusViewOption.OnStatusViewDialogListener() {
 //                    @Override
 //                    public boolean onClickKeyBack(DialogInterface dialog) {

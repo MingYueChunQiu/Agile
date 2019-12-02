@@ -28,7 +28,7 @@ public class TestDialogFragment extends BasePresenterDialogFragment<MainContract
         implements MainContract.View<MainContract.Presenter> {
 
     @Override
-    public void showLoadingDialog(@Nullable String hint, boolean cancelable) {
+    public void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
 
     }
 

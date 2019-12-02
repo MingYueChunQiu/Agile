@@ -1,7 +1,6 @@
 package com.mingyuechunqiu.agile.feature.statusview.ui
 
 import androidx.annotation.IdRes
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.StatusType

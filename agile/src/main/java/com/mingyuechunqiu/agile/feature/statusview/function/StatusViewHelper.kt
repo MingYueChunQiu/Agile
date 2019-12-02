@@ -30,7 +30,7 @@ internal class StatusViewHelper : IStatusViewHelper {
     }
 
     override fun showStatusView(type: StatusViewConstants.StatusType, manager: FragmentManager, @IdRes containerId: Int, option: StatusViewOption?) {
-        checkOrCreateStatusView(type)
+        checkOrCreateStatusView(type, option)
         mStatusView?.showStatusView(type, manager, containerId)
     }
 
@@ -46,7 +46,7 @@ internal class StatusViewHelper : IStatusViewHelper {
         return mStatusView?.getStatusMode() ?: StatusViewConstants.StatusType.TYPE_LOADING
     }
 
-    private fun checkOrCreateStatusView(type: StatusViewConstants.StatusType, option: StatusViewOption? = null) {
+    private fun checkOrCreateStatusView(type: StatusViewConstants.StatusType, option: StatusViewOption?) {
         mStatusView = StatusViewDialogFragment.newInstance(option
                 ?: StatusViewHandler.getGlobalStatusViewOptionByType(type))
     }

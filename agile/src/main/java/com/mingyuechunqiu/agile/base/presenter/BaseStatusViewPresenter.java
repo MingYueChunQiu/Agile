@@ -32,20 +32,25 @@ public abstract class BaseStatusViewPresenter<V extends IBaseStatusView, M exten
      * @param hint       提示文本
      * @param cancelable 对话框是否可以被取消
      */
-    protected void showLoadingDialog(@Nullable String hint, boolean cancelable) {
+    protected void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
         if (checkViewRefIsNull()) {
             return;
-        }
-        FragmentManager manager = null;
-        if (mViewRef.get() instanceof FragmentActivity) {
-            manager = ((FragmentActivity) mViewRef.get()).getSupportFragmentManager();
-        } else if (mViewRef.get() instanceof Fragment) {
-            manager = ((Fragment) mViewRef.get()).getFragmentManager();
         }
         StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
         option.getContentOption().setText(hint);
         option.setCancelWithOutside(cancelable);
-        showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, manager, option);
+        showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getCurrentFragmentManager(), option);
+    }
+
+    /**
+     * 显示加载状态视图
+     *
+     * @param containerId 状态视图添加布局ID
+     */
+    protected void showLoadingStatusView(@IdRes int containerId) {
+        FragmentManager manager = getCurrentFragmentManager();
+        showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getCurrentFragmentManager(),
+                containerId, null);
     }
 
     protected void showStatusView(@NonNull StatusViewConstants.StatusType type, @Nullable FragmentManager manager,
@@ -95,5 +100,21 @@ public abstract class BaseStatusViewPresenter<V extends IBaseStatusView, M exten
             mViewRef.get().showToast(stringResourceId);
             mViewRef.get().dismissStatusView();
         }
+    }
+
+    /**
+     * 获取当前层级的FragmentManager
+     *
+     * @return 返回FragmentManager对象
+     */
+    @Nullable
+    private FragmentManager getCurrentFragmentManager() {
+        FragmentManager manager = null;
+        if (mViewRef.get() instanceof FragmentActivity) {
+            manager = ((FragmentActivity) mViewRef.get()).getSupportFragmentManager();
+        } else if (mViewRef.get() instanceof Fragment) {
+            manager = ((Fragment) mViewRef.get()).getFragmentManager();
+        }
+        return manager;
     }
 }

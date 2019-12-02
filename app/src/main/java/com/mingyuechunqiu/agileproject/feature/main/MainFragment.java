@@ -70,7 +70,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_fragment_main_show:
-//                showLoadingDialog("被我", false);
+//                showLoadingStatusView("被我", false);
                 showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getFragmentManager(), new StatusViewOption.Builder()
                         .setDialogWidth(500)
                         .setDialogHeight(400)

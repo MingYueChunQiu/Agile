@@ -60,7 +60,7 @@ public class DialogActivity extends BaseActivity implements View.OnClickListener
                 dismissStatusView();
                 break;
             case R.id.btn_show_loading:
-                showLoadingDialog(null, true);
+                showLoadingStatusView(null, true);
                 break;
             case R.id.btn_dismiss_loading:
                 dismissStatusView();
