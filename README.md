@@ -2,7 +2,9 @@
 a agile android framework for MVP.
 一个Android高效框架，提供公共框架、方法，进行敏捷开发。
 
-最新v0.3.33:</br>
+最新v0.3.36:新增状态视图模块</br>
+
+    v0.3.33:</br>
     v0.3.32:</br>
     v0.3.31:</br>
 	1.优化调整</br>
