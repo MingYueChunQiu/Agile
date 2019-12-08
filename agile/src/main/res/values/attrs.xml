@@ -57,4 +57,17 @@
         <attr name="svp_canScroll" format="boolean" />
     </declare-styleable>
 
+    <!--按下状态容器控件-->
+    <declare-styleable name="PressStateViewGroup">
+        <attr name="psvg_animator_duration" format="integer" />
+        <attr name="psvg_scale_x" format="float" />
+        <attr name="psvg_scale_y" format="float" />
+    </declare-styleable>
+
+    <!--按下状态控件-->
+    <declare-styleable name="PressStateTextView">
+        <attr name="psv_animator_duration" format="integer" />
+        <attr name="psv_scale_x" format="float" />
+        <attr name="psv_scale_y" format="float" />
+    </declare-styleable>
 </resources>
