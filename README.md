@@ -2,14 +2,14 @@
 a agile android framework for MVP.
 一个Android高效框架，提供公共框架、方法，进行敏捷开发。
 
-最新v0.3.36:新增状态视图模块</br>
+最新v0.3.37:重构框架部分内容，优化代码</br>
 
+    v0.3.36:新增状态视图模块</br>
     v0.3.33:</br>
     v0.3.32:</br>
     v0.3.31:</br>
 	1.优化调整</br>
-
-最新v0.3.30:</br>
+    v0.3.30:</br>
     	1.新增FTP和Socket功能模块</br>
     	2.调整api对外提供依赖包（只有RoundCornerDialogHelper、RecorderManager、MediaPicker三个）</br>
 
@@ -53,7 +53,7 @@ Agile.debug(true);//设置是否启动调试模式
 ```
 view:		
 		IBaseView
-	  	----IBaseDialogView
+	  	----IBaseStatusView
 	     	    ----IBaseNetView
 		    
 		IViewAttachPresenter<P>
@@ -61,7 +61,7 @@ view:
 presenter:	
 		IBasePresenter
 		----BaseAbstractPresenter
-		    ----BaseDialogPresenter
+		    ----BaseStatusViewPresenter
 		        ----BaseNetPresenter
 			    ----BaseCountDownPresenter（具体业务Presenter）
 	        ----engine
