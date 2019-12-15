@@ -1,6 +1,8 @@
 package com.mingyuechunqiu.agile.base.model.part;
 
 
+import androidx.annotation.NonNull;
+
 import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
 
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.List;
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/3/14
  *     desc   : 所有ModelPart的抽象父类
- *              继承自IModelPart
+ *              继承自IBaseModelPart
  *     version: 1.0
  * </pre>
  */
@@ -41,10 +43,7 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
      * @param dao dao单元
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addDao(IBaseDao dao) {
-        if (dao == null) {
-            return false;
-        }
+    protected boolean addDao(@NonNull IBaseDao dao) {
         if (mDaoList == null) {
             mDaoList = new ArrayList<>();
         }
@@ -57,8 +56,8 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
      * @param dao dao单元
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removeDao(IBaseDao dao) {
-        if (dao == null || mDaoList == null) {
+    protected boolean removeDao(@NonNull IBaseDao dao) {
+        if (mDaoList == null) {
             return false;
         }
         return mDaoList.remove(dao);

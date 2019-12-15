@@ -92,11 +92,6 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public boolean aloneView() {
-        return super.aloneView();
-    }
-
-    @Override
     public MainContract.Presenter initPresenter() {
         return new MainPresenter();
     }
@@ -241,7 +236,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_main_show:
-                StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_NETWORK_ANOMALY);
+                StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
                 option.setOnStatusViewDialogListener(new StatusViewOption.OnStatusViewDialogListener() {
                     @Override
                     public boolean onClickKeyBack(DialogInterface dialog) {
@@ -260,7 +255,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                     }
                 });
 //                showLoadingStatusView("测试", false);
-                showStatusView(StatusViewConstants.StatusType.TYPE_NETWORK_ANOMALY, getSupportFragmentManager(), option);
+                showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getSupportFragmentManager(), option);
 //                showLoadingStatusView(R.id.fl_main_container);
 
 //                getCurrentLoadingDialog().resetLoadingDialog();

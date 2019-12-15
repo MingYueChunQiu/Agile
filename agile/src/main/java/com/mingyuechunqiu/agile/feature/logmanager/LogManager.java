@@ -1,5 +1,8 @@
 package com.mingyuechunqiu.agile.feature.logmanager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * <pre>
  *     author : xyj
@@ -7,105 +10,105 @@ package com.mingyuechunqiu.agile.feature.logmanager;
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/3/1
  *     desc   : 日志管理类
- *              实现LogManagerable
+ *              实现ILogManager
  *     version: 1.0
  * </pre>
  */
-class LogManager implements LogManagerable {
+class LogManager implements ILogManager {
 
-    private Logable mLogable;
+    private ILog mLog;
 
     LogManager() {
-        mLogable = new LogUtils();
+        mLog = new LogUtils();
     }
 
     @Override
     public int getCurrentLogLevel() {
-        return mLogable.getCurrentLogLevel();
+        return mLog.getCurrentLogLevel();
     }
 
     @Override
     public void setCurrentLogLevel(int currentLogLevel) {
-        mLogable.setCurrentLogLevel(currentLogLevel);
+        mLog.setCurrentLogLevel(currentLogLevel);
     }
 
     @Override
     public void showLog(boolean showLog) {
-        mLogable.showLog(showLog);
+        mLog.showLog(showLog);
     }
 
     @Override
-    public void v(String tag, String msg) {
-        mLogable.v(tag, msg);
+    public void v(@NonNull String tag, @NonNull String msg) {
+        mLog.v(tag, msg);
     }
 
     @Override
-    public void saveVerboseToLocal(String tag, String msg, String title, String filePath) {
-        mLogable.saveVerboseToLocal(tag, msg, title, filePath);
+    public void saveVerboseToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath) {
+        mLog.saveVerboseToLocal(tag, msg, title, filePath);
     }
 
     @Override
-    public void saveVerboseToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
-        mLogable.saveVerboseToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+    public void saveVerboseToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
+        mLog.saveVerboseToLocal(tag, msg, title, filePath, ignoreLogSwitch);
     }
 
     @Override
-    public void d(String tag, String msg) {
-        mLogable.d(tag, msg);
+    public void d(@NonNull String tag, @NonNull String msg) {
+        mLog.d(tag, msg);
     }
 
     @Override
-    public void saveDebugToLocal(String tag, String msg, String title, String filePath) {
-        mLogable.saveDebugToLocal(tag, msg, title, filePath);
+    public void saveDebugToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath) {
+        mLog.saveDebugToLocal(tag, msg, title, filePath);
     }
 
     @Override
-    public void saveDebugToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
-        mLogable.saveDebugToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+    public void saveDebugToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
+        mLog.saveDebugToLocal(tag, msg, title, filePath, ignoreLogSwitch);
     }
 
     @Override
-    public void i(String tag, String msg) {
-        mLogable.i(tag, msg);
+    public void i(@NonNull String tag, @NonNull String msg) {
+        mLog.i(tag, msg);
     }
 
     @Override
-    public void saveInfoToLocal(String tag, String msg, String title, String filePath) {
-        mLogable.saveInfoToLocal(tag, msg, title, filePath);
+    public void saveInfoToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath) {
+        mLog.saveInfoToLocal(tag, msg, title, filePath);
     }
 
     @Override
-    public void saveInfoToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
-        mLogable.saveInfoToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+    public void saveInfoToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
+        mLog.saveInfoToLocal(tag, msg, title, filePath, ignoreLogSwitch);
     }
 
     @Override
-    public void w(String tag, String msg) {
-        mLogable.w(tag, msg);
+    public void w(@NonNull String tag, @NonNull String msg) {
+        mLog.w(tag, msg);
     }
 
     @Override
-    public void saveWarnToLocal(String tag, String msg, String title, String filePath) {
-        mLogable.saveWarnToLocal(tag, msg, title, filePath);
+    public void saveWarnToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath) {
+        mLog.saveWarnToLocal(tag, msg, title, filePath);
     }
 
     @Override
-    public void saveWarnToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
-        mLogable.saveWarnToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+    public void saveWarnToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
+        mLog.saveWarnToLocal(tag, msg, title, filePath, ignoreLogSwitch);
     }
 
     @Override
-    public void e(String tag, String msg) {
-        mLogable.e(tag, msg);
+    public void e(@NonNull String tag, @NonNull String msg) {
+        mLog.e(tag, msg);
     }
 
     @Override
-    public void saveErrorToLocal(String tag, String msg, String title, String filePath) {
-        mLogable.saveErrorToLocal(tag, msg, title, filePath);
+    public void saveErrorToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath) {
+        mLog.saveErrorToLocal(tag, msg, title, filePath);
     }
 
     @Override
-    public void saveErrorToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
-        mLogable.saveErrorToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+    public void saveErrorToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
+        mLog.saveErrorToLocal(tag, msg, title, filePath, ignoreLogSwitch);
     }
 }

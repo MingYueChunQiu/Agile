@@ -215,11 +215,6 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
     }
 
     @Override
-    public boolean aloneView() {
-        return true;
-    }
-
-    @Override
     public BaseNetPresenter initPresenter() {
         return null;
     }

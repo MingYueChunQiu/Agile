@@ -1,15 +1,17 @@
 package com.mingyuechunqiu.agile.base.presenter;
 
+import android.text.TextUtils;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.mingyuechunqiu.agile.base.model.BaseAbstractModel;
 import com.mingyuechunqiu.agile.base.view.IBaseStatusView;
+import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
@@ -48,7 +50,6 @@ public abstract class BaseStatusViewPresenter<V extends IBaseStatusView, M exten
      * @param containerId 状态视图添加布局ID
      */
     protected void showLoadingStatusView(@IdRes int containerId) {
-        FragmentManager manager = getCurrentFragmentManager();
         showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getCurrentFragmentManager(),
                 containerId, null);
     }
@@ -81,23 +82,15 @@ public abstract class BaseStatusViewPresenter<V extends IBaseStatusView, M exten
     /**
      * 显示提示信息并关闭加载对话框
      *
-     * @param hint 提示文本
+     * @param info 错误信息对象
      */
-    protected void showToastAndDismissStatusView(@Nullable String hint) {
+    protected void showToastAndDismissStatusView(@NonNull ErrorInfo info) {
         if (!checkViewRefIsNull()) {
-            mViewRef.get().showToast(hint);
-            mViewRef.get().dismissStatusView();
-        }
-    }
-
-    /**
-     * 显示提示信息并关闭加载对话框
-     *
-     * @param stringResourceId 提示文本资源ID
-     */
-    protected void showToastAndDismissStatusView(@StringRes int stringResourceId) {
-        if (!checkViewRefIsNull()) {
-            mViewRef.get().showToast(stringResourceId);
+            if (!TextUtils.isEmpty(info.getErrorMsg())) {
+                mViewRef.get().showToast(info.getErrorMsg());
+            } else if (info.getErrorMsgResId() != 0) {
+                mViewRef.get().showToast(info.getErrorMsgResId());
+            }
             mViewRef.get().dismissStatusView();
         }
     }

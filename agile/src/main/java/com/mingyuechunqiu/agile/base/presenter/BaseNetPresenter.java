@@ -2,13 +2,13 @@ package com.mingyuechunqiu.agile.base.presenter;
 
 import android.text.TextUtils;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.R;
-import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.base.model.BaseNetModel;
 import com.mingyuechunqiu.agile.base.view.IBaseNetView;
 import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
+import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
 import com.mingyuechunqiu.agile.util.SharedPreferencesUtils;
 
@@ -33,16 +33,12 @@ public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNet
      * @param info 网络请求参数对象
      */
     @Override
-    public void setParamsInfo(@Nullable BaseParamsInfo info) {
+    public void requestWithParamsInfo(@NonNull BaseParamsInfo info) {
         if (mModel == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }
         //判断当前网络状况，是否继续进行网络业务操作
         if (judgeNetwork()) {
-            if (info == null) {
-                showToast(R.string.agile_error_set_net_params);
-                return;
-            }
             requestModel(info);
         } else {
             if (!checkViewRefIsNull()) {
@@ -93,8 +89,8 @@ public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNet
     }
 
     @Override
-    protected void requestModel(BaseParamsInfo info) {
-        mModel.setParamsInfo(info);
+    protected void requestModel(@NonNull BaseParamsInfo info) {
+        mModel.requestWithParamsInfo(info);
     }
 
     /**

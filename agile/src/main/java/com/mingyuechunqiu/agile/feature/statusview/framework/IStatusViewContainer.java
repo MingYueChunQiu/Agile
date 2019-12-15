@@ -2,7 +2,6 @@ package com.mingyuechunqiu.agile.feature.statusview.framework;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
 
 /**
  * <pre>
@@ -41,6 +40,14 @@ public interface IStatusViewContainer {
      */
     @IdRes
     int getProgressViewId();
+
+    /**
+     * 获取状态图控件ID
+     *
+     * @return 返回控件资源ID
+     */
+    @IdRes
+    int getIconViewId();
 
     /**
      * 获取内容控件资源ID

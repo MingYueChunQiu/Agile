@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.base.model.part.dao.remote;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
@@ -39,7 +40,7 @@ public abstract class BaseAbstractRetrofitDao<C extends IBaseDao.ModelDaoCallbac
          * @param response 网络响应
          * @return 如果网络响应为空返回true，否则返回false
          */
-        boolean checkRetrofitResponseIsNull(Response response);
+        boolean checkRetrofitResponseIsNull(@Nullable Response response);
 
         /**
          * 根据网络响应返回码，进行不同处理
@@ -48,7 +49,7 @@ public abstract class BaseAbstractRetrofitDao<C extends IBaseDao.ModelDaoCallbac
          * @param errorMsg 网络请求错误信息
          * @return 返回true表示响应成功，否则返回false失败
          */
-        boolean handleNetworkResponseCode(int code, String errorMsg);
+        boolean handleNetworkResponseCode(int code, @Nullable String errorMsg);
 
         /**
          * 处理Retrofit网络响应失败事件
@@ -56,6 +57,6 @@ public abstract class BaseAbstractRetrofitDao<C extends IBaseDao.ModelDaoCallbac
          * @param t                抛出的异常
          * @param errorStringResId 错误提示字符串资源ID
          */
-        void onNetworkResponseFailed(Throwable t, @StringRes int errorStringResId);
+        void onNetworkResponseFailed(@Nullable Throwable t, @StringRes int errorStringResId);
     }
 }

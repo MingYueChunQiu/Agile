@@ -1,5 +1,10 @@
 package com.mingyuechunqiu.agile.feature.logmanager;
 
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * <pre>
  *     author : xyj
@@ -23,16 +28,16 @@ public final class LogManagerProvider {
     public static final int ERROR = 0;
     public static final int HIDDEN = -1;//隐藏日志级别
 
-    private static volatile LogManagerable sInstance;
+    private static volatile ILogManager sInstance;
 
     private LogManagerProvider() {
     }
 
-    public static void setLogManagerable(LogManagerable logManagerable) {
-        sInstance = logManagerable;
+    public static void setLogManagerable(ILogManager logManager) {
+        sInstance = logManager;
     }
 
-    public static LogManagerable getLogManagerable() {
+    public static ILogManager getLogManagerable() {
         return sInstance;
     }
 
@@ -51,74 +56,74 @@ public final class LogManagerProvider {
         sInstance.showLog(showLog);
     }
 
-    public static void v(String tag, String msg) {
+    public static void v(@NonNull String tag, @Nullable String msg) {
         checkOrCreateLogManager();
-        sInstance.v(tag, msg);
+        sInstance.v(tag, TextUtils.isEmpty(msg) ? "传入msg为空" : msg);
     }
 
-    public static void saveVerboseToLocal(String tag, String msg, String title, String filePath) {
+    public static void saveVerboseToLocal(@NonNull String tag, @Nullable String msg, @NonNull String title, @Nullable String filePath) {
         saveVerboseToLocal(tag, msg, title, filePath, false);
     }
 
-    public static void saveVerboseToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+    public static void saveVerboseToLocal(@NonNull String tag, @Nullable String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
         checkOrCreateLogManager();
-        sInstance.saveVerboseToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+        sInstance.saveVerboseToLocal(tag, TextUtils.isEmpty(msg) ? "传入msg为空" : msg, title, filePath, ignoreLogSwitch);
     }
 
-    public static void d(String tag, String msg) {
+    public static void d(@NonNull String tag, @Nullable String msg) {
         checkOrCreateLogManager();
-        sInstance.d(tag, msg);
+        sInstance.d(tag, TextUtils.isEmpty(msg) ? "传入msg为空" : msg);
     }
 
-    public static void saveDebugToLocal(String tag, String msg, String title, String filePath) {
+    public static void saveDebugToLocal(@NonNull String tag, @Nullable String msg, @NonNull String title, @Nullable String filePath) {
         saveDebugToLocal(tag, msg, title, filePath, false);
     }
 
-    public static void saveDebugToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+    public static void saveDebugToLocal(@NonNull String tag, @Nullable String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
         checkOrCreateLogManager();
-        sInstance.saveDebugToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+        sInstance.saveDebugToLocal(tag, TextUtils.isEmpty(msg) ? "传入msg为空" : msg, title, filePath, ignoreLogSwitch);
     }
 
-    public static void i(String tag, String msg) {
+    public static void i(@NonNull String tag, @Nullable String msg) {
         checkOrCreateLogManager();
-        sInstance.i(tag, msg);
+        sInstance.i(tag, TextUtils.isEmpty(msg) ? "传入msg为空" : msg);
     }
 
-    public static void saveInfoToLocal(String tag, String msg, String title, String filePath) {
+    public static void saveInfoToLocal(@NonNull String tag, @Nullable String msg, @NonNull String title, @Nullable String filePath) {
         saveInfoToLocal(tag, msg, title, filePath, false);
     }
 
-    public static void saveInfoToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+    public static void saveInfoToLocal(@NonNull String tag, @Nullable String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
         checkOrCreateLogManager();
-        sInstance.saveInfoToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+        sInstance.saveInfoToLocal(tag, TextUtils.isEmpty(msg) ? "传入msg为空" : msg, title, filePath, ignoreLogSwitch);
     }
 
-    public static void w(String tag, String msg) {
+    public static void w(@NonNull String tag, @Nullable String msg) {
         checkOrCreateLogManager();
-        sInstance.w(tag, msg);
+        sInstance.w(tag, TextUtils.isEmpty(msg) ? "传入msg为空" : msg);
     }
 
-    public static void saveWarnToLocal(String tag, String msg, String title, String filePath) {
+    public static void saveWarnToLocal(@NonNull String tag, @Nullable String msg, @NonNull String title, @Nullable String filePath) {
         saveWarnToLocal(tag, msg, title, filePath, false);
     }
 
-    public static void saveWarnToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+    public static void saveWarnToLocal(@NonNull String tag, @Nullable String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
         checkOrCreateLogManager();
-        sInstance.saveWarnToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+        sInstance.saveWarnToLocal(tag, TextUtils.isEmpty(msg) ? "传入msg为空" : msg, title, filePath, ignoreLogSwitch);
     }
 
-    public static void e(String tag, String msg) {
+    public static void e(@NonNull String tag, @Nullable String msg) {
         checkOrCreateLogManager();
-        sInstance.e(tag, msg);
+        sInstance.e(tag, TextUtils.isEmpty(msg) ? "传入msg为空" : msg);
     }
 
-    public static void saveErrorToLocal(String tag, String msg, String title, String filePath) {
+    public static void saveErrorToLocal(@NonNull String tag, @Nullable String msg, @NonNull String title, @Nullable String filePath) {
         saveErrorToLocal(tag, msg, title, filePath, false);
     }
 
-    public static void saveErrorToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+    public static void saveErrorToLocal(@NonNull String tag, @Nullable String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
         checkOrCreateLogManager();
-        sInstance.saveErrorToLocal(tag, msg, title, filePath, ignoreLogSwitch);
+        sInstance.saveErrorToLocal(tag, TextUtils.isEmpty(msg) ? "传入msg为空" : msg, title, filePath, ignoreLogSwitch);
     }
 
     /**

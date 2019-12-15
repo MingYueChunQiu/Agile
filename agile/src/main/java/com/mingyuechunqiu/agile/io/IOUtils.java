@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agile.io;
 
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
@@ -94,14 +95,16 @@ public class IOUtils {
     /**
      * 关闭流的操作，供子类调用
      *
-     * @param stream 需要关闭的流
+     * @param streams 需要关闭的流
      */
-    public static void closeStream(@Nullable Closeable stream) {
-        if (stream == null) {
+    public static void closeStream(@Nullable Closeable... streams) {
+        if (streams == null) {
             return;
         }
         try {
-            stream.close();
+            for (Closeable stream : streams) {
+                stream.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -114,7 +117,7 @@ public class IOUtils {
      * @param msg      信息
      * @param filePath 文件路径
      */
-    public static void writeStringToLocalFile(final String title, final String msg, final String filePath) {
+    public static void writeStringToLocalFile(@NonNull final String title, @NonNull final String msg, @NonNull final String filePath) {
         if (!IOUtils.checkIsFileOrCreate(filePath)) {
             return;
         }

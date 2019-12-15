@@ -28,12 +28,12 @@ class MainModel extends MainContract.Model<MainContract.Listener> {
     }
 
     @Override
-    protected void getRequest(BaseParamsInfo info) {
+    protected void doRequest(BaseParamsInfo info) {
 
     }
 
     @Override
-    protected void reRequest(Map<String, String> paramMap) {
+    protected void redoRequest(Map<String, String> paramMap) {
 
     }
 

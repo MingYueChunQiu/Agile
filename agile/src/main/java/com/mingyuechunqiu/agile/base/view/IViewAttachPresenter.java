@@ -1,5 +1,8 @@
 package com.mingyuechunqiu.agile.base.view;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * <pre>
  *     author : xyj
@@ -13,13 +16,6 @@ package com.mingyuechunqiu.agile.base.view;
 public interface IViewAttachPresenter<P> {
 
     /**
-     * 是否单独使用View，不绑定Presenter（默认返回false）
-     *
-     * @return 返回true表示只用View不绑定Presenter，否则返回false
-     */
-    boolean aloneView();
-
-    /**
      * 关联添加Present
      */
     void attachPresenter();
@@ -27,15 +23,15 @@ public interface IViewAttachPresenter<P> {
     /**
      * 绑定Presenter
      *
-     * @param outside   Presenter是否是从外部传入
      * @param presenter 外部传入的Presenter
      */
-    void bindPresenter(boolean outside, P presenter);
+    void bindPresenter(@NonNull P presenter);
 
     /**
      * 初始化Presenter
      *
      * @return 返回设置好的Presenter
      */
+    @Nullable
     P initPresenter();
 }

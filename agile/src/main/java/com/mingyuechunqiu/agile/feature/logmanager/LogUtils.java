@@ -2,9 +2,11 @@ package com.mingyuechunqiu.agile.feature.logmanager;
 
 import android.Manifest;
 import android.os.Environment;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.io.IOUtils;
@@ -33,7 +35,7 @@ import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.WAR
  *     version: 1.0
  * </pre>
  */
-class LogUtils implements Logable {
+class LogUtils implements ILog {
 
     //申请权限
     private static final String[] permissions = new String[]{
@@ -57,7 +59,7 @@ class LogUtils implements Logable {
     }
 
     @Override
-    public void v(String tag, String msg) {
+    public void v(@NonNull String tag, @NonNull String msg) {
         if (checkLogIsInvalid(tag, msg, VERBOSE, false)) {
             return;
         }
@@ -65,12 +67,12 @@ class LogUtils implements Logable {
     }
 
     @Override
-    public void saveVerboseToLocal(String tag, String msg, String title, String filePath) {
+    public void saveVerboseToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath) {
         saveVerboseToLocal(tag, msg, title, filePath, false);
     }
 
     @Override
-    public void saveVerboseToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+    public void saveVerboseToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
         if (checkLogIsInvalid(tag, msg, VERBOSE, ignoreLogSwitch)) {
             return;
         }
@@ -78,7 +80,7 @@ class LogUtils implements Logable {
     }
 
     @Override
-    public void d(String tag, String msg) {
+    public void d(@NonNull String tag, @NonNull String msg) {
         if (checkLogIsInvalid(tag, msg, DEBUG, false)) {
             return;
         }
@@ -86,12 +88,12 @@ class LogUtils implements Logable {
     }
 
     @Override
-    public void saveDebugToLocal(String tag, String msg, String title, String filePath) {
+    public void saveDebugToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath) {
         saveDebugToLocal(tag, msg, title, filePath, false);
     }
 
     @Override
-    public void saveDebugToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+    public void saveDebugToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
         if (checkLogIsInvalid(tag, msg, DEBUG, ignoreLogSwitch)) {
             return;
         }
@@ -99,7 +101,7 @@ class LogUtils implements Logable {
     }
 
     @Override
-    public void i(String tag, String msg) {
+    public void i(@NonNull String tag, @NonNull String msg) {
         if (checkLogIsInvalid(tag, msg, INFO, false)) {
             return;
         }
@@ -107,12 +109,12 @@ class LogUtils implements Logable {
     }
 
     @Override
-    public void saveInfoToLocal(String tag, String msg, String title, String filePath) {
+    public void saveInfoToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath) {
         saveInfoToLocal(tag, msg, title, filePath, false);
     }
 
     @Override
-    public void saveInfoToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+    public void saveInfoToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
         if (checkLogIsInvalid(tag, msg, INFO, ignoreLogSwitch)) {
             return;
         }
@@ -120,7 +122,7 @@ class LogUtils implements Logable {
     }
 
     @Override
-    public void w(String tag, String msg) {
+    public void w(@NonNull String tag, @NonNull String msg) {
         if (current < WARN) {
             return;
         }
@@ -132,12 +134,12 @@ class LogUtils implements Logable {
     }
 
     @Override
-    public void saveWarnToLocal(String tag, String msg, String title, String filePath) {
+    public void saveWarnToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath) {
         saveWarnToLocal(tag, msg, title, filePath, false);
     }
 
     @Override
-    public void saveWarnToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+    public void saveWarnToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
         if (checkLogIsInvalid(tag, msg, WARN, ignoreLogSwitch)) {
             return;
         }
@@ -145,7 +147,7 @@ class LogUtils implements Logable {
     }
 
     @Override
-    public void e(String tag, String msg) {
+    public void e(@NonNull String tag, @NonNull String msg) {
         if (checkLogIsInvalid(tag, msg, ERROR, false)) {
             return;
         }
@@ -153,12 +155,12 @@ class LogUtils implements Logable {
     }
 
     @Override
-    public void saveErrorToLocal(String tag, String msg, String title, String filePath) {
+    public void saveErrorToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath) {
         saveErrorToLocal(tag, msg, title, filePath, false);
     }
 
     @Override
-    public void saveErrorToLocal(String tag, String msg, String title, String filePath, boolean ignoreLogSwitch) {
+    public void saveErrorToLocal(@NonNull String tag, @NonNull String msg, @NonNull String title, @Nullable String filePath, boolean ignoreLogSwitch) {
         if (checkLogIsInvalid(tag, msg, ERROR, ignoreLogSwitch)) {
             return;
         }
@@ -174,7 +176,7 @@ class LogUtils implements Logable {
      * @param ignoreLogSwitch 是否忽略日志开关
      * @return 如果无效返回true，否则返回false
      */
-    private boolean checkLogIsInvalid(String tag, String msg, int logLevel, boolean ignoreLogSwitch) {
+    private boolean checkLogIsInvalid(@NonNull String tag, @NonNull String msg, int logLevel, boolean ignoreLogSwitch) {
         if (!ignoreLogSwitch && current < logLevel) {
             return true;
         }
@@ -192,11 +194,11 @@ class LogUtils implements Logable {
      * @return 返回默认文件存储路径
      */
     @Nullable
-    private String getDefaultFilePath(String title) {
+    private String getDefaultFilePath(@NonNull String title) {
         String prefixPath = null;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             if (!EasyPermissions.hasPermissions(Agile.getAppContext(), permissions)) {
-                e("LogUtils", "请申请存储写入权限，以便进行日志写入");
+                e("LogUtils", "请申请存储读写权限，以便进行日志写入");
             }
             File file = Agile.getAppContext().getExternalFilesDir(Environment.DIRECTORY_ALARMS);
             if (file != null) {
@@ -221,10 +223,13 @@ class LogUtils implements Logable {
      * @param title    标题
      * @param filePath 文件路径
      */
-    private void saveLogToLocalFile(String msg, String title, String filePath) {
+    private void saveLogToLocalFile(@NonNull String msg, @NonNull String title, @Nullable String filePath) {
         String destPath = filePath;
         if (TextUtils.isEmpty(filePath)) {
             destPath = getDefaultFilePath(title);
+        }
+        if (TextUtils.isEmpty(destPath)) {
+            return;
         }
         IOUtils.writeStringToLocalFile(title, msg, destPath);
     }

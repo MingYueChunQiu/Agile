@@ -1,9 +1,10 @@
 package com.mingyuechunqiu.agile.base.model;
 
-import com.mingyuechunqiu.agile.R;
+import androidx.annotation.NonNull;
+
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
-import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
 import com.mingyuechunqiu.agile.base.model.part.IBaseModelPart;
+import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
 import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
 
 import java.util.ArrayList;
@@ -25,15 +26,15 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
     protected final String TAG_FAILURE = getClass().getSimpleName() + " failure";//打印错误日志标签
 
     protected I mListener;
-    protected List<IBaseModelPart> mModelPartList;
-    protected List<IBaseDao> mDaoList;
+    private List<IBaseModelPart> mModelPartList;
+    private List<IBaseDao> mDaoList;
 
-    public BaseAbstractModel(I listener) {
+    public BaseAbstractModel(@NonNull I listener) {
         attachListener(listener);
     }
 
     @Override
-    public void attachListener(I listener) {
+    public void attachListener(@NonNull I listener) {
         mListener = listener;
         onAttachListener(listener);
     }
@@ -48,6 +49,19 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
 
     @Override
     public void resume() {
+    }
+
+    /**
+     * 设置网络请求参数对象，进行网络请求
+     *
+     * @param info 网络请求参数对象
+     */
+    @Override
+    public void requestWithParamsInfo(@NonNull BaseParamsInfo info) {
+        if (mListener == null) {
+            throw new IllegalArgumentException("Listener has not been set!");
+        }
+        doRequest(info);
     }
 
     /**
@@ -78,31 +92,12 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
     }
 
     /**
-     * 设置网络请求参数对象，进行网络请求
-     *
-     * @param info 网络请求参数对象
-     */
-    public void setParamsInfo(BaseParamsInfo info) {
-        if (mListener == null) {
-            throw new IllegalArgumentException("Listener has not been set!");
-        }
-        if (info == null) {
-            mListener.onFailure(R.string.agile_error_set_net_params);
-            return;
-        }
-        getRequest(info);
-    }
-
-    /**
      * 添加模型层part单元
      *
      * @param part part单元模块
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addModelPart(IBaseModelPart part) {
-        if (part == null) {
-            return false;
-        }
+    protected boolean addModelPart(@NonNull IBaseModelPart part) {
         if (mModelPartList == null) {
             mModelPartList = new ArrayList<>();
         }
@@ -115,8 +110,8 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param part part单元模块
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removeModelPart(IBaseModelPart part) {
-        if (part == null || mModelPartList == null) {
+    protected boolean removeModelPart(@NonNull IBaseModelPart part) {
+        if (mModelPartList == null) {
             return false;
         }
         return mModelPartList.remove(part);
@@ -128,10 +123,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param dao dao单元
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addDao(IBaseDao dao) {
-        if (dao == null) {
-            return false;
-        }
+    protected boolean addDao(@NonNull IBaseDao dao) {
         if (mDaoList == null) {
             mDaoList = new ArrayList<>();
         }
@@ -144,8 +136,8 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param dao dao单元
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removeDao(IBaseDao dao) {
-        if (dao == null || mDaoList == null) {
+    protected boolean removeDao(@NonNull IBaseDao dao) {
+        if (mDaoList == null) {
             return false;
         }
         return mDaoList.remove(dao);
@@ -156,7 +148,20 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      *
      * @param listener 监听器
      */
-    protected void onAttachListener(I listener) {
+    protected void onAttachListener(@NonNull I listener) {
+    }
+
+    /**
+     * 将参数转成对应参数类型
+     *
+     * @param info 参数基本类型
+     * @param <T>  转换成类型
+     * @return 返回转换后的类型（如果类型错误，会抛出ClassCastException）
+     */
+    @SuppressWarnings("unchecked")
+    @NonNull
+    protected <T extends BaseParamsInfo> T asParamsInfo(@NonNull BaseParamsInfo info) {
+        return (T) info;
     }
 
     /**
@@ -164,7 +169,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      *
      * @param info 网络请求参数对象
      */
-    protected abstract void getRequest(BaseParamsInfo info);
+    protected abstract void doRequest(@NonNull BaseParamsInfo info);
 
     /**
      * 销毁资源

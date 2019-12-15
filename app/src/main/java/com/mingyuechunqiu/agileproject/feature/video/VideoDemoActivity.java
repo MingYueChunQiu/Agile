@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -118,7 +119,7 @@ public class VideoDemoActivity extends AppCompatActivity implements EasyPermissi
                 for (int i = 0; i < 5; i++) {
                     list.get(i).setVideoSource(url);
                 }
-                LogManagerProvider.saveErrorToLocal("分为", "这是测试是否能写入本地文件的", "demo", null);
+                LogManagerProvider.saveErrorToLocal("分为", "这是测试是否能写入本地文件的", "demo", getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "ew.txt");
             }
         }, 3000);
     }

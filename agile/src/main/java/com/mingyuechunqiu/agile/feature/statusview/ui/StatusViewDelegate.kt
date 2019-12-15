@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agile.feature.statusview.ui
 
 import android.os.Build
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.Nullable
@@ -52,11 +53,36 @@ internal class StatusViewDelegate(private val mOption: StatusViewOption) : IStat
         mModeType = StatusViewConstants.ModeType.TYPE_INVALID
     }
 
-    override fun applyOption(vContainer: View?, vProgress: View?, tvContent: TextView?, tvReload: TextView?) {
+    override fun applyOption(vContainer: View?, vProgress: View?, ivIcon: ImageView?, tvContent: TextView?, tvReload: TextView?) {
         applyContainerConfigure(vContainer)
-
         applyProgressConfigure(vProgress)
+        applyIconConfigure(ivIcon)
+        applyTextConfigure(tvContent, tvReload)
+    }
 
+    private fun applyProgressConfigure(vProgress: View?) {
+        vProgress?.visibility = if (mOption.isShowProgressView) View.VISIBLE else View.GONE
+        vProgress?.takeIf { it is ProgressBar }?.let {
+            val pbProgress = it as ProgressBar
+            mOption.progressDrawable?.let { drawable ->
+                pbProgress.progressDrawable = drawable
+            }
+        }
+    }
+
+    private fun applyIconConfigure(ivIcon: ImageView?) {
+        ivIcon?.visibility = if (mOption.isShowReloadIcon) View.VISIBLE else View.GONE
+        ivIcon?.let {
+            mOption.reloadDrawable?.let { drawable ->
+                it.setImageDrawable(drawable)
+            }
+            mOption.reloadDrawableResId.takeIf { it != 0 }?.let { id ->
+                it.setImageResource(id)
+            }
+        }
+    }
+
+    private fun applyTextConfigure(tvContent: TextView?, tvReload: TextView?) {
         tvContent?.visibility = if (mOption.isShowContentText) View.VISIBLE else View.GONE
         if (mOption.isShowContentText) {
             initTextButton(tvContent, mOption.contentOption)
@@ -64,15 +90,6 @@ internal class StatusViewDelegate(private val mOption: StatusViewOption) : IStat
         tvReload?.visibility = if (mOption.isShowReloadText) View.VISIBLE else View.GONE
         if (mOption.isShowReloadText) {
             initTextButton(tvReload, mOption.reloadOption)
-        }
-    }
-
-    private fun applyProgressConfigure(vProgress: View?) {
-        vProgress?.takeIf { it is ProgressBar }?.let {
-            val pbProgress = it as ProgressBar
-            mOption.progressDrawable?.let { drawable ->
-                pbProgress.progressDrawable = drawable
-            }
         }
     }
 
@@ -112,13 +129,13 @@ internal class StatusViewDelegate(private val mOption: StatusViewOption) : IStat
                 }?.let { color ->
                     it.setTextColor(color)
                 }
+                it.background?.let { drawable ->
+                    it.background = drawable
+                }
                 textOption.backgroundResId.takeIf { id ->
                     id != 0
                 }?.let { id ->
                     it.setBackgroundResource(id)
-                }
-                it.background?.let { drawable ->
-                    it.background = drawable
                 }
             }
         }

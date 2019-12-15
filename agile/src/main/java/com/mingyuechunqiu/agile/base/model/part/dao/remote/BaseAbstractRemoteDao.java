@@ -59,8 +59,8 @@ public abstract class BaseAbstractRemoteDao<C extends IBaseDao.ModelDaoCallback>
      *
      * @param operation 远程操作
      */
-    protected void addRemoteOperation(IBaseRemoteDaoOperation operation) {
-        if (operation == null || operation.isCanceled()) {
+    protected void addRemoteOperation(@NonNull IBaseRemoteDaoOperation operation) {
+        if (operation.isCanceled()) {
             return;
         }
         if (mRemoteDaoOperationList == null) {
@@ -86,8 +86,8 @@ public abstract class BaseAbstractRemoteDao<C extends IBaseDao.ModelDaoCallback>
      *
      * @param operation 远程操作
      */
-    protected void removeRemoteOperation(IBaseRemoteDaoOperation operation) {
-        if (operation == null || mRemoteDaoOperationList == null || mRemoteDaoOperationList.size() == 0) {
+    protected void removeRemoteOperation(@NonNull IBaseRemoteDaoOperation operation) {
+        if (mRemoteDaoOperationList == null || mRemoteDaoOperationList.size() == 0) {
             return;
         }
         if (!operation.isCanceled()) {

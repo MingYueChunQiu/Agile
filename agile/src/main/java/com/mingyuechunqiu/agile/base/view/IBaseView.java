@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.base.view;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -29,5 +30,6 @@ public interface IBaseView<P extends IBasePresenter> {
      *
      * @return 返回上下文
      */
+    @Nullable
     Context getCurrentContext();
 }

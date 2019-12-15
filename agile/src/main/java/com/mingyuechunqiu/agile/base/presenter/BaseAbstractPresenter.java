@@ -1,12 +1,12 @@
 package com.mingyuechunqiu.agile.base.presenter;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
-import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.model.BaseTokenNetModel;
 import com.mingyuechunqiu.agile.base.model.IBaseModel;
 import com.mingyuechunqiu.agile.base.presenter.engine.IBasePresenterEngine;
@@ -31,10 +31,10 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     protected WeakReference<V> mViewRef;
     protected M mModel;
-    protected List<IBasePresenterEngine> mPresenterEngineList;
+    private List<IBasePresenterEngine> mPresenterEngineList;
 
     @Override
-    public void attachView(V view) {
+    public void attachView(@NonNull V view) {
         mViewRef = new WeakReference<>(view);
         mModel = initModel();
         if (!checkViewRefIsNull() && mViewRef.get().getCurrentContext() != null) {
@@ -59,17 +59,14 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     }
 
     /**
-     * 带参数的业务请求
+     * 带参数的业务请求（在model为空情况下会抛出IllegalArgumentException）
      *
      * @param info 请求参数对象
      */
-    public void setParamsInfo(BaseParamsInfo info) {
+    @Override
+    public void requestWithParamsInfo(@NonNull BaseParamsInfo info) {
         if (mModel == null) {
             throw new IllegalArgumentException("Model has not been set!");
-        }
-        if (info == null) {
-            showToast(R.string.agile_error_set_net_params);
-            return;
         }
         requestModel(info);
     }
@@ -142,10 +139,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param engine engine单元模块
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addPresenterEngine(IBasePresenterEngine engine) {
-        if (engine == null) {
-            return false;
-        }
+    protected boolean addPresenterEngine(@NonNull IBasePresenterEngine engine) {
         if (mPresenterEngineList == null) {
             mPresenterEngineList = new ArrayList<>();
         }
@@ -158,8 +152,8 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param engine engine单元模块
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removePresenterEngine(IBasePresenterEngine engine) {
-        if (engine == null || mPresenterEngineList == null) {
+    protected boolean removePresenterEngine(@NonNull IBasePresenterEngine engine) {
+        if (mPresenterEngineList == null) {
             return false;
         }
         return mPresenterEngineList.remove(engine);
@@ -193,7 +187,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param view  依附的View
      * @param model 控制的Model
      */
-    protected void onAttachView(V view, M model) {
+    protected void onAttachView(@NonNull V view, @Nullable M model) {
     }
 
     /**
@@ -210,7 +204,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      *
      * @param info 请求参数对象
      */
-    protected abstract void requestModel(BaseParamsInfo info);
+    protected abstract void requestModel(@NonNull BaseParamsInfo info);
 
     /**
      * 释放资源

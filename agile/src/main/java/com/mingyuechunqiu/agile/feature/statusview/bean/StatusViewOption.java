@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewContainer;
@@ -35,7 +36,7 @@ public class StatusViewOption {
         return mBuilder.container;
     }
 
-    public void setStatusViewContainer(IStatusViewContainer container) {
+    public void setStatusViewContainer(@Nullable IStatusViewContainer container) {
         mBuilder.container = container;
     }
 
@@ -83,7 +84,7 @@ public class StatusViewOption {
         return mBuilder.containerBackground;
     }
 
-    public void setContainerBackground(Drawable containerBackground) {
+    public void setContainerBackground(@NonNull Drawable containerBackground) {
         mBuilder.containerBackground = containerBackground;
     }
 
@@ -91,8 +92,40 @@ public class StatusViewOption {
         return mBuilder.progressDrawable;
     }
 
-    public void setProgressDrawable(Drawable progressDrawable) {
+    public void setProgressDrawable(@NonNull Drawable progressDrawable) {
         mBuilder.progressDrawable = progressDrawable;
+    }
+
+    public Drawable getReloadDrawable() {
+        return mBuilder.reloadDrawable;
+    }
+
+    public void setReloadDrawable(@NonNull Drawable reloadDrawable) {
+        mBuilder.reloadDrawable = reloadDrawable;
+    }
+
+    public int getReloadDrawableResId() {
+        return mBuilder.reloadDrawableResId;
+    }
+
+    public void setReloadDrawableResId(@DrawableRes int reloadDrawableResId) {
+        mBuilder.reloadDrawableResId = reloadDrawableResId;
+    }
+
+    public boolean isShowProgressView() {
+        return mBuilder.showProgressView;
+    }
+
+    public void setShowProgressView(boolean showProgressView) {
+        mBuilder.showProgressView = showProgressView;
+    }
+
+    public boolean isShowReloadIcon() {
+        return mBuilder.showReloadIcon;
+    }
+
+    public void setShowReloadIcon(boolean showReloadIcon) {
+        mBuilder.showReloadIcon = showReloadIcon;
     }
 
     public boolean isShowContentText() {
@@ -115,7 +148,7 @@ public class StatusViewOption {
         return mBuilder.contentOption;
     }
 
-    public void setContentOption(StatusViewTextOption contentOption) {
+    public void setContentOption(@Nullable StatusViewTextOption contentOption) {
         mBuilder.contentOption = contentOption;
     }
 
@@ -123,7 +156,7 @@ public class StatusViewOption {
         return mBuilder.reloadOption;
     }
 
-    public void setReloadOption(StatusViewTextOption reloadOption) {
+    public void setReloadOption(@Nullable StatusViewTextOption reloadOption) {
         mBuilder.reloadOption = reloadOption;
     }
 
@@ -131,7 +164,7 @@ public class StatusViewOption {
         return mBuilder.dialogListener;
     }
 
-    public void setOnStatusViewDialogListener(OnStatusViewDialogListener listener) {
+    public void setOnStatusViewDialogListener(@Nullable OnStatusViewDialogListener listener) {
         mBuilder.dialogListener = listener;
     }
 
@@ -139,7 +172,7 @@ public class StatusViewOption {
         return mBuilder.buttonListener;
     }
 
-    public void setOnStatusViewButtonListener(OnStatusViewButtonListener buttonListener) {
+    public void setOnStatusViewButtonListener(@Nullable OnStatusViewButtonListener buttonListener) {
         mBuilder.buttonListener = buttonListener;
     }
 
@@ -156,6 +189,11 @@ public class StatusViewOption {
         int containerBackgroundResId;//容器背景图像资源ID
         private Drawable containerBackground;//容器背景图像
         private Drawable progressDrawable;//无进度图像
+        private Drawable reloadDrawable;//重新加载图片
+        private @DrawableRes
+        int reloadDrawableResId;//重新加载图片资源ID
+        private boolean showProgressView;//是否显示进度控件
+        private boolean showReloadIcon;//是否显示重新加载图标
         private boolean showContentText;//是否显示内容文本（默认显示）
         private boolean showReloadText;//是否显示加载文本
         private StatusViewTextOption contentOption;//内容配置信息对象
@@ -164,7 +202,10 @@ public class StatusViewOption {
         private OnStatusViewButtonListener buttonListener;//按钮监听器
 
         public Builder() {
+            showProgressView = false;
+            showReloadIcon = false;
             showContentText = true;
+            showReloadText = false;
         }
 
         public StatusViewOption build() {
@@ -175,7 +216,7 @@ public class StatusViewOption {
             return container;
         }
 
-        public Builder setStatusViewContainer(IStatusViewContainer container) {
+        public Builder setStatusViewContainer(@Nullable IStatusViewContainer container) {
             this.container = container;
             return this;
         }
@@ -229,7 +270,7 @@ public class StatusViewOption {
             return containerBackground;
         }
 
-        public Builder setContainerBackground(Drawable containerBackground) {
+        public Builder setContainerBackground(@NonNull Drawable containerBackground) {
             this.containerBackground = containerBackground;
             return this;
         }
@@ -238,8 +279,44 @@ public class StatusViewOption {
             return progressDrawable;
         }
 
-        public Builder setProgressDrawable(Drawable progressDrawable) {
+        public Builder setProgressDrawable(@NonNull Drawable progressDrawable) {
             this.progressDrawable = progressDrawable;
+            return this;
+        }
+
+        public Drawable getReloadDrawable() {
+            return reloadDrawable;
+        }
+
+        public Builder setReloadDrawable(@NonNull Drawable reloadDrawable) {
+            this.reloadDrawable = reloadDrawable;
+            return this;
+        }
+
+        public int getReloadDrawableResId() {
+            return reloadDrawableResId;
+        }
+
+        public Builder setReloadDrawableResId(@DrawableRes int reloadDrawableResId) {
+            this.reloadDrawableResId = reloadDrawableResId;
+            return this;
+        }
+
+        public boolean isShowProgressView() {
+            return showProgressView;
+        }
+
+        public Builder setShowProgressView(boolean showProgressView) {
+            this.showProgressView = showProgressView;
+            return this;
+        }
+
+        public boolean isShowReloadIcon() {
+            return showReloadIcon;
+        }
+
+        public Builder setShowReloadIcon(boolean showReloadIcon) {
+            this.showReloadIcon = showReloadIcon;
             return this;
         }
 
@@ -265,7 +342,7 @@ public class StatusViewOption {
             return contentOption;
         }
 
-        public Builder setContentOption(StatusViewTextOption contentOption) {
+        public Builder setContentOption(@Nullable StatusViewTextOption contentOption) {
             this.contentOption = contentOption;
             return this;
         }
@@ -274,7 +351,7 @@ public class StatusViewOption {
             return reloadOption;
         }
 
-        public Builder setReloadOption(StatusViewTextOption reloadOption) {
+        public Builder setReloadOption(@Nullable StatusViewTextOption reloadOption) {
             this.reloadOption = reloadOption;
             return this;
         }
@@ -283,7 +360,7 @@ public class StatusViewOption {
             return dialogListener;
         }
 
-        public Builder setOnStatusViewDialogListener(OnStatusViewDialogListener listener) {
+        public Builder setOnStatusViewDialogListener(@Nullable OnStatusViewDialogListener listener) {
             this.dialogListener = listener;
             return this;
         }
@@ -292,7 +369,7 @@ public class StatusViewOption {
             return buttonListener;
         }
 
-        public Builder setOnStatusViewButtonListener(OnStatusViewButtonListener buttonListener) {
+        public Builder setOnStatusViewButtonListener(@Nullable OnStatusViewButtonListener buttonListener) {
             this.buttonListener = buttonListener;
             return this;
         }

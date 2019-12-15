@@ -44,11 +44,6 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
     }
 
     @Override
-    public void bindPresenter(boolean outside, Object presenter) {
-
-    }
-
-    @Override
     public Object initPresenter() {
         return null;
     }
@@ -64,10 +59,5 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
         tbBar = findViewById(R.id.tb_toolbar_test);
         showStatusView(StatusViewConstants.StatusType.TYPE_ERROR, getSupportFragmentManager(),
                 R.id.fl_toolbar_test_container, null);
-    }
-
-    @Override
-    public boolean aloneView() {
-        return true;
     }
 }

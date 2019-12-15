@@ -1,6 +1,9 @@
 package com.mingyuechunqiu.agile.base.model;
 
+import androidx.annotation.NonNull;
+
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
+import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
 
 /**
  * <pre>
@@ -18,13 +21,20 @@ public interface IBaseModel<I extends IBaseListener> {
      *
      * @param listener 监听器
      */
-    void attachListener(I listener);
+    void attachListener(@NonNull I listener);
 
     void start();
 
     void resume();
 
     void pause();
+
+    /**
+     * 设置请求参数对象，进行请求
+     *
+     * @param info 请求参数对象
+     */
+    void requestWithParamsInfo(@NonNull BaseParamsInfo info);
 
     /**
      * 释放资源

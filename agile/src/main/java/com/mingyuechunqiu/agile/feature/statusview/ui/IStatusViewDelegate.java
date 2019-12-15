@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.feature.statusview.ui;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,7 +36,7 @@ interface IStatusViewDelegate {
     @NonNull
     StatusViewConstants.StatusType getStatusType();
 
-    void applyOption(@Nullable View vContainer, @Nullable View vProgress, @Nullable TextView tvContent, @Nullable TextView tvReload);
+    void applyOption(@Nullable View vContainer, @Nullable View vProgress, @Nullable ImageView ivIcon, @Nullable TextView tvContent, @Nullable TextView tvReload);
 
     void release();
 }

@@ -63,6 +63,7 @@ final class StatusViewHandler {
 
     private static StatusViewOption getLoadingStatusViewOption() {
         return new StatusViewOption.Builder()
+                .setShowProgressView(true)
                 .setContentOption(new StatusViewTextOption.Builder()
                         .setText("正在加载中……")
                         .build())
@@ -72,6 +73,7 @@ final class StatusViewHandler {
 
     private static StatusViewOption getEmptyStatusViewOption() {
         return new StatusViewOption.Builder()
+                .setShowReloadIcon(true)
                 .setShowReloadText(true)
                 .setContentOption(new StatusViewTextOption.Builder()
                         .setText("没有内容哦")
@@ -81,6 +83,7 @@ final class StatusViewHandler {
 
     private static StatusViewOption getNetworkAnomalyStatusViewOption() {
         return new StatusViewOption.Builder()
+                .setShowReloadIcon(true)
                 .setShowReloadText(true)
                 .setContentOption(new StatusViewTextOption.Builder()
                         .setText("网络异常")
@@ -90,6 +93,7 @@ final class StatusViewHandler {
 
     private static StatusViewOption getErrorStatusViewOption() {
         return new StatusViewOption.Builder()
+                .setShowReloadIcon(true)
                 .setShowReloadText(true)
                 .setContentOption(new StatusViewTextOption.Builder()
                         .setText("发生异常")

@@ -59,8 +59,8 @@ public abstract class BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback> 
      *
      * @param operation 本地数据操作
      */
-    protected void addLocalOperation(IBaseLocalDaoOperation operation) {
-        if (operation == null || operation.isInvalid()) {
+    protected void addLocalOperation(@NonNull IBaseLocalDaoOperation operation) {
+        if (operation.isInvalid()) {
             return;
         }
         if (mLocalDaoOperationList == null) {
@@ -86,8 +86,8 @@ public abstract class BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback> 
      *
      * @param operation 本地数据操作
      */
-    protected void removeLocalOperation(IBaseLocalDaoOperation operation) {
-        if (operation == null || mLocalDaoOperationList == null || mLocalDaoOperationList.size() == 0) {
+    protected void removeLocalOperation(@NonNull IBaseLocalDaoOperation operation) {
+        if (mLocalDaoOperationList == null || mLocalDaoOperationList.size() == 0) {
             return;
         }
         if (!operation.isInvalid()) {

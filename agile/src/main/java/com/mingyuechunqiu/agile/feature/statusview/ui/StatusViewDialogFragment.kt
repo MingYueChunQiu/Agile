@@ -5,6 +5,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import com.mingyuechunqiu.agile.R
@@ -28,6 +29,7 @@ import com.mingyuechunqiu.agile.ui.diaglogfragment.BaseDialogFragment
  */
 internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
 
+    private var ivIcon: ImageView? = null
     private var tvContent: TextView? = null
     private var tvReload: TextView? = null
 
@@ -68,11 +70,13 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
                 vLayout = inflater.inflate(it.statusViewContainer.customLayoutId, container, false)
                 vContainer = vLayout?.findViewById(it.statusViewContainer.containerId)
                 vProgress = vLayout?.findViewById(it.statusViewContainer.progressViewId)
+                ivIcon = vLayout?.findViewById(it.statusViewContainer.iconViewId)
                 tvContent = vLayout?.findViewById(it.statusViewContainer.contentViewId)
                 tvReload = vLayout?.findViewById(it.statusViewContainer.reloadViewId)
             } else {
                 vContainer = vLayout?.findViewById(R.id.ll_agile_dfg_status_view_container)
                 vProgress = vLayout?.findViewById(R.id.pb_agile_dfg_status_view_progress)
+                ivIcon = vLayout?.findViewById(R.id.iv_agile_dfg_status_view_icon)
                 tvContent = vLayout?.findViewById(R.id.tv_agile_dfg_status_view_content)
                 tvReload = vLayout?.findViewById(R.id.tv_agile_dfg_status_view_reload)
             }
@@ -82,7 +86,7 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
         }
 
         applyDialogConfigure()
-        mDelegate?.applyOption(vContainer, vProgress, tvContent, tvReload)
+        mDelegate?.applyOption(vContainer, vProgress, ivIcon, tvContent, tvReload)
         return vLayout
     }
 

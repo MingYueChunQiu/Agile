@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.base.model.part.dao;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
 
@@ -49,7 +50,7 @@ public interface IBaseDao<C extends IBaseDao.ModelDaoCallback> {
              *
              * @param listener 回调
              */
-            void operate(I listener);
+            void operate(@Nullable I listener);
         }
     }
 }

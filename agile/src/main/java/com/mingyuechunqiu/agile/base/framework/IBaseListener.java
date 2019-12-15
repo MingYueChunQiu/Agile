@@ -1,6 +1,8 @@
 package com.mingyuechunqiu.agile.base.framework;
 
-import androidx.annotation.StringRes;
+import androidx.annotation.NonNull;
+
+import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 
 /**
  * <pre>
@@ -14,17 +16,10 @@ import androidx.annotation.StringRes;
 public interface IBaseListener {
 
     /**
-     * 错误时回调
+     * 发生错误时回调
      *
-     * @param msg 错误信息
+     * @param info 错误信息对象
      */
-    void onFailure(String msg);
-
-    /**
-     * 错误时回调
-     *
-     * @param stringResourceId 错误信息资源ID
-     */
-    void onFailure(@StringRes int stringResourceId);
+    void onFailure(@NonNull ErrorInfo info);
 
 }
