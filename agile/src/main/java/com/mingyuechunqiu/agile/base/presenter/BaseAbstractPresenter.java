@@ -139,7 +139,10 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param engine engine单元模块
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addPresenterEngine(@NonNull IBasePresenterEngine engine) {
+    protected boolean addPresenterEngine(@Nullable IBasePresenterEngine engine) {
+        if (engine == null) {
+            return false;
+        }
         if (mPresenterEngineList == null) {
             mPresenterEngineList = new ArrayList<>();
         }
@@ -152,8 +155,8 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param engine engine单元模块
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removePresenterEngine(@NonNull IBasePresenterEngine engine) {
-        if (mPresenterEngineList == null) {
+    protected boolean removePresenterEngine(@Nullable IBasePresenterEngine engine) {
+        if (engine == null || mPresenterEngineList == null) {
             return false;
         }
         return mPresenterEngineList.remove(engine);

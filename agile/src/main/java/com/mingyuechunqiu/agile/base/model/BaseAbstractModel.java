@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.base.model;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
 import com.mingyuechunqiu.agile.base.model.part.IBaseModelPart;
@@ -97,7 +98,10 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param part part单元模块
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addModelPart(@NonNull IBaseModelPart part) {
+    protected boolean addModelPart(@Nullable IBaseModelPart part) {
+        if (part == null) {
+            return false;
+        }
         if (mModelPartList == null) {
             mModelPartList = new ArrayList<>();
         }
@@ -110,8 +114,8 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param part part单元模块
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removeModelPart(@NonNull IBaseModelPart part) {
-        if (mModelPartList == null) {
+    protected boolean removeModelPart(@Nullable IBaseModelPart part) {
+        if (part == null || mModelPartList == null) {
             return false;
         }
         return mModelPartList.remove(part);
@@ -123,7 +127,10 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param dao dao单元
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addDao(@NonNull IBaseDao dao) {
+    protected boolean addDao(@Nullable IBaseDao dao) {
+        if (dao == null) {
+            return false;
+        }
         if (mDaoList == null) {
             mDaoList = new ArrayList<>();
         }
@@ -136,8 +143,8 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param dao dao单元
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removeDao(@NonNull IBaseDao dao) {
-        if (mDaoList == null) {
+    protected boolean removeDao(@Nullable IBaseDao dao) {
+        if (dao == null || mDaoList == null) {
             return false;
         }
         return mDaoList.remove(dao);

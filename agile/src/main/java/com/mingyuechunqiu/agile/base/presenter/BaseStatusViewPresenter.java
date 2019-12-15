@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -85,12 +86,33 @@ public abstract class BaseStatusViewPresenter<V extends IBaseStatusView, M exten
      * @param info 错误信息对象
      */
     protected void showToastAndDismissStatusView(@NonNull ErrorInfo info) {
+        if (!TextUtils.isEmpty(info.getErrorMsg())) {
+            showToastAndDismissStatusView(info.getErrorMsg());
+        } else if (info.getErrorMsgResId() != 0) {
+            showToastAndDismissStatusView(info.getErrorMsgResId());
+        }
+    }
+
+    /**
+     * 显示提示信息并关闭加载对话框
+     *
+     * @param msg 提示信息
+     */
+    protected void showToastAndDismissStatusView(@Nullable String msg) {
         if (!checkViewRefIsNull()) {
-            if (!TextUtils.isEmpty(info.getErrorMsg())) {
-                mViewRef.get().showToast(info.getErrorMsg());
-            } else if (info.getErrorMsgResId() != 0) {
-                mViewRef.get().showToast(info.getErrorMsgResId());
-            }
+            mViewRef.get().showToast(msg);
+            mViewRef.get().dismissStatusView();
+        }
+    }
+
+    /**
+     * 显示提示信息并关闭加载对话框
+     *
+     * @param msgResId 提示信息资源ID
+     */
+    protected void showToastAndDismissStatusView(@StringRes int msgResId) {
+        if (!checkViewRefIsNull()) {
+            mViewRef.get().showToast(msgResId);
             mViewRef.get().dismissStatusView();
         }
     }
