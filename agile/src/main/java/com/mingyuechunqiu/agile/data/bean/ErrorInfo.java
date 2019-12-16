@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.data.bean;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 /**
@@ -19,7 +20,7 @@ public class ErrorInfo {
 
     private Builder mBuilder;
 
-    public ErrorInfo(@NonNull String errorMsg) {
+    public ErrorInfo(@Nullable String errorMsg) {
         this(new Builder().setErrorMsg(errorMsg));
     }
 
@@ -65,7 +66,7 @@ public class ErrorInfo {
         private @StringRes
         int errorMsgResId;//错误信息资源ID
 
-        public Builder(@NonNull String errorMsg) {
+        public Builder(@Nullable String errorMsg) {
             this();
             setErrorMsg(errorMsg);
         }
@@ -96,7 +97,7 @@ public class ErrorInfo {
             return errorMsg;
         }
 
-        public Builder setErrorMsg(@NonNull String errorMsg) {
+        public Builder setErrorMsg(@Nullable String errorMsg) {
             this.errorMsg = errorMsg;
             return this;
         }
