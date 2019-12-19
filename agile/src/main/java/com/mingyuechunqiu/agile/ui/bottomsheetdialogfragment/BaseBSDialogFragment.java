@@ -49,7 +49,16 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setDialogBackground();
-        return initView(inflater, container, savedInstanceState);
+        if (getInflateLayoutId() != 0) {
+            return inflater.inflate(getInflateLayoutId(), container, false);
+        }
+        return null;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initView(view, savedInstanceState);
     }
 
     @Override
@@ -321,14 +330,19 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     }
 
     /**
+     * 获取填充布局资源ID
+     *
+     * @return 返回布局资源ID
+     */
+    protected abstract int getInflateLayoutId();
+
+    /**
      * 由子类重写控件的初始化方法
      *
-     * @param inflater           布局填充器
-     * @param container          填充的布局所在父布局
+     * @param view               界面父容器View
      * @param savedInstanceState 界面销毁时保存的状态数据实例
-     * @return 返回创建的填充View
      */
-    protected abstract View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
+    protected abstract void initView(@NonNull View view, @Nullable Bundle savedInstanceState);
 
     /**
      * 释放资源（在onDestroyView时调用）

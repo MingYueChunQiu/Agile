@@ -2,9 +2,7 @@ package com.mingyuechunqiu.agile.feature.statusview.ui
 
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
@@ -61,24 +59,28 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
         mManager = null
     }
 
-    override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var vLayout = inflater.inflate(R.layout.agile_dialog_fragment_status_view, container, false)
+    override fun getInflateLayoutId(): Int {
+        val id = mDelegate?.statusViewOption?.statusViewContainer?.customLayoutId
+        return if (id == null || id == 0) R.layout.agile_dialog_fragment_status_view else id
+
+    }
+
+    override fun initView(view: View, savedInstanceState: Bundle?) {
         var vContainer: View? = null
         var vProgress: View? = null
         mDelegate?.statusViewOption?.let {
             if (it.statusViewContainer?.customLayoutId != null) {
-                vLayout = inflater.inflate(it.statusViewContainer.customLayoutId, container, false)
-                vContainer = vLayout?.findViewById(it.statusViewContainer.containerId)
-                vProgress = vLayout?.findViewById(it.statusViewContainer.progressViewId)
-                ivIcon = vLayout?.findViewById(it.statusViewContainer.iconViewId)
-                tvContent = vLayout?.findViewById(it.statusViewContainer.contentViewId)
-                tvReload = vLayout?.findViewById(it.statusViewContainer.reloadViewId)
+                vContainer = view.findViewById(it.statusViewContainer.containerId)
+                vProgress = view.findViewById(it.statusViewContainer.progressViewId)
+                ivIcon = view.findViewById(it.statusViewContainer.iconViewId)
+                tvContent = view.findViewById(it.statusViewContainer.contentViewId)
+                tvReload = view.findViewById(it.statusViewContainer.reloadViewId)
             } else {
-                vContainer = vLayout?.findViewById(R.id.ll_agile_dfg_status_view_container)
-                vProgress = vLayout?.findViewById(R.id.pb_agile_dfg_status_view_progress)
-                ivIcon = vLayout?.findViewById(R.id.iv_agile_dfg_status_view_icon)
-                tvContent = vLayout?.findViewById(R.id.tv_agile_dfg_status_view_content)
-                tvReload = vLayout?.findViewById(R.id.tv_agile_dfg_status_view_reload)
+                vContainer = view.findViewById(R.id.ll_agile_dfg_status_view_container)
+                vProgress = view.findViewById(R.id.pb_agile_dfg_status_view_progress)
+                ivIcon = view.findViewById(R.id.iv_agile_dfg_status_view_icon)
+                tvContent = view.findViewById(R.id.tv_agile_dfg_status_view_content)
+                tvReload = view.findViewById(R.id.tv_agile_dfg_status_view_reload)
             }
             tvReload?.setOnClickListener { _ ->
                 it.onStatusViewButtonListener?.onClickReload()
@@ -87,7 +89,6 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
 
         applyDialogConfigure()
         mDelegate?.applyOption(vContainer, vProgress, ivIcon, tvContent, tvReload)
-        return vLayout
     }
 
     override fun showStatusView(type: StatusViewConstants.StatusType, manager: FragmentManager) {

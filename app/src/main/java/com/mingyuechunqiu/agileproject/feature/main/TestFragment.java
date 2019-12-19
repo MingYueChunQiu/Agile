@@ -3,14 +3,11 @@ package com.mingyuechunqiu.agileproject.feature.main;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.ui.fragment.BasePresenterFragment;
 import com.mingyuechunqiu.agileproject.R;
@@ -44,16 +41,21 @@ public class TestFragment extends BasePresenterFragment<MainContract.View<MainCo
     }
 
     @Override
+    protected int getInflateLayoutId() {
+        return R.layout.fragment_main;
+    }
+
+    @Override
+    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         Log.d("份", "背包");
 //        setLightStatusBar();
         setDarkStatusBar();
-    }
-
-    @Override
-    protected View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
     @Override

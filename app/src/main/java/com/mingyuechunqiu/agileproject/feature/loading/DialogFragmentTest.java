@@ -1,9 +1,7 @@
 package com.mingyuechunqiu.agileproject.feature.loading;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,9 +33,12 @@ public class DialogFragmentTest extends BaseFragment {
     }
 
     @Override
-    protected View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+    protected int getInflateLayoutId() {
+        return R.layout.fragment_main;
+    }
+
+    @Override
+    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
         showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getChildFragmentManager(), R.id.fl_fragment_main_loading, null);
-        return view;
     }
 }

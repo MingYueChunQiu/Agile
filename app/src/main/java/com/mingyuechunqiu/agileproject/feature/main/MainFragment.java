@@ -2,9 +2,7 @@ package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,8 +37,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    protected View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+    protected int getInflateLayoutId() {
+        return R.layout.fragment_main;
+    }
+
+    @Override
+    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
         AppCompatButton btnShow = view.findViewById(R.id.btn_fragment_main_show);
         AppCompatButton btnHide = view.findViewById(R.id.btn_fragment_main_hide);
         btnShow.setOnClickListener(this);
@@ -63,7 +65,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                 })
                 .build();
         showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getFragmentManager(), option);
-        return view;
     }
 
     @Override

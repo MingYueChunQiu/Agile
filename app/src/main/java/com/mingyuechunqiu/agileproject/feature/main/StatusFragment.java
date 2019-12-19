@@ -1,9 +1,7 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,8 +33,12 @@ public class StatusFragment extends BaseFragment {
     }
 
     @Override
-    protected View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_status, container, false);
+    protected int getInflateLayoutId() {
+        return R.layout.fragment_status;
+    }
+
+    @Override
+    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
         AppCompatButton btn1 = view.findViewById(R.id.btn_status_1);
         AppCompatButton btn2 = view.findViewById(R.id.btn_status_2);
         btn1.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +54,5 @@ public class StatusFragment extends BaseFragment {
                 setLightStatusBar();
             }
         });
-
-        return view;
     }
 }

@@ -2,16 +2,11 @@ package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 
-import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
-import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.ui.bottomsheetdialogfragment.BasePresenterBSDialogFragment;
 
@@ -27,10 +22,6 @@ import com.mingyuechunqiu.agile.ui.bottomsheetdialogfragment.BasePresenterBSDial
  */
 public class TestBottomDialogFragment extends BasePresenterBSDialogFragment<MainContract.View<MainContract.Presenter>, MainContract.Presenter>
         implements MainContract.View<MainContract.Presenter> {
-    @Override
-    protected View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return null;
-    }
 
     @Override
     protected void releaseOnDestroyView() {
@@ -46,6 +37,16 @@ public class TestBottomDialogFragment extends BasePresenterBSDialogFragment<Main
     @Override
     public IStatusViewManager getStatusViewManager() {
         return super.getStatusViewManager();
+    }
+
+    @Override
+    protected int getInflateLayoutId() {
+        return 0;
+    }
+
+    @Override
+    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
     }
 
     @Override

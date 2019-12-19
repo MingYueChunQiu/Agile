@@ -2,14 +2,11 @@ package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.ui.diaglogfragment.BasePresenterDialogFragment;
 import com.mingyuechunqiu.agileproject.R;
@@ -43,14 +40,6 @@ public class TestDialogFragment extends BasePresenterDialogFragment<MainContract
     }
 
     @Override
-    protected View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (getDialog() != null && getDialog().getWindow() != null) {
-            getDialog().getWindow().setWindowAnimations(R.style.PopupAnimation);
-        }
-        return inflater.inflate(R.layout.activity_test, container, false);
-    }
-
-    @Override
     public void setPresenter(@NonNull MainContract.Presenter presenter) {
         mPresenter = presenter;
     }
@@ -79,6 +68,18 @@ public class TestDialogFragment extends BasePresenterDialogFragment<MainContract
     @Override
     public IStatusViewManager getStatusViewManager() {
         return super.getStatusViewManager();
+    }
+
+    @Override
+    protected int getInflateLayoutId() {
+        return R.layout.activity_test;
+    }
+
+    @Override
+    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setWindowAnimations(R.style.PopupAnimation);
+        }
     }
 
     @Override

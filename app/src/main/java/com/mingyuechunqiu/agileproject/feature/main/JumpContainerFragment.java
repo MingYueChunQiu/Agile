@@ -1,9 +1,7 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,10 +34,13 @@ public class JumpContainerFragment extends BaseFragment implements BaseFragment.
     }
 
     @Override
-    protected View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.agile_layout_frame, container, false);
+    protected int getInflateLayoutId() {
+        return R.layout.agile_layout_frame;
+    }
+
+    @Override
+    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
         FragmentUtils.replaceFragment(getChildFragmentManager(), R.id.fl_agile_frame_container, new JumpFragment1());
-        return view;
     }
 
     @Override
