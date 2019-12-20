@@ -70,4 +70,9 @@
         <attr name="psv_scale_x" format="float" />
         <attr name="psv_scale_y" format="float" />
     </declare-styleable>
+
+    <!--可推动嵌套滚动控件-->
+    <declare-styleable name="PushNestedScrollView">
+        <attr name="pnsv_pull_down_directly" format="boolean" />
+    </declare-styleable>
 </resources>
