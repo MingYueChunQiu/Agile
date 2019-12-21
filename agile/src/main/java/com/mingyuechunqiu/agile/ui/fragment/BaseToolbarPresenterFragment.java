@@ -1,11 +1,9 @@
 package com.mingyuechunqiu.agile.ui.fragment;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,10 +33,9 @@ public abstract class BaseToolbarPresenterFragment<V extends IBaseNetView<P>, P 
     protected Toolbar tbBar;
     protected ToolbarUtils.ToolbarConfigure mToolbarConfigure;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         ActionBar actionBar = null;
         FragmentActivity activity = getActivity();
         if (activity instanceof AppCompatActivity) {
@@ -48,7 +45,6 @@ public abstract class BaseToolbarPresenterFragment<V extends IBaseNetView<P>, P 
         }
         mToolbarConfigure = setToolbarConfigure();
         ToolbarUtils.initToolbar(tbBar, actionBar, mToolbarConfigure);
-        return view;
     }
 
     @Override

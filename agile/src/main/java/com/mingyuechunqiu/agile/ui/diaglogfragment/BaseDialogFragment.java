@@ -50,8 +50,9 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setDialogBackground();
-        if (getInflateLayoutId() != 0) {
-            return inflater.inflate(getInflateLayoutId(), container, false);
+        int id = getInflateLayoutId();
+        if (id != 0) {
+            return inflater.inflate(id, container, false);
         }
         return null;
     }
