@@ -14,7 +14,6 @@ import androidx.core.view.NestedScrollingChildHelper;
 import androidx.core.view.NestedScrollingParent3;
 import androidx.core.view.NestedScrollingParentHelper;
 import androidx.core.view.ViewCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -91,7 +90,7 @@ public class PushNestedScrollView extends FrameLayout implements NestedScrolling
         int distance;//实际移动距离
         //dy向上是正，向下是负，因为是那前一个点位置减去后一个点位置
         if (mCallback != null) {
-            int length = mCallback.getPushScrollDistance();
+            int length = mCallback.getMaxPushScrollDistance();
             if (dy > 0) {
                 if (mDistance < length) {
                     if (mDistance + dy > length) {
@@ -212,8 +211,19 @@ public class PushNestedScrollView extends FrameLayout implements NestedScrolling
 
     public interface PushScrollCallback {
 
-        int getPushScrollDistance();
+        /**
+         * 获取推注滚动的最大距离
+         *
+         * @return 返回最大距离
+         */
+        int getMaxPushScrollDistance();
 
+        /**
+         * 当推动滚动时回调
+         *
+         * @param distance      当前滚动距离
+         * @param totalDistance 总计已经滚动距离
+         */
         void onPushScroll(int distance, int totalDistance);
     }
 }

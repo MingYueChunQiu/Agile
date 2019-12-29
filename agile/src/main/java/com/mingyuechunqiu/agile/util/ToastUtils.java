@@ -1,8 +1,8 @@
 package com.mingyuechunqiu.agile.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -101,6 +101,38 @@ public final class ToastUtils {
             toast.setGravity(config.getGravity(), config.getXOffset(), config.getYOffset());
         }
         toast.show();
+    }
+
+    /**
+     * 发送提示信息
+     *
+     * @param context     上下文
+     * @param hint        提示信息
+     * @param stringResId 提示信息资源id（为0时表示无字符显示资源）
+     * @param config      配置信息对象
+     */
+    @SuppressLint("ShowToast")
+    public static void showToast(@Nullable Context context, @Nullable String hint,
+                                 @StringRes int stringResId, @Nullable ToastConfig config) {
+        if (context == null) {
+            return;
+        }
+        Toast toast = null;
+        if (TextUtils.isEmpty(hint)) {
+            if (stringResId != 0) {
+                toast = Toast.makeText(context, stringResId, config == null ? Toast.LENGTH_SHORT :
+                        config.isLongDuration() ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+            }
+        } else {
+            toast = Toast.makeText(context, hint, config == null ? Toast.LENGTH_SHORT :
+                    config.isLongDuration() ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+        }
+        if (toast != null && config != null) {
+            toast.setGravity(config.getGravity(), config.getXOffset(), config.getYOffset());
+        }
+        if (toast != null) {
+            toast.show();
+        }
     }
 
     /**
