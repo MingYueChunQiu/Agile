@@ -98,11 +98,13 @@ public abstract class BaseFragment extends Fragment {
      * 设置状态栏为轻色调，避免白色字体被白色活动条遮挡
      */
     protected void setLightStatusBar() {
-        if (getActivity() == null) {
+        FragmentActivity activity = getActivity();
+        if (activity == null) {
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(
+            //View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN必须加，否则手机状态栏会显示底层背景，内容颜色没有延伸
+            activity.getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
                             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }

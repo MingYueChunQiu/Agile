@@ -44,8 +44,8 @@ public class StatusFragment extends BaseFragment {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                setDarkStatusBar();
-                returnToPreviousPageWithActivity();
+                setDarkStatusBar();
+//                returnToPreviousPageWithActivity();
             }
         });
         btn2.setOnClickListener(new View.OnClickListener() {
