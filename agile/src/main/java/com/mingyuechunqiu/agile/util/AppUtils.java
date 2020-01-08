@@ -4,11 +4,10 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import android.text.TextUtils;
 
 import com.mingyuechunqiu.agile.frame.Agile;
 
@@ -24,6 +23,9 @@ import java.util.List;
  * </pre>
  */
 public final class AppUtils {
+
+    private AppUtils() {
+    }
 
     /**
      * 检测应用是否在前台显示

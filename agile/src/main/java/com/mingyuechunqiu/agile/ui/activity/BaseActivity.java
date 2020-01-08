@@ -2,10 +2,8 @@ package com.mingyuechunqiu.agile.ui.activity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -21,6 +19,7 @@ import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
 import com.mingyuechunqiu.agile.util.ExitApplicationManager;
+import com.mingyuechunqiu.agile.util.ToastUtils;
 import com.noober.background.BackgroundLibrary;
 
 import java.util.ArrayList;
@@ -45,8 +44,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected Map<Fragment, List<OnKeyEventListener>> mKeyEventListenerMap;
 
-    private Toast mToast;
     private IStatusViewManager mStatusViewManager;
+    private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +63,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             mKeyEventListenerMap.clear();
             mKeyEventListenerMap = null;
         }
-        mToast = null;
         mStatusViewManager = null;
     }
 
@@ -194,29 +192,30 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * 根据资源id显示提示信息
+     * 显示信息
      *
-     * @param stringResourceId 提示文本资源id
+     * @param msg 文本
      */
-    protected void showToast(@StringRes int stringResourceId) {
-        showToast(getString(stringResourceId));
+    protected void showToast(@Nullable String msg) {
+        ToastUtils.showToast(this, msg);
     }
 
     /**
-     * 显示提示信息
+     * 根据资源id显示信息
      *
-     * @param hint 提示文本
+     * @param msgResId 文本资源id
      */
-    protected void showToast(@Nullable String hint) {
-        if (TextUtils.isEmpty(hint)) {
-            return;
-        }
-        if (mToast == null) {
-            mToast = Toast.makeText(this, hint, Toast.LENGTH_SHORT);
-        } else {
-            mToast.setText(hint);
-        }
-        mToast.show();
+    protected void showToast(@StringRes int msgResId) {
+        ToastUtils.showToast(this, msgResId);
+    }
+
+    /**
+     * 根据资源ID显示信息
+     *
+     * @param config 配置信息对象
+     */
+    protected void showToast(@NonNull ToastUtils.ToastConfig config) {
+        ToastUtils.showToast(this, config);
     }
 
     /**
@@ -288,14 +287,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * 获取获取状态视图管理器实例
+     * 获取获取状态视图管理器实例（线程安全）
      *
      * @return 返回获取状态视图管理器实例
      */
     @NonNull
     protected IStatusViewManager getStatusViewManager() {
         if (mStatusViewManager == null) {
-            mStatusViewManager = StatusViewManagerProvider.newInstance();
+            synchronized (mStatusViewLock) {
+                if (mStatusViewManager == null) {
+                    mStatusViewManager = StatusViewManagerProvider.newInstance();
+                }
+            }
         }
         return mStatusViewManager;
     }

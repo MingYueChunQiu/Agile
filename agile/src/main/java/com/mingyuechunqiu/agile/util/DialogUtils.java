@@ -3,16 +3,15 @@ package com.mingyuechunqiu.agile.util;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.text.TextUtils;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatTextView;
-
-import android.text.TextUtils;
-import android.view.View;
+import androidx.fragment.app.Fragment;
 
 import com.mingyuechunqiu.agile.R;
 
@@ -28,6 +27,9 @@ import pub.devrel.easypermissions.AppSettingsDialog;
  * </pre>
  */
 public final class DialogUtils {
+
+    private DialogUtils() {
+    }
 
     /**
      * 获取加载对话框

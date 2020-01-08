@@ -18,6 +18,9 @@ import java.util.Set;
  */
 public final class SharedPreferencesUtils {
 
+    private SharedPreferencesUtils() {
+    }
+
     public static boolean putBoolean(@Nullable Context context, @Nullable String name, @Nullable String key, boolean value) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return false;

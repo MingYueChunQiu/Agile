@@ -3,12 +3,10 @@ package com.mingyuechunqiu.agile.ui.bottomsheetdialogfragment;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -24,11 +22,11 @@ import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
-import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.framework.function.TransferDataCallback;
 import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
 import com.mingyuechunqiu.agile.framework.ui.WindowHandler;
 import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
+import com.mingyuechunqiu.agile.util.ToastUtils;
 
 /**
  * <pre>
@@ -42,8 +40,8 @@ import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
  */
 public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
 
-    private Toast mToast;
     private IStatusViewManager mStatusViewManager;
+    private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
 
     @Nullable
     @Override
@@ -68,7 +66,6 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
         dismissStatusView();
         super.onDestroyView();
         releaseOnDestroyView();
-        mToast = null;
         mStatusViewManager = null;
     }
 
@@ -107,29 +104,30 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     }
 
     /**
-     * 根据资源id显示提示信息
+     * 显示信息
      *
-     * @param stringResourceId 提示文本资源id
+     * @param msg 文本
      */
-    protected void showToast(@StringRes int stringResourceId) {
-        showToast(getString(stringResourceId));
+    protected void showToast(@Nullable String msg) {
+        ToastUtils.showToast(getContext(), msg);
     }
 
     /**
-     * 显示提示信息
+     * 根据资源id显示信息
      *
-     * @param hint 提示文本
+     * @param msgResId 文本资源id
      */
-    protected void showToast(@Nullable String hint) {
-        if (TextUtils.isEmpty(hint)) {
-            return;
-        }
-        if (mToast == null) {
-            mToast = Toast.makeText(Agile.getAppContext(), hint, Toast.LENGTH_SHORT);
-        } else {
-            mToast.setText(hint);
-        }
-        mToast.show();
+    protected void showToast(@StringRes int msgResId) {
+        ToastUtils.showToast(getContext(), msgResId);
+    }
+
+    /**
+     * 根据资源ID显示信息
+     *
+     * @param config 配置信息对象
+     */
+    protected void showToast(@NonNull ToastUtils.ToastConfig config) {
+        ToastUtils.showToast(getContext(), config);
     }
 
     /**
@@ -201,14 +199,18 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     }
 
     /**
-     * 获取获取状态视图管理器实例
+     * 获取获取状态视图管理器实例（线程安全）
      *
      * @return 返回获取状态视图管理器实例
      */
     @NonNull
     protected IStatusViewManager getStatusViewManager() {
         if (mStatusViewManager == null) {
-            mStatusViewManager = StatusViewManagerProvider.newInstance();
+            synchronized (mStatusViewLock) {
+                if (mStatusViewManager == null) {
+                    mStatusViewManager = StatusViewManagerProvider.newInstance();
+                }
+            }
         }
         return mStatusViewManager;
     }

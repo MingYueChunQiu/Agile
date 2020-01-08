@@ -19,6 +19,9 @@ public final class ThreadPoolUtils {
 
     private static volatile ExecutorService sExecutorService;
 
+    private ThreadPoolUtils() {
+    }
+
     /**
      * 执行一个任务
      *

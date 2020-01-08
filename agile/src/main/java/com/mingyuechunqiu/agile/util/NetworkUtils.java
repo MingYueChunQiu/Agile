@@ -33,6 +33,9 @@ public final class NetworkUtils {
 
     private static volatile ConnectivityManager sConnMgr;//连接管理器
 
+    private NetworkUtils() {
+    }
+
     /**
      * 提供给外界调用的检测手机网络状态连接方法
      *

@@ -15,11 +15,10 @@ import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.SystemClock;
-
-import androidx.annotation.Nullable;
-
 import android.util.DisplayMetrics;
 import android.view.Surface;
+
+import androidx.annotation.Nullable;
 
 import java.nio.ByteBuffer;
 
@@ -33,6 +32,9 @@ import java.nio.ByteBuffer;
  * </pre>
  */
 public final class CaptureUtils {
+
+    private CaptureUtils() {
+    }
 
     /**
      * 开始屏幕捕捉

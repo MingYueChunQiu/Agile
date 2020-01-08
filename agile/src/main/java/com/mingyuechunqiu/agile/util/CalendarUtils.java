@@ -24,6 +24,9 @@ public final class CalendarUtils {
     //一天的毫秒数
     public static final long DAY_MILLISECOND = 24 * 60 * 60 * 1000L;
 
+    private CalendarUtils() {
+    }
+
     /**
      * 获取当前时间的秒级别时间戳
      *

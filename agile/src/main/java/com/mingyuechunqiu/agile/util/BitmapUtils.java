@@ -3,11 +3,10 @@ package com.mingyuechunqiu.agile.util;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.media.Image;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import android.text.TextUtils;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.io.IOUtils;
@@ -33,6 +32,9 @@ import java.nio.ByteBuffer;
  * </pre>
  */
 public final class BitmapUtils {
+
+    private BitmapUtils() {
+    }
 
     /**
      * 将图片保存到本地文件

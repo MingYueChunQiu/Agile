@@ -1,8 +1,8 @@
 package com.mingyuechunqiu.agile.util;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,40 +28,20 @@ public final class ToastUtils {
     /**
      * 使用应用的全局context发送toast
      *
-     * @param hint 提示信息
+     * @param msg 提示信息
      */
-    public static void showToast(@Nullable String hint) {
-        showToast(Agile.getAppContext(), hint);
+    public static void showToast(@Nullable String msg) {
+        showToast(Agile.getAppContext(), msg);
     }
 
     /**
      * 发送提示信息
      *
      * @param context 上下文
-     * @param hint    提示信息
+     * @param msg     提示信息
      */
-    public static void showToast(@Nullable Context context, @Nullable String hint) {
-        showToast(context, hint, null);
-    }
-
-    /**
-     * 发送提示信息
-     *
-     * @param context 上下文
-     * @param hint    提示信息
-     * @param config  配置信息对象
-     */
-    public static void showToast(@Nullable Context context, @Nullable String hint,
-                                 @Nullable ToastConfig config) {
-        if (context == null || TextUtils.isEmpty(hint)) {
-            return;
-        }
-        Toast toast = Toast.makeText(context, hint, config == null ? Toast.LENGTH_SHORT :
-                config.isLongDuration() ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
-        if (config != null) {
-            toast.setGravity(config.getGravity(), config.getXOffset(), config.getYOffset());
-        }
-        toast.show();
+    public static void showToast(@Nullable Context context, @Nullable String msg) {
+        showToast(context, new ToastConfig.Builder().setMsg(msg).build());
     }
 
     /**
@@ -76,63 +56,46 @@ public final class ToastUtils {
     /**
      * 发送提示信息
      *
-     * @param context     上下文
-     * @param stringResId 提示信息资源id
+     * @param context  上下文
+     * @param msgResId 提示信息资源id
      */
-    public static void showToast(@Nullable Context context, @StringRes int stringResId) {
-        showToast(context, stringResId, null);
+    public static void showToast(@Nullable Context context, @StringRes int msgResId) {
+        showToast(context, new ToastConfig.Builder().setMsgResId(msgResId).build());
     }
 
     /**
-     * 发送提示信息
+     * 显示文本信息
      *
-     * @param context     上下文
-     * @param stringResId 提示信息资源id
-     * @param config      配置信息对象
+     * @param config 配置信息对象
      */
-    public static void showToast(@Nullable Context context, @StringRes int stringResId,
-                                 @Nullable ToastConfig config) {
+    public static void showToast(@NonNull ToastConfig config) {
+        showToast(Agile.getAppContext(), config);
+    }
+
+    /**
+     * 显示文本信息
+     *
+     * @param context 上下文
+     * @param config  配置信息对象
+     */
+    public static void showToast(@Nullable Context context, @NonNull ToastConfig config) {
         if (context == null) {
             return;
         }
-        Toast toast = Toast.makeText(context, stringResId, config == null ? Toast.LENGTH_SHORT :
-                config.isLongDuration() ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
-        if (config != null) {
+        String msg = null;
+        if (!TextUtils.isEmpty(config.getMsg())) {
+            msg = config.getMsg();
+        } else if (config.getMsgResId() != 0) {
+            msg = context.getString(config.getMsgResId());
+        }
+        if (TextUtils.isEmpty(msg)) {
+            msg = "未设置文本信息";
+        }
+        Toast toast = Toast.makeText(context, msg, config.isLongDuration() ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+        if (config.getGravity() != Gravity.NO_GRAVITY) {
             toast.setGravity(config.getGravity(), config.getXOffset(), config.getYOffset());
         }
         toast.show();
-    }
-
-    /**
-     * 发送提示信息
-     *
-     * @param context     上下文
-     * @param hint        提示信息
-     * @param stringResId 提示信息资源id（为0时表示无字符显示资源）
-     * @param config      配置信息对象
-     */
-    @SuppressLint("ShowToast")
-    public static void showToast(@Nullable Context context, @Nullable String hint,
-                                 @StringRes int stringResId, @Nullable ToastConfig config) {
-        if (context == null) {
-            return;
-        }
-        Toast toast = null;
-        if (TextUtils.isEmpty(hint)) {
-            if (stringResId != 0) {
-                toast = Toast.makeText(context, stringResId, config == null ? Toast.LENGTH_SHORT :
-                        config.isLongDuration() ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
-            }
-        } else {
-            toast = Toast.makeText(context, hint, config == null ? Toast.LENGTH_SHORT :
-                    config.isLongDuration() ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
-        }
-        if (toast != null && config != null) {
-            toast.setGravity(config.getGravity(), config.getXOffset(), config.getYOffset());
-        }
-        if (toast != null) {
-            toast.show();
-        }
     }
 
     /**
@@ -148,6 +111,23 @@ public final class ToastUtils {
 
         public ToastConfig(@NonNull Builder builder) {
             mBuilder = builder;
+        }
+
+        @Nullable
+        public String getMsg() {
+            return mBuilder.msg;
+        }
+
+        public void setMsg(@Nullable String msg) {
+            mBuilder.msg = msg;
+        }
+
+        public int getMsgResId() {
+            return mBuilder.msgResId;
+        }
+
+        public void setMsgResId(@StringRes int msgResId) {
+            mBuilder.msgResId = msgResId;
         }
 
         public boolean isLongDuration() {
@@ -187,6 +167,10 @@ public final class ToastUtils {
          */
         public static class Builder {
 
+            @Nullable
+            private String msg;//文本
+            private @StringRes
+            int msgResId;//文本资源ID
             private boolean longDuration;//提示信息持续时间长短，true表示长时间，false表示短时间
             private int gravity;//对齐位置
             private int xOffset;//X轴偏移量
@@ -194,6 +178,25 @@ public final class ToastUtils {
 
             public ToastConfig build() {
                 return new ToastConfig(this);
+            }
+
+            @Nullable
+            public String getMsg() {
+                return msg;
+            }
+
+            public Builder setMsg(@Nullable String msg) {
+                this.msg = msg;
+                return this;
+            }
+
+            public int getMsgResId() {
+                return msgResId;
+            }
+
+            public Builder setMsgResId(@StringRes int msgResId) {
+                this.msgResId = msgResId;
+                return this;
             }
 
             public boolean isLongDuration() {

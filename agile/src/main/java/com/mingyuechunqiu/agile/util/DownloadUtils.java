@@ -30,6 +30,9 @@ public final class DownloadUtils {
     //下载apk的mime类型
     private static final String TYPE_APK = "application/vnd.android.package-archive";
 
+    private DownloadUtils() {
+    }
+
     /**
      * 进行文件下载请求
      *

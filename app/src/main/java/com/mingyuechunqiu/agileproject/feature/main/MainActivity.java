@@ -77,13 +77,13 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void showToast(String hint) {
-        super.showToast(hint);
+    public void showToast(String msg) {
+        super.showToast(msg);
     }
 
     @Override
-    public void showToast(int stringResourceId) {
-        super.showToast(stringResourceId);
+    public void showToast(int msgResId) {
+        super.showToast(msgResId);
     }
 
     @Override

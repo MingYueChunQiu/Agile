@@ -32,6 +32,9 @@ public final class FragmentUtils {
 
     public static final int NO_ID = 0;//无效资源ID(-1会导致资源崩溃Unable to find resource ID #0xffffffff)
 
+    private FragmentUtils() {
+    }
+
     /**
      * 替换Fragment，默认添加到栈中
      *

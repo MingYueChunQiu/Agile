@@ -20,6 +20,9 @@ import java.util.List;
  */
 public final class BezierUtils {
 
+    private BezierUtils() {
+    }
+
     /**
      * 计算贝塞尔曲线点
      *

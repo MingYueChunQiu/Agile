@@ -3,15 +3,14 @@ package com.mingyuechunqiu.agile.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * <pre>
@@ -24,6 +23,9 @@ import android.widget.TextView;
  */
 
 public final class ScreenUtils {
+
+    private ScreenUtils() {
+    }
 
     /**
      * 获取item平均宽度

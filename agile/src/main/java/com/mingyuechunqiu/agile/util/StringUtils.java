@@ -1,8 +1,5 @@
 package com.mingyuechunqiu.agile.util;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -10,6 +7,9 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -25,6 +25,9 @@ import java.util.regex.Pattern;
  * </pre>
  */
 public final class StringUtils {
+
+    private StringUtils() {
+    }
 
     /**
      * 对字符串进行MD5加密

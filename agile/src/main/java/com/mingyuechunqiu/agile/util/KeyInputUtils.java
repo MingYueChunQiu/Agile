@@ -8,19 +8,22 @@ import com.mingyuechunqiu.agile.constants.KeyPrefixConstants;
 
 /**
  * <pre>
- *       Project:    Agile
- *       author : MingYueChunQiu
- *       Github : https://github.com/MingYueChunQiu
- *       e-mail : xiyujieit@163.com
- *       Time:       2019/10/9 17:09
- *       Desc:       Key输入工具类
- *       Version:    1.0
+ *      Project:    Agile
+ *      author :    MingYueChunQiu
+ *      Github :    https://github.com/MingYueChunQiu
+ *      e-mail :    xiyujieit@163.com
+ *      Time:       2019/10/9 17:09
+ *      Desc:       Key输入工具类
+ *      Version:    1.0
  * </pre>
  */
 public final class KeyInputUtils {
 
     public static final String BUNDLE_KEY_INPUT = KeyPrefixConstants.KEY_BUNDLE +
             "key_input";
+
+    private KeyInputUtils() {
+    }
 
     /**
      * 将输入的keyCode转换为字符
