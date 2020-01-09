@@ -47,10 +47,10 @@ public final class ToastUtils {
     /**
      * 发送提示信息
      *
-     * @param stringResId 提示信息资源id
+     * @param msgResId 提示信息资源id
      */
-    public static void showToast(@StringRes int stringResId) {
-        showToast(Agile.getAppContext(), stringResId);
+    public static void showToast(@StringRes int msgResId) {
+        showToast(Agile.getAppContext(), msgResId);
     }
 
     /**
