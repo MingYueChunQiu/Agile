@@ -95,11 +95,9 @@ internal class StatusViewDelegate(private val mOption: StatusViewOption) : IStat
 
     private fun applyContainerConfigure(vContainer: View?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            vContainer?.elevation = vContainer?.resources
-                    ?.takeIf { mOption.isShowStatusViewFloating }
-                    ?.let {
-                        ScreenUtils.getPxFromDp(it, 10F)
-                    } ?: 0F
+            if (mOption.containerElevation != 0F) {
+                vContainer?.elevation = mOption.containerElevation
+            }
         }
         mOption.containerBackgroundResId.takeIf { it != 0 }?.let {
             vContainer?.setBackgroundResource(it)
@@ -118,7 +116,9 @@ internal class StatusViewDelegate(private val mOption: StatusViewOption) : IStat
     private fun initTextButton(textView: TextView?, @Nullable option: StatusViewTextOption?) {
         textView?.let {
             option?.let { textOption ->
-                it.text = textOption.text
+                if (!textOption.text.isNullOrEmpty()) {
+                    it.text = textOption.text
+                }
                 textOption.textSize.takeIf { size ->
                     size > 0
                 }?.let { size ->

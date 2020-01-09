@@ -23,11 +23,13 @@ public interface IBaseModel<I extends IBaseListener> {
      */
     void attachListener(@NonNull I listener);
 
-    void start();
+    void callOnStart();
 
-    void resume();
+    void callOnResume();
 
-    void pause();
+    void callOnPause();
+
+    void callOnStop();
 
     /**
      * 设置请求参数对象，进行请求
@@ -39,6 +41,6 @@ public interface IBaseModel<I extends IBaseListener> {
     /**
      * 释放资源
      */
-    void release();
+    void releaseByPresenter();
 
 }

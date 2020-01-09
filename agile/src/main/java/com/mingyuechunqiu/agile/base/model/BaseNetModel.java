@@ -29,9 +29,9 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
     }
 
     @Override
-    public void release() {
+    public void releaseByPresenter() {
         releaseNetResources();
-        super.release();
+        super.releaseByPresenter();
     }
 
     /**

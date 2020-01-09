@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agile.ui.activity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -155,6 +156,9 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @return 如果有fragment阻止了事件继续传递则返回true，否则返回false
      */
     protected boolean dispatchOnKeyEventListener(int keyCode, KeyEvent event) {
+        if (event == null) {
+            return false;
+        }
         if (mKeyEventListenerMap == null || mKeyEventListenerMap.size() == 0) {
             return false;
         }
@@ -221,12 +225,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 显示加载对话框
      *
-     * @param hint       提示文本
+     * @param msg        提示文本
      * @param cancelable 是否可以取消
      */
-    protected void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
+    protected void showLoadingStatusView(@Nullable String msg, boolean cancelable) {
         StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
-        option.getContentOption().setText(hint);
+        option.getContentOption().setText(msg);
         option.setCancelWithOutside(cancelable);
         showStatusView(StatusViewConstants.StatusType.TYPE_LOADING,
                 getSupportFragmentManager(), option);

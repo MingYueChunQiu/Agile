@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 
 /**
@@ -31,11 +32,12 @@ public class StatusViewTextOption {
         mBuilder = builder;
     }
 
+    @Nullable
     public String getText() {
         return mBuilder.text;
     }
 
-    public void setText(String text) {
+    public void setText(@Nullable String text) {
         mBuilder.text = text;
     }
 
@@ -98,11 +100,12 @@ public class StatusViewTextOption {
         int backgroundResId;
         private Drawable background;
 
+        @Nullable
         public String getText() {
             return text;
         }
 
-        public Builder setText(String text) {
+        public Builder setText(@Nullable String text) {
             this.text = text;
             return this;
         }

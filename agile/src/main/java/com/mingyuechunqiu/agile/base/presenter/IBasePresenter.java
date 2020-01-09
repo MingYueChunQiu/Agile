@@ -22,11 +22,13 @@ public interface IBasePresenter<V extends IBaseView, M extends IBaseModel> {
 
     void detachView();
 
-    void start();
+    void callOnStart();
 
-    void resume();
+    void callOnResume();
 
-    void pause();
+    void callOnPause();
+
+    void callOnStop();
 
     @Nullable
     M initModel();

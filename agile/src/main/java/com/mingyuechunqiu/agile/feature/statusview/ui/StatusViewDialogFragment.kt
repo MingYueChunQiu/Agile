@@ -36,16 +36,21 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.let {
-            if (mDelegate?.statusViewOption?.dialogWidth ?: 0 <= 0 && mDelegate?.statusViewOption?.dialogHeight ?: 0 <= 0) {
-                return@let
-            }
-            val width = if (mDelegate?.statusViewOption?.dialogWidth ?: 0 <= 0) it.attributes?.width
-                    ?: 0 else mDelegate?.statusViewOption?.dialogWidth ?: 0
-            val height = if (mDelegate?.statusViewOption?.dialogHeight ?: 0 <= 0) it.attributes?.height
-                    ?: 0 else mDelegate?.statusViewOption?.dialogHeight ?: 0
-            if (width > 0 && height > 0) {
-                it.setLayout(width, height)
+        setDialogWindow { window ->
+            val option = mDelegate?.statusViewOption
+            option?.let {
+                if (it.dialogWidth > 0 || it.dialogHeight > 0) {
+                    val width = if (it.dialogWidth <= 0) (window.attributes?.width
+                            ?: 0) else it.dialogWidth
+                    val height = if (it.dialogHeight <= 0) (window.attributes?.height
+                            ?: 0) else it.dialogHeight
+                    if (width > 0 && height > 0) {
+                        window.setLayout(width, height)
+                    }
+                }
+                if (it.dialogAnimationResId != 0) {
+                    window.setWindowAnimations(it.dialogAnimationResId)
+                }
             }
         }
     }

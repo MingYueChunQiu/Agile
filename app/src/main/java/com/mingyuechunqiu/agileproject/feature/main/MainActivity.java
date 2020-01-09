@@ -30,6 +30,7 @@ import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agile.util.ExitApplicationManager;
 import com.mingyuechunqiu.agile.util.FragmentUtils;
 import com.mingyuechunqiu.agile.util.StringUtils;
+import com.mingyuechunqiu.agile.util.ToastUtils;
 import com.mingyuechunqiu.agile.util.ToolbarUtils;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -77,13 +78,8 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void showToast(String msg) {
-        super.showToast(msg);
-    }
-
-    @Override
-    public void showToast(int msgResId) {
-        super.showToast(msgResId);
+    public void showToast(@NonNull ToastUtils.ToastConfig config) {
+        super.showToast(config);
     }
 
     @Override
@@ -97,8 +93,8 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void showLoadingStatusView(String hint, boolean cancelable) {
-        super.showLoadingStatusView(hint, cancelable);
+    public void showLoadingStatusView(String msg, boolean cancelable) {
+        super.showLoadingStatusView(msg, cancelable);
     }
 
     @Override

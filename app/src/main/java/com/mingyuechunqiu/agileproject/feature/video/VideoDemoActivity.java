@@ -110,7 +110,12 @@ public class VideoDemoActivity extends AppCompatActivity implements EasyPermissi
         if (!EasyPermissions.hasPermissions(this, permissions)) {
             EasyPermissions.requestPermissions(this, "申请", 1, permissions);
         }
-        receiver = new NetworkConnectedTypeReceiver();
+        receiver = new NetworkConnectedTypeReceiver(new NetworkConnectedTypeReceiver.OnNetworkTypeChangedListener() {
+            @Override
+            public void onNetworkTypeChanged(boolean isMobile) {
+
+            }
+        });
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(receiver, intentFilter);
         new Handler().postDelayed(new Runnable() {

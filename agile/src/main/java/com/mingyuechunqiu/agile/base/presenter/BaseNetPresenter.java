@@ -66,9 +66,7 @@ public abstract class BaseNetPresenter<V extends IBaseNetView, M extends BaseNet
         if (NetworkUtils.checkNetworkIsConnected()) {
             return true;
         }
-        if (!checkViewRefIsNull()) {
-            mViewRef.get().showToast(R.string.agile_network_disconnected);
-        }
+        showToast(R.string.agile_network_disconnected);
         return false;
     }
 

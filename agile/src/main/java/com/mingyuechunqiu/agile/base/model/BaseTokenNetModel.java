@@ -34,8 +34,8 @@ public abstract class BaseTokenNetModel<I extends IBaseListener> extends BaseNet
     }
 
     @Override
-    public void release() {
-        super.release();
+    public void releaseByPresenter() {
+        super.releaseByPresenter();
         if (mContextRef != null) {
             mContextRef.clear();
             mContextRef = null;

@@ -3,8 +3,10 @@ package com.mingyuechunqiu.agile.io;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 
 import java.io.File;
@@ -19,7 +21,10 @@ import java.io.File;
  *     version: 1.0
  * </pre>
  */
-public class FilePathUtils {
+public final class FilePathUtils {
+
+    private FilePathUtils() {
+    }
 
     /**
      * 获取文件路径URI

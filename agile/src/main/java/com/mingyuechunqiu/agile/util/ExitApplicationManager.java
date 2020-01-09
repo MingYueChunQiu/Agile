@@ -10,21 +10,22 @@ import com.mingyuechunqiu.agile.service.NetworkStateService;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <pre>
  *     author : xyj
  *     e-mail : xiyujieit@163.com
  *     time   : 2018/05/12
- *     desc   : 控制应用退出
+ *     desc   : 应用退出管理类
  *     version: 1.0
  * </pre>
  */
 
-public class ExitApplicationManager {
+public final class ExitApplicationManager {
 
     private static volatile ExitApplicationManager sExitApplicationManager;
-    private ArrayList<WeakReference<Activity>> mList;
+    private List<WeakReference<Activity>> mList;
 
     private ExitApplicationManager() {
         mList = new ArrayList<>();

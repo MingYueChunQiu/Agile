@@ -17,7 +17,7 @@ import java.util.List;
  *     e-mail : xiyujieit@163.com
  *     time   : 2018/11/19
  *     desc   : 所有Model层的抽象基类
- *              实现BaseModel
+ *              实现IBaseModel
  *     version: 1.0
  * </pre>
  */
@@ -41,15 +41,19 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
     }
 
     @Override
-    public void start() {
+    public void callOnStart() {
     }
 
     @Override
-    public void pause() {
+    public void callOnPause() {
     }
 
     @Override
-    public void resume() {
+    public void callOnResume() {
+    }
+
+    @Override
+    public void callOnStop() {
     }
 
     /**
@@ -69,9 +73,8 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * 释放资源方法
      */
     @Override
-    public void release() {
-        destroy();
-        mListener = null;
+    public void releaseByPresenter() {
+        release();
         if (mModelPartList != null) {
             for (IBaseModelPart part : mModelPartList) {
                 if (part != null) {
@@ -90,6 +93,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
             mDaoList.clear();
             mDaoList = null;
         }
+        mListener = null;
     }
 
     /**
@@ -181,5 +185,5 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
     /**
      * 销毁资源
      */
-    protected abstract void destroy();
+    protected abstract void release();
 }

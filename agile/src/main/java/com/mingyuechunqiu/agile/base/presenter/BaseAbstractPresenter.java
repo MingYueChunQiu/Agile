@@ -12,6 +12,8 @@ import com.mingyuechunqiu.agile.base.model.IBaseModel;
 import com.mingyuechunqiu.agile.base.presenter.engine.IBasePresenterEngine;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
 import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
+import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
+import com.mingyuechunqiu.agile.util.ToastUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -49,7 +51,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     public void detachView() {
         releaseOnDetach();
         if (mModel != null) {
-            mModel.release();
+            mModel.releaseByPresenter();
             mModel = null;
         }
         if (mViewRef != null) {
@@ -76,31 +78,35 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    protected void onStart() {
-        start();
+    public void callOnStart() {
+        onStart();
         if (mModel != null) {
-            mModel.start();
+            mModel.callOnStart();
         }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    protected void onResume() {
-        resume();
+    public void callOnResume() {
+        onResume();
         if (mModel != null) {
-            mModel.resume();
+            mModel.callOnResume();
         }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    protected void onPause() {
-        pause();
+    public void callOnPause() {
+        onPause();
         if (mModel != null) {
-            mModel.pause();
+            mModel.callOnPause();
         }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    protected void onStop() {
+    public void callOnStop() {
+        onStop();
+        if (mModel != null) {
+            mModel.callOnStop();
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
@@ -108,16 +114,16 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
         detachView();
     }
 
-    @Override
-    public void start() {
+    protected void onStart() {
     }
 
-    @Override
-    public void resume() {
+    protected void onResume() {
     }
 
-    @Override
-    public void pause() {
+    protected void onPause() {
+    }
+
+    protected void onStop() {
     }
 
     protected void releaseOnDetach() {
@@ -163,24 +169,42 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     }
 
     /**
-     * 显示提示信息
+     * 显示信息
      *
-     * @param hint 提示文本
+     * @param msg 文本
      */
-    protected void showToast(@Nullable String hint) {
-        if (!checkViewRefIsNull()) {
-            mViewRef.get().showToast(hint);
-        }
+    protected void showToast(@Nullable String msg) {
+        showToast(new ToastUtils.ToastConfig.Builder()
+                .setMsg(msg)
+                .build());
     }
 
     /**
-     * 显示提示信息
+     * 显示信息
      *
-     * @param stringResourceId 提示文本资源ID
+     * @param msgResId 文本资源ID
      */
-    protected void showToast(@StringRes int stringResourceId) {
+    protected void showToast(@StringRes int msgResId) {
+        showToast(new ToastUtils.ToastConfig.Builder()
+                .setMsgResId(msgResId)
+                .build());
+    }
+
+    protected void showToast(@NonNull ErrorInfo info) {
+        showToast(new ToastUtils.ToastConfig.Builder()
+                .setMsg(info.getErrorMsg())
+                .setMsgResId(info.getErrorMsgResId())
+                .build());
+    }
+
+    /**
+     * 显示信息
+     *
+     * @param config 配置信息对象
+     */
+    protected void showToast(@NonNull ToastUtils.ToastConfig config) {
         if (!checkViewRefIsNull()) {
-            mViewRef.get().showToast(stringResourceId);
+            mViewRef.get().showToast(config);
         }
     }
 

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
+import com.mingyuechunqiu.agile.util.ThreadPoolUtils;
 
 import java.io.BufferedWriter;
 import java.io.Closeable;
@@ -25,9 +26,12 @@ import java.io.OutputStreamWriter;
  *     version: 1.0
  * </pre>
  */
-public class IOUtils {
+public final class IOUtils {
 
     private static final String TAG = "IOUtils";
+
+    private IOUtils() {
+    }
 
     /**
      * 检测是否是文件
@@ -121,7 +125,7 @@ public class IOUtils {
         if (!IOUtils.checkIsFileOrCreate(filePath)) {
             return;
         }
-        new Thread(new Runnable() {
+        ThreadPoolUtils.executeAction(new Runnable() {
             @Override
             public void run() {
                 BufferedWriter bw = null;
@@ -139,7 +143,7 @@ public class IOUtils {
                     IOUtils.closeStream(bw);
                 }
             }
-        }).start();
+        });
     }
 
     /**

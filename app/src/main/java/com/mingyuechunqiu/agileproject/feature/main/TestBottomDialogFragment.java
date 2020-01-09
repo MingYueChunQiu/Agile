@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.ui.bottomsheetdialogfragment.BasePresenterBSDialogFragment;
+import com.mingyuechunqiu.agile.util.ToastUtils;
 
 /**
  * <pre>
@@ -60,12 +61,7 @@ public class TestBottomDialogFragment extends BasePresenterBSDialogFragment<Main
     }
 
     @Override
-    public void showToast(@Nullable String hint) {
-
-    }
-
-    @Override
-    public void showToast(int stringResourceId) {
+    public void showToast(@NonNull ToastUtils.ToastConfig config) {
 
     }
 

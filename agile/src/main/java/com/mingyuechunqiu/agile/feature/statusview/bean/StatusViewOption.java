@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 import androidx.fragment.app.DialogFragment;
 
 import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewContainer;
@@ -64,12 +65,20 @@ public class StatusViewOption {
         mBuilder.dialogHeight = dialogHeight;
     }
 
-    public boolean isShowStatusViewFloating() {
-        return mBuilder.showStatusViewFloating;
+    public int getDialogAnimationResId() {
+        return mBuilder.dialogAnimationResId;
     }
 
-    public void setShowStatusViewFloating(boolean showStatusViewFloating) {
-        mBuilder.showStatusViewFloating = showStatusViewFloating;
+    public void setDialogAnimationResId(@StyleRes int dialogAnimationResId) {
+        mBuilder.dialogAnimationResId = dialogAnimationResId;
+    }
+
+    public float getContainerElevation() {
+        return mBuilder.containerElevation;
+    }
+
+    public void setContainerElevation(float containerElevation) {
+        mBuilder.containerElevation = containerElevation;
     }
 
     public int getContainerBackgroundResId() {
@@ -184,7 +193,9 @@ public class StatusViewOption {
         private IStatusViewContainer container;//对话框布局容器
         private boolean cancelWithOutside;//是否能触摸外围区域取消对话框
         private int dialogWidth, dialogHeight;//对话框宽高
-        private boolean showStatusViewFloating;//是否设置状态视图悬浮
+        private @StyleRes
+        int dialogAnimationResId;//对话框动画资源ID
+        private float containerElevation;//容器阴影大小
         private @DrawableRes
         int containerBackgroundResId;//容器背景图像资源ID
         private Drawable containerBackground;//容器背景图像
@@ -248,12 +259,21 @@ public class StatusViewOption {
             return this;
         }
 
-        public boolean isShowStatusViewFloating() {
-            return showStatusViewFloating;
+        public int getDialogAnimationResId() {
+            return dialogAnimationResId;
         }
 
-        public Builder setShowStatusViewFloating(boolean showStatusViewFloating) {
-            this.showStatusViewFloating = showStatusViewFloating;
+        public Builder setDialogAnimationResId(@StyleRes int dialogAnimationResId) {
+            this.dialogAnimationResId = dialogAnimationResId;
+            return this;
+        }
+
+        public float getContainerElevation() {
+            return containerElevation;
+        }
+
+        public Builder setContainerElevation(float containerElevation) {
+            this.containerElevation = containerElevation;
             return this;
         }
 

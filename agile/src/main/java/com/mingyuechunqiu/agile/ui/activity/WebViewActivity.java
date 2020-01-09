@@ -287,8 +287,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
      * 注册网络连接类型改变广播
      */
     private void registerNetworkTypeReceiver() {
-        mReceiver = new NetworkConnectedTypeReceiver();
-        mReceiver.setOnNetworkTypeChangedListener(new NetworkConnectedTypeReceiver.OnNetworkTypeChangedListener() {
+        mReceiver = new NetworkConnectedTypeReceiver(new NetworkConnectedTypeReceiver.OnNetworkTypeChangedListener() {
             @Override
             public void onNetworkTypeChanged(boolean isMobile) {
                 if (isMobile) {

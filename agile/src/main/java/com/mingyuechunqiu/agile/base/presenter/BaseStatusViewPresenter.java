@@ -16,6 +16,7 @@ import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
+import com.mingyuechunqiu.agile.util.ToastUtils;
 
 /**
  * <pre>
@@ -81,49 +82,61 @@ public abstract class BaseStatusViewPresenter<V extends IBaseStatusView, M exten
     }
 
     /**
-     * 显示提示信息并关闭加载对话框
+     * 显示信息并关闭加载对话框
+     *
+     * @param msg 文本
+     */
+    protected void showToastAndDismissStatusView(@Nullable String msg) {
+        showToastAndDismissStatusView(new ToastUtils.ToastConfig.Builder()
+                .setMsg(msg)
+                .build());
+    }
+
+    /**
+     * 显示信息并关闭加载对话框
+     *
+     * @param msgResId 文本资源ID
+     */
+    protected void showToastAndDismissStatusView(@StringRes int msgResId) {
+        showToastAndDismissStatusView(new ToastUtils.ToastConfig.Builder()
+                .setMsgResId(msgResId)
+                .build());
+    }
+
+    /**
+     * 显示信息并关闭加载对话框
      *
      * @param info 错误信息对象
      */
     protected void showToastAndDismissStatusView(@NonNull ErrorInfo info) {
-        if (!TextUtils.isEmpty(info.getErrorMsg())) {
-            showToastAndDismissStatusView(info.getErrorMsg());
-        } else if (info.getErrorMsgResId() != 0) {
-            showToastAndDismissStatusView(info.getErrorMsgResId());
-        }
+        showToastAndDismissStatusView(new ToastUtils.ToastConfig.Builder()
+                .setMsg(info.getErrorMsg())
+                .setMsgResId(info.getErrorMsgResId())
+                .build());
     }
 
     /**
-     * 显示提示信息并关闭加载对话框
+     * 显示信息并关闭加载对话框
      *
-     * @param msg 提示信息
+     * @param config 配置信息对象
      */
-    protected void showToastAndDismissStatusView(@Nullable String msg) {
+    protected void showToastAndDismissStatusView(@NonNull ToastUtils.ToastConfig config) {
         if (!checkViewRefIsNull()) {
-            mViewRef.get().showToast(msg);
+            mViewRef.get().showToast(config);
             mViewRef.get().dismissStatusView();
         }
     }
 
     /**
-     * 显示提示信息并关闭加载对话框
-     *
-     * @param msgResId 提示信息资源ID
-     */
-    protected void showToastAndDismissStatusView(@StringRes int msgResId) {
-        if (!checkViewRefIsNull()) {
-            mViewRef.get().showToast(msgResId);
-            mViewRef.get().dismissStatusView();
-        }
-    }
-
-    /**
-     * 获取当前层级的FragmentManager
+     * 获取当前层级的主FragmentManager
      *
      * @return 返回FragmentManager对象
      */
     @Nullable
-    private FragmentManager getCurrentFragmentManager() {
+    protected FragmentManager getCurrentFragmentManager() {
+        if (checkViewRefIsNull()) {
+            return null;
+        }
         FragmentManager manager = null;
         if (mViewRef.get() instanceof FragmentActivity) {
             manager = ((FragmentActivity) mViewRef.get()).getSupportFragmentManager();

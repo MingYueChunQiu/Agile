@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 
+import androidx.annotation.NonNull;
+
 import com.mingyuechunqiu.agile.util.NetworkUtils;
 
 import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_MOBILE;
@@ -23,6 +25,10 @@ public class NetworkConnectedTypeReceiver extends BroadcastReceiver {
 
     private OnNetworkTypeChangedListener mListener;
 
+    public NetworkConnectedTypeReceiver(@NonNull OnNetworkTypeChangedListener listener) {
+        mListener = listener;
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent == null) {
@@ -38,14 +44,6 @@ public class NetworkConnectedTypeReceiver extends BroadcastReceiver {
                 mListener.onNetworkTypeChanged(false);
             }
         }
-    }
-
-    public OnNetworkTypeChangedListener getOnNetworkTypeChangedListener() {
-        return mListener;
-    }
-
-    public void setOnNetworkTypeChangedListener(OnNetworkTypeChangedListener listener) {
-        mListener = listener;
     }
 
     /**

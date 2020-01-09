@@ -38,7 +38,7 @@ class MainModel extends MainContract.Model<MainContract.Listener> {
     }
 
     @Override
-    public void destroy() {
+    public void release() {
 
     }
 }

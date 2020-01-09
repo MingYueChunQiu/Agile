@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.base.presenter.IBasePresenter;
+import com.mingyuechunqiu.agile.util.ToastUtils;
 
 /**
  * <pre>
@@ -21,9 +22,7 @@ public interface IBaseView<P extends IBasePresenter> {
 
     void setPresenter(@NonNull P presenter);
 
-    void showToast(@Nullable String hint);
-
-    void showToast(@StringRes int stringResourceId);
+    void showToast(@NonNull ToastUtils.ToastConfig config);
 
     /**
      * 获取当前界面的上下文
