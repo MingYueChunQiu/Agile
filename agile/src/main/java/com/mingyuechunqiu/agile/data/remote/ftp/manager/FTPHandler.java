@@ -55,7 +55,7 @@ class FTPHandler implements IFTPHandler {
 
     @Override
     public void openConnect(@NonNull FTPConfigure configure, @NonNull FTPConnectListener listener) {
-        mClient.setControlEncoding("UTF-8");
+        mClient.setControlEncoding(configure.getControlEncoding());
         if (configure.getConnectTimeout() > 0) {
             mClient.setConnectTimeout(configure.getConnectTimeout());
         }

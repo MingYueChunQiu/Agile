@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
+import androidx.annotation.NonNull;
+
 import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
 
 import java.util.Map;
@@ -16,24 +18,17 @@ import java.util.Map;
  */
 class MainModel extends MainContract.Model<MainContract.Listener> {
 
-    private MainParamsInfo mInfo;
-
     MainModel(MainContract.Listener listener) {
         super(listener);
     }
 
     @Override
-    protected void releaseNetworkResources() {
+    protected void doRequest(@NonNull BaseParamsInfo info) {
 
     }
 
     @Override
-    protected void doRequest(BaseParamsInfo info) {
-
-    }
-
-    @Override
-    protected void redoRequest(Map<String, String> paramMap) {
+    protected void redoRequest(@NonNull Map<String, String> paramMap) {
 
     }
 

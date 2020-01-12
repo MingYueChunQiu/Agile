@@ -87,11 +87,5 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
      * 释放网络相关资源
      */
     public void releaseNetResources() {
-        releaseNetworkResources();
     }
-
-    /**
-     * 释放网络相关资源，由子类重写实现自己相关逻辑
-     */
-    protected abstract void releaseNetworkResources();
 }

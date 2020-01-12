@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agile.frame.data.remote;
 
+import androidx.annotation.NonNull;
+
 import com.mingyuechunqiu.agile.data.remote.retrofit.controller.BaseRetrofitManager;
 
 /**
@@ -14,76 +16,81 @@ import com.mingyuechunqiu.agile.data.remote.retrofit.controller.BaseRetrofitMana
  */
 public class AgileNetworkConfig {
 
-    private int connectNetTimeout;//网络连接超时时间(秒数)
-    private int readNetTimeout;//网络读取超时时间(秒数)
-    private int writeNetTimeout;//网络写入超时时间(秒数)
+    private Builder mBuilder;
 
     public AgileNetworkConfig() {
-        connectNetTimeout = readNetTimeout = writeNetTimeout = BaseRetrofitManager.DEFAULT_TIMEOUT;
+        this(new Builder());
     }
 
-    public int getConnectNetTimeout() {
-        return connectNetTimeout;
+    public AgileNetworkConfig(@NonNull Builder builder) {
+        mBuilder = builder;
     }
 
-    public void setConnectNetTimeout(int connectNetTimeout) {
-        this.connectNetTimeout = connectNetTimeout;
+    public long getConnectNetTimeout() {
+        return mBuilder.connectNetTimeout;
     }
 
-    public int getReadNetTimeout() {
-        return readNetTimeout;
+    public void setConnectNetTimeout(long connectNetTimeout) {
+        mBuilder.connectNetTimeout = connectNetTimeout;
     }
 
-    public void setReadNetTimeout(int readNetTimeout) {
-        this.readNetTimeout = readNetTimeout;
+    public long getReadNetTimeout() {
+        return mBuilder.readNetTimeout;
     }
 
-    public int getWriteNetTimeout() {
-        return writeNetTimeout;
+    public void setReadNetTimeout(long readNetTimeout) {
+        mBuilder.readNetTimeout = readNetTimeout;
     }
 
-    public void setWriteNetTimeout(int writeNetTimeout) {
-        this.writeNetTimeout = writeNetTimeout;
+    public long getWriteNetTimeout() {
+        return mBuilder.writeNetTimeout;
+    }
+
+    public void setWriteNetTimeout(long writeNetTimeout) {
+        mBuilder.writeNetTimeout = writeNetTimeout;
     }
 
     /**
      * 链式调用
      */
     public static class Builder {
-        private AgileNetworkConfig mConfig;
+
+        private long connectNetTimeout;//网络连接超时时间(毫秒数)
+        private long readNetTimeout;//网络读取超时时间(毫秒数)
+        private long writeNetTimeout;//网络写入超时时间(毫秒数)
 
         public Builder() {
-            mConfig = new AgileNetworkConfig();
+            connectNetTimeout = readNetTimeout = writeNetTimeout = BaseRetrofitManager.DEFAULT_TIMEOUT;
         }
 
         public AgileNetworkConfig build() {
-            return mConfig;
+            return new AgileNetworkConfig(this);
         }
 
-        public int getConnectNetTimeout() {
-            return mConfig.connectNetTimeout;
+        public long getConnectNetTimeout() {
+            return connectNetTimeout;
         }
 
-        public Builder setConnectNetTimeout(int connectNetTimeout) {
-            mConfig.connectNetTimeout = connectNetTimeout;
+        public Builder setConnectNetTimeout(long connectNetTimeout) {
+            this.connectNetTimeout = connectNetTimeout;
             return this;
         }
 
-        public int getReadNetTimeout() {
-            return mConfig.readNetTimeout;
+        public long getReadNetTimeout() {
+            return readNetTimeout;
         }
 
-        public Builder setReadNetTimeout(int readNetTimeout) {
-            mConfig.readNetTimeout = readNetTimeout;
+        public Builder setReadNetTimeout(long readNetTimeout) {
+            this.readNetTimeout = readNetTimeout;
             return this;
         }
 
-        public int getWriteNetTimeout() {
-            return mConfig.writeNetTimeout;
+        public long getWriteNetTimeout() {
+            return writeNetTimeout;
         }
 
-        public Builder setWriteNetTimeout(int writeNetTimeout) {
-            mConfig.writeNetTimeout = writeNetTimeout;
+        public Builder setWriteNetTimeout(long writeNetTimeout) {
+            this.writeNetTimeout = writeNetTimeout;
             return this;
         }
     }

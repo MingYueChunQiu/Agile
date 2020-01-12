@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public abstract class BaseRetrofitManager {
 
-    public static final int DEFAULT_TIMEOUT = 10;//默认服务器连接、读取超时时间（秒数）
+    public static final long DEFAULT_TIMEOUT = 10 * 1000;//默认服务器连接、读取超时时间（毫秒数）
 
     /**
      * 获取默认Retrofit实例
@@ -102,10 +102,10 @@ public abstract class BaseRetrofitManager {
         AgileFrameConfigure configure = Agile.getConfigure();
         return new OkHttpClient.Builder()
                 .connectTimeout(configure.getNetworkConfig().getConnectNetTimeout() <= 0 ?
-                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getConnectNetTimeout(), TimeUnit.SECONDS)
+                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getConnectNetTimeout(), TimeUnit.MILLISECONDS)
                 .readTimeout(configure.getNetworkConfig().getReadNetTimeout() <= 0 ?
-                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getReadNetTimeout(), TimeUnit.SECONDS)
+                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getReadNetTimeout(), TimeUnit.MILLISECONDS)
                 .writeTimeout(configure.getNetworkConfig().getWriteNetTimeout() <= 0 ?
-                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getWriteNetTimeout(), TimeUnit.SECONDS);
+                        DEFAULT_TIMEOUT : configure.getNetworkConfig().getWriteNetTimeout(), TimeUnit.MILLISECONDS);
     }
 }

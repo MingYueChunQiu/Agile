@@ -23,7 +23,7 @@ import java.util.List;
  */
 public interface IFTPHandler {
 
-    void openConnect(@NonNull FTPConfigure info, @NonNull FTPConnectListener listener);
+    void openConnect(@NonNull FTPConfigure configure, @NonNull FTPConnectListener listener);
 
     void releaseConnect();
 

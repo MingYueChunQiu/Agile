@@ -1,7 +1,9 @@
 package com.mingyuechunqiu.agile.frame;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 
@@ -14,13 +16,11 @@ import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
  *     version: 1.0
  * </pre>
  */
-public class Agile {
-
-    private static final Agile INSTANCE = new Agile();//单例
+public final class Agile {
 
     private volatile Context mApplicationContext;//上下文对象
     private AgileFrameConfigure mConfigure;//配置信息对象
-    private boolean mDebug;//标记是否处于debug模式
+    private boolean debug;//标记是否处于debug模式
 
     private Agile() {
         mConfigure = new AgileFrameConfigure.Builder().build();
@@ -31,11 +31,8 @@ public class Agile {
      *
      * @param context 传入上下文
      */
-    public static void init(Context context) {
-        if (context == null) {
-            throw new IllegalArgumentException("Context can not be null!");
-        }
-        INSTANCE.mApplicationContext = context.getApplicationContext() != null ? context.getApplicationContext() : context;
+    public static void init(@NonNull Context context) {
+        AgileHolder.sInstance.mApplicationContext = context.getApplicationContext() != null ? context.getApplicationContext() : context;
         debug(false);
     }
 
@@ -45,10 +42,10 @@ public class Agile {
      * @return 返回全局上下文
      */
     public static Context getAppContext() {
-        if (INSTANCE.mApplicationContext == null) {
+        if (AgileHolder.sInstance.mApplicationContext == null) {
             throw new IllegalArgumentException("Context has not been initialized!");
         }
-        return INSTANCE.mApplicationContext;
+        return AgileHolder.sInstance.mApplicationContext;
     }
 
     /**
@@ -56,11 +53,11 @@ public class Agile {
      *
      * @param configure 配置对象
      */
-    public static void setConfigure(AgileFrameConfigure configure) {
+    public static void setConfigure(@Nullable AgileFrameConfigure configure) {
         if (configure == null) {
             return;
         }
-        INSTANCE.mConfigure = configure;
+        AgileHolder.sInstance.mConfigure = configure;
     }
 
     /**
@@ -70,7 +67,7 @@ public class Agile {
      */
     @NonNull
     public static AgileFrameConfigure getConfigure() {
-        return INSTANCE.mConfigure;
+        return AgileHolder.sInstance.mConfigure;
     }
 
     /**
@@ -79,11 +76,19 @@ public class Agile {
      * @param debug 是否开启调试模式
      */
     public static void debug(boolean debug) {
-        INSTANCE.mDebug = debug;
+        AgileHolder.sInstance.debug = debug;
         LogManagerProvider.showLog(debug);
     }
 
     public static boolean isDebug() {
-        return INSTANCE.mDebug;
+        return AgileHolder.sInstance.debug;
+    }
+
+    /**
+     * 线程安全
+     */
+    private static class AgileHolder {
+
+        private static final Agile sInstance = new Agile();
     }
 }
