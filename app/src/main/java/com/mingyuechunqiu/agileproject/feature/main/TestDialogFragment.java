@@ -22,8 +22,8 @@ import com.mingyuechunqiu.agileproject.R;
  *     version: 1.0
  * </pre>
  */
-public class TestDialogFragment extends BasePresenterDialogFragment<MainContract.View<MainContract.Presenter>, MainContract.Presenter>
-        implements MainContract.View<MainContract.Presenter> {
+public class TestDialogFragment extends BasePresenterDialogFragment<MainContract.View<MainContract.Presenter<?, ?>>, MainContract.Presenter<?, ?>>
+        implements MainContract.View<MainContract.Presenter<?, ?>> {
 
     @Override
     public void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
@@ -41,7 +41,7 @@ public class TestDialogFragment extends BasePresenterDialogFragment<MainContract
     }
 
     @Override
-    public void setPresenter(@NonNull MainContract.Presenter presenter) {
+    public void setPresenter(@NonNull MainContract.Presenter<?, ?> presenter) {
         mPresenter = presenter;
     }
 
@@ -53,11 +53,6 @@ public class TestDialogFragment extends BasePresenterDialogFragment<MainContract
     @Override
     public Context getCurrentContext() {
         return null;
-    }
-
-    @Override
-    public MainContract.Presenter initPresenter() {
-        return new MainPresenter();
     }
 
     @NonNull
@@ -81,5 +76,11 @@ public class TestDialogFragment extends BasePresenterDialogFragment<MainContract
     @Override
     public void dismissStatusView() {
 
+    }
+
+    @Nullable
+    @Override
+    public MainContract.Presenter<?, ?> initPresenter() {
+        return new MainPresenter();
     }
 }

@@ -19,7 +19,7 @@ import java.util.TimerTask;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseCountDownPresenter<V extends IBaseNetView, M extends BaseNetModel> extends BaseNetPresenter<V, M> {
+public abstract class BaseCountDownPresenter<V extends IBaseNetView<?>, M extends BaseNetModel<?>> extends BaseNetPresenter<V, M> {
 
     private Timer mTimer;
     private TimerTask mTimerTask;

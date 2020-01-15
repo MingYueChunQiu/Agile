@@ -1,9 +1,10 @@
-package com.mingyuechunqiu.agile.base.model.part.dao.remote;
+package com.mingyuechunqiu.agile.base.model.dao.remote;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
-import com.mingyuechunqiu.agile.base.model.part.dao.operation.remote.IBaseRemoteDaoOperation;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
+import com.mingyuechunqiu.agile.base.model.dao.operation.remote.IBaseRemoteDaoOperation;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,29 +21,30 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractRemoteDao<C extends IBaseDao.ModelDaoCallback> implements IBaseRemoteDao<C> {
+public abstract class BaseAbstractRemoteDao<C extends DaoCallback<?>> implements IBaseRemoteDao<C> {
 
-    protected C mCallback;
+    @Nullable
+    protected C mDaoCallback;
 
-    protected List<IBaseRemoteDaoOperation> mRemoteDaoOperationList;
+    private List<IBaseRemoteDaoOperation> mRemoteDaoOperationList;
 
     public BaseAbstractRemoteDao() {
     }
 
     public BaseAbstractRemoteDao(@NonNull C callback) {
-        attachModelDaoCallback(callback);
+        attachDaoCallback(callback);
     }
 
     @Override
-    public void attachModelDaoCallback(@NonNull C callback) {
-        mCallback = callback;
-        onAttachModelDaoCallback(callback);
+    public void attachDaoCallback(@NonNull C callback) {
+        mDaoCallback = callback;
+        onAttachDaoCallback(callback);
     }
 
     @Override
-    public void release() {
+    public void releaseOnDetach() {
         preRelease();
-        destroy();
+        release();
         postRelease();
     }
 
@@ -51,7 +53,7 @@ public abstract class BaseAbstractRemoteDao<C extends IBaseDao.ModelDaoCallback>
      *
      * @param callback 回调对象
      */
-    protected void onAttachModelDaoCallback(@NonNull C callback) {
+    protected void onAttachDaoCallback(@NonNull C callback) {
     }
 
     /**
@@ -59,8 +61,8 @@ public abstract class BaseAbstractRemoteDao<C extends IBaseDao.ModelDaoCallback>
      *
      * @param operation 远程操作
      */
-    protected void addRemoteOperation(@NonNull IBaseRemoteDaoOperation operation) {
-        if (operation.isCanceled()) {
+    protected void addRemoteOperation(@Nullable IBaseRemoteDaoOperation operation) {
+        if (operation == null || operation.isCanceled()) {
             return;
         }
         if (mRemoteDaoOperationList == null) {
@@ -86,8 +88,8 @@ public abstract class BaseAbstractRemoteDao<C extends IBaseDao.ModelDaoCallback>
      *
      * @param operation 远程操作
      */
-    protected void removeRemoteOperation(@NonNull IBaseRemoteDaoOperation operation) {
-        if (mRemoteDaoOperationList == null || mRemoteDaoOperationList.size() == 0) {
+    protected void removeRemoteOperation(@Nullable IBaseRemoteDaoOperation operation) {
+        if (operation == null || mRemoteDaoOperationList == null || mRemoteDaoOperationList.size() == 0) {
             return;
         }
         if (!operation.isCanceled()) {
@@ -110,11 +112,11 @@ public abstract class BaseAbstractRemoteDao<C extends IBaseDao.ModelDaoCallback>
     }
 
     protected void postRelease() {
-        mCallback = null;
+        mDaoCallback = null;
     }
 
     /**
-     * 销毁资源
+     * 释放资源
      */
-    protected abstract void destroy();
+    protected abstract void release();
 }

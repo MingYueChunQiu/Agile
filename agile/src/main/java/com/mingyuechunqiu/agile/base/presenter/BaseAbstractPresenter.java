@@ -29,9 +29,10 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBaseModel> implements IBasePresenter<V, M>, LifecycleObserver {
+public abstract class BaseAbstractPresenter<V extends IBaseView<?>, M extends IBaseModel<?>> implements IBasePresenter<V, M>, LifecycleObserver {
 
     protected WeakReference<V> mViewRef;
+    @Nullable
     protected M mModel;
     private List<IBasePresenterEngine> mPresenterEngineList;
 
@@ -51,7 +52,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     public void detachView() {
         releaseOnDetach();
         if (mModel != null) {
-            mModel.releaseByPresenter();
+            mModel.releaseOnDetach();
             mModel = null;
         }
         if (mViewRef != null) {

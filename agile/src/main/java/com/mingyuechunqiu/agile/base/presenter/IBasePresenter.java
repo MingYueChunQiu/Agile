@@ -16,7 +16,7 @@ import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
  *     version: 1.0
  * </pre>
  */
-public interface IBasePresenter<V extends IBaseView, M extends IBaseModel> {
+public interface IBasePresenter<V extends IBaseView<?>, M extends IBaseModel<?>> {
 
     void attachView(@NonNull V view);
 

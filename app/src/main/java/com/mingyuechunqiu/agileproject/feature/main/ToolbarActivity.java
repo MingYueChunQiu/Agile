@@ -1,8 +1,6 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
@@ -38,7 +36,7 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
                 .setTitle("分为非")
 //                .setEnableDisplayHomeAsUp(true)
                 .setHideDisplayTitle(false)
-                .setOnIconClickListener(new View.OnClickListener() {
+                .setOnNavigationIconClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         startActivity(new Intent(ToolbarActivity.this, MainActivity.class));
@@ -46,6 +44,7 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
                 })
                 .setLogoResId(R.drawable.agile_arrow_back_pressed)
                 .build();
+
     }
 
     @Override

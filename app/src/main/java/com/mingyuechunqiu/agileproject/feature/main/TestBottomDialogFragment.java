@@ -21,8 +21,8 @@ import com.mingyuechunqiu.agile.util.ToastUtils;
  *     version: 1.0
  * </pre>
  */
-public class TestBottomDialogFragment extends BasePresenterBSDialogFragment<MainContract.View<MainContract.Presenter>, MainContract.Presenter>
-        implements MainContract.View<MainContract.Presenter> {
+public class TestBottomDialogFragment extends BasePresenterBSDialogFragment<MainContract.View<MainContract.Presenter<?, ?>>, MainContract.Presenter<?, ?>>
+        implements MainContract.View<MainContract.Presenter<?, ?>> {
 
     @Override
     protected void releaseOnDestroyView() {
@@ -56,7 +56,7 @@ public class TestBottomDialogFragment extends BasePresenterBSDialogFragment<Main
     }
 
     @Override
-    public void setPresenter(@NonNull MainContract.Presenter presenter) {
+    public void setPresenter(@NonNull MainContract.Presenter<?, ?> presenter) {
         mPresenter = presenter;
     }
 
@@ -70,8 +70,9 @@ public class TestBottomDialogFragment extends BasePresenterBSDialogFragment<Main
         return null;
     }
 
+    @Nullable
     @Override
-    public MainContract.Presenter initPresenter() {
+    public MainContract.Presenter<?, ?> initPresenter() {
         return new MainPresenter();
     }
 }

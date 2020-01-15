@@ -54,14 +54,18 @@
     <!--滚动ViewPager样式-->
     <declare-styleable name="ScrollViewPager">
         <!--是否可以滚动-->
-        <attr name="svp_canScroll" format="boolean" />
+        <attr name="svp_can_scroll" format="boolean" />
     </declare-styleable>
 
     <!--按下状态容器控件-->
     <declare-styleable name="PressStateViewGroup">
-        <attr name="psvg_animator_duration" format="integer" />
+        <attr name="psvg_can_press" format="boolean" />
         <attr name="psvg_scale_x" format="float" />
         <attr name="psvg_scale_y" format="float" />
+        <attr name="psvg_restore_x" format="float" />
+        <attr name="psvg_restore_y" format="float" />
+        <attr name="psvg_scale_animator_duration" format="integer" />
+        <attr name="psvg_restore_animator_duration" format="integer" />
     </declare-styleable>
 
     <!--按下状态控件-->

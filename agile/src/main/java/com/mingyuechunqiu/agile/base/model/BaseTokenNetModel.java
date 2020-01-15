@@ -27,6 +27,7 @@ import java.util.Map;
  */
 public abstract class BaseTokenNetModel<I extends IBaseListener> extends BaseNetModel<I> {
 
+    @Nullable
     protected WeakReference<Context> mContextRef;
 
     public BaseTokenNetModel(@NonNull I listener) {
@@ -34,8 +35,8 @@ public abstract class BaseTokenNetModel<I extends IBaseListener> extends BaseNet
     }
 
     @Override
-    public void releaseByPresenter() {
-        super.releaseByPresenter();
+    public void releaseOnDetach() {
+        super.releaseOnDetach();
         if (mContextRef != null) {
             mContextRef.clear();
             mContextRef = null;

@@ -41,6 +41,6 @@ public interface IBaseModel<I extends IBaseListener> {
     /**
      * 释放资源
      */
-    void releaseByPresenter();
+    void releaseOnDetach();
 
 }

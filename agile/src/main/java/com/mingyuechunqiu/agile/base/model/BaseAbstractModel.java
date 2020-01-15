@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
 import com.mingyuechunqiu.agile.base.model.part.IBaseModelPart;
-import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
+import com.mingyuechunqiu.agile.base.model.dao.IBaseDao;
 import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
 
 import java.util.ArrayList;
@@ -26,6 +26,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
     protected final String TAG = getClass().getSimpleName();//日志标签
     protected final String TAG_FAILURE = getClass().getSimpleName() + " failure";//打印错误日志标签
 
+    @Nullable
     protected I mListener;
     private List<IBaseModelPart> mModelPartList;
     private List<IBaseDao> mDaoList;
@@ -73,12 +74,12 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * 释放资源方法
      */
     @Override
-    public void releaseByPresenter() {
+    public void releaseOnDetach() {
         release();
         if (mModelPartList != null) {
             for (IBaseModelPart part : mModelPartList) {
                 if (part != null) {
-                    part.release();
+                    part.releaseOnDetach();
                 }
             }
             mModelPartList.clear();
@@ -87,7 +88,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
         if (mDaoList != null) {
             for (IBaseDao dao : mDaoList) {
                 if (dao != null) {
-                    dao.release();
+                    dao.releaseOnDetach();
                 }
             }
             mDaoList.clear();

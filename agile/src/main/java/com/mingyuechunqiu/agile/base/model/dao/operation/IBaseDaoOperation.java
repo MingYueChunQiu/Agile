@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.base.model.part.dao.operation;
+package com.mingyuechunqiu.agile.base.model.dao.operation;
 
 /**
  * <pre>
@@ -10,7 +10,10 @@ package com.mingyuechunqiu.agile.base.model.part.dao.operation;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseDaoOperation {
+public interface IBaseDaoOperation<T> {
 
-    void release();
+    /**
+     * 释放资源
+     */
+    void releaseOnDetach();
 }

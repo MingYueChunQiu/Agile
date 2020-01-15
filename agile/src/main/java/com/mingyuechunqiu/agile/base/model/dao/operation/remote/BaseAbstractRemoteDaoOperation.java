@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.base.model.part.dao.operation.remote;
+package com.mingyuechunqiu.agile.base.model.dao.operation.remote;
 
 import androidx.annotation.NonNull;
 
@@ -9,11 +9,11 @@ import androidx.annotation.NonNull;
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/6/26
  *     desc   : 网络调用操作抽象基类
- *              实现INetworkOperation
+ *              实现IBaseRemoteDaoOperation
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractRemoteDaoOperation<T> implements IBaseRemoteDaoOperation {
+public abstract class BaseAbstractRemoteDaoOperation<T> implements IBaseRemoteDaoOperation<T> {
 
     protected T mOperation;
 
@@ -21,4 +21,13 @@ public abstract class BaseAbstractRemoteDaoOperation<T> implements IBaseRemoteDa
         mOperation = operation;
     }
 
+    @Override
+    public void releaseOnDetach() {
+        mOperation = null;
+    }
+
+    /**
+     * 释放资源
+     */
+    protected abstract void release();
 }

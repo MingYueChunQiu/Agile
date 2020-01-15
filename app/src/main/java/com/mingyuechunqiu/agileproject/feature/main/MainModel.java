@@ -23,17 +23,17 @@ class MainModel extends MainContract.Model<MainContract.Listener> {
     }
 
     @Override
-    protected void doRequest(@NonNull BaseParamsInfo info) {
-
-    }
-
-    @Override
     protected void redoRequest(@NonNull Map<String, String> paramMap) {
 
     }
 
     @Override
-    public void release() {
+    protected void doRequest(@NonNull BaseParamsInfo info) {
+
+    }
+
+    @Override
+    protected void release() {
 
     }
 }

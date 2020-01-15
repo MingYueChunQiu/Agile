@@ -1,9 +1,9 @@
 package com.mingyuechunqiu.agile.base.model.part;
 
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
+import com.mingyuechunqiu.agile.base.model.dao.IBaseDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +21,15 @@ import java.util.List;
  */
 public abstract class BaseAbstractModelPart implements IBaseModelPart {
 
-    protected List<IBaseDao> mDaoList;
+    private List<IBaseDao> mDaoList;
 
     @Override
-    public void release() {
-        destroy();
+    public void releaseOnDetach() {
+        release();
         if (mDaoList != null) {
             for (IBaseDao dao : mDaoList) {
                 if (dao != null) {
-                    dao.release();
+                    dao.releaseOnDetach();
                 }
             }
             mDaoList.clear();
@@ -43,7 +43,10 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
      * @param dao dao单元
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addDao(@NonNull IBaseDao dao) {
+    protected boolean addDao(@Nullable IBaseDao dao) {
+        if (dao == null) {
+            return false;
+        }
         if (mDaoList == null) {
             mDaoList = new ArrayList<>();
         }
@@ -56,8 +59,8 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
      * @param dao dao单元
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removeDao(@NonNull IBaseDao dao) {
-        if (mDaoList == null) {
+    protected boolean removeDao(@Nullable IBaseDao dao) {
+        if (dao == null || mDaoList == null) {
             return false;
         }
         return mDaoList.remove(dao);
@@ -66,5 +69,5 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
     /**
      * 销毁资源
      */
-    protected abstract void destroy();
+    protected abstract void release();
 }

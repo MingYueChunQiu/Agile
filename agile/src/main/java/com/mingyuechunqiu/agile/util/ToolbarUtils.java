@@ -52,8 +52,8 @@ public final class ToolbarUtils {
         if (configure.getLogoDrawable() != null) {
             toolbar.setLogo(configure.getLogoDrawable());
         }
-        if (configure.getOnIconClickListener() != null) {
-            toolbar.setNavigationOnClickListener(configure.getOnIconClickListener());
+        if (configure.getOnNavigationIconClickListener() != null) {
+            toolbar.setNavigationOnClickListener(configure.getOnNavigationIconClickListener());
         }
         //判断是否显示toolbar自身的标题
         boolean isHasCustomTitle = false;
@@ -158,12 +158,12 @@ public final class ToolbarUtils {
             mBuilder.logoDrawable = logoDrawable;
         }
 
-        public View.OnClickListener getOnIconClickListener() {
-            return mBuilder.onIconClickListener;
+        public View.OnClickListener getOnNavigationIconClickListener() {
+            return mBuilder.onNavigationIconClickListener;
         }
 
-        public void setOnIconClickListener(@Nullable View.OnClickListener onIconClickListener) {
-            mBuilder.onIconClickListener = onIconClickListener;
+        public void setOnNavigationIconClickListener(@Nullable View.OnClickListener listener) {
+            mBuilder.onNavigationIconClickListener = listener;
         }
 
         public boolean isHideDisplayTitle() {
@@ -234,8 +234,8 @@ public final class ToolbarUtils {
             return mBuilder.onMenuItemClickListener;
         }
 
-        public void setOnMenuItemClickListener(@Nullable Toolbar.OnMenuItemClickListener onMenuItemClickListener) {
-            mBuilder.onMenuItemClickListener = onMenuItemClickListener;
+        public void setOnMenuItemClickListener(@Nullable Toolbar.OnMenuItemClickListener listener) {
+            mBuilder.onMenuItemClickListener = listener;
         }
 
         public int getMenuResId() {
@@ -277,7 +277,7 @@ public final class ToolbarUtils {
 
             private Drawable logoDrawable;//左侧logo图片
 
-            private View.OnClickListener onIconClickListener;//图标点击事件
+            private View.OnClickListener onNavigationIconClickListener;//导航图标点击事件
 
             private boolean hideDisplayTitle;//隐藏系统默认标题
 
@@ -361,12 +361,12 @@ public final class ToolbarUtils {
                 return this;
             }
 
-            public View.OnClickListener getOnIconClickListener() {
-                return this.onIconClickListener;
+            public View.OnClickListener getOnNavigationIconClickListener() {
+                return this.onNavigationIconClickListener;
             }
 
-            public Builder setOnIconClickListener(@Nullable View.OnClickListener iconClickListener) {
-                this.onIconClickListener = iconClickListener;
+            public Builder setOnNavigationIconClickListener(@Nullable View.OnClickListener listener) {
+                this.onNavigationIconClickListener = listener;
                 return this;
             }
 

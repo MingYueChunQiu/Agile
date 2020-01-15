@@ -6,7 +6,8 @@ import androidx.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
-import com.mingyuechunqiu.agile.base.model.part.dao.remote.BaseAbstractRetrofitDao;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoRetrofitCallback;
+import com.mingyuechunqiu.agile.base.model.dao.framework.result.DaoResultHandler;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 
@@ -22,16 +23,16 @@ import retrofit2.Response;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstractModel<I> implements BaseAbstractRetrofitDao.ModelDaoRetrofitCallback<I> {
+public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstractModel<I> implements DaoRetrofitCallback<I> {
 
     public BaseNetModel(@NonNull I listener) {
         super(listener);
     }
 
     @Override
-    public void releaseByPresenter() {
+    public void releaseOnDetach() {
         releaseNetResources();
-        super.releaseByPresenter();
+        super.releaseOnDetach();
     }
 
     /**
@@ -58,17 +59,22 @@ public abstract class BaseNetModel<I extends IBaseListener> extends BaseAbstract
      */
     @Override
     public void onNetworkResponseFailed(@Nullable Throwable t, @StringRes int errorMsgResId) {
+        onNetworkResponseFailed(t, new ErrorInfo(errorMsgResId));
+    }
+
+    @Override
+    public void onNetworkResponseFailed(@Nullable Throwable t, @NonNull ErrorInfo info) {
         if (t != null) {
             LogManagerProvider.d(TAG_FAILURE, t.getMessage());
         }
         if (mListener != null) {
-            mListener.onFailure(new ErrorInfo(errorMsgResId));
+            mListener.onFailure(info);
         }
     }
 
     @Override
-    public void onExecuteResult(@NonNull ResultOperation<I> operation) {
-        operation.operate(mListener);
+    public void onExecuteDaoResult(@NonNull DaoResultHandler<I> handler) {
+        handler.handleDaoResult(mListener);
     }
 
     /**

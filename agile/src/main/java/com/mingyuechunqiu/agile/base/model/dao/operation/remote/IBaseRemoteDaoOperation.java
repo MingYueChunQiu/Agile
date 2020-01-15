@@ -1,6 +1,6 @@
-package com.mingyuechunqiu.agile.base.model.part.dao.operation.remote;
+package com.mingyuechunqiu.agile.base.model.dao.operation.remote;
 
-import com.mingyuechunqiu.agile.base.model.part.dao.operation.IBaseDaoOperation;
+import com.mingyuechunqiu.agile.base.model.dao.operation.IBaseDaoOperation;
 
 /**
  * <pre>
@@ -9,11 +9,11 @@ import com.mingyuechunqiu.agile.base.model.part.dao.operation.IBaseDaoOperation;
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/6/26
  *     desc   : 远程调用操作父接口
- *              继承自IDaoOperation
+ *              继承自IBaseDaoOperation
  *     version: 1.0
  * </pre>
  */
-public interface IBaseRemoteDaoOperation extends IBaseDaoOperation {
+public interface IBaseRemoteDaoOperation<T> extends IBaseDaoOperation<T> {
 
     /**
      * 是否远程操作已经被取消

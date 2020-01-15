@@ -33,7 +33,7 @@ public class ScrollViewPager extends ViewPager {
     public ScrollViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ScrollViewPager);
-        canScroll = a.getBoolean(R.styleable.ScrollViewPager_svp_canScroll, true);
+        canScroll = a.getBoolean(R.styleable.ScrollViewPager_svp_can_scroll, true);
         a.recycle();
     }
 

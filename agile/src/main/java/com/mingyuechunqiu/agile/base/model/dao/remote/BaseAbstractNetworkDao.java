@@ -1,8 +1,8 @@
-package com.mingyuechunqiu.agile.base.model.part.dao.remote;
+package com.mingyuechunqiu.agile.base.model.dao.remote;
 
 import androidx.annotation.NonNull;
 
-import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoNetCallback;
 
 /**
  * <pre>
@@ -15,7 +15,7 @@ import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractNetworkDao<C extends IBaseDao.ModelDaoCallback> extends BaseAbstractRemoteDao<C> {
+public abstract class BaseAbstractNetworkDao<C extends DaoNetCallback<?>> extends BaseAbstractRemoteDao<C> {
 
     public BaseAbstractNetworkDao() {
     }

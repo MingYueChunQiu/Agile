@@ -100,7 +100,7 @@ class FTPHandler implements IFTPHandler {
             mClient.abort();
             mClient.disconnect();
         } catch (IOException e) {
-            LogManagerProvider.e("FTPHandler：releaseByPresenter", e.getMessage());
+            LogManagerProvider.e("FTPHandler：releaseOnDetach", e.getMessage());
         }
     }
 

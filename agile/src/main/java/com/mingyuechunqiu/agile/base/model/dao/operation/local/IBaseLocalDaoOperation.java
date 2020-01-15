@@ -1,6 +1,6 @@
-package com.mingyuechunqiu.agile.base.model.part.dao.operation.local;
+package com.mingyuechunqiu.agile.base.model.dao.operation.local;
 
-import com.mingyuechunqiu.agile.base.model.part.dao.operation.IBaseDaoOperation;
+import com.mingyuechunqiu.agile.base.model.dao.operation.IBaseDaoOperation;
 
 /**
  * <pre>
@@ -13,7 +13,7 @@ import com.mingyuechunqiu.agile.base.model.part.dao.operation.IBaseDaoOperation;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseLocalDaoOperation extends IBaseDaoOperation {
+public interface IBaseLocalDaoOperation<T> extends IBaseDaoOperation<T> {
 
     /**
      * 操作是否是无效的

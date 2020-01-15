@@ -16,7 +16,7 @@ import com.mingyuechunqiu.agileproject.base.model.BaseTokenNetModelImpl;
  */
 interface MainContract {
 
-    interface View<P extends Presenter> extends IBaseNetView<P> {
+    interface View<P extends Presenter<?,?>> extends IBaseNetView<P> {
     }
 
     interface Listener extends IBaseListener {
@@ -28,7 +28,7 @@ interface MainContract {
         }
     }
 
-    abstract class Presenter<V extends View, M extends Model> extends BaseNetPresenter<V, M> {
+    abstract class Presenter<V extends View<?>, M extends Model<?>> extends BaseNetPresenter<V, M> {
     }
 
 }

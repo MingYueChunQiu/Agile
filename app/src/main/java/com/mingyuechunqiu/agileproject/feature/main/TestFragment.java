@@ -23,8 +23,8 @@ import com.mingyuechunqiu.agileproject.R;
  *     version: 1.0
  * </pre>
  */
-public class TestFragment extends BasePresenterFragment<MainContract.View<MainContract.Presenter>, MainContract.Presenter>
-        implements MainContract.View<MainContract.Presenter> {
+public class TestFragment extends BasePresenterFragment<MainContract.View<MainContract.Presenter<?, ?>>, MainContract.Presenter<?, ?>>
+        implements MainContract.View<MainContract.Presenter<?, ?>> {
 
     @Override
     public void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
@@ -60,7 +60,7 @@ public class TestFragment extends BasePresenterFragment<MainContract.View<MainCo
     }
 
     @Override
-    public void setPresenter(@NonNull MainContract.Presenter presenter) {
+    public void setPresenter(@NonNull MainContract.Presenter<?, ?> presenter) {
         mPresenter = presenter;
     }
 
@@ -74,11 +74,6 @@ public class TestFragment extends BasePresenterFragment<MainContract.View<MainCo
         return getContext();
     }
 
-    @Override
-    public MainContract.Presenter initPresenter() {
-        return new MainPresenter();
-    }
-
     @NonNull
     @Override
     public IStatusViewManager getStatusViewManager() {
@@ -88,5 +83,11 @@ public class TestFragment extends BasePresenterFragment<MainContract.View<MainCo
     @Override
     public void dismissStatusView() {
 
+    }
+
+    @Nullable
+    @Override
+    public MainContract.Presenter<?, ?> initPresenter() {
+        return new MainPresenter();
     }
 }

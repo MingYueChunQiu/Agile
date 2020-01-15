@@ -1,9 +1,10 @@
-package com.mingyuechunqiu.agile.base.model.part.dao.local;
+package com.mingyuechunqiu.agile.base.model.dao.local;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.model.part.dao.IBaseDao;
-import com.mingyuechunqiu.agile.base.model.part.dao.operation.local.IBaseLocalDaoOperation;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
+import com.mingyuechunqiu.agile.base.model.dao.operation.local.IBaseLocalDaoOperation;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,29 +21,30 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback> implements IBaseLocalDao<C> {
+public abstract class BaseAbstractLocalDao<C extends DaoCallback<?>> implements IBaseLocalDao<C> {
 
-    protected C mCallback;
+    @Nullable
+    protected C mDaoCallback;
 
-    protected List<IBaseLocalDaoOperation> mLocalDaoOperationList;
+    private List<IBaseLocalDaoOperation> mLocalDaoOperationList;
 
     public BaseAbstractLocalDao() {
     }
 
     public BaseAbstractLocalDao(@NonNull C callback) {
-        attachModelDaoCallback(callback);
+        attachDaoCallback(callback);
     }
 
     @Override
-    public void attachModelDaoCallback(@NonNull C callback) {
-        mCallback = callback;
-        onAttachModelDaoCallback(callback);
+    public void attachDaoCallback(@NonNull C callback) {
+        mDaoCallback = callback;
+        onAttachDaoCallback(callback);
     }
 
     @Override
-    public void release() {
+    public void releaseOnDetach() {
         preRelease();
-        destroy();
+        release();
         postRelease();
     }
 
@@ -51,7 +53,7 @@ public abstract class BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback> 
      *
      * @param callback 回调对象
      */
-    protected void onAttachModelDaoCallback(@NonNull C callback) {
+    protected void onAttachDaoCallback(@NonNull C callback) {
     }
 
     /**
@@ -59,8 +61,8 @@ public abstract class BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback> 
      *
      * @param operation 本地数据操作
      */
-    protected void addLocalOperation(@NonNull IBaseLocalDaoOperation operation) {
-        if (operation.isInvalid()) {
+    protected void addLocalOperation(@Nullable IBaseLocalDaoOperation operation) {
+        if (operation == null || operation.isInvalid()) {
             return;
         }
         if (mLocalDaoOperationList == null) {
@@ -86,8 +88,8 @@ public abstract class BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback> 
      *
      * @param operation 本地数据操作
      */
-    protected void removeLocalOperation(@NonNull IBaseLocalDaoOperation operation) {
-        if (mLocalDaoOperationList == null || mLocalDaoOperationList.size() == 0) {
+    protected void removeLocalOperation(@Nullable IBaseLocalDaoOperation operation) {
+        if (operation == null || mLocalDaoOperationList == null || mLocalDaoOperationList.size() == 0) {
             return;
         }
         if (!operation.isInvalid()) {
@@ -110,11 +112,11 @@ public abstract class BaseAbstractLocalDao<C extends IBaseDao.ModelDaoCallback> 
     }
 
     protected void postRelease() {
-        mCallback = null;
+        mDaoCallback = null;
     }
 
     /**
-     * 销毁资源
+     * 释放资源
      */
-    protected abstract void destroy();
+    protected abstract void release();
 }

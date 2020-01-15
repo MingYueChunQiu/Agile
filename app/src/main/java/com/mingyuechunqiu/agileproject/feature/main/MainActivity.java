@@ -55,8 +55,8 @@ import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUN
  *     version: 1.0
  * </pre>
  */
-public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View<MainContract.Presenter>, MainContract.Presenter>
-        implements MainContract.View<MainContract.Presenter>, View.OnClickListener, BaseFragment.Callback {
+public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View<MainContract.Presenter<?, ?>>, MainContract.Presenter<?, ?>>
+        implements MainContract.View<MainContract.Presenter<?, ?>>, View.OnClickListener, BaseFragment.Callback {
 
     private Fragment mSelectedFg;
 
@@ -73,7 +73,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void setPresenter(@NonNull MainContract.Presenter presenter) {
+    public void setPresenter(@NonNull MainContract.Presenter<?, ?> presenter) {
         mPresenter = presenter;
     }
 
@@ -85,11 +85,6 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     @Override
     public Context getCurrentContext() {
         return this;
-    }
-
-    @Override
-    public MainContract.Presenter initPresenter() {
-        return new MainPresenter();
     }
 
     @Override
@@ -328,5 +323,11 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     @Override
     public void dismissStatusView() {
         super.dismissStatusView();
+    }
+
+    @Nullable
+    @Override
+    public MainContract.Presenter<?, ?> initPresenter() {
+        return new MainPresenter();
     }
 }

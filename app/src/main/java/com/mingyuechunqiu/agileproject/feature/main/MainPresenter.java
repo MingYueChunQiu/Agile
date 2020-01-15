@@ -1,6 +1,9 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
-import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 
 /**
  * <pre>
@@ -12,12 +15,7 @@ import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
  *     version: 1.0
  * </pre>
  */
-class MainPresenter extends MainContract.Presenter<MainContract.View, MainContract.Model> {
-
-    @Override
-    protected void requestModel(BaseParamsInfo info) {
-
-    }
+class MainPresenter extends MainContract.Presenter<MainContract.View<?>, MainContract.Model<?>> {
 
     @Override
     protected void disconnectNet() {
@@ -25,18 +23,28 @@ class MainPresenter extends MainContract.Presenter<MainContract.View, MainContra
     }
 
     @Override
-    public MainContract.Model initModel() {
-        return null;
-    }
-
-    @Override
-    public void release() {
+    protected void release() {
 
     }
 
+    @Nullable
     @Override
-    protected void onResume() {
-        super.onResume();
-        showToast("附件为蜂窝");
+    public MainContract.Model<?> initModel() {
+        return new MainModel(new Igeg() {
+            @Override
+            public void onewe() {
+
+            }
+
+            @Override
+            public void onFailure(@NonNull ErrorInfo info) {
+
+            }
+        });
+    }
+
+    public interface Igeg extends MainContract.Listener {
+
+        void onewe();
     }
 }

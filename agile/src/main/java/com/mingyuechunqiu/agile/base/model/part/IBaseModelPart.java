@@ -13,7 +13,7 @@ package com.mingyuechunqiu.agile.base.model.part;
 public interface IBaseModelPart {
 
     /**
-     * 销毁资源
+     * 释放资源
      */
-    void release();
+    void releaseOnDetach();
 }
