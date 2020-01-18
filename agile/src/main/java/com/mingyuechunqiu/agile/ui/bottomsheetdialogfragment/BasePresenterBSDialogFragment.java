@@ -22,6 +22,7 @@ import com.mingyuechunqiu.agile.base.view.IViewAttachPresenter;
 public abstract class BasePresenterBSDialogFragment<V extends IBaseStatusView<P>, P extends BaseAbstractStatusViewPresenter> extends BaseBSDialogFragment
         implements IViewAttachPresenter<P> {
 
+    @Nullable
     protected P mPresenter;
 
     @Override

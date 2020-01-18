@@ -2,7 +2,6 @@ package com.mingyuechunqiu.agile.ui.activity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -43,8 +42,8 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_T
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    protected Map<Fragment, List<OnKeyEventListener>> mKeyEventListenerMap;
-
+    @Nullable
+    private Map<Fragment, List<OnKeyEventListener>> mKeyEventListenerMap;
     private IStatusViewManager mStatusViewManager;
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
 

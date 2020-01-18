@@ -1,12 +1,13 @@
-package com.mingyuechunqiu.agile.data.remote.socket.manager.udp;
+package com.mingyuechunqiu.agile.data.remote.socket.function.udp;
 
 import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketIpInfo;
 import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketSendData;
 import com.mingyuechunqiu.agile.data.remote.socket.exception.SocketHandlerException;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.framework.data.SocketDataCallback;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.framework.handler.SocketUDPHandlerCallback;
+import com.mingyuechunqiu.agile.data.remote.socket.function.SocketManagerProvider;
+import com.mingyuechunqiu.agile.data.remote.socket.function.framework.data.SocketDataCallback;
+import com.mingyuechunqiu.agile.data.remote.socket.function.framework.handler.SocketUDPHandlerCallback;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -65,24 +66,30 @@ public class SocketUDPHandler implements ISocketUDPHandler {
         if (!initUDPSocket(data.getSocketIpInfo())) {
             return;
         }
-        final SocketIpInfo info = data.getSocketIpInfo();
+        mSendData = data;
+        SocketIpInfo info = data.getSocketIpInfo();
         if (info == null) {
+            info = SocketManagerProvider.getGlobalSocketConfigure().getSocketIpInfo();
+            mSendData.setSocketIpInfo(info);
+        }
+        if (info == null) {
+            mSendData = null;
             callback.onGetDataFailed(new SocketHandlerException(TYPE_IP_ERROR, "IP地址异常"));
             return;
         }
-        mSendData = data;
         mDataCallback = callback;
         if (mCallback != null) {
+            final SocketIpInfo finalInfo = info;
             mCallback.executeTask(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        InetAddress address = InetAddress.getByName(info.getIp());
-                        String heartBeat = mCallback.getSocketConfigure().getHeartBeat().getData();
+                        InetAddress address = InetAddress.getByName(finalInfo.getIp());
+                        String heartBeat = SocketManagerProvider.getGlobalSocketConfigure().getHeartBeat().getData();
                         mSocket.send(new DatagramPacket(heartBeat.getBytes(),
                                 heartBeat.length(),
                                 address,
-                                info.getPort()));
+                                finalInfo.getPort()));
                     } catch (IOException e) {
                         e.printStackTrace();
                         retrySendHeartBeat();

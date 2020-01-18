@@ -3,7 +3,7 @@ package com.mingyuechunqiu.agile.data.remote.ftp.framework;
 import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.data.remote.ftp.exception.FTPConnectException;
-import com.mingyuechunqiu.agile.data.remote.ftp.manager.IFTPHandler;
+import com.mingyuechunqiu.agile.data.remote.ftp.function.IFTPHandler;
 
 /**
  * <pre>

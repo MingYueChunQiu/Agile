@@ -1,12 +1,11 @@
-package com.mingyuechunqiu.agile.data.remote.socket.manager.framework.handler;
+package com.mingyuechunqiu.agile.data.remote.socket.function.framework.handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketIpInfo;
 import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketReceiveData;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.SocketConfigure;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.framework.data.SocketDataCallback;
+import com.mingyuechunqiu.agile.data.remote.socket.function.framework.data.SocketDataCallback;
 
 /**
  * <pre>
@@ -46,14 +45,6 @@ public interface SocketHandlerCallback {
      * @param msg       错误信息
      */
     void handleFailureResult(@NonNull SocketDataCallback callback, int errorType, @Nullable String msg);
-
-    /**
-     * 获取Socket配置对象
-     *
-     * @return 返回配置对象
-     */
-    @NonNull
-    SocketConfigure getSocketConfigure();
 
     /**
      * 释放当前IP的Socket

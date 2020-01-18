@@ -51,7 +51,7 @@ public abstract class BaseFragment extends Fragment {
         if (id != 0) {
             return inflater.inflate(id, container, false);
         }
-        return null;
+        return getInflateLayoutView();
     }
 
     @Override
@@ -550,6 +550,16 @@ public abstract class BaseFragment extends Fragment {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 获取填充布局View（当getInflateLayoutId返回为0时，会被调用）
+     *
+     * @return 返回View容器
+     */
+    @Nullable
+    protected View getInflateLayoutView() {
+        return null;
     }
 
     /**

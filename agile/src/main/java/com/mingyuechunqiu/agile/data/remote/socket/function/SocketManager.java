@@ -1,9 +1,9 @@
-package com.mingyuechunqiu.agile.data.remote.socket.manager;
+package com.mingyuechunqiu.agile.data.remote.socket.function;
 
 import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketSendData;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.framework.data.SocketDataCallback;
+import com.mingyuechunqiu.agile.data.remote.socket.function.framework.data.SocketDataCallback;
 
 /**
  * <pre>

@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.data.remote.socket.manager.framework.data;
+package com.mingyuechunqiu.agile.data.remote.socket.function.framework.data;
 
 import androidx.annotation.NonNull;
 

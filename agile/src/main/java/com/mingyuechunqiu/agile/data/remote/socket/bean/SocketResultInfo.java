@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.data.remote.socket.bean;
 
-import com.mingyuechunqiu.agile.data.remote.socket.manager.framework.data.SocketDataCallback;
+import com.mingyuechunqiu.agile.data.remote.socket.function.framework.data.SocketDataCallback;
 
 /**
  * <pre>

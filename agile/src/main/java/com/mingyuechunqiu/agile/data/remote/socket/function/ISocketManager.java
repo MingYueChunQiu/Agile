@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.data.remote.socket.manager;
+package com.mingyuechunqiu.agile.data.remote.socket.function;
 
 /**
  * <pre>

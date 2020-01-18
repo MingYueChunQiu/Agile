@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.ui.fragment;
+package com.mingyuechunqiu.agile.ui.activity;
 
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
@@ -9,10 +9,10 @@ import com.mingyuechunqiu.agile.base.view.IBaseDataView;
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/4/9
- *     desc   : 所有MVP层具有网络功能的Fragment的基类
- *              继承自BasePresenterFragment
+ *     desc   : 所有MVP层具有网络功能的界面的基类
+ *              继承自BasePresenterActivity
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseNetPresenterFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter> extends BasePresenterFragment<V, P> {
+public abstract class BaseDataPresenterActivity<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter> extends BasePresenterActivity<V, P> {
 }

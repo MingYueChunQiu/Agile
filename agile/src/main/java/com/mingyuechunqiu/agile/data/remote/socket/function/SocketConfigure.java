@@ -1,7 +1,9 @@
-package com.mingyuechunqiu.agile.data.remote.socket.manager;
+package com.mingyuechunqiu.agile.data.remote.socket.function;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketIpInfo;
 import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketSendData;
 
 import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_HEART_BEAT;
@@ -63,10 +65,26 @@ public class SocketConfigure {
         mBuilder.longConnection = longConnection;
     }
 
+    @Nullable
+    public SocketIpInfo getSocketIpInfo() {
+        return mBuilder.socketIpInfo;
+    }
+
+    public void setSocketIpInfo(@NonNull SocketIpInfo socketIpInfo) {
+        mBuilder.socketIpInfo = socketIpInfo;
+    }
+
     /**
      * 链式调用
      */
     public static class Builder {
+
+        private SocketSendData heartBeat;//心跳包数据
+        private int retryCount;//重试次数
+        private int silentDuration;//无数据传递时持续时间
+        private boolean longConnection;//标记是否是长来连接
+        @Nullable
+        private SocketIpInfo socketIpInfo;//连接的IP地址信息
 
         public Builder() {
             SocketSendData heartBeat = new SocketSendData();
@@ -80,14 +98,6 @@ public class SocketConfigure {
         public SocketConfigure build() {
             return new SocketConfigure(this);
         }
-
-        private SocketSendData heartBeat;//心跳包数据
-
-        private int retryCount;//重试次数
-
-        private int silentDuration;//无数据传递时持续时间
-
-        private boolean longConnection;//标记是否是长来连接
 
         public SocketSendData getHeartBeat() {
             return heartBeat;
@@ -122,6 +132,16 @@ public class SocketConfigure {
 
         public Builder setLongConnection(boolean longConnection) {
             this.longConnection = longConnection;
+            return this;
+        }
+
+        @Nullable
+        public SocketIpInfo getSocketIpInfo() {
+            return socketIpInfo;
+        }
+
+        public Builder setSocketIpInfo(@NonNull SocketIpInfo socketIpInfo) {
+            this.socketIpInfo = socketIpInfo;
             return this;
         }
     }

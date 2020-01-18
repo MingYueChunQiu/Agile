@@ -29,7 +29,12 @@ import com.mingyuechunqiu.agileproject.R;
 public class ToolbarActivity extends BaseToolbarPresenterActivity {
 
     @Override
-    protected ToolbarUtils.ToolbarConfigure setToolbarConfigure() {
+    protected int getInflateToolbarResId() {
+        return R.id.tb_toolbar_test;
+    }
+
+    @Override
+    protected ToolbarUtils.ToolbarConfigure initToolbarConfigure() {
         return new ToolbarUtils.ToolbarConfigure.Builder()
                 .setImmerse(true)
                 .setNavigationIconResId(R.drawable.agile_arrow_back_press)
@@ -60,7 +65,6 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
     @Override
     protected void initView(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.activity_toolbar_test);
-        tbBar = findViewById(R.id.tb_toolbar_test);
         StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_ERROR);
         option.setContainerElevation(ScreenUtils.getPxFromDp(getResources(), 2F));
         option.setDialogAnimationResId(R.style.PopupAnimation);

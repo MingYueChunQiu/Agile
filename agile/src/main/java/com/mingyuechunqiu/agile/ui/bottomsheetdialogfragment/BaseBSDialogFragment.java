@@ -51,7 +51,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
         if (id != 0) {
             return inflater.inflate(id, container, false);
         }
-        return null;
+        return getInflateLayoutView();
     }
 
     @Override
@@ -320,6 +320,16 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
         if (activity instanceof BaseActivity) {
             ((BaseActivity) activity).addOnKeyEventListener(this, listener);
         }
+    }
+
+    /**
+     * 获取填充布局View（当getInflateLayoutId返回为0时，会被调用）
+     *
+     * @return 返回View容器
+     */
+    @Nullable
+    protected View getInflateLayoutView() {
+        return null;
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.data.remote.socket.manager.tcp;
+package com.mingyuechunqiu.agile.data.remote.socket.function.tcp;
 
 import android.text.TextUtils;
 
@@ -9,8 +9,10 @@ import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketIpInfo;
 import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketReceiveData;
 import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketSendData;
 import com.mingyuechunqiu.agile.data.remote.socket.exception.SocketHandlerException;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.framework.data.SocketDataCallback;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.framework.handler.SocketTCPHandlerCallback;
+import com.mingyuechunqiu.agile.data.remote.socket.function.SocketManagerProvider;
+import com.mingyuechunqiu.agile.data.remote.socket.function.framework.data.SocketDataCallback;
+import com.mingyuechunqiu.agile.data.remote.socket.function.framework.handler.SocketTCPHandlerCallback;
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -71,20 +73,26 @@ public class SocketTCPHandler implements ISocketTCPHandler {
         if (mCallback == null) {
             return;
         }
-        final SocketIpInfo info = data.getSocketIpInfo();
+        mSendData = data;
+        SocketIpInfo info = data.getSocketIpInfo();
         if (info == null) {
+            info = SocketManagerProvider.getGlobalSocketConfigure().getSocketIpInfo();
+            mSendData.setSocketIpInfo(info);
+        }
+        if (info == null) {
+            mSendData = null;
             callback.onGetDataFailed(new SocketHandlerException(TYPE_IP_ERROR, "IP地址异常"));
             return;
         }
-        mSendData = data;
         mDataCallback = callback;
+        final SocketIpInfo finalInfo = info;
         mCallback.executeTask(new Runnable() {
             @Override
             public void run() {
-                if (!initTCPSocket(info)) {
+                if (!initTCPSocket(finalInfo)) {
                     return;
                 }
-                if (mCallback.getSocketConfigure().isLongConnection()) {
+                if (SocketManagerProvider.getGlobalSocketConfigure().isLongConnection()) {
                     releaseHeartBeatDisposable();
                     mHeartBeatDisposable = Observable.interval(5, TimeUnit.SECONDS)
                             .doOnNext(new Consumer<Long>() {
@@ -112,7 +120,7 @@ public class SocketTCPHandler implements ISocketTCPHandler {
             }
             return;
         }
-        sendSocketData(mCallback.getSocketConfigure().getHeartBeat().getData());
+        sendSocketData(SocketManagerProvider.getGlobalSocketConfigure().getHeartBeat().getData());
     }
 
     @Override
@@ -193,6 +201,7 @@ public class SocketTCPHandler implements ISocketTCPHandler {
                     handleSuccessfulResponse(response);
                 }
             } catch (IOException e) {
+                LogManagerProvider.e("SocketTCPHandler:handleResponse", e.getMessage());
                 mState = STATE_ERROR;
                 if (mSendData != null && mCallback != null && mDataCallback != null) {
                     mCallback.handleFailureResult(mDataCallback, TYPE_SOCKET_ERROR, "receiveData异常：" + e.getMessage());
@@ -224,7 +233,7 @@ public class SocketTCPHandler implements ISocketTCPHandler {
             data.setData(response);
             if (mCallback != null) {
                 mCallback.handleDataSuccessResult(mDataCallback, data);
-                if (!mCallback.getSocketConfigure().isLongConnection()) {
+                if (!SocketManagerProvider.getGlobalSocketConfigure().isLongConnection()) {
                     release();
                 }
             }
@@ -240,7 +249,7 @@ public class SocketTCPHandler implements ISocketTCPHandler {
         if (mCallback != null) {
             //当超过无数据传递时持续时间时，断开该IP地址的Socket连接
             if (mSendDataTime > 0 && (System.currentTimeMillis() - mSendDataTime)
-                    >= mCallback.getSocketConfigure().getSilentDuration()) {
+                    >= SocketManagerProvider.getGlobalSocketConfigure().getSilentDuration()) {
                 if (mSendData != null) {
                     mCallback.releaseConnect(mSendData.getSocketIpInfo());
                     return true;
@@ -259,7 +268,7 @@ public class SocketTCPHandler implements ISocketTCPHandler {
             bos.write(data);
             bos.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            LogManagerProvider.e("SocketTCPHandler:sendSocketData", e.getMessage());
             if (mCallback != null && mDataCallback != null) {
                 mCallback.handleFailureResult(mDataCallback, TYPE_SOCKET_ERROR, e.getMessage());
             }
@@ -282,8 +291,8 @@ public class SocketTCPHandler implements ISocketTCPHandler {
                 mSocket.setSoTimeout(SOCKET_TIME_OUT);
                 return true;
             } catch (IOException e) {
+                LogManagerProvider.e("SocketTCPHandler:initTCPSocket", e.getMessage());
                 mState = STATE_ERROR;
-                e.printStackTrace();
                 return false;
             }
         }

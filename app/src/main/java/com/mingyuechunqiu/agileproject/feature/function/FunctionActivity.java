@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
-import com.mingyuechunqiu.agile.ui.activity.BaseNetPresenterActivity;
+import com.mingyuechunqiu.agile.ui.activity.BaseDataPresenterActivity;
 import com.mingyuechunqiu.agile.util.ToastUtils;
 
 /**
@@ -21,7 +21,7 @@ import com.mingyuechunqiu.agile.util.ToastUtils;
  *      Version:    1.0
  * </pre>
  */
-public class FunctionActivity extends BaseNetPresenterActivity<FunctionContract.View<FunctionContract.Presenter<?, ?>>, FunctionContract.Presenter<?, ?>>
+public class FunctionActivity extends BaseDataPresenterActivity<FunctionContract.View<FunctionContract.Presenter<?, ?>>, FunctionContract.Presenter<?, ?>>
         implements FunctionContract.View<FunctionContract.Presenter<?, ?>> {
 
     @Override

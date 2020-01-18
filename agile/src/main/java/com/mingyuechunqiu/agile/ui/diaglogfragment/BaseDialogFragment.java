@@ -48,12 +48,12 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setDialogBackground();
+        initDialogBackground();
         int id = getInflateLayoutId();
         if (id != 0) {
             return inflater.inflate(id, container, false);
         }
-        return null;
+        return getInflateLayoutView();
     }
 
     @Override
@@ -78,9 +78,9 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     }
 
     /**
-     * 设置对话框背景
+     * 初始化对话框背景，去除默认背景
      */
-    protected void setDialogBackground() {
+    protected void initDialogBackground() {
         setDialogWindow(new WindowHandler() {
             @Override
             public void onHandle(@NonNull Window window) {
@@ -323,6 +323,16 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
         if (activity instanceof BaseActivity) {
             ((BaseActivity) activity).addOnKeyEventListener(this, listener);
         }
+    }
+
+    /**
+     * 获取填充布局View（当getInflateLayoutId返回为0时，会被调用）
+     *
+     * @return 返回View容器
+     */
+    @Nullable
+    protected View getInflateLayoutView() {
+        return null;
     }
 
     /**

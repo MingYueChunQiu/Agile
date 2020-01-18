@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -93,7 +94,12 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    protected ToolbarUtils.ToolbarConfigure setToolbarConfigure() {
+    protected int getInflateToolbarResId() {
+        return R.id.tb_navigation_bar;
+    }
+
+    @Override
+    protected ToolbarUtils.ToolbarConfigure initToolbarConfigure() {
         return new ToolbarUtils.ToolbarConfigure.Builder()
                 .setImmerse(true)
                 .setNavigationIconResId(R.drawable.agile_arrow_back_pressed)
@@ -117,19 +123,11 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     @Override
     protected void initView(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.agile_layout_navigation);
-        tbBar = findViewById(R.id.tb_navigation_bar);
-        tbBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                MediaUtils.startPickVideo(MainActivity.this, 2);
-            }
-        });
         AppCompatTextView tvToolbarTitle = findViewById(R.id.tv_navigation_title);
         AppCompatImageView ivBack = findViewById(R.id.iv_navigation_left_icon);
         ivBack.setVisibility(View.VISIBLE);
         tvToolbarTitle.setText(R.string.app_name);
         tvToolbarTitle.setVisibility(View.VISIBLE);
-        setSupportActionBar(tbBar);
         FrameLayout clContainer = findViewById(R.id.fl_navigation_container);
         View view = getLayoutInflater().inflate(R.layout.activity_main, null);
         clContainer.addView(view);
@@ -186,6 +184,20 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         getSupportFragmentManager().beginTransaction()
                 .add(android.R.id.content, mSelectedFg)
                 .commit();
+    }
+
+    @Override
+    protected void onInitInflateToolbar(@Nullable Toolbar toolbar) {
+        super.onInitInflateToolbar(toolbar);
+        if (toolbar == null) {
+            return;
+        }
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // MediaUtils.startPickVideo(MainActivity.this, 2);
+            }
+        });
     }
 
     /**

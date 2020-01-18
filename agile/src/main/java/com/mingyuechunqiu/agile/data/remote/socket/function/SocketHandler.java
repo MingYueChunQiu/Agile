@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.data.remote.socket.manager;
+package com.mingyuechunqiu.agile.data.remote.socket.function;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -13,13 +13,13 @@ import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketReceiveData;
 import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketResultInfo;
 import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketSendData;
 import com.mingyuechunqiu.agile.data.remote.socket.exception.SocketHandlerException;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.framework.data.SocketDataCallback;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.framework.handler.SocketTCPHandlerCallback;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.framework.handler.SocketUDPHandlerCallback;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.tcp.ISocketTCPHandler;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.tcp.SocketTCPHandler;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.udp.ISocketUDPHandler;
-import com.mingyuechunqiu.agile.data.remote.socket.manager.udp.SocketUDPHandler;
+import com.mingyuechunqiu.agile.data.remote.socket.function.framework.data.SocketDataCallback;
+import com.mingyuechunqiu.agile.data.remote.socket.function.framework.handler.SocketTCPHandlerCallback;
+import com.mingyuechunqiu.agile.data.remote.socket.function.framework.handler.SocketUDPHandlerCallback;
+import com.mingyuechunqiu.agile.data.remote.socket.function.tcp.ISocketTCPHandler;
+import com.mingyuechunqiu.agile.data.remote.socket.function.tcp.SocketTCPHandler;
+import com.mingyuechunqiu.agile.data.remote.socket.function.udp.ISocketUDPHandler;
+import com.mingyuechunqiu.agile.data.remote.socket.function.udp.SocketUDPHandler;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,9 +27,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_HEART_BEAT;
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_RETRY_COUNT;
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_SILENT_DURATION;
 import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketErrorType.TYPE_IP_ERROR;
 
 /**
@@ -54,7 +51,6 @@ class SocketHandler implements ISocketHandler, SocketUDPHandlerCallback,
     private ExecutorService mExecutor;
     private InternalHandler mHandler;
     private Map<SocketIpInfo, Pair<ISocketUDPHandler, ISocketTCPHandler>> mCacheMap;
-    private SocketConfigure mConfigure;
 
     SocketHandler() {
         int cpuNumbers = Runtime.getRuntime().availableProcessors();
@@ -65,7 +61,7 @@ class SocketHandler implements ISocketHandler, SocketUDPHandlerCallback,
 
     @Override
     public void sendUdpHeartBeat(@NonNull SocketSendData data, @NonNull SocketDataCallback callback) {
-        if (!getSocketConfigure().isLongConnection()) {
+        if (!SocketManagerProvider.getGlobalSocketConfigure().isLongConnection()) {
             new SocketUDPHandler(this).sendHeartBeat(data, callback);
             return;
         }
@@ -109,7 +105,6 @@ class SocketHandler implements ISocketHandler, SocketUDPHandlerCallback,
             }
             mCacheMap.clear();
         }
-        mConfigure = null;
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
             mHandler = null;
@@ -188,21 +183,6 @@ class SocketHandler implements ISocketHandler, SocketUDPHandlerCallback,
         handleResultCallback(MSG_FAILURE, info);
     }
 
-    @NonNull
-    @Override
-    public SocketConfigure getSocketConfigure() {
-        if (mConfigure == null) {
-            SocketSendData heartBeat = new SocketSendData();
-            heartBeat.setData(SOCKET_HEART_BEAT);
-            mConfigure = new SocketConfigure.Builder()
-                    .setRetryCount(SOCKET_RETRY_COUNT)
-                    .setSilentDuration(SOCKET_SILENT_DURATION)
-                    .setHeartBeat(heartBeat)
-                    .build();
-        }
-        return mConfigure;
-    }
-
     @Override
     public void releaseConnect(@Nullable SocketIpInfo info) {
         if (info == null || mCacheMap == null) {
@@ -232,7 +212,7 @@ class SocketHandler implements ISocketHandler, SocketUDPHandlerCallback,
      * @param callback Socket数据接收回调
      */
     private void sendTcpHeartBeat(@NonNull SocketSendData data, @NonNull SocketDataCallback callback) {
-        if (!getSocketConfigure().isLongConnection()) {
+        if (!SocketManagerProvider.getGlobalSocketConfigure().isLongConnection()) {
             new SocketTCPHandler(this).sendHeartBeat(data, callback);
             return;
         }

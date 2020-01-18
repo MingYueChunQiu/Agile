@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.data.remote.ftp.manager;
+package com.mingyuechunqiu.agile.data.remote.ftp.function;
 
 import androidx.annotation.NonNull;
 
