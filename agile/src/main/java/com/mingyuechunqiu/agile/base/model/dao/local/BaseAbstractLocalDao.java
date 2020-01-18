@@ -3,7 +3,7 @@ package com.mingyuechunqiu.agile.base.model.dao.local;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.local.DaoLocalCallback;
 import com.mingyuechunqiu.agile.base.model.dao.operation.local.IBaseLocalDaoOperation;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractLocalDao<C extends DaoCallback<?>> implements IBaseLocalDao<C> {
+public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback<?>> implements IBaseLocalDao<C> {
 
     @Nullable
     protected C mDaoCallback;

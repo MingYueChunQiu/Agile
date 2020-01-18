@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.base.model.dao.framework.callback;
+package com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote;
 
 import androidx.annotation.Nullable;
 

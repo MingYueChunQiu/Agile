@@ -2,7 +2,7 @@ package com.mingyuechunqiu.agile.base.model.dao.remote;
 
 import androidx.annotation.NonNull;
 
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoNetworkCallback;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoNetworkCallback;
 
 /**
  * <pre>

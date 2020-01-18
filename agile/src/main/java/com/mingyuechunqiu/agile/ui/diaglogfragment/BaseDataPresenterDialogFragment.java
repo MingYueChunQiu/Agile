@@ -10,9 +10,9 @@ import com.mingyuechunqiu.agile.base.view.IBaseDataView;
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/4/9
  *     desc   : 所有MVP层具有网络功能的DialogFragment的基类
- *              继承自BasePresenterDialogFragment
+ *              继承自BaseStatusViewPresenterDialogFragment
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseDataPresenterDialogFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter> extends BasePresenterDialogFragment<V, P> {
+public abstract class BaseDataPresenterDialogFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter> extends BaseStatusViewPresenterDialogFragment<V, P> {
 }

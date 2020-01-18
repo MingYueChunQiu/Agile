@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.base.model.dao.remote;
 
 import com.mingyuechunqiu.agile.base.model.dao.IBaseDao;
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRemoteCallback;
 
 /**
  * <pre>
@@ -14,5 +14,5 @@ import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseRemoteDao<C extends DaoCallback<?>> extends IBaseDao<C> {
+public interface IBaseRemoteDao<C extends DaoRemoteCallback<?>> extends IBaseDao<C> {
 }

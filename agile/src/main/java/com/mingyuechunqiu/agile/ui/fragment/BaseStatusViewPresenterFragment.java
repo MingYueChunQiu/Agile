@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.ui.activity;
+package com.mingyuechunqiu.agile.ui.fragment;
 
 import android.os.Bundle;
 
@@ -12,30 +12,31 @@ import com.mingyuechunqiu.agile.base.view.IViewAttachPresenter;
 /**
  * <pre>
  *     author : xyj
- *     e-mail : xiyujieit@163.com
- *     time   : 2018/05/12
- *     desc   : 所有MVP层界面的基类
- *              继承自BaseFullScreenActivity
+ *     e-mail : yujie.xi@ehailuo.com
+ *     time   : 2018/05/16
+ *     desc   : 所有MVP层Fragment的基类
+ *              继承自BaseFragment
  *     version: 1.0
  * </pre>
  */
-public abstract class BasePresenterActivity<V extends IBaseStatusView<P>, P extends BaseAbstractStatusViewPresenter> extends BaseFullImmerseScreenActivity
+public abstract class BaseStatusViewPresenterFragment<V extends IBaseStatusView<P>, P extends BaseAbstractStatusViewPresenter> extends BaseFragment
         implements IViewAttachPresenter<P> {
 
     @Nullable
     protected P mPresenter;
 
     @Override
-    protected void initOnCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         attachPresenter();
-        super.initOnCreate(savedInstanceState);
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         if (mPresenter != null) {
             getLifecycle().removeObserver(mPresenter);
+            //不能放在onDestroyView中执行，因为像输入框失去焦点这种事件会在onDestroyView之后才被调用
             mPresenter = null;
         }
     }

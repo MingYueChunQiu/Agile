@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.base.model.dao.framework.callback;
+package com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +19,7 @@ import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
  *      Version:    1.0
  * </pre>
  */
-public interface DaoNetworkCallback<I extends IBaseListener> extends DaoCallback<I> {
+public interface DaoNetworkCallback<I extends IBaseListener> extends DaoRemoteCallback<I> {
 
     /**
      * 根据网络响应返回码，进行不同处理

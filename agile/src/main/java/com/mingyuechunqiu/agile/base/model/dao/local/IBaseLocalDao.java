@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.base.model.dao.local;
 
 import com.mingyuechunqiu.agile.base.model.dao.IBaseDao;
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.local.DaoLocalCallback;
 
 /**
  * <pre>
@@ -14,5 +14,5 @@ import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseLocalDao<C extends DaoCallback<?>> extends IBaseDao<C> {
+public interface IBaseLocalDao<C extends DaoLocalCallback<?>> extends IBaseDao<C> {
 }

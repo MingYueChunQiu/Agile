@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
-import com.mingyuechunqiu.agile.ui.fragment.BasePresenterFragment;
+import com.mingyuechunqiu.agile.ui.fragment.BaseStatusViewPresenterFragment;
 import com.mingyuechunqiu.agile.util.ToastUtils;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -23,7 +23,7 @@ import com.mingyuechunqiu.agileproject.R;
  *     version: 1.0
  * </pre>
  */
-public class TestFragment extends BasePresenterFragment<MainContract.View<MainContract.Presenter<?, ?>>, MainContract.Presenter<?, ?>>
+public class TestFragment extends BaseStatusViewPresenterFragment<MainContract.View<MainContract.Presenter<?, ?>>, MainContract.Presenter<?, ?>>
         implements MainContract.View<MainContract.Presenter<?, ?>> {
 
     @Override

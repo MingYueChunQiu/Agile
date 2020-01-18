@@ -3,7 +3,7 @@ package com.mingyuechunqiu.agile.base.model.dao.remote;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRemoteCallback;
 import com.mingyuechunqiu.agile.base.model.dao.operation.remote.IBaseRemoteDaoOperation;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractRemoteDao<C extends DaoCallback<?>> implements IBaseRemoteDao<C> {
+public abstract class BaseAbstractRemoteDao<C extends DaoRemoteCallback<?>> implements IBaseRemoteDao<C> {
 
     @Nullable
     protected C mDaoCallback;

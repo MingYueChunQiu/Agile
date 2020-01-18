@@ -8,7 +8,7 @@ import androidx.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoRetrofitCallback;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRetrofitCallback;
 import com.mingyuechunqiu.agile.base.model.dao.framework.result.DaoResultHandler;
 import com.mingyuechunqiu.agile.base.model.framework.local.IModelLocalData;
 import com.mingyuechunqiu.agile.base.model.framework.remote.IModelNetworkData;

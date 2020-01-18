@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/6/26
- *     desc   : 网络调用操作抽象基类
+ *     desc   : 所有远程调用操作抽象父基类
  *              实现IBaseRemoteDaoOperation
  *     version: 1.0
  * </pre>

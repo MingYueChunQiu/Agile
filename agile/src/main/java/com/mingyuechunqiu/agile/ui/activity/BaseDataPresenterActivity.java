@@ -9,10 +9,10 @@ import com.mingyuechunqiu.agile.base.view.IBaseDataView;
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/4/9
- *     desc   : 所有MVP层具有网络功能的界面的基类
- *              继承自BasePresenterActivity
+ *     desc   : 所有MVP层具有数据处理功能的界面的基类
+ *              继承自BaseStatusViewPresenterActivity
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseDataPresenterActivity<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter> extends BasePresenterActivity<V, P> {
+public abstract class BaseDataPresenterActivity<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter> extends BaseStatusViewPresenterActivity<V, P> {
 }

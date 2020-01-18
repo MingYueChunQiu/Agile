@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
-import com.mingyuechunqiu.agile.ui.diaglogfragment.BasePresenterDialogFragment;
+import com.mingyuechunqiu.agile.ui.diaglogfragment.BaseStatusViewPresenterDialogFragment;
 import com.mingyuechunqiu.agile.util.ToastUtils;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -22,7 +22,7 @@ import com.mingyuechunqiu.agileproject.R;
  *     version: 1.0
  * </pre>
  */
-public class TestDialogFragment extends BasePresenterDialogFragment<MainContract.View<MainContract.Presenter<?, ?>>, MainContract.Presenter<?, ?>>
+public class TestDialogFragment extends BaseStatusViewPresenterDialogFragment<MainContract.View<MainContract.Presenter<?, ?>>, MainContract.Presenter<?, ?>>
         implements MainContract.View<MainContract.Presenter<?, ?>> {
 
     @Override
