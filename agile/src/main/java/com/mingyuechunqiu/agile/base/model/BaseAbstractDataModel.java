@@ -1,46 +1,89 @@
 package com.mingyuechunqiu.agile.base.model;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
+import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoRetrofitCallback;
+import com.mingyuechunqiu.agile.base.model.dao.framework.result.DaoResultHandler;
+import com.mingyuechunqiu.agile.base.model.framework.local.IModelLocalData;
+import com.mingyuechunqiu.agile.base.model.framework.remote.IModelNetworkData;
 import com.mingyuechunqiu.agile.constants.URLConstants;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.util.ToastUtils;
 
-import java.lang.ref.WeakReference;
 import java.util.Map;
+
+import retrofit2.Response;
 
 /**
  * <pre>
  *     author : xyj
  *     e-mail : xiyujieit@163.com
- *     time   : 2018/05/22
- *     desc   : 所有需要使用token的网络业务模型类的基类
- *              继承自BaseNetModel
+ *     time   : 2018/05/17
+ *     desc   : 所有网络Model层的抽象基类
+ *              继承自BaseAbstractModel
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseTokenNetModel<I extends IBaseListener> extends BaseNetModel<I> {
+public abstract class BaseAbstractDataModel<I extends IBaseListener> extends BaseAbstractModel<I> implements DaoRetrofitCallback<I>,
+        IModelNetworkData, IModelLocalData {
 
-    @Nullable
-    protected WeakReference<Context> mContextRef;
-
-    public BaseTokenNetModel(@NonNull I listener) {
+    public BaseAbstractDataModel(@NonNull I listener) {
         super(listener);
     }
 
     @Override
     public void releaseOnDetach() {
+        releaseNetworkResources();
         super.releaseOnDetach();
-        if (mContextRef != null) {
-            mContextRef.clear();
-            mContextRef = null;
+    }
+
+    /**
+     * 检测Retrofit的网络响应是否为空
+     *
+     * @param response 网络响应
+     * @return 如果网络响应为空返回true，否则返回false
+     */
+    @Override
+    public boolean checkRetrofitResponseIsNull(@Nullable Response response) {
+        if (response == null || response.body() == null) {
+            onNetworkResponseFailed(new IllegalStateException("服务器响应异常，请重试！"),
+                    R.string.agile_error_service_response);
+            return true;
         }
+        return false;
+    }
+
+    /**
+     * 处理Retrofit网络响应失败事件
+     *
+     * @param t             抛出的异常
+     * @param errorMsgResId 错误提示字符串资源ID
+     */
+    @Override
+    public void onNetworkResponseFailed(@Nullable Throwable t, @StringRes int errorMsgResId) {
+        onNetworkResponseFailed(t, new ErrorInfo(errorMsgResId));
+    }
+
+    @Override
+    public void onNetworkResponseFailed(@Nullable Throwable t, @NonNull ErrorInfo info) {
+        if (t != null) {
+            LogManagerProvider.d(TAG_FAILURE, t.getMessage());
+        }
+        if (mListener != null) {
+            mListener.onFailure(info);
+        }
+    }
+
+    @Override
+    public void onExecuteDaoResult(@NonNull DaoResultHandler<I> handler) {
+        handler.handleDaoResult(mListener);
     }
 
     /**
@@ -60,21 +103,16 @@ public abstract class BaseTokenNetModel<I extends IBaseListener> extends BaseNet
         } else if (code == getTokenInvalidCode()) {
             handleOnTokenInvalid(errorMsg);
         } else {
-            handleOnResponseError(code, errorMsg);
+            handleOnNetworkResponseError(code, errorMsg);
         }
         return false;
     }
 
     /**
-     * 设置上下文
-     *
-     * @param context 上下文
+     * 释放网络相关资源
      */
-    public void setContextRef(@Nullable Context context) {
-        if (context == null) {
-            return;
-        }
-        mContextRef = new WeakReference<>(context);
+    @Override
+    public void releaseNetworkResources() {
     }
 
     /**
@@ -125,23 +163,22 @@ public abstract class BaseTokenNetModel<I extends IBaseListener> extends BaseNet
      * @param code     错误码
      * @param errorMsg 错误信息
      */
-    protected void handleOnResponseError(int code, @Nullable String errorMsg) {
-        LogManagerProvider.d(TAG, errorMsg);
-        callOnResponseError(code, errorMsg);
-        if (mListener != null) {
-            mListener.onFailure(new ErrorInfo(TextUtils.isEmpty(errorMsg) ? "信息异常" : errorMsg));
-        }
+    protected void handleOnNetworkResponseError(int code, @Nullable String errorMsg) {
+        callOnNetworkResponseError(code, errorMsg);
+        onNetworkResponseFailed(new IllegalArgumentException("网络响应错误"), new ErrorInfo(TextUtils.isEmpty(errorMsg) ? "信息异常" : errorMsg));
     }
 
     /**
      * 当token过期时进行回调
      */
-    protected abstract void callOnTokenOverdue();
+    protected void callOnTokenOverdue() {
+    }
 
     /**
      * 当token无效时回调
      */
-    protected abstract void callOnTokenInvalid();
+    protected void callOnTokenInvalid() {
+    }
 
     /**
      * 当网络响应发生未知异常时回调
@@ -149,7 +186,8 @@ public abstract class BaseTokenNetModel<I extends IBaseListener> extends BaseNet
      * @param code     错误码
      * @param errorMsg 错误信息
      */
-    protected abstract void callOnResponseError(int code, @Nullable String errorMsg);
+    protected void callOnNetworkResponseError(int code, @Nullable String errorMsg) {
+    }
 
     /**
      * 当token失效重新获取后，由子类重写调用进行再次网络请求
@@ -157,5 +195,4 @@ public abstract class BaseTokenNetModel<I extends IBaseListener> extends BaseNet
      * @param paramMap 网络请求参数集合
      */
     protected abstract void redoRequest(@NonNull Map<String, String> paramMap);
-
 }

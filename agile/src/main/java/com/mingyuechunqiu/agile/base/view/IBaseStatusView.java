@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.view;
 
-import com.mingyuechunqiu.agile.base.presenter.BaseStatusViewPresenter;
+import com.mingyuechunqiu.agile.base.presenter.BaseAbstractStatusViewPresenter;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 
 /**
@@ -13,7 +13,7 @@ import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseStatusView<P extends BaseStatusViewPresenter> extends IBaseView<P> {
+public interface IBaseStatusView<P extends BaseAbstractStatusViewPresenter> extends IBaseView<P> {
 
     /**
      * 获取状态视图管理器实例

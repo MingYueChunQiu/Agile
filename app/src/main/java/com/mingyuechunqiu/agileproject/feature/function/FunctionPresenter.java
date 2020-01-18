@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 public class FunctionPresenter extends FunctionContract.Presenter<FunctionContract.View<?>, FunctionContract.Model<FunctionContract.Listener>> {
 
     @Override
-    protected void disconnectNet() {
+    protected void disconnectNetwork() {
     }
 
     @Override

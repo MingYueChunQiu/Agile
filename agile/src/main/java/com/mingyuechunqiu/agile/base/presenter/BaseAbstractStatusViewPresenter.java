@@ -26,7 +26,7 @@ import com.mingyuechunqiu.agile.util.ToastUtils;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseStatusViewPresenter<V extends IBaseStatusView<?>, M extends BaseAbstractModel<?>> extends BaseAbstractPresenter<V, M> {
+public abstract class BaseAbstractStatusViewPresenter<V extends IBaseStatusView<?>, M extends BaseAbstractModel<?>> extends BaseAbstractPresenter<V, M> {
 
     /**
      * 显示加载对话框

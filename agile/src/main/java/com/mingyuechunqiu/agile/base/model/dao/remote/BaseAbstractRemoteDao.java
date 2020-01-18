@@ -25,7 +25,7 @@ public abstract class BaseAbstractRemoteDao<C extends DaoCallback<?>> implements
 
     @Nullable
     protected C mDaoCallback;
-
+    @Nullable
     private List<IBaseRemoteDaoOperation> mRemoteDaoOperationList;
 
     public BaseAbstractRemoteDao() {

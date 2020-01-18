@@ -28,7 +28,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.mingyuechunqiu.agile.R;
-import com.mingyuechunqiu.agile.base.presenter.BaseNetPresenter;
+import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.receiver.NetworkConnectedTypeReceiver;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
 import com.mingyuechunqiu.agile.util.ToolbarUtils;
@@ -215,7 +215,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
     }
 
     @Override
-    public BaseNetPresenter initPresenter() {
+    public BaseAbstractDataPresenter initPresenter() {
         return null;
     }
 

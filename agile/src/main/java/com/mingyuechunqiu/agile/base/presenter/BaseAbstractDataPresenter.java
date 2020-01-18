@@ -5,8 +5,8 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.R;
-import com.mingyuechunqiu.agile.base.model.BaseNetModel;
-import com.mingyuechunqiu.agile.base.view.IBaseNetView;
+import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
+import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
@@ -20,12 +20,12 @@ import static com.mingyuechunqiu.agile.constants.UserConstants.TOKEN;
  *     author : xyj
  *     e-mail : xiyujieit@163.com
  *     time   : 2018/11/15
- *     desc   : 所有带网络功能的P层的基类
- *              继承自BaseDialogPresenter
+ *     desc   : 所有带数据处理功能的P层的基类
+ *              继承自BaseAbstractStatusViewPresenter
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseNetPresenter<V extends IBaseNetView<?>, M extends BaseNetModel<?>> extends BaseStatusViewPresenter<V, M> {
+public abstract class BaseAbstractDataPresenter<V extends IBaseDataView<?>, M extends BaseAbstractDataModel<?>> extends BaseAbstractStatusViewPresenter<V, M> {
 
     /**
      * 带参数的网络请求
@@ -42,19 +42,26 @@ public abstract class BaseNetPresenter<V extends IBaseNetView<?>, M extends Base
             requestModel(info);
         } else {
             if (!checkViewRefIsNull()) {
-                disconnectNet();
+                disconnectNetwork();
             }
+        }
+    }
+
+    @Override
+    protected void requestModel(@NonNull BaseParamsInfo info) {
+        if (mModel != null) {
+            mModel.requestWithParamsInfo(info);
         }
     }
 
     /**
      * 释放网络相关资源
      */
-    public void releaseNetResources() {
+    public void releaseNetworkResources() {
         if (mModel == null) {
             return;
         }
-        mModel.releaseNetResources();
+        mModel.releaseNetworkResources();
     }
 
     /**
@@ -86,15 +93,8 @@ public abstract class BaseNetPresenter<V extends IBaseNetView<?>, M extends Base
         }
     }
 
-    @Override
-    protected void requestModel(@NonNull BaseParamsInfo info) {
-        if (mModel != null) {
-            mModel.requestWithParamsInfo(info);
-        }
-    }
-
     /**
      * 当网络连接断开时回调
      */
-    protected abstract void disconnectNet();
+    protected abstract void disconnectNetwork();
 }

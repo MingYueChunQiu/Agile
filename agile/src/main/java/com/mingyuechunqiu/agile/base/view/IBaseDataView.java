@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.view;
 
-import com.mingyuechunqiu.agile.base.presenter.BaseNetPresenter;
+import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 
 /**
  * <pre>
@@ -12,5 +12,5 @@ import com.mingyuechunqiu.agile.base.presenter.BaseNetPresenter;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseNetView<P extends BaseNetPresenter> extends IBaseStatusView<P> {
+public interface IBaseDataView<P extends BaseAbstractDataPresenter> extends IBaseStatusView<P> {
 }

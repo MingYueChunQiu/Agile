@@ -25,7 +25,7 @@ public abstract class BaseAbstractLocalDao<C extends DaoCallback<?>> implements 
 
     @Nullable
     protected C mDaoCallback;
-
+    @Nullable
     private List<IBaseLocalDaoOperation> mLocalDaoOperationList;
 
     public BaseAbstractLocalDao() {

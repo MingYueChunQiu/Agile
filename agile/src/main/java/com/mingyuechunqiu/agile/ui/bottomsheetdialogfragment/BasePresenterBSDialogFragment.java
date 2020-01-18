@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.presenter.BaseStatusViewPresenter;
+import com.mingyuechunqiu.agile.base.presenter.BaseAbstractStatusViewPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseStatusView;
 import com.mingyuechunqiu.agile.base.view.IViewAttachPresenter;
 
@@ -19,7 +19,7 @@ import com.mingyuechunqiu.agile.base.view.IViewAttachPresenter;
  *     version: 1.0
  * </pre>
  */
-public abstract class BasePresenterBSDialogFragment<V extends IBaseStatusView<P>, P extends BaseStatusViewPresenter> extends BaseBSDialogFragment
+public abstract class BasePresenterBSDialogFragment<V extends IBaseStatusView<P>, P extends BaseAbstractStatusViewPresenter> extends BaseBSDialogFragment
         implements IViewAttachPresenter<P> {
 
     protected P mPresenter;

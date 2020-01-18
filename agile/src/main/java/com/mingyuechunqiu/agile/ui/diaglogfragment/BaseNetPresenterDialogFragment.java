@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.ui.diaglogfragment;
 
-import com.mingyuechunqiu.agile.base.presenter.BaseNetPresenter;
-import com.mingyuechunqiu.agile.base.view.IBaseNetView;
+import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
+import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 
 /**
  * <pre>
@@ -14,5 +14,5 @@ import com.mingyuechunqiu.agile.base.view.IBaseNetView;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseNetPresenterDialogFragment<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BasePresenterDialogFragment<V, P> {
+public abstract class BaseNetPresenterDialogFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter> extends BasePresenterDialogFragment<V, P> {
 }

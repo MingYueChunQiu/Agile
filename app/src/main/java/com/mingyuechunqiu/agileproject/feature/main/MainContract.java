@@ -1,9 +1,9 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
-import com.mingyuechunqiu.agile.base.presenter.BaseNetPresenter;
-import com.mingyuechunqiu.agile.base.view.IBaseNetView;
-import com.mingyuechunqiu.agileproject.base.model.BaseTokenNetModelImpl;
+import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
+import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
+import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 
 /**
  * <pre>
@@ -16,19 +16,19 @@ import com.mingyuechunqiu.agileproject.base.model.BaseTokenNetModelImpl;
  */
 interface MainContract {
 
-    interface View<P extends Presenter<?,?>> extends IBaseNetView<P> {
+    interface View<P extends Presenter<?, ?>> extends IBaseDataView<P> {
     }
 
     interface Listener extends IBaseListener {
     }
 
-    abstract class Model<I extends Listener> extends BaseTokenNetModelImpl<I> {
+    abstract class Model<I extends Listener> extends BaseAbstractDataModel<I> {
         public Model(I listener) {
             super(listener);
         }
     }
 
-    abstract class Presenter<V extends View<?>, M extends Model<?>> extends BaseNetPresenter<V, M> {
+    abstract class Presenter<V extends View<?>, M extends Model<?>> extends BaseAbstractDataPresenter<V, M> {
     }
 
 }

@@ -1,9 +1,9 @@
 package com.mingyuechunqiu.agileproject.feature.function;
 
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
-import com.mingyuechunqiu.agile.base.presenter.BaseNetPresenter;
-import com.mingyuechunqiu.agile.base.view.IBaseNetView;
-import com.mingyuechunqiu.agileproject.base.model.BaseTokenNetModelImpl;
+import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
+import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
+import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 
 /**
  * <pre>
@@ -18,7 +18,7 @@ import com.mingyuechunqiu.agileproject.base.model.BaseTokenNetModelImpl;
  */
 interface FunctionContract {
 
-    interface View<P extends Presenter<?, ?>> extends IBaseNetView<P> {
+    interface View<P extends Presenter<?, ?>> extends IBaseDataView<P> {
 
         void doSomeTest();
     }
@@ -28,14 +28,14 @@ interface FunctionContract {
         void onGetTest();
     }
 
-    abstract class Model<I extends Listener> extends BaseTokenNetModelImpl<I> {
+    abstract class Model<I extends Listener> extends BaseAbstractDataModel<I> {
 
         Model(I listener) {
             super(listener);
         }
     }
 
-    abstract class Presenter<V extends View<?>, M extends Model<?>> extends BaseNetPresenter<V, M> {
+    abstract class Presenter<V extends View<?>, M extends Model<?>> extends BaseAbstractDataPresenter<V, M> {
 
     }
 }

@@ -21,6 +21,7 @@ import java.util.List;
  */
 public abstract class BaseAbstractModelPart implements IBaseModelPart {
 
+    @Nullable
     private List<IBaseDao> mDaoList;
 
     @Override

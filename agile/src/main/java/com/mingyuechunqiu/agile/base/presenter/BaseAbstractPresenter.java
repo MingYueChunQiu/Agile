@@ -7,7 +7,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
-import com.mingyuechunqiu.agile.base.model.BaseTokenNetModel;
 import com.mingyuechunqiu.agile.base.model.IBaseModel;
 import com.mingyuechunqiu.agile.base.presenter.engine.IBasePresenterEngine;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
@@ -34,17 +33,13 @@ public abstract class BaseAbstractPresenter<V extends IBaseView<?>, M extends IB
     protected WeakReference<V> mViewRef;
     @Nullable
     protected M mModel;
+    @Nullable
     private List<IBasePresenterEngine> mPresenterEngineList;
 
     @Override
     public void attachView(@NonNull V view) {
         mViewRef = new WeakReference<>(view);
         mModel = initModel();
-        if (!checkViewRefIsNull() && mViewRef.get().getCurrentContext() != null) {
-            if (mModel instanceof BaseTokenNetModel) {
-                ((BaseTokenNetModel) mModel).setContextRef(mViewRef.get().getCurrentContext());
-            }
-        }
         onAttachView(view, mModel);
     }
 

@@ -3,8 +3,8 @@ package com.mingyuechunqiu.agile.base.presenter;
 import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.base.framework.ICountDownListener;
-import com.mingyuechunqiu.agile.base.model.BaseNetModel;
-import com.mingyuechunqiu.agile.base.view.IBaseNetView;
+import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
+import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,11 +15,11 @@ import java.util.TimerTask;
  *     e-mail : xiyujieit@163.com
  *     time   : 2018/05/23
  *     desc   : 所有具有倒计时功能的MVP模型的P层
- *              继承自BaseNetPresenter
+ *              继承自BaseAbstractDataPresenter
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseCountDownPresenter<V extends IBaseNetView<?>, M extends BaseNetModel<?>> extends BaseNetPresenter<V, M> {
+public abstract class BaseAbstractCountDownPresenter<V extends IBaseDataView<?>, M extends BaseAbstractDataModel<?>> extends BaseAbstractDataPresenter<V, M> {
 
     private Timer mTimer;
     private TimerTask mTimerTask;

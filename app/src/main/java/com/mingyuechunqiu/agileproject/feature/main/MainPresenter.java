@@ -18,7 +18,7 @@ import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 class MainPresenter extends MainContract.Presenter<MainContract.View<?>, MainContract.Model<?>> {
 
     @Override
-    protected void disconnectNet() {
+    protected void disconnectNetwork() {
 
     }
 

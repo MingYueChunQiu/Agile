@@ -18,7 +18,7 @@ import retrofit2.Response;
  *      Version:    1.0
  * </pre>
  */
-public interface DaoRetrofitCallback<I extends IBaseListener> extends DaoNetCallback<I> {
+public interface DaoRetrofitCallback<I extends IBaseListener> extends DaoNetworkCallback<I> {
 
     /**
      * 检测Retrofit的网络响应是否为空

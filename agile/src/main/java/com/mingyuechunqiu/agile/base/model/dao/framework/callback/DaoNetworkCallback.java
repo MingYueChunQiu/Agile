@@ -19,7 +19,7 @@ import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
  *      Version:    1.0
  * </pre>
  */
-public interface DaoNetCallback<I extends IBaseListener> extends DaoCallback<I> {
+public interface DaoNetworkCallback<I extends IBaseListener> extends DaoCallback<I> {
 
     /**
      * 根据网络响应返回码，进行不同处理

@@ -6,8 +6,8 @@ import android.view.Menu;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
-import com.mingyuechunqiu.agile.base.presenter.BaseNetPresenter;
-import com.mingyuechunqiu.agile.base.view.IBaseNetView;
+import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
+import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 import com.mingyuechunqiu.agile.util.ToolbarUtils;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
@@ -22,7 +22,7 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseToolbarPresenterActivity<V extends IBaseNetView<P>, P extends BaseNetPresenter> extends BaseNetPresenterActivity<V, P> {
+public abstract class BaseToolbarPresenterActivity<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter> extends BaseNetPresenterActivity<V, P> {
 
     protected Toolbar tbBar;
     private ToolbarUtils.ToolbarConfigure mToolbarConfigure;
