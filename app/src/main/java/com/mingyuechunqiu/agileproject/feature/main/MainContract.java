@@ -2,6 +2,8 @@ package com.mingyuechunqiu.agileproject.feature.main;
 
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
 import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRetrofitCallback;
+import com.mingyuechunqiu.agile.base.model.dao.remote.BaseAbstractRetrofitDao;
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 
@@ -20,6 +22,10 @@ interface MainContract {
     }
 
     interface Listener extends IBaseListener {
+    }
+
+    abstract class Dao<C extends DaoRetrofitCallback<Listener>> extends BaseAbstractRetrofitDao<C>{
+
     }
 
     abstract class Model<I extends Listener> extends BaseAbstractDataModel<I> {

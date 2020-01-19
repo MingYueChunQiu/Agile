@@ -4,8 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
-import com.mingyuechunqiu.agile.base.model.part.IBaseModelPart;
 import com.mingyuechunqiu.agile.base.model.dao.IBaseDao;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
+import com.mingyuechunqiu.agile.base.model.part.IBaseModelPart;
 import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
     @Nullable
     private List<IBaseModelPart> mModelPartList;
     @Nullable
-    private List<IBaseDao> mDaoList;
+    private List<IBaseDao<?>> mDaoList;
 
     public BaseAbstractModel(@NonNull I listener) {
         attachListener(listener);
@@ -88,7 +89,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
             mModelPartList = null;
         }
         if (mDaoList != null) {
-            for (IBaseDao dao : mDaoList) {
+            for (IBaseDao<?> dao : mDaoList) {
                 if (dao != null) {
                     dao.releaseOnDetach();
                 }
@@ -134,7 +135,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param dao dao单元
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addDao(@Nullable IBaseDao dao) {
+    protected <C extends DaoCallback<?>> boolean addDao(@Nullable IBaseDao<C> dao) {
         if (dao == null) {
             return false;
         }
@@ -150,7 +151,7 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
      * @param dao dao单元
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removeDao(@Nullable IBaseDao dao) {
+    protected <C extends DaoCallback<?>> boolean removeDao(@Nullable IBaseDao<C> dao) {
         if (dao == null || mDaoList == null) {
             return false;
         }

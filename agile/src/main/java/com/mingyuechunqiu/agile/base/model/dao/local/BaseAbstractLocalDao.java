@@ -26,7 +26,7 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback<?>> implem
     @Nullable
     protected C mDaoCallback;
     @Nullable
-    private List<IBaseLocalDaoOperation> mLocalDaoOperationList;
+    private List<IBaseLocalDaoOperation<?>> mLocalDaoOperationList;
 
     public BaseAbstractLocalDao() {
     }
@@ -61,7 +61,7 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback<?>> implem
      *
      * @param operation 本地数据操作
      */
-    protected void addLocalOperation(@Nullable IBaseLocalDaoOperation operation) {
+    protected <T> void addLocalOperation(@Nullable IBaseLocalDaoOperation<T> operation) {
         if (operation == null || operation.isInvalid()) {
             return;
         }
@@ -70,7 +70,7 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback<?>> implem
         }
         //移除已经失效了的操作
         if (mLocalDaoOperationList.size() > 0) {
-            Iterator<IBaseLocalDaoOperation> iterator = mLocalDaoOperationList.iterator();
+            Iterator<IBaseLocalDaoOperation<?>> iterator = mLocalDaoOperationList.iterator();
             while (iterator.hasNext()) {
                 IBaseLocalDaoOperation o = iterator.next();
                 if (o != null && o.isInvalid()) {
@@ -88,7 +88,7 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback<?>> implem
      *
      * @param operation 本地数据操作
      */
-    protected void removeLocalOperation(@Nullable IBaseLocalDaoOperation operation) {
+    protected <T> void removeLocalOperation(@Nullable IBaseLocalDaoOperation<T> operation) {
         if (operation == null || mLocalDaoOperationList == null || mLocalDaoOperationList.size() == 0) {
             return;
         }
@@ -102,7 +102,7 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback<?>> implem
         if (mLocalDaoOperationList == null) {
             return;
         }
-        for (IBaseLocalDaoOperation operation : mLocalDaoOperationList) {
+        for (IBaseLocalDaoOperation<?> operation : mLocalDaoOperationList) {
             if (operation != null && !operation.isInvalid()) {
                 operation.clear();
             }

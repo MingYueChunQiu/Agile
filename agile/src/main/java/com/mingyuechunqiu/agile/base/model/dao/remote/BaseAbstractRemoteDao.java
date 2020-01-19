@@ -26,7 +26,7 @@ public abstract class BaseAbstractRemoteDao<C extends DaoRemoteCallback<?>> impl
     @Nullable
     protected C mDaoCallback;
     @Nullable
-    private List<IBaseRemoteDaoOperation> mRemoteDaoOperationList;
+    private List<IBaseRemoteDaoOperation<?>> mRemoteDaoOperationList;
 
     public BaseAbstractRemoteDao() {
     }
@@ -61,7 +61,7 @@ public abstract class BaseAbstractRemoteDao<C extends DaoRemoteCallback<?>> impl
      *
      * @param operation 远程操作
      */
-    protected void addRemoteOperation(@Nullable IBaseRemoteDaoOperation operation) {
+    protected <T> void addRemoteOperation(@Nullable IBaseRemoteDaoOperation<T> operation) {
         if (operation == null || operation.isCanceled()) {
             return;
         }
@@ -70,7 +70,7 @@ public abstract class BaseAbstractRemoteDao<C extends DaoRemoteCallback<?>> impl
         }
         //移除已经失效了的操作
         if (mRemoteDaoOperationList.size() > 0) {
-            Iterator<IBaseRemoteDaoOperation> iterator = mRemoteDaoOperationList.iterator();
+            Iterator<IBaseRemoteDaoOperation<?>> iterator = mRemoteDaoOperationList.iterator();
             while (iterator.hasNext()) {
                 IBaseRemoteDaoOperation o = iterator.next();
                 if (o != null && o.isCanceled()) {
@@ -88,7 +88,7 @@ public abstract class BaseAbstractRemoteDao<C extends DaoRemoteCallback<?>> impl
      *
      * @param operation 远程操作
      */
-    protected void removeRemoteOperation(@Nullable IBaseRemoteDaoOperation operation) {
+    protected <T> void removeRemoteOperation(@Nullable IBaseRemoteDaoOperation<T> operation) {
         if (operation == null || mRemoteDaoOperationList == null || mRemoteDaoOperationList.size() == 0) {
             return;
         }
@@ -102,7 +102,7 @@ public abstract class BaseAbstractRemoteDao<C extends DaoRemoteCallback<?>> impl
         if (mRemoteDaoOperationList == null) {
             return;
         }
-        for (IBaseRemoteDaoOperation operation : mRemoteDaoOperationList) {
+        for (IBaseRemoteDaoOperation<?> operation : mRemoteDaoOperationList) {
             if (operation != null && !operation.isCanceled()) {
                 operation.cancel();
             }

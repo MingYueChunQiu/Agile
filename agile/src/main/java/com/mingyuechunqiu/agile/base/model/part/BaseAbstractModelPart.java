@@ -4,6 +4,7 @@ package com.mingyuechunqiu.agile.base.model.part;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.model.dao.IBaseDao;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +23,13 @@ import java.util.List;
 public abstract class BaseAbstractModelPart implements IBaseModelPart {
 
     @Nullable
-    private List<IBaseDao> mDaoList;
+    private List<IBaseDao<?>> mDaoList;
 
     @Override
     public void releaseOnDetach() {
         release();
         if (mDaoList != null) {
-            for (IBaseDao dao : mDaoList) {
+            for (IBaseDao<?> dao : mDaoList) {
                 if (dao != null) {
                     dao.releaseOnDetach();
                 }
@@ -44,7 +45,7 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
      * @param dao dao单元
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addDao(@Nullable IBaseDao dao) {
+    protected <C extends DaoCallback<?>> boolean addDao(@Nullable IBaseDao<C> dao) {
         if (dao == null) {
             return false;
         }
@@ -60,7 +61,7 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
      * @param dao dao单元
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removeDao(@Nullable IBaseDao dao) {
+    protected <C extends DaoCallback<?>> boolean removeDao(@Nullable IBaseDao<C> dao) {
         if (dao == null || mDaoList == null) {
             return false;
         }
