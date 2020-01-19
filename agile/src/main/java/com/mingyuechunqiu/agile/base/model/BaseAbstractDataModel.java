@@ -11,7 +11,7 @@ import com.mingyuechunqiu.agile.base.framework.IBaseListener;
 import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRetrofitCallback;
 import com.mingyuechunqiu.agile.base.model.dao.framework.result.DaoResultHandler;
 import com.mingyuechunqiu.agile.base.model.framework.local.IModelLocalData;
-import com.mingyuechunqiu.agile.base.model.framework.remote.IModelNetworkData;
+import com.mingyuechunqiu.agile.base.model.framework.remote.IModelRetrofitData;
 import com.mingyuechunqiu.agile.constants.URLConstants;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
@@ -32,7 +32,7 @@ import retrofit2.Response;
  * </pre>
  */
 public abstract class BaseAbstractDataModel<I extends IBaseListener> extends BaseAbstractModel<I> implements DaoRetrofitCallback<I>,
-        IModelNetworkData, IModelLocalData {
+        IModelLocalData, IModelRetrofitData {
 
     public BaseAbstractDataModel(@NonNull I listener) {
         super(listener);
@@ -190,9 +190,10 @@ public abstract class BaseAbstractDataModel<I extends IBaseListener> extends Bas
     }
 
     /**
-     * 当token失效重新获取后，由子类重写调用进行再次网络请求
+     * 当请求失败后，由子类重写调用进行再次请求
      *
-     * @param paramMap 网络请求参数集合
+     * @param paramMap 请求参数集合
      */
-    protected abstract void redoRequest(@NonNull Map<String, String> paramMap);
+    protected void redoRequest(@NonNull Map<String, String> paramMap) {
+    }
 }

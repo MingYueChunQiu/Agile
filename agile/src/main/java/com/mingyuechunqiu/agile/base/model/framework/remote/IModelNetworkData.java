@@ -6,8 +6,6 @@ import androidx.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 
-import retrofit2.Response;
-
 /**
  * <pre>
  *      Project:    Agile
@@ -22,14 +20,6 @@ import retrofit2.Response;
  * </pre>
  */
 public interface IModelNetworkData extends IModelRemoteData {
-
-    /**
-     * 检测Retrofit的网络响应是否为空
-     *
-     * @param response 网络响应
-     * @return 如果网络响应为空返回true，否则返回false
-     */
-    boolean checkRetrofitResponseIsNull(@Nullable Response response);
 
     /**
      * 处理网络响应失败事件

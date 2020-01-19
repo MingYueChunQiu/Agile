@@ -69,10 +69,6 @@ public abstract class BaseAbstractPresenter<V extends IBaseView<?>, M extends IB
         requestModel(info);
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    protected void onCreate() {
-    }
-
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     public void callOnStart() {
         onStart();

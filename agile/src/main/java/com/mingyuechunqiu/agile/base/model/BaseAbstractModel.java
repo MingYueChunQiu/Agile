@@ -28,7 +28,9 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
 
     @Nullable
     protected I mListener;
+    @Nullable
     private List<IBaseModelPart> mModelPartList;
+    @Nullable
     private List<IBaseDao> mDaoList;
 
     public BaseAbstractModel(@NonNull I listener) {
