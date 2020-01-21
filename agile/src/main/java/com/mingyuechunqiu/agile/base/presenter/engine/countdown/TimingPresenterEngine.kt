@@ -37,7 +37,7 @@ class TimingPresenterEngine : ITimingPresenterEngine {
         mTimer?.schedule(mTimerTask, delay, period)
     }
 
-    override fun startCountDownTask(count: Int, callback: ITimingPresenterEngine.Companion.CountDownCallback) {
+    override fun startCountDownTask(count: Int, callback: ITimingPresenterEngine.CountDownCallback) {
         releaseTimingResource()
         mTotalCountDownCount = count
         mCountDownCount = 0

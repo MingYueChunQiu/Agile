@@ -35,19 +35,19 @@ interface ITimingPresenterEngine : IBasePresenterEngine {
 
     fun startCountDownTask(count: Int, callback: CountDownCallback)
 
-    companion object {
+    /**
+     * 倒计时回调
+     */
+    interface CountDownCallback {
 
-        interface CountDownCallback {
+        /**
+         * 每次倒计时刷新时回调
+         */
+        fun onEachCountDown(remainder: Int)
 
-            /**
-             * 每次倒计时刷新时回调
-             */
-            fun onEachCountDown(remainder: Int)
-
-            /**
-             * 当完后倒计时时回调
-             */
-            fun onCompleteCountDown()
-        }
+        /**
+         * 当完后倒计时时回调
+         */
+        fun onCompleteCountDown()
     }
 }
