@@ -102,6 +102,8 @@ public class BigImageView extends View {
                 mTracker.clear();
                 performClick();
                 break;
+            default:
+                break;
         }
         return true;
     }
@@ -128,9 +130,17 @@ public class BigImageView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        if (mScroller != null) {
+            mScroller.abortAnimation();
+            mScroller = null;
+        }
         if (mTracker != null) {
             mTracker.recycle();
             mTracker = null;
+        }
+        if (mDecoder != null) {
+            mDecoder.recycle();
+            mDecoder = null;
         }
     }
 
