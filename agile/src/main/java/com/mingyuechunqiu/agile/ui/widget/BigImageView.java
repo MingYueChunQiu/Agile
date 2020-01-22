@@ -64,6 +64,9 @@ public class BigImageView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if (mDecoder == null) {
+            return;
+        }
         canvas.drawBitmap(mDecoder.decodeRegion(mBitmapRect, mOptions), 0, 0, null);
     }
 
