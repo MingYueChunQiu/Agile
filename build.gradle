@@ -6,18 +6,21 @@ buildscript {
     repositories {
         mavenCentral()
         google()
+        maven {
+            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
+        }
         maven { url 'https://maven.google.com' }
-        maven { url "http://jcenter.bintray.com" }
         jcenter()
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
+        maven { url "http://jcenter.bintray.com" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.6.1'
 
-        classpath "io.realm:realm-gradle-plugin:5.14.0"
+        classpath "io.realm:realm-gradle-plugin:7.0.0-beta-SNAPSHOT"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -29,13 +32,16 @@ allprojects {
         maven { url "https://jitpack.io" }
         mavenCentral()
         google()
+        maven {
+            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
+        }
         maven { url 'https://maven.google.com' }
-        maven { url "http://jcenter.bintray.com" }
         jcenter()
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
+        maven { url "http://jcenter.bintray.com" }
     }
 }
 

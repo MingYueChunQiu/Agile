@@ -117,8 +117,8 @@ public final class KeyInputUtils {
             case KeyEvent.KEYCODE_PERIOD:
                 return isShift ? ">" : ".";
             case KeyEvent.KEYCODE_SLASH:
-//                return isShift ? "?" : "/";
-                return "?";
+                return isShift ? "?" : "/";
+//                return "?";
             case KeyEvent.KEYCODE_BACKSLASH:
                 return isShift ? "|" : "\\";
             case KeyEvent.KEYCODE_APOSTROPHE:

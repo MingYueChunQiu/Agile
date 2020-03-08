@@ -100,6 +100,7 @@ public abstract class BaseToolbarPresenterFragment<V extends IBaseDataView<P>, P
      *
      * @return 返回Toolbar控件
      */
+    @Nullable
     protected Toolbar getOwnedToolbar() {
         return tbBar;
     }

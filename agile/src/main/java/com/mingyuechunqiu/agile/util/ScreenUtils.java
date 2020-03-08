@@ -98,7 +98,10 @@ public final class ScreenUtils {
      * @param context 上下文
      * @return 返回状态栏高度
      */
-    public static int getStatusBarHeight(@NonNull Context context) {
+    public static int getStatusBarHeight(@Nullable Context context) {
+        if (context == null) {
+            return 0;
+        }
         int height = 0;
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
@@ -113,7 +116,10 @@ public final class ScreenUtils {
      * @param context 上下文
      * @return 返回底部虚拟导航栏高度
      */
-    public static int getNavigationBarHeight(@NonNull Context context) {
+    public static int getNavigationBarHeight(@Nullable Context context) {
+        if (context == null) {
+            return 0;
+        }
         int height = 0;
         int resourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId > 0) {
@@ -144,7 +150,10 @@ public final class ScreenUtils {
      * @param activity 软键盘所在界面
      * @param view     指定的view
      */
-    public static void hideViewSoftInput(@NonNull Activity activity, @NonNull View view) {
+    public static void hideViewSoftInput(@Nullable Activity activity, @Nullable View view) {
+        if (activity == null || view == null) {
+            return;
+        }
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm == null) {
             return;

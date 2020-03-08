@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.mingyuechunqiu.agilemvpframeproject"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -46,28 +46,26 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project(':agile')
-    implementation 'com.haibin:calendarview:3.6.7'
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.1.0'
-    implementation 'com.lxj:xpopup:1.8.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
-    implementation 'com.github.chenBingX:SuperTextView:3.1.6.2'
-    implementation 'pub.devrel:easypermissions:2.0.1'
+    implementation 'com.github.chenBingX:SuperTextView:3.2.4.64'
+    implementation 'pub.devrel:easypermissions:3.0.0'
     implementation group: 'commons-net', name: 'commons-net', version: '3.6'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.5.0'
-    implementation 'pub.devrel:easypermissions:2.0.1'
     // https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava
     implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.2.9'
     // https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxandroid
     implementation group: 'io.reactivex.rxjava2', name: 'rxandroid', version: '2.1.1'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
     implementation 'com.github.MingYueChunQiu:RecorderManager:0.2.29'
+    implementation 'com.lxj:xpopup:1.8.10-x'
 }
 repositories {
     mavenCentral()
