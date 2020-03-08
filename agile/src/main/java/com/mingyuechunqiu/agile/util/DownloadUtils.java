@@ -52,15 +52,17 @@ public final class DownloadUtils {
             fileName = Agile.getAppContext().getPackageName() + ".apk";
         }
         File destFile = null;//存储的目的地址文件
-        File parentFile = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-        if (parentFile != null) {
-            File file = new File(parentFile.getAbsolutePath() + File.separator + "Apk");
-            if (!file.exists()) {
-                if (!file.mkdirs()) {
-                    return DOWNLOAD_ERROR;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            File parentFile = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+            if (parentFile != null) {
+                File file = new File(parentFile.getAbsolutePath() + File.separator + "Apk");
+                if (!file.exists()) {
+                    if (!file.mkdirs()) {
+                        return DOWNLOAD_ERROR;
+                    }
                 }
+                destFile = new File(file.getAbsolutePath() + File.separator + fileName);
             }
-            destFile = new File(file.getAbsolutePath() + File.separator + fileName);
         }
         if (destFile == null) {
             destFile = new File(context.getCacheDir().getAbsolutePath() + File.separator + fileName);

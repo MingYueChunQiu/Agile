@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.frame.Agile;
 
 import java.util.List;
@@ -81,12 +82,12 @@ public final class AppUtils {
      *
      * @return 返回版本迭代次数
      */
-    public static long getAppVersionCode() {
+    public static int getAppVersionCode() {
         PackageManager manager = Agile.getAppContext().getPackageManager();
         try {
             return manager.getPackageInfo(Agile.getAppContext().getPackageName(), 0).versionCode;
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            LogManagerProvider.e("AppUtils:getAppVersionCode", e.getMessage());
         }
         return 0;
     }
@@ -102,7 +103,7 @@ public final class AppUtils {
         try {
             return manager.getPackageInfo(Agile.getAppContext().getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            LogManagerProvider.e("AppUtils:getAppVersionName", e.getMessage());
         }
         return "";
     }
