@@ -77,6 +77,6 @@
 
     <!--可推动嵌套滚动控件-->
     <declare-styleable name="PushNestedScrollView">
-        <attr name="pnsv_pull_down_directly" format="boolean" />
+        <attr name="pnsv_open_pull_effect" format="boolean" />
     </declare-styleable>
 </resources>

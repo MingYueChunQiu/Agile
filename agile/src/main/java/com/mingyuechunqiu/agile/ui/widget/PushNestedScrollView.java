@@ -4,18 +4,16 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.NestedScrollingChild3;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.view.NestedScrollingChild2;
 import androidx.core.view.NestedScrollingChildHelper;
-import androidx.core.view.NestedScrollingParent3;
+import androidx.core.view.NestedScrollingParent2;
 import androidx.core.view.NestedScrollingParentHelper;
 import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.mingyuechunqiu.agile.R;
 
@@ -31,14 +29,13 @@ import com.mingyuechunqiu.agile.R;
  *      Version:    1.0
  * </pre>
  */
-public class PushNestedScrollView extends FrameLayout implements NestedScrollingParent3, NestedScrollingChild3 {
+public class PushNestedScrollView extends LinearLayoutCompat implements NestedScrollingParent2, NestedScrollingChild2 {
 
     private final NestedScrollingParentHelper mParentHelper;
     private final NestedScrollingChildHelper mChildHelper;
 
-    private int mDistance = 0;
     private PushScrollCallback mCallback;
-    private boolean pullDownDirectly;//标记是否可以直接拉下
+    private boolean openPullEffect;//标记是否打开可以推拉效果
 
     public PushNestedScrollView(@NonNull Context context) {
         this(context, null);
@@ -52,7 +49,7 @@ public class PushNestedScrollView extends FrameLayout implements NestedScrolling
         super(context, attrs, defStyleAttr);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PushNestedScrollView);
-        pullDownDirectly = a.getBoolean(R.styleable.PushNestedScrollView_pnsv_pull_down_directly, false);
+        openPullEffect = a.getBoolean(R.styleable.PushNestedScrollView_pnsv_open_pull_effect, true);
         a.recycle();
 
         mParentHelper = new NestedScrollingParentHelper(this);
@@ -81,86 +78,77 @@ public class PushNestedScrollView extends FrameLayout implements NestedScrolling
 
     @Override
     public void onNestedScroll(@NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
+        if (type == ViewCompat.TYPE_NON_TOUCH && openPullEffect) {
+            if (dyUnconsumed < 0 && mCallback != null) {
+                handlePushDown(target, dyUnconsumed, null, mCallback.getPushScrollDistance());
+            }
+        }
     }
 
     @Override
     public void onNestedPreScroll(@NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
         dispatchNestedPreScroll(dx, dy, consumed, null, type);
-
-        int distance;//实际移动距离
-        //dy向上是正，向下是负，因为是那前一个点位置减去后一个点位置
-        if (mCallback != null) {
-            int length = mCallback.getMaxPushScrollDistance();
+        //dy向上是正，向下是负，因为是拿前一个点位置减去后一个点位置
+        if (mCallback != null && openPullEffect) {
+            int maxDistance = mCallback.getPushScrollDistance();
             if (dy > 0) {
-                if (mDistance < length) {
-                    if (mDistance + dy > length) {
-                        distance = length - mDistance;
-                        mDistance = length;
-                    } else {
-                        distance = dy;
-                        mDistance += dy;
-                    }
-                    ViewGroup group = (ViewGroup) getChildAt(0);
-                    for (int i = 0; i < group.getChildCount(); i++) {
-                        group.getChildAt(i).setTranslationY(-mDistance);
-                    }
-                    consumed[0] = 0;
-                    consumed[1] = distance;
-                    mCallback.onPushScroll(mDistance, length);
-                }
+                handlePushUp(dy, consumed, maxDistance);
             } else {
-                if (mDistance > 0) {
-                    ViewGroup group = (ViewGroup) getChildAt(0);
-                    boolean canScroll = false;//是否可以向下滚动，只有RecyclerView最上面Item完全划出时才开始滑回原位置
-                    if (pullDownDirectly) {
-                        canScroll = true;
-                    } else {
-                        for (int i = 0; i < group.getChildCount(); i++) {
-                            View child = group.getChildAt(i);
-                            if (child instanceof RecyclerView) {
-                                if (((RecyclerView) child).getLayoutManager() instanceof LinearLayoutManager) {
-                                    LinearLayoutManager manager = (LinearLayoutManager) ((RecyclerView) child).getLayoutManager();
-                                    if (manager != null && manager.findFirstCompletelyVisibleItemPosition() == 0) {
-                                        canScroll = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (canScroll) {
-                        if (mDistance + dy < 0) {
-                            distance = mDistance;
-                            mDistance = 0;
-                        } else {
-                            distance = dy;
-                            mDistance += distance;
-                        }
-                        for (int i = 0; i < group.getChildCount(); i++) {
-                            group.getChildAt(i).setTranslationY(-mDistance);
-                        }
-                        consumed[0] = 0;
-                        consumed[1] = distance;
-                        mCallback.onPushScroll(mDistance, length);
-                    }
-                }
+                handlePushDown(target, dy, consumed, maxDistance);
             }
         }
     }
 
-    public void setPushScrollCallback(PushScrollCallback callback) {
+    /**
+     * 处理向上推动
+     *
+     * @param dy          用户触摸移动距离
+     * @param consumed    记录当前控件消费距离
+     * @param maxDistance 当前控件可消费总距离
+     */
+    private void handlePushUp(int dy, @NonNull int[] consumed, int maxDistance) {
+        if (mCallback == null) {
+            return;
+        }
+        int distance = dy;
+        if (getScrollY() < maxDistance) {
+            if ((getScrollY() + distance) > maxDistance) {
+                distance = distance - (getScrollY() + distance - maxDistance);
+            }
+            scrollBy(0, distance);
+            consumed[0] = 0;
+            consumed[1] = distance;
+            mCallback.onPushScroll(getScrollY(), maxDistance);
+        }
+    }
+
+    /**
+     * 处理向下推动
+     *
+     * @param dy          用户触摸移动距离
+     * @param consumed    记录当前控件消费距离
+     * @param maxDistance 当前控件可消费总距离
+     */
+    private void handlePushDown(@NonNull View target, int dy, @Nullable int[] consumed, int maxDistance) {
+        if (mCallback == null || target.getId() != mCallback.getDependencyViewId() || !mCallback.canPushDown()) {
+            return;
+        }
+        if (getScrollY() > 0) {
+            int distance = dy;
+            if ((getScrollY() + distance) < 0) {
+                distance = distance - (getScrollY() + distance);
+            }
+            scrollBy(0, distance);
+            if (consumed != null) {
+                consumed[0] = 0;
+                consumed[1] = distance;
+            }
+            mCallback.onPushScroll(getScrollY(), maxDistance);
+        }
+    }
+
+    public void setPushScrollCallback(@NonNull PushScrollCallback callback) {
         mCallback = callback;
-    }
-
-    @Override
-    public void onNestedScroll(@NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, @NonNull int[] consumed) {
-
-    }
-
-    @Override
-    public void dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, @Nullable int[] offsetInWindow, int type, @NonNull int[] consumed) {
-        mChildHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed,
-                offsetInWindow, type, consumed);
     }
 
     @Override
@@ -209,20 +197,38 @@ public class PushNestedScrollView extends FrameLayout implements NestedScrolling
         return mChildHelper.dispatchNestedPreFling(velocityX, velocityY);
     }
 
+    /**
+     * 推动回调
+     */
     public interface PushScrollCallback {
 
         /**
-         * 获取推注滚动的最大距离
+         * 推动依据的控件ID
          *
-         * @return 返回最大距离
+         * @return 返回控件资源ID
          */
-        int getMaxPushScrollDistance();
+        @IdRes
+        int getDependencyViewId();
 
         /**
-         * 当推动滚动时回调
+         * 是否可以向下滚动
          *
-         * @param distance      当前滚动距离
-         * @param totalDistance 总计已经滚动距离
+         * @return 返回true表示可以，否则返回false
+         */
+        boolean canPushDown();
+
+        /**
+         * 获取可推动距离
+         *
+         * @return 返回距离值
+         */
+        int getPushScrollDistance();
+
+        /**
+         * 当推动触发时回调
+         *
+         * @param distance      当前推动距离
+         * @param totalDistance 总计可推动距离
          */
         void onPushScroll(int distance, int totalDistance);
     }
