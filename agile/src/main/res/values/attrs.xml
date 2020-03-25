@@ -79,4 +79,10 @@
     <declare-styleable name="PushNestedScrollView">
         <attr name="pnsv_open_pull_effect" format="boolean" />
     </declare-styleable>
+
+    <!--防止冲突列表控件-->
+    <declare-styleable name="ConflictRecyclerView">
+        <attr name="crv_prevent_horizontal_conflict" format="boolean" />
+        <attr name="crv_prevent_vertical_conflict" format="boolean" />
+    </declare-styleable>
 </resources>
