@@ -85,4 +85,43 @@
         <attr name="crv_prevent_horizontal_conflict" format="boolean" />
         <attr name="crv_prevent_vertical_conflict" format="boolean" />
     </declare-styleable>
+
+    <!--圆角图形控件-->
+    <declare-styleable name="RoundImageView">
+        <attr name="riv_radius" format="dimension" />
+        <attr name="riv_top_left_radius" format="dimension" />
+        <attr name="riv_top_right_radius" format="dimension" />
+        <attr name="riv_bottom_left_radius" format="dimension" />
+        <attr name="riv_bottom_right_radius" format="dimension" />
+    </declare-styleable>
+
+    <!--圆角网页控件-->
+    <declare-styleable name="RoundWebView">
+        <attr name="rwv_radius" format="dimension" />
+        <attr name="rwv_top_left_radius" format="dimension" />
+        <attr name="rwv_top_right_radius" format="dimension" />
+        <attr name="rwv_bottom_left_radius" format="dimension" />
+        <attr name="rwv_bottom_right_radius" format="dimension" />
+    </declare-styleable>
+
+    <!--圆角列表控件-->
+    <declare-styleable name="RoundRecyclerView">
+        <attr name="rrv_radius" format="dimension" />
+        <attr name="rrv_top_left_radius" format="dimension" />
+        <attr name="rrv_top_right_radius" format="dimension" />
+        <attr name="rrv_bottom_left_radius" format="dimension" />
+        <attr name="rrv_bottom_right_radius" format="dimension" />
+    </declare-styleable>
+
+    <!--底部导航栏控件属性-->
+    <declare-styleable name="BottomNavigationBar">
+        <attr name="bnb_text_inactive_color" format="color" />
+        <attr name="bnb_text_active_color" format="color" />
+        <attr name="bnb_text_inactive_size" format="dimension" />
+        <attr name="bnb_text_active_size" format="dimension" />
+        <attr name="bnb_text_inactive_bold" format="boolean" />
+        <attr name="bnb_text_active_bold" format="boolean" />
+        <attr name="bnb_icon_inactive_size" format="dimension" />
+        <attr name="bnb_icon_active_size" format="dimension" />
+    </declare-styleable>
 </resources>

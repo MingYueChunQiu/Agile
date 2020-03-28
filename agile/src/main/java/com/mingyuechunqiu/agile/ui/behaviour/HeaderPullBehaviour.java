@@ -54,8 +54,8 @@ public class HeaderPullBehaviour extends CoordinatorLayout.Behavior<View> {
                     //避免精度损失
                     if (scrollY > 0) {
                         scrollY = 0;
-                    } else if (scrollY > child.getHeight()) {
-                        scrollY = child.getHeight();
+                    } else if (scrollY <- child.getHeight()) {
+                        scrollY = -child.getHeight();
                     }
                     consumed[1] = dy;
                     child.setTranslationY(scrollY);
