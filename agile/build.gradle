@@ -47,7 +47,6 @@ dependencies {
     implementation group: 'io.reactivex.rxjava2', name: 'rxandroid', version: '2.1.1'
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'com.noober.background:core:1.5.1'
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
     implementation group: 'commons-net', name: 'commons-net', version: '3.6'
     implementation 'com.github.MingYueChunQiu:RoundCornerDialogHelper:0.2.2'
     implementation 'androidx.slidingpanelayout:slidingpanelayout:1.0.0'

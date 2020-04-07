@@ -26,6 +26,11 @@ public class TestDialogFragment extends BaseStatusViewPresenterDialogFragment<Ma
         implements MainContract.View<MainContract.Presenter<?, ?>> {
 
     @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
     public void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
 
     }

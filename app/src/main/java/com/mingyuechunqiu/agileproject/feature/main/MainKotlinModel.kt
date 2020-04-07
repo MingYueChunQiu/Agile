@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agileproject.feature.main
 
-import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo
+import com.mingyuechunqiu.agile.data.bean.ParamsInfo
 
 /**
  * <pre>
@@ -18,7 +18,7 @@ internal class MainKotlinModel(listener: MainContract.Listener?) : MainContract.
 
     private var mDao: MainContract.Dao<*>? = null
 
-    override fun doRequest(info: BaseParamsInfo) {
+    override fun doRequest(info: ParamsInfo) {
         if (mDao == null) {
             mDao = MainDao()
             addDao(mDao)

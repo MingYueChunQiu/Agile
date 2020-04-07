@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
-import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
+import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
 import com.mingyuechunqiu.agile.util.SharedPreferencesUtils;
@@ -33,22 +33,22 @@ public abstract class BaseAbstractDataPresenter<V extends IBaseDataView<?>, M ex
      * @param info 网络请求参数对象
      */
     @Override
-    public void requestWithParamsInfo(@NonNull BaseParamsInfo info) {
+    public void requestWithParamsInfo(@NonNull ParamsInfo info) {
         if (mModel == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }
-        //判断当前网络状况，是否继续进行网络业务操作
-        if (judgeNetwork()) {
-            requestModel(info);
-        } else {
-            if (!checkViewRefIsNull()) {
+        if (info.getRequestCategory() == ParamsInfo.RequestCategory.CATEGORY_NETWORK) {
+            //判断当前网络状况，是否继续进行网络业务操作
+            if (!judgeNetwork() && !checkViewRefIsNull()) {
                 disconnectNetwork();
+                return;
             }
         }
+        requestModel(info);
     }
 
     @Override
-    protected void requestModel(@NonNull BaseParamsInfo info) {
+    protected void requestModel(@NonNull ParamsInfo info) {
         if (mModel != null) {
             mModel.requestWithParamsInfo(info);
         }

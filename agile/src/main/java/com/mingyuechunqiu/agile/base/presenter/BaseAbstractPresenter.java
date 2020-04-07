@@ -10,7 +10,7 @@ import androidx.lifecycle.OnLifecycleEvent;
 import com.mingyuechunqiu.agile.base.model.IBaseModel;
 import com.mingyuechunqiu.agile.base.presenter.engine.IBasePresenterEngine;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
-import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
+import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.util.ToastUtils;
 
@@ -62,7 +62,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView<?>, M extends IB
      * @param info 请求参数对象
      */
     @Override
-    public void requestWithParamsInfo(@NonNull BaseParamsInfo info) {
+    public void requestWithParamsInfo(@NonNull ParamsInfo info) {
         if (mModel == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }
@@ -223,7 +223,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView<?>, M extends IB
      *
      * @param info 请求参数对象
      */
-    protected abstract void requestModel(@NonNull BaseParamsInfo info);
+    protected abstract void requestModel(@NonNull ParamsInfo info);
 
     /**
      * 释放资源

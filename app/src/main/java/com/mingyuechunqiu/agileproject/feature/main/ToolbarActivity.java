@@ -6,11 +6,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
-import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
-import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
-import com.mingyuechunqiu.agile.util.ScreenUtils;
 import com.mingyuechunqiu.agile.util.ToolbarUtils;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -65,10 +61,14 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
     @Override
     protected void initView(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.activity_toolbar_test);
-        StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_ERROR);
-        option.setContainerElevation(ScreenUtils.getPxFromDp(getResources(), 2F));
-        option.setDialogAnimationResId(R.style.PopupAnimation);
-        showStatusView(StatusViewConstants.StatusType.TYPE_ERROR, getSupportFragmentManager(), option);
+//        StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_ERROR);
+//        option.setContainerElevation(ScreenUtils.getPxFromDp(getResources(), 2F));
+//        option.setDialogAnimationResId(R.style.PopupAnimation);
+//        showStatusView(StatusViewConstants.StatusType.TYPE_ERROR, getSupportFragmentManager(), option);
+        TestAppDialog dialog = new TestAppDialog(this);
+        dialog.setCancelable(false);
+        dialog.show();
+
 //        showStatusView(StatusViewConstants.StatusType.TYPE_ERROR, getSupportFragmentManager(),
 //                R.id.fl_toolbar_test_container, option);
 //        showLoadingStatusView("发的凤凰网", false);

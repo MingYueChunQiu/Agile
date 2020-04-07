@@ -2,7 +2,7 @@ package com.mingyuechunqiu.agileproject.feature.main;
 
 import androidx.annotation.NonNull;
 
-import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
+import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
 
 import java.util.Map;
 
@@ -28,7 +28,7 @@ class MainModel extends MainContract.Model<MainContract.Listener> {
     }
 
     @Override
-    protected void doRequest(@NonNull BaseParamsInfo info) {
+    protected void doRequest(@NonNull ParamsInfo info) {
 
     }
 

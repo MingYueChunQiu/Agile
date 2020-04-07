@@ -3,7 +3,7 @@ package com.mingyuechunqiu.agile.base.model;
 import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
-import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
+import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
 
 /**
  * <pre>
@@ -36,7 +36,7 @@ public interface IBaseModel<I extends IBaseListener> {
      *
      * @param info 请求参数对象
      */
-    void requestWithParamsInfo(@NonNull BaseParamsInfo info);
+    void requestWithParamsInfo(@NonNull ParamsInfo info);
 
     /**
      * 释放资源

@@ -124,4 +124,10 @@
         <attr name="bnb_icon_inactive_size" format="dimension" />
         <attr name="bnb_icon_active_size" format="dimension" />
     </declare-styleable>
+
+    <!--可无限循环滚动控件-->
+    <declare-styleable name="LoopViewPager">
+        <attr name="lvp_loop" format="boolean" />
+        <attr name="lvp_interval_time" format="integer" />
+    </declare-styleable>
 </resources>

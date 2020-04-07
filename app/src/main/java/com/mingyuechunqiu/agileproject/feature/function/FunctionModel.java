@@ -2,7 +2,7 @@ package com.mingyuechunqiu.agileproject.feature.function;
 
 import androidx.annotation.NonNull;
 
-import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
+import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
 
 import java.util.Map;
 
@@ -29,7 +29,7 @@ public class FunctionModel extends FunctionContract.Model<FunctionContract.Liste
     }
 
     @Override
-    protected void doRequest(@NonNull BaseParamsInfo info) {
+    protected void doRequest(@NonNull ParamsInfo info) {
 
     }
 

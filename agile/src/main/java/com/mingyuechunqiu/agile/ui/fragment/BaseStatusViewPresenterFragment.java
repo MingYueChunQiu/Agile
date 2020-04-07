@@ -14,7 +14,7 @@ import com.mingyuechunqiu.agile.base.view.IViewAttachPresenter;
  *     author : xyj
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2018/05/16
- *     desc   : 所有MVP层Fragment的基类
+ *     desc   : 所有MVP层具有状态视图功能的Fragment的基类
  *              继承自BaseFragment
  *     version: 1.0
  * </pre>

@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.model.IBaseModel;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
-import com.mingyuechunqiu.agile.data.bean.BaseParamsInfo;
+import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
 
 /**
  * <pre>
@@ -38,5 +38,5 @@ public interface IBasePresenter<V extends IBaseView<?>, M extends IBaseModel<?>>
      *
      * @param info 请求参数对象
      */
-    void requestWithParamsInfo(@NonNull BaseParamsInfo info);
+    void requestWithParamsInfo(@NonNull ParamsInfo info);
 }

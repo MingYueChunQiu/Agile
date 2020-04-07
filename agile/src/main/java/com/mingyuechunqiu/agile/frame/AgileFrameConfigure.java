@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.frame.data.remote.AgileNetworkConfig;
-import com.mingyuechunqiu.agile.frame.engine.bitmap.IImageEngine;
+import com.mingyuechunqiu.agile.frame.engine.image.IImageEngine;
 
 /**
  * <pre>
