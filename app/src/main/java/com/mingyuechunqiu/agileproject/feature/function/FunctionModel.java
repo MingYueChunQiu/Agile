@@ -19,6 +19,8 @@ import java.util.Map;
  */
 public class FunctionModel extends FunctionContract.Model<FunctionContract.Listener> {
 
+    private FunctionContract.Dao<?> mDao = null;
+
     FunctionModel(FunctionContract.Listener listener) {
         super(listener);
     }

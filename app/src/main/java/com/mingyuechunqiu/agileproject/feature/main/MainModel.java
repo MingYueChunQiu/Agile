@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agileproject.feature.main;
 import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
+import com.mingyuechunqiu.agileproject.feature.function.FunctionDao;
 
 import java.util.Map;
 
@@ -18,8 +19,11 @@ import java.util.Map;
  */
 class MainModel extends MainContract.Model<MainContract.Listener> {
 
+    private FunctionDao mDao;
+
     MainModel(MainContract.Listener listener) {
         super(listener);
+        mDao = new FunctionDao(this);
     }
 
     @Override
