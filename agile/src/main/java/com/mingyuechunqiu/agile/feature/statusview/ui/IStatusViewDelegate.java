@@ -24,6 +24,7 @@ import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
  */
 interface IStatusViewDelegate {
 
+    @NonNull
     StatusViewOption getStatusViewOption();
 
     void setModeType(@NonNull StatusViewConstants.ModeType type);

@@ -130,4 +130,10 @@
         <attr name="lvp_loop" format="boolean" />
         <attr name="lvp_interval_time" format="integer" />
     </declare-styleable>
+
+    <!--菊花样式加载控件-->
+    <declare-styleable name="DaisyLoadingView">
+        <attr name="dlv_size" format="dimension" />
+        <attr name="dlv_color" format="color" />
+    </declare-styleable>
 </resources>

@@ -6,8 +6,8 @@ package com.mingyuechunqiu.agile.feature.statusview.function
  *      Github : https://github.com/MingYueChunQiu
  *      e-mail : yujie.xi@ehailuo.com
  *      time   : 2019/1/25
- *      desc   : 加载Fragment提供者接口
- *               继承自LoadingDialogFragmentable
+ *      desc   : 状态视图管理器接口
+ *               继承自IStatusViewHelper
  *      version: 1.0
  * </pre>
  */

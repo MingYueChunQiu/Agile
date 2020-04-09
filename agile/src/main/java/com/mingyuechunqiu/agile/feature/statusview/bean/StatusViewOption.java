@@ -65,6 +65,7 @@ public class StatusViewOption {
         mBuilder.dialogHeight = dialogHeight;
     }
 
+    @StyleRes
     public int getDialogAnimationResId() {
         return mBuilder.dialogAnimationResId;
     }
@@ -97,12 +98,12 @@ public class StatusViewOption {
         mBuilder.containerBackground = containerBackground;
     }
 
-    public Drawable getProgressDrawable() {
-        return mBuilder.progressDrawable;
+    public StatusViewProgressOption getProgressOption() {
+        return mBuilder.progressOption;
     }
 
-    public void setProgressDrawable(@NonNull Drawable progressDrawable) {
-        mBuilder.progressDrawable = progressDrawable;
+    public void setProgressOption(@NonNull StatusViewProgressOption progressOption) {
+        mBuilder.progressOption = progressOption;
     }
 
     public Drawable getReloadDrawable() {
@@ -199,7 +200,7 @@ public class StatusViewOption {
         private @DrawableRes
         int containerBackgroundResId;//容器背景图像资源ID
         private Drawable containerBackground;//容器背景图像
-        private Drawable progressDrawable;//无进度图像
+        private StatusViewProgressOption progressOption;//进度条配置信息对象
         private Drawable reloadDrawable;//重新加载图片
         private @DrawableRes
         int reloadDrawableResId;//重新加载图片资源ID
@@ -259,6 +260,7 @@ public class StatusViewOption {
             return this;
         }
 
+        @StyleRes
         public int getDialogAnimationResId() {
             return dialogAnimationResId;
         }
@@ -295,12 +297,12 @@ public class StatusViewOption {
             return this;
         }
 
-        public Drawable getProgressDrawable() {
-            return progressDrawable;
+        public StatusViewProgressOption getProgressOption() {
+            return progressOption;
         }
 
-        public Builder setProgressDrawable(@NonNull Drawable progressDrawable) {
-            this.progressDrawable = progressDrawable;
+        public Builder setProgressOption(@NonNull StatusViewProgressOption progressOption) {
+            this.progressOption = progressOption;
             return this;
         }
 

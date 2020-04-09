@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.feature.statusview.function;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
@@ -30,33 +31,47 @@ final class StatusViewHandler {
      * @param type 状态视图类型
      * @return 返回状态视图配置信息对象
      */
+    @NonNull
     static StatusViewOption getGlobalStatusViewOptionByType(@NonNull StatusViewConstants.StatusType type) {
-        StatusViewConfigure configure = StatusViewManagerProvider.getGlobalConfigure();
+        StatusViewOption option = getStatusViewOptionByType(StatusViewManagerProvider.getGlobalConfigure(), type, true);
+        if (option == null) {
+            option = new StatusViewOption();
+        }
+        return option;
+    }
+
+    /**
+     * 根据状态类型获取对应状态视图配置信息对象
+     *
+     * @param configure       状态视图配置信息对象
+     * @param type            状态视图类型
+     * @param useDefaultValue 是否在没有配置内容时使用默认值
+     * @return 返回状态视图配置信息对象
+     */
+    @Nullable
+    static StatusViewOption getStatusViewOptionByType(@Nullable StatusViewConfigure configure, @NonNull StatusViewConstants.StatusType type, boolean useDefaultValue) {
         StatusViewOption option = null;
         switch (type) {
             case TYPE_LOADING:
                 option = configure == null || configure.getLoadingOption() == null
-                        ? getLoadingStatusViewOption() : configure.getLoadingOption();
+                        ? (useDefaultValue ? getLoadingStatusViewOption() : null) : configure.getLoadingOption();
                 break;
             case TYPE_EMPTY:
                 option = configure == null || configure.getEmptyOption() == null
-                        ? getEmptyStatusViewOption() : configure.getEmptyOption();
+                        ? (useDefaultValue ? getEmptyStatusViewOption() : null) : configure.getEmptyOption();
                 break;
             case TYPE_NETWORK_ANOMALY:
                 option = configure == null || configure.getNetworkAnomalyOption() == null
-                        ? getNetworkAnomalyStatusViewOption() : configure.getNetworkAnomalyOption();
+                        ? (useDefaultValue ? getNetworkAnomalyStatusViewOption() : null) : configure.getNetworkAnomalyOption();
                 break;
             case TYPE_ERROR:
                 option = configure == null || configure.getErrorOption() == null
-                        ? getErrorStatusViewOption() : configure.getErrorOption();
+                        ? (useDefaultValue ? getErrorStatusViewOption() : null) : configure.getErrorOption();
                 break;
             case TYPE_CUSTOM:
                 option = configure == null || configure.getCustomOption() == null
-                        ? getCustomStatusViewOption() : configure.getCustomOption();
+                        ? (useDefaultValue ? getCustomStatusViewOption() : null) : configure.getCustomOption();
                 break;
-        }
-        if (option == null) {
-            option = new StatusViewOption();
         }
         return option;
     }

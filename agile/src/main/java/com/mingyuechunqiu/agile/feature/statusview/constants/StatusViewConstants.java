@@ -28,4 +28,12 @@ public final class StatusViewConstants {
         //加载，空，网络异常，错误，自定义
         TYPE_LOADING, TYPE_EMPTY, TYPE_NETWORK_ANOMALY, TYPE_ERROR, TYPE_CUSTOM
     }
+
+    /**
+     * 进度条类型
+     */
+    public enum ProgressStyle {
+        //系统样式进度条，菊花样式进度条
+        STYLE_SYSTEM, STYLE_DAISY
+    }
 }

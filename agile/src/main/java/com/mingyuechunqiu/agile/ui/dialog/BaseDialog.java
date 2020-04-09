@@ -177,10 +177,19 @@ public abstract class BaseDialog extends AppCompatDialog {
             synchronized (mStatusViewLock) {
                 if (mStatusViewManager == null) {
                     mStatusViewManager = StatusViewManagerProvider.newInstance();
+                    onInitStatusViewManager(mStatusViewManager);
                 }
             }
         }
         return mStatusViewManager;
+    }
+
+    /**
+     * 初始化状态视图管理器
+     *
+     * @param manager 刚创建好的状态视图
+     */
+    protected void onInitStatusViewManager(@NonNull IStatusViewManager manager) {
     }
 
     /**

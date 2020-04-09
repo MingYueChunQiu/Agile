@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
@@ -224,12 +225,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 显示加载对话框
      *
-     * @param msg        提示文本
+     * @param hint       提示文本
      * @param cancelable 是否可以取消
      */
-    protected void showLoadingStatusView(@Nullable String msg, boolean cancelable) {
-        StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
-        option.getContentOption().setText(msg);
+    protected void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
+        StatusViewConfigure configure = getStatusViewManager().getStatusViewConfigure();
+        StatusViewOption option = configure == null ? null : configure.getLoadingOption();
+        if (option == null) {
+            option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
+        }
+        option.getContentOption().setText(hint);
         option.setCancelWithOutside(cancelable);
         showStatusView(StatusViewConstants.StatusType.TYPE_LOADING,
                 getSupportFragmentManager(), option);
@@ -300,10 +305,19 @@ public abstract class BaseActivity extends AppCompatActivity {
             synchronized (mStatusViewLock) {
                 if (mStatusViewManager == null) {
                     mStatusViewManager = StatusViewManagerProvider.newInstance();
+                    onInitStatusViewManager(mStatusViewManager);
                 }
             }
         }
         return mStatusViewManager;
+    }
+
+    /**
+     * 初始化状态视图管理器
+     *
+     * @param manager 刚创建好的状态视图
+     */
+    protected void onInitStatusViewManager(@NonNull IStatusViewManager manager) {
     }
 
     /**

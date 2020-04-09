@@ -89,8 +89,8 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void showLoadingStatusView(String msg, boolean cancelable) {
-        super.showLoadingStatusView(msg, cancelable);
+    public void showLoadingStatusView(String hint, boolean cancelable) {
+        super.showLoadingStatusView(hint, cancelable);
     }
 
     @Override

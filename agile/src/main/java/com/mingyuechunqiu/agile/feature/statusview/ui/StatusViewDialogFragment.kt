@@ -82,7 +82,17 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
                 tvReload = view.findViewById(it.statusViewContainer.reloadViewId)
             } else {
                 vContainer = view.findViewById(R.id.ll_agile_dfg_status_view_container)
-                vProgress = view.findViewById(R.id.pb_agile_dfg_status_view_progress)
+
+                val progressViewId = when (mDelegate?.statusViewOption?.progressOption?.progressStyle) {
+                    StatusViewConstants.ProgressStyle.STYLE_SYSTEM -> R.id.pb_agile_dfg_status_view_progress
+                    StatusViewConstants.ProgressStyle.STYLE_DAISY -> R.id.dlv_agile_dfg_status_view_progress
+                    else -> R.id.pb_agile_dfg_status_view_progress
+                }
+                if (progressViewId != 0) {
+                    vProgress = view.findViewById(progressViewId)
+                    vProgress?.visibility = View.VISIBLE
+                }
+
                 ivIcon = view.findViewById(R.id.iv_agile_dfg_status_view_icon)
                 tvContent = view.findViewById(R.id.tv_agile_dfg_status_view_content)
                 tvReload = view.findViewById(R.id.tv_agile_dfg_status_view_reload)

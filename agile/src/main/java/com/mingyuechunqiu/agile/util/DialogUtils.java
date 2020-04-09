@@ -43,8 +43,8 @@ public final class DialogUtils {
         if (TextUtils.isEmpty(hint)) {
             hint = context.getString(R.string.agile_prompt_loading);
         }
-        View view = View.inflate(context, R.layout.agile_dialog_fragment_light_loading, null);
-        AppCompatTextView tvMsg = view.findViewById(R.id.tv_agile_dfg_light_loading_text);
+        View view = View.inflate(context, R.layout.agile_dialog_fragment_status_view, null);
+        AppCompatTextView tvMsg = view.findViewById(R.id.tv_agile_dfg_status_view_content);
         tvMsg.setText(hint);
         return new AlertDialog.Builder(context, R.style.Dialog_Loading)
                 .setView(view)

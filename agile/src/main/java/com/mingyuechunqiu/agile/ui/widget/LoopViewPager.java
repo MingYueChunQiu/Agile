@@ -2,8 +2,10 @@ package com.mingyuechunqiu.agile.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.database.DataSetObserver;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.MotionEvent;
@@ -109,6 +111,10 @@ public class LoopViewPager extends FrameLayout {
     }
 
     public void pausePlay() {
+        //原本处于播放状态，才能进入暂停状态
+        if (mState != State.STATE_PLAY) {
+            return;
+        }
         releaseLoopResource();
         mState = State.STATE_PAUSE;
     }
@@ -222,26 +228,27 @@ public class LoopViewPager extends FrameLayout {
         @Override
         public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
             Object itemView = mCacheItemView.get(position);
+            final int realPosition = mData.size() > 1 ? (position - 1) : position;//对于用户而言真实的Item索引位置
             if (itemView == null) {
-                itemView = onCreateItem(container, position);
+                itemView = onCreateItem(container, realPosition);
                 ((View) itemView).setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (mListener != null) {
-                            mListener.onItemClick(container, v, position, mData.get(position));
+                            mListener.onItemClick(container, realPosition, v, mData.get(position));
                         }
                     }
                 });
                 mCacheItemView.put(position, itemView);
             }
-            onBindItem(container, position, (View) itemView, mData.get(position));
+            onBindItem(container, realPosition, (View) itemView, mData.get(position));
             container.addView((View) itemView);
             return itemView;
         }
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            onDestroyItem(container, position, (View) object);
+            onDestroyItem(container, (mData.size() > 1 ? (position - 1) : position), (View) object);
             container.removeView((View) object);
         }
 
@@ -297,8 +304,66 @@ public class LoopViewPager extends FrameLayout {
         }
 
         @Override
+        public void restoreState(@Nullable Parcelable state, @Nullable ClassLoader loader) {
+            super.restoreState(state, loader);
+            mAdapter.restoreState(state, loader);
+        }
+
+        @Nullable
+        @Override
+        public Parcelable saveState() {
+            return mAdapter.saveState();
+        }
+
+        @Override
+        public void startUpdate(@NonNull ViewGroup container) {
+            super.startUpdate(container);
+            mAdapter.startUpdate(container);
+        }
+
+        @Override
         public void finishUpdate(@NonNull ViewGroup container) {
+            super.finishUpdate(container);
             mAdapter.finishUpdate(container);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mAdapter.getPageTitle(position);
+        }
+
+        @Override
+        public float getPageWidth(int position) {
+            return mAdapter.getPageWidth(position);
+        }
+
+        @Override
+        public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            super.setPrimaryItem(container, position, object);
+            mAdapter.setPrimaryItem(container, position, object);
+        }
+
+        @Override
+        public void unregisterDataSetObserver(@NonNull DataSetObserver observer) {
+            super.unregisterDataSetObserver(observer);
+            mAdapter.unregisterDataSetObserver(observer);
+        }
+
+        @Override
+        public void registerDataSetObserver(@NonNull DataSetObserver observer) {
+            super.registerDataSetObserver(observer);
+            mAdapter.registerDataSetObserver(observer);
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+            mAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            return mAdapter.getItemPosition(object);
         }
 
         public void setOnItemClickListener(@NonNull OnItemListener<T> listener) {
@@ -320,7 +385,7 @@ public class LoopViewPager extends FrameLayout {
      */
     public interface OnItemListener<T> {
 
-        void onItemClick(@NonNull ViewGroup container, @NonNull View itemView, int position, T item);
+        void onItemClick(@NonNull ViewGroup container, int position, @NonNull View itemView, T item);
     }
 
     private static class LoopHandler extends Handler {

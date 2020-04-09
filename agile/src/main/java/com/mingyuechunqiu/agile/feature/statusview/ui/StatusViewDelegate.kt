@@ -10,7 +10,8 @@ import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewTextOption
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.StatusType
-import com.mingyuechunqiu.agile.util.ScreenUtils
+import com.mingyuechunqiu.agile.ui.widget.DaisyLoadingView
+import java.lang.IllegalArgumentException
 
 /**
  * <pre>
@@ -29,6 +30,7 @@ internal class StatusViewDelegate(private val mOption: StatusViewOption) : IStat
 
     private var mModeType: StatusViewConstants.ModeType = StatusViewConstants.ModeType.TYPE_INVALID
     private var mStatusType = StatusType.TYPE_LOADING
+
     override fun getStatusViewOption(): StatusViewOption {
         return mOption
     }
@@ -62,12 +64,29 @@ internal class StatusViewDelegate(private val mOption: StatusViewOption) : IStat
 
     private fun applyProgressConfigure(vProgress: View?) {
         vProgress?.visibility = if (mOption.isShowProgressView) View.VISIBLE else View.GONE
-        vProgress?.takeIf { it is ProgressBar }?.let {
-            val pbProgress = it as ProgressBar
-            mOption.progressDrawable?.let { drawable ->
-                pbProgress.progressDrawable = drawable
+        val progressOption = mOption.progressOption ?: return
+        when (progressOption.progressStyle) {
+            StatusViewConstants.ProgressStyle.STYLE_SYSTEM -> {
+                vProgress?.takeIf { it is ProgressBar }?.let {
+                    val pbProgress = it as ProgressBar
+                    progressOption.progressDrawable?.let { drawable ->
+                        pbProgress.progressDrawable = drawable
+                    }
+                    pbProgress.layoutParams.height = progressOption.progressSize
+                }
+            }
+            StatusViewConstants.ProgressStyle.STYLE_DAISY -> {
+                vProgress?.takeIf { it is DaisyLoadingView }?.let {
+                    val dlvProgress = it as DaisyLoadingView
+                    dlvProgress.size = progressOption.progressSize.toFloat()
+                    dlvProgress.color = progressOption.daisyColor
+                }
+            }
+            else -> {
+                throw IllegalArgumentException("progressStyle params error")
             }
         }
+
     }
 
     private fun applyIconConfigure(ivIcon: ImageView?) {
