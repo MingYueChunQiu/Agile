@@ -34,6 +34,7 @@ public class ParamsInfo {
 
     public enum RequestCategory {
 
-        CATEGORY_NOT_SET, CATEGORY_NETWORK
+        //未设置，离线，网络
+        CATEGORY_NOT_SET, CATEGORY_OFFLINE, CATEGORY_NETWORK
     }
 }
