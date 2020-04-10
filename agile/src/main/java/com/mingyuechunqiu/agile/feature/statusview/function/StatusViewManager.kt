@@ -5,6 +5,7 @@ import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.StatusType
+import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView
 
 /**
  * <pre>
@@ -25,6 +26,14 @@ internal class StatusViewManager(private val mHelper: IStatusViewHelper) : IStat
 
     override fun getStatusViewConfigure(): StatusViewConfigure? {
         return mHelper.getStatusViewConfigure()
+    }
+
+    override fun setStatusView(statusView: IStatusView) {
+        mHelper.setStatusView(statusView)
+    }
+
+    override fun getStatusView(): IStatusView? {
+        return mHelper.getStatusView()
     }
 
     override fun showStatusView(type: StatusType, manager: FragmentManager, option: StatusViewOption?) {

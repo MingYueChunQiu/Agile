@@ -25,11 +25,14 @@ import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
+import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView;
 import com.mingyuechunqiu.agile.framework.function.TransferDataCallback;
 import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
 import com.mingyuechunqiu.agile.framework.ui.WindowHandler;
 import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
 import com.mingyuechunqiu.agile.util.ToastUtils;
+
+import static com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.TAG_AGILE_STATUS_VIEW;
 
 /**
  * <pre>
@@ -60,6 +63,7 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        restoreAgileResource(savedInstanceState);
         initView(view, savedInstanceState);
     }
 
@@ -76,6 +80,22 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     public void onDestroy() {
         super.onDestroy();
         releaseOnDestroy();
+    }
+
+    /**
+     * 恢复意外销毁被保存的资源
+     *
+     * @param savedInstanceState 实例资源对象
+     */
+    protected void restoreAgileResource(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            return;
+        }
+        //DialogFragment在界面意外销毁后会由系统重新创建
+        IStatusView statusView = (IStatusView) getParentFragmentManager().findFragmentByTag(TAG_AGILE_STATUS_VIEW);
+        if (statusView != null) {
+            getStatusViewManager().setStatusView(statusView);
+        }
     }
 
     /**

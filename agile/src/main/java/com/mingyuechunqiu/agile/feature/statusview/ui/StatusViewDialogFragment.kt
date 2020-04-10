@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager
 import com.mingyuechunqiu.agile.R
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.TAG_AGILE_STATUS_VIEW
 import com.mingyuechunqiu.agile.ui.diaglogfragment.BaseDialogFragment
 
 
@@ -48,6 +49,7 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
                         window.setLayout(width, height)
                     }
                 }
+                window.setDimAmount(it.dialogDimAmount)
                 if (it.dialogAnimationResId != 0) {
                     window.setWindowAnimations(it.dialogAnimationResId)
                 }
@@ -114,7 +116,7 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
         mDelegate?.modeType = StatusViewConstants.ModeType.TYPE_DIALOG
         mDelegate?.statusType = type
         mManager = manager
-        show(manager, StatusViewDialogFragment::class.java.simpleName)
+        show(manager, TAG_AGILE_STATUS_VIEW)
     }
 
     override fun showStatusView(type: StatusViewConstants.StatusType, manager: FragmentManager, containerId: Int) {
@@ -124,7 +126,7 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
         }
         mDelegate?.modeType = StatusViewConstants.ModeType.TYPE_FRAGMENT
         mManager = manager
-        manager.beginTransaction().add(containerId, this).commitAllowingStateLoss()
+        manager.beginTransaction().add(containerId, this, TAG_AGILE_STATUS_VIEW).commitAllowingStateLoss()
     }
 
     override fun dismissStatusView(allowStateLoss: Boolean) {

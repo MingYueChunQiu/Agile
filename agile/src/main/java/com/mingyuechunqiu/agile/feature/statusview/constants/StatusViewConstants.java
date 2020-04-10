@@ -12,6 +12,9 @@ package com.mingyuechunqiu.agile.feature.statusview.constants;
  */
 public final class StatusViewConstants {
 
+    //状态视图TAG
+    public static final String TAG_AGILE_STATUS_VIEW = "TAG_AGILE_STATUS_VIEW";
+
     private StatusViewConstants() {
     }
 

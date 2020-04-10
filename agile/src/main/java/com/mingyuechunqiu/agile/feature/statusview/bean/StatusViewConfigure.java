@@ -26,6 +26,11 @@ public final class StatusViewConfigure {
         mBuilder = builder;
     }
 
+    @NonNull
+    public Builder getBuilder() {
+        return mBuilder;
+    }
+
     public StatusViewOption getLoadingOption() {
         return mBuilder.loadingOption;
     }

@@ -72,13 +72,20 @@ internal class StatusViewDelegate(private val mOption: StatusViewOption) : IStat
                     progressOption.progressDrawable?.let { drawable ->
                         pbProgress.progressDrawable = drawable
                     }
-                    pbProgress.layoutParams.height = progressOption.progressSize
+                    progressOption.progressSize.takeIf { size -> size > 0 }
+                            ?.let { size ->
+                                pbProgress.layoutParams.width = size
+                                pbProgress.layoutParams.height = size
+                            }
                 }
             }
             StatusViewConstants.ProgressStyle.STYLE_DAISY -> {
                 vProgress?.takeIf { it is DaisyLoadingView }?.let {
                     val dlvProgress = it as DaisyLoadingView
-                    dlvProgress.size = progressOption.progressSize.toFloat()
+                    progressOption.progressSize.takeIf { size -> size > 0 }
+                            ?.let { size ->
+                                dlvProgress.size = size.toFloat()
+                            }
                     dlvProgress.color = progressOption.daisyColor
                 }
             }

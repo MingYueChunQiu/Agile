@@ -34,6 +34,14 @@ internal class StatusViewHelper : IStatusViewHelper {
         return mConfigure
     }
 
+    override fun setStatusView(statusView: IStatusView) {
+        mStatusView = statusView
+    }
+
+    override fun getStatusView(): IStatusView? {
+        return mStatusView
+    }
+
     override fun showStatusView(type: StatusViewConstants.StatusType, manager: FragmentManager, option: StatusViewOption?) {
         checkOrCreateStatusView(type, option)
         mStatusView?.showStatusView(type, manager)
@@ -58,6 +66,9 @@ internal class StatusViewHelper : IStatusViewHelper {
     }
 
     private fun checkOrCreateStatusView(type: StatusViewConstants.StatusType, option: StatusViewOption?) {
+        if (mStatusView != null) {
+            return
+        }
         val statusViewOption = option
                 ?: StatusViewHandler.getStatusViewOptionByType(mConfigure, type, false)
         mStatusView = StatusViewDialogFragment.newInstance(statusViewOption

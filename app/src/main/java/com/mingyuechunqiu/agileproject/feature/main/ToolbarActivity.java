@@ -1,6 +1,8 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
+import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewProgressOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
@@ -78,10 +81,22 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
 
 //        showStatusView(StatusViewConstants.StatusType.TYPE_ERROR, getSupportFragmentManager(),
 //                R.id.fl_toolbar_test_container, option);
-        showLoadingStatusView("发的凤凰网", false);
+//        showLoadingStatusView("发的凤凰网", false);
+//        Observable.timer(5000, TimeUnit.MILLISECONDS)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .doOnComplete(new Action() {
+//                    @Override
+//                    public void run() throws Exception {
+//                        dismissStatusView();
+//                        showLoadingStatusView("发的凤凰网", false);
+//                    }
+//                })
+//                .subscribe();
+//        showLoadingStatusView(R.id.fl_toolbar_test_container);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_toolbar_test_container, new Test())
+                .replace(R.id.fl_toolbar_test_container, new TestFragment())
                 .commitAllowingStateLoss();
+
     }
 
     @Override
@@ -90,12 +105,16 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
         StatusViewConfigure configure = new StatusViewConfigure.Builder().build();
         StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
         configure.setLoadingOption(option);
-        option.getContentOption().setText("废物范围蜂窝网");
-//        option.setProgressOption(new StatusViewProgressOption.Builder()
-//                .setProgressStyle(StatusViewConstants.ProgressStyle.STYLE_DAISY)
+        StatusViewOption.Builder builder = option.getBuilder();
+        builder.getContentOption().setText("废物范围蜂窝网");
+        builder.setShowContentText(false)
+                .setDialogDimAmount(0.5F)
+                .setContainerBackground(new ColorDrawable(Color.TRANSPARENT))
+                .setProgressOption(new StatusViewProgressOption.Builder()
+                        .setProgressStyle(StatusViewConstants.ProgressStyle.STYLE_DAISY)
 //                .setProgressSize((int) ScreenUtils.getPxFromDp(getResources(), 70F))
 //                .setDaisyColor(Color.BLUE)
-//                .build());
+                        .build());
         manager.applyStatusViewConfigure(configure);
     }
 }

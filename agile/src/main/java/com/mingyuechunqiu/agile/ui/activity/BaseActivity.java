@@ -18,6 +18,7 @@ import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
+import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView;
 import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
 import com.mingyuechunqiu.agile.util.ExitApplicationManager;
 import com.mingyuechunqiu.agile.util.ToastUtils;
@@ -30,6 +31,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
+import static com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.TAG_AGILE_STATUS_VIEW;
 
 /**
  * <pre>
@@ -52,6 +54,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         BackgroundLibrary.inject(this);
         super.onCreate(savedInstanceState);
+        restoreAgileResource(savedInstanceState);
         initOnCreate(savedInstanceState);
     }
 
@@ -136,6 +139,22 @@ public abstract class BaseActivity extends AppCompatActivity {
             mKeyEventListenerMap = new ConcurrentHashMap<>();
         }
         return mKeyEventListenerMap;
+    }
+
+    /**
+     * 恢复意外销毁被保存的资源
+     *
+     * @param savedInstanceState 实例资源对象
+     */
+    protected void restoreAgileResource(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            return;
+        }
+        //DialogFragment在界面意外销毁后会由系统重新创建
+        IStatusView statusView = (IStatusView) getSupportFragmentManager().findFragmentByTag(TAG_AGILE_STATUS_VIEW);
+        if (statusView != null) {
+            getStatusViewManager().setStatusView(statusView);
+        }
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agile.feature.statusview.bean;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.ColorInt;
@@ -29,6 +30,11 @@ public class StatusViewProgressOption {
 
     public StatusViewProgressOption(@NonNull Builder builder) {
         mBuilder = builder;
+    }
+
+    @NonNull
+    public Builder getBuilder() {
+        return mBuilder;
     }
 
     public StatusViewConstants.ProgressStyle getProgressStyle() {
@@ -74,6 +80,11 @@ public class StatusViewProgressOption {
         private int progressSize;//进度条大小
         private @ColorInt
         int daisyColor;//菊花样式颜色
+
+        public Builder() {
+            progressStyle = StatusViewConstants.ProgressStyle.STYLE_SYSTEM;
+            daisyColor = Color.BLACK;
+        }
 
         public StatusViewProgressOption build() {
             return new StatusViewProgressOption(this);

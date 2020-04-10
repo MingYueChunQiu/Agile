@@ -6,6 +6,7 @@ import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.StatusType
+import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView
 
 /**
  * <pre>
@@ -24,6 +25,10 @@ interface IStatusViewHelper {
     fun applyStatusViewConfigure(configure: StatusViewConfigure)
 
     fun getStatusViewConfigure(): StatusViewConfigure?
+
+    fun setStatusView(statusView: IStatusView)
+
+    fun getStatusView(): IStatusView?
 
     fun showStatusView(type: StatusType, manager: FragmentManager, option: StatusViewOption?)
 

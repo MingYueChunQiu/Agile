@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
@@ -31,6 +32,11 @@ public class StatusViewOption {
 
     public StatusViewOption(@NonNull Builder builder) {
         mBuilder = builder;
+    }
+
+    @NonNull
+    public Builder getBuilder() {
+        return mBuilder;
     }
 
     public IStatusViewContainer getStatusViewContainer() {
@@ -63,6 +69,14 @@ public class StatusViewOption {
 
     public void setDialogHeight(int dialogHeight) {
         mBuilder.dialogHeight = dialogHeight;
+    }
+
+    public float getDialogDimAmount() {
+        return mBuilder.dialogDimAmount;
+    }
+
+    public void setDialogDimAmount(@FloatRange(from = 0.0, to = 1.0) float dialogDimAmount) {
+        mBuilder.dialogDimAmount = dialogDimAmount;
     }
 
     @StyleRes
@@ -194,6 +208,8 @@ public class StatusViewOption {
         private IStatusViewContainer container;//对话框布局容器
         private boolean cancelWithOutside;//是否能触摸外围区域取消对话框
         private int dialogWidth, dialogHeight;//对话框宽高
+        @FloatRange(from = 0.0, to = 1.0)
+        private float dialogDimAmount;//对话框背景遮罩
         private @StyleRes
         int dialogAnimationResId;//对话框动画资源ID
         private float containerElevation;//容器阴影大小
@@ -218,6 +234,7 @@ public class StatusViewOption {
             showReloadIcon = false;
             showContentText = true;
             showReloadText = false;
+            dialogDimAmount = 0.5F;
         }
 
         public StatusViewOption build() {
@@ -257,6 +274,15 @@ public class StatusViewOption {
 
         public Builder setDialogHeight(int dialogHeight) {
             this.dialogHeight = dialogHeight;
+            return this;
+        }
+
+        public float getDialogDimAmount() {
+            return dialogDimAmount;
+        }
+
+        public Builder setDialogDimAmount(@FloatRange(from = 0.0, to = 1.0) float dialogDimAmount) {
+            this.dialogDimAmount = dialogDimAmount;
             return this;
         }
 

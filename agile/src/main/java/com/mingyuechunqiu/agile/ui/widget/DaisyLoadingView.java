@@ -60,7 +60,7 @@ public class DaisyLoadingView extends View {
     public DaisyLoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.DaisyLoadingView, defStyleAttr, 0);
-        mSize = array.getDimension(R.styleable.DaisyLoadingView_dlv_size, ScreenUtils.getPxFromDp(getResources(), 48));
+        mSize = array.getDimension(R.styleable.DaisyLoadingView_dlv_size, ScreenUtils.getPxFromDp(getResources(), 32));
         mColor = array.getInt(R.styleable.DaisyLoadingView_dlv_color, Color.BLACK);
         array.recycle();
         initPaint();

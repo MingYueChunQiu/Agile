@@ -32,6 +32,11 @@ public class StatusViewTextOption {
         mBuilder = builder;
     }
 
+    @NonNull
+    public Builder getBuilder() {
+        return mBuilder;
+    }
+
     @Nullable
     public String getText() {
         return mBuilder.text;
