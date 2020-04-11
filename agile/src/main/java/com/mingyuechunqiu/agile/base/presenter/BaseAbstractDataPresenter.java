@@ -39,8 +39,10 @@ public abstract class BaseAbstractDataPresenter<V extends IBaseDataView<?>, M ex
         }
         if (info.getRequestCategory() == ParamsInfo.RequestCategory.CATEGORY_NETWORK) {
             //判断当前网络状况，是否继续进行网络业务操作
-            if (!judgeNetwork() && !checkViewRefIsNull()) {
-                disconnectNetwork();
+            if (!checkNetworkIsConnected()) {
+                if (!checkViewRefIsNull()) {
+                    disconnectNetwork();
+                }
                 return;
             }
         }
@@ -65,11 +67,11 @@ public abstract class BaseAbstractDataPresenter<V extends IBaseDataView<?>, M ex
     }
 
     /**
-     * 检测网络请求
+     * 检测网络是否连接
      *
-     * @return 当网络连接中断时返回false，否则返回true
+     * @return 当网络连接正常时返回true，否则返回false
      */
-    protected boolean judgeNetwork() {
+    protected boolean checkNetworkIsConnected() {
         if (NetworkUtils.checkNetworkIsConnected()) {
             return true;
         }

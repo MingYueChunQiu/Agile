@@ -55,8 +55,8 @@ public class TestFragment extends BaseStatusViewPresenterFragment<MainContract.V
 
     @Override
     protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        showLoadingStatusView("发的凤凰网", false);
-        showLoadingStatusView(R.id.fl_fragment_main_loading);
+        showLoadingStatusView("发的凤凰网", false);
+//        showLoadingStatusView(R.id.fl_fragment_main_loading);
     }
 
     @Override
