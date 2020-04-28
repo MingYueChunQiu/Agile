@@ -65,10 +65,12 @@ public class PressStateViewGroup extends FrameLayout {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     performAnimator(mScaleX, mScaleY, mScaleDuration);
+                    setPressed(true);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     performAnimator(mRestoreX, mRestoreY, mRestoreDuration);
+                    setPressed(false);
                     break;
             }
         }
@@ -85,6 +87,7 @@ public class PressStateViewGroup extends FrameLayout {
                 performClick();
             case MotionEvent.ACTION_CANCEL:
                 performAnimator(mRestoreX, mRestoreY, mRestoreDuration);
+                setPressed(false);
                 break;
         }
         return super.onTouchEvent(event);

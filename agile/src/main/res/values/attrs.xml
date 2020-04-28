@@ -136,4 +136,11 @@
         <attr name="dlv_size" format="dimension" />
         <attr name="dlv_color" format="color" />
     </declare-styleable>
+
+    <!-- 回弹容器控件-->
+    <declare-styleable name="ReboundViewGroup">
+        <attr name="rvg_header_offset_height" format="dimension" />
+        <attr name="rvg_footer_offset_height" format="dimension" />
+        <attr name="rvg_rebound_duration" format="integer" />
+    </declare-styleable>
 </resources>

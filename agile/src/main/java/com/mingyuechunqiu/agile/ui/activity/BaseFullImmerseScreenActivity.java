@@ -22,8 +22,8 @@ public abstract class BaseFullImmerseScreenActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setTransparentStatusAndControlNavigationLayout();
+        super.onCreate(savedInstanceState);
     }
 
     /**
