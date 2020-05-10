@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agile.util;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -29,6 +30,27 @@ import pub.devrel.easypermissions.AppSettingsDialog;
 public final class DialogUtils {
 
     private DialogUtils() {
+    }
+
+    /**
+     * 显示警示对话框
+     *
+     * @param context          上下文
+     * @param title            标题
+     * @param message          内容
+     * @param positiveListener 确认按钮监听器
+     * @param negativeListener 取消按钮监听器
+     */
+    public static void showAlertDialog(@NonNull Context context, @NonNull String title, @Nullable String message,
+                                       @NonNull DialogInterface.OnClickListener positiveListener,
+                                       @Nullable DialogInterface.OnClickListener negativeListener) {
+        new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(R.string.confirm, positiveListener)
+                .setNegativeButton(R.string.cancel, negativeListener)
+                .create()
+                .show();
     }
 
     /**

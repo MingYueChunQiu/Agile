@@ -22,7 +22,6 @@ import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView;
 import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
 import com.mingyuechunqiu.agile.util.ExitApplicationManager;
 import com.mingyuechunqiu.agile.util.ToastUtils;
-import com.noober.background.BackgroundLibrary;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,7 +51,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        BackgroundLibrary.inject(this);
         super.onCreate(savedInstanceState);
         restoreAgileResource(savedInstanceState);
         initOnCreate(savedInstanceState);

@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agile.ui.diaglogfragment;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -80,6 +81,18 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     public void onDestroy() {
         super.onDestroy();
         releaseOnDestroy();
+    }
+
+    /**
+     * 设置对话框消失监听器
+     *
+     * @param listener 监听器
+     */
+    public void setOnDismissListener(@NonNull DialogInterface.OnDismissListener listener) {
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setOnDismissListener(listener);
+        }
     }
 
     /**
