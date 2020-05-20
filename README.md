@@ -14,7 +14,7 @@ a agile android framework for MVP.
 	1.优化调整</br>
     v0.3.30:</br>
     	1.新增FTP和Socket功能模块</br>
-    	2.调整api对外提供依赖包（只有RoundCornerDialogHelper、RecorderManager、MediaPicker三个）</br>
+    	2.调整api对外提供依赖包</br>
 
 已重构架构，规范命名，引入Kotlin
 1.Add it in your root build.gradle at the end of repositories:
@@ -112,7 +112,7 @@ model:
 			        ----BaseAbstractNetworkDaoOperation<T>
 			        ----RetrofitCallDaoOperation<T>
 				
-onMenuItemClickListener:
+Listener:
 		IBaseListener
 		----ICountDownListener（具体业务接口）
 ```
