@@ -89,7 +89,7 @@ public interface JsonHelperable {
      * @param <T>       值的泛型类型
      * @return 返回list集合
      */
-    @Nullable
+    @NonNull
     <T> List<T> getListFromJson(@NonNull JsonArray jsonArray, @NonNull Class<T> c);
 
     /**

@@ -8,6 +8,7 @@ import androidx.annotation.StringRes;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.framework.IBaseListener;
+import com.mingyuechunqiu.agile.base.model.dao.framework.callback.local.DaoLocalCallback;
 import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRetrofitCallback;
 import com.mingyuechunqiu.agile.base.model.dao.framework.result.DaoResultHandler;
 import com.mingyuechunqiu.agile.base.model.framework.local.IModelLocalData;
@@ -31,7 +32,7 @@ import retrofit2.Response;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractDataModel<I extends IBaseListener> extends BaseAbstractModel<I> implements DaoRetrofitCallback<I>,
+public abstract class BaseAbstractDataModel<I extends IBaseListener> extends BaseAbstractModel<I> implements DaoLocalCallback<I>, DaoRetrofitCallback<I>,
         IModelLocalData, IModelRetrofitData {
 
     public BaseAbstractDataModel(@NonNull I listener) {

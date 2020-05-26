@@ -9,15 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:text="helloWorld"
-        app:bl_pressed_textColor="@color/colorPrimary"
-        app:bl_unPressed_textColor="@color/colorAccent" />
+        android:text="helloWorld"/>
 
     <com.mingyuechunqiu.agile.ui.widget.PasswordClearEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:bl_focused_drawable="@drawable/sign_et_bg_focused"
-        app:bl_unFocused_drawable="@drawable/sign_et_bg_focus"
         app:pcet_clear_btn_is_visible="true" />
 
     <androidx.appcompat.widget.AppCompatTextView

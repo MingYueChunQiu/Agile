@@ -19,7 +19,7 @@ import java.util.Map;
  *     version: 1.0
  * </pre>
  */
-class JsonManager implements JsonManagerable {
+final class JsonManager implements JsonManagerable {
 
     private JsonHelperable mHelper;
 
@@ -65,7 +65,7 @@ class JsonManager implements JsonManagerable {
         return mHelper.getListFromJson(json, c);
     }
 
-    @Nullable
+    @NonNull
     @Override
     public <T> List<T> getListFromJson(@NonNull JsonArray jsonArray, @NonNull Class<T> c) {
         return mHelper.getListFromJson(jsonArray, c);

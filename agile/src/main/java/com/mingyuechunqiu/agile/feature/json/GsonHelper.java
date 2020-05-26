@@ -1,9 +1,9 @@
 package com.mingyuechunqiu.agile.feature.json;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -35,7 +35,7 @@ import java.util.Set;
  *     version: 1.0
  * </pre>
  */
-class GsonHelper implements JsonHelperable {
+final class GsonHelper implements JsonHelperable {
 
     private volatile Gson mGson;
 
@@ -142,7 +142,7 @@ class GsonHelper implements JsonHelperable {
         return null;
     }
 
-    @Nullable
+    @NonNull
     @Override
     public <T> List<T> getListFromJson(@NonNull JsonArray jsonArray, @NonNull Class<T> c) {
         List<T> list = new ArrayList<>();

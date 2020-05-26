@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -397,6 +398,7 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
      *
      * @return 返回布局资源ID
      */
+    @LayoutRes
     protected abstract int getInflateLayoutId();
 
     /**

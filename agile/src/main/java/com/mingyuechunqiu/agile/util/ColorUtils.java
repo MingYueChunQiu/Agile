@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agile.util;
 
+import androidx.annotation.ColorInt;
+
 /**
  * <pre>
  *      Project:    Agile
@@ -23,10 +25,7 @@ public final class ColorUtils {
      * @param fraction 进度因子
      * @return 返回对应进度下的颜色
      */
-    private int getGradualColor(float fraction) {
-        int startColor = 0x00FFFFFF;
-        int endColor = 0xFFFFFFFF;
-
+    private int getGradualColor(@ColorInt int startColor, @ColorInt int endColor, float fraction) {
         /*
          * 起始颜色ARGB颜色通道拆分
          */

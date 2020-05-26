@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -620,6 +621,7 @@ public abstract class BaseFragment extends Fragment {
      *
      * @return 返回布局资源ID
      */
+    @LayoutRes
     protected abstract int getInflateLayoutId();
 
     /**

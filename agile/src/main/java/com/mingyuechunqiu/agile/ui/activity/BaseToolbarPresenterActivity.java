@@ -94,8 +94,8 @@ public abstract class BaseToolbarPresenterActivity<V extends IBaseDataView<P>, P
      *
      * @return 返回资源ID
      */
-    protected abstract @IdRes
-    int getInflateToolbarResId();
+    @IdRes
+    protected abstract int getInflateToolbarResId();
 
     /**
      * 供子类覆写的创建ToolbarBean方法，并放回创建好的ToolbarBean
