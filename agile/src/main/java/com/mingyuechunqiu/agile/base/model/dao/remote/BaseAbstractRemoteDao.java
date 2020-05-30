@@ -72,8 +72,9 @@ public abstract class BaseAbstractRemoteDao<C extends DaoRemoteCallback<?>> impl
         if (mRemoteDaoOperationList.size() > 0) {
             Iterator<IBaseRemoteDaoOperation<?>> iterator = mRemoteDaoOperationList.iterator();
             while (iterator.hasNext()) {
-                IBaseRemoteDaoOperation o = iterator.next();
+                IBaseRemoteDaoOperation<?> o = iterator.next();
                 if (o != null && o.isCanceled()) {
+                    o.releaseOnDetach();
                     iterator.remove();
                 }
             }
@@ -95,6 +96,7 @@ public abstract class BaseAbstractRemoteDao<C extends DaoRemoteCallback<?>> impl
         if (!operation.isCanceled()) {
             operation.cancel();
         }
+        operation.releaseOnDetach();
         mRemoteDaoOperationList.remove(operation);
     }
 
@@ -103,8 +105,11 @@ public abstract class BaseAbstractRemoteDao<C extends DaoRemoteCallback<?>> impl
             return;
         }
         for (IBaseRemoteDaoOperation<?> operation : mRemoteDaoOperationList) {
-            if (operation != null && !operation.isCanceled()) {
-                operation.cancel();
+            if (operation != null) {
+                if (!operation.isCanceled()) {
+                    operation.cancel();
+                }
+                operation.releaseOnDetach();
             }
         }
         mRemoteDaoOperationList.clear();

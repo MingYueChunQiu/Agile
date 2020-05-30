@@ -25,9 +25,4 @@ public abstract class BaseAbstractRemoteDaoOperation<T> implements IBaseRemoteDa
     public void releaseOnDetach() {
         mOperation = null;
     }
-
-    /**
-     * 释放资源
-     */
-    protected abstract void release();
 }

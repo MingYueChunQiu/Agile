@@ -21,8 +21,8 @@ public abstract class BaseAbstractLocalDaoOperation<T> implements IBaseLocalDaoO
         mOperation = operation;
     }
 
-    /**
-     * 释放资源
-     */
-    protected abstract void release();
+    @Override
+    public void releaseOnDetach() {
+        mOperation = null;
+    }
 }

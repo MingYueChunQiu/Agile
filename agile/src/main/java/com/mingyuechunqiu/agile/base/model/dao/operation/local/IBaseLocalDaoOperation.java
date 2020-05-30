@@ -16,14 +16,14 @@ import com.mingyuechunqiu.agile.base.model.dao.operation.IBaseDaoOperation;
 public interface IBaseLocalDaoOperation<T> extends IBaseDaoOperation<T> {
 
     /**
-     * 操作是否是无效的
+     * 是否操作已经被取消
      *
-     * @return 如果无效返回true，否则返回false
+     * @return 如果已经被取消返回true，否则返回false
      */
-    boolean isInvalid();
+    boolean isCanceled();
 
     /**
-     * 清理资源
+     * 取消操作
      */
-    void clear();
+    void cancel();
 }

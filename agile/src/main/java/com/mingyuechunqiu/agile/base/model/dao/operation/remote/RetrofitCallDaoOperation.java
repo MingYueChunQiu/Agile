@@ -32,8 +32,4 @@ public class RetrofitCallDaoOperation<T> extends BaseAbstractNetworkDaoOperation
             mOperation.cancel();
         }
     }
-
-    @Override
-    protected void release() {
-    }
 }

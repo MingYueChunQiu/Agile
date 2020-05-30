@@ -62,7 +62,7 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback<?>> implem
      * @param operation 本地数据操作
      */
     protected <T> void addLocalOperation(@Nullable IBaseLocalDaoOperation<T> operation) {
-        if (operation == null || operation.isInvalid()) {
+        if (operation == null || operation.isCanceled()) {
             return;
         }
         if (mLocalDaoOperationList == null) {
@@ -72,8 +72,9 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback<?>> implem
         if (mLocalDaoOperationList.size() > 0) {
             Iterator<IBaseLocalDaoOperation<?>> iterator = mLocalDaoOperationList.iterator();
             while (iterator.hasNext()) {
-                IBaseLocalDaoOperation o = iterator.next();
-                if (o != null && o.isInvalid()) {
+                IBaseLocalDaoOperation<?> o = iterator.next();
+                if (o != null && o.isCanceled()) {
+                    o.releaseOnDetach();
                     iterator.remove();
                 }
             }
@@ -92,9 +93,10 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback<?>> implem
         if (operation == null || mLocalDaoOperationList == null || mLocalDaoOperationList.size() == 0) {
             return;
         }
-        if (!operation.isInvalid()) {
-            operation.clear();
+        if (!operation.isCanceled()) {
+            operation.cancel();
         }
+        operation.releaseOnDetach();
         mLocalDaoOperationList.remove(operation);
     }
 
@@ -103,8 +105,11 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback<?>> implem
             return;
         }
         for (IBaseLocalDaoOperation<?> operation : mLocalDaoOperationList) {
-            if (operation != null && !operation.isInvalid()) {
-                operation.clear();
+            if (operation != null) {
+                if (!operation.isCanceled()) {
+                    operation.cancel();
+                }
+                operation.releaseOnDetach();
             }
         }
         mLocalDaoOperationList.clear();
