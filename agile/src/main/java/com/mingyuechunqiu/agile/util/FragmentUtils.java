@@ -112,6 +112,9 @@ public final class FragmentUtils {
         if (manager == null || fragment == null) {
             return;
         }
+        if (type == TYPE_ADD && manager.findFragmentByTag(fragment.getClass().getSimpleName()) != null) {
+            return;
+        }
         FragmentTransaction transaction = manager.beginTransaction();
         if (enterAnimationId != NO_ID && exitAnimationId != NO_ID &&
                 popEnterAnimationId != NO_ID && popExitAnimationId != NO_ID) {

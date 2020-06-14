@@ -97,6 +97,22 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     }
 
     /**
+     * 安全显示对话框
+     *
+     * @param manager Fragment管理器
+     * @param tag     Fragment标签
+     */
+    public void showSafely(@NonNull FragmentManager manager, @Nullable String tag) {
+        if (manager.findFragmentByTag(tag) != null) {
+            return;
+        }
+        if (isAdded()) {
+            return;
+        }
+        show(manager, tag);
+    }
+
+    /**
      * 恢复意外销毁被保存的资源
      *
      * @param savedInstanceState 实例资源对象

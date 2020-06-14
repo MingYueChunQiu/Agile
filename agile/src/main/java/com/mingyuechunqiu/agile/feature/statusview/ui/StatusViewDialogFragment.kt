@@ -116,6 +116,9 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
         mDelegate?.modeType = StatusViewConstants.ModeType.TYPE_DIALOG
         mDelegate?.statusType = type
         mManager = manager
+        if (manager.findFragmentByTag(TAG_AGILE_STATUS_VIEW) != null) {
+            return
+        }
         show(manager, TAG_AGILE_STATUS_VIEW)
     }
 
@@ -126,6 +129,9 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
         }
         mDelegate?.modeType = StatusViewConstants.ModeType.TYPE_FRAGMENT
         mManager = manager
+        if (manager.findFragmentByTag(TAG_AGILE_STATUS_VIEW) != null) {
+            return
+        }
         manager.beginTransaction().add(containerId, this, TAG_AGILE_STATUS_VIEW).commitAllowingStateLoss()
     }
 
