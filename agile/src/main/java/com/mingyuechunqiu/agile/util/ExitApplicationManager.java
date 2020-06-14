@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agile.util;
 import android.app.Activity;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.frame.Agile;
@@ -26,6 +27,7 @@ public final class ExitApplicationManager {
 
     private static volatile ExitApplicationManager sExitApplicationManager;
     private List<WeakReference<Activity>> mList;
+    private List<ExitApplicationCallback> mCallbackList;
 
     private ExitApplicationManager() {
         mList = new ArrayList<>();
@@ -64,7 +66,30 @@ public final class ExitApplicationManager {
         }
         sExitApplicationManager.mList.clear();
         sExitApplicationManager.mList = null;
+
+        if (sExitApplicationManager.mCallbackList == null) {
+            return;
+        }
+        for (ExitApplicationCallback callback : sExitApplicationManager.mCallbackList) {
+            if (callback != null) {
+                callback.onExitApplication();
+            }
+        }
         sExitApplicationManager = null;
+    }
+
+    public void addExitApplicationCallback(@NonNull ExitApplicationCallback callback) {
+        if (mCallbackList == null) {
+            mCallbackList = new ArrayList<>();
+        }
+        mCallbackList.add(callback);
+    }
+
+    public void removeExitApplicationCallback(@NonNull ExitApplicationCallback callback) {
+        if (mCallbackList == null) {
+            return;
+        }
+        mCallbackList.remove(callback);
     }
 
     /**
@@ -80,5 +105,9 @@ public final class ExitApplicationManager {
         }
     }
 
+    public interface ExitApplicationCallback {
+
+        void onExitApplication();
+    }
 }
 
