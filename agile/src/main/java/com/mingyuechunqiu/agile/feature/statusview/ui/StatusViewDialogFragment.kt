@@ -116,10 +116,7 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
         mDelegate?.modeType = StatusViewConstants.ModeType.TYPE_DIALOG
         mDelegate?.statusType = type
         mManager = manager
-        if (manager.findFragmentByTag(TAG_AGILE_STATUS_VIEW) != null) {
-            return
-        }
-        show(manager, TAG_AGILE_STATUS_VIEW)
+        showSafely(manager, TAG_AGILE_STATUS_VIEW)
     }
 
     override fun showStatusView(type: StatusViewConstants.StatusType, manager: FragmentManager, containerId: Int) {
