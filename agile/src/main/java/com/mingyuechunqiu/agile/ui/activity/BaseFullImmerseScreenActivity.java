@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
  *     author : xyj
  *     e-mail : yujie.xi@ehailuo.com
  *     time   : 2018/05/16
- *     desc   : 所有全屏界面的基类
+ *     desc   : 所有沉浸式全屏界面的基类
  *              继承自BaseActivity
  *     version: 1.0
  * </pre>
@@ -22,7 +22,9 @@ public abstract class BaseFullImmerseScreenActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTransparentStatusAndControlNavigationLayout();
+        if (openFullImmerseScreenEffect()) {
+            setTransparentStatusAndControlNavigationLayout();
+        }
         super.onCreate(savedInstanceState);
     }
 
@@ -45,4 +47,12 @@ public abstract class BaseFullImmerseScreenActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 是否开启沉浸式全屏效果
+     *
+     * @return 返回true开启，否则返回false
+     */
+    protected boolean openFullImmerseScreenEffect() {
+        return true;
+    }
 }
