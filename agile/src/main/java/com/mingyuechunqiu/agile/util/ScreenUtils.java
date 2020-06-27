@@ -1,16 +1,19 @@
 package com.mingyuechunqiu.agile.util;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 /**
  * <pre>
@@ -161,4 +164,61 @@ public final class ScreenUtils {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    /**
+     * 隐藏对话框指定view的软键盘
+     *
+     * @param dialog 对话框
+     */
+    public static void hideViewSoftInput(@Nullable Dialog dialog) {
+        if (dialog == null) {
+            return;
+        }
+        Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+        hideViewSoftInput(dialog, window.getDecorView());
+    }
+
+    /**
+     * 隐藏对话框指定view的软键盘
+     *
+     * @param dialog 对话框
+     * @param view   指定的view
+     */
+    public static void hideViewSoftInput(@Nullable Dialog dialog, @Nullable View view) {
+        if (dialog == null || view == null) {
+            return;
+        }
+        InputMethodManager imm = (InputMethodManager) dialog.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) {
+            return;
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    /**
+     * 隐藏DialogFragment指定view的软键盘
+     *
+     * @param dialogFragment 对话框Fragment
+     */
+    public static void hideViewSoftInput(@Nullable DialogFragment dialogFragment) {
+        if (dialogFragment == null) {
+            return;
+        }
+        hideViewSoftInput(dialogFragment.getDialog());
+    }
+
+    /**
+     * 隐藏DialogFragment指定view的软键盘
+     *
+     * @param dialogFragment 对话框Fragment
+     * @param view           指定的view
+     */
+    public static void hideViewSoftInput(@Nullable DialogFragment dialogFragment, @Nullable View view) {
+        if (dialogFragment == null) {
+            return;
+        }
+        hideViewSoftInput(dialogFragment.getDialog(), view);
+    }
 }

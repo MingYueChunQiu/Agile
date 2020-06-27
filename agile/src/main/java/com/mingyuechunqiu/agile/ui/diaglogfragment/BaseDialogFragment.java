@@ -99,25 +99,6 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     /**
      * 安全显示对话框
      *
-     * @param tag Fragment标签
-     */
-    public void showSafely(@Nullable String tag) {
-        FragmentActivity activity = getActivity();
-        if (activity == null) {
-            return;
-        }
-        if (activity.getSupportFragmentManager().findFragmentByTag(tag) != null) {
-            return;
-        }
-        if (isAdded()) {
-            return;
-        }
-        show(activity.getSupportFragmentManager(), tag);
-    }
-
-    /**
-     * 安全显示对话框
-     *
      * @param manager Fragment管理器
      * @param tag     Fragment标签
      */
