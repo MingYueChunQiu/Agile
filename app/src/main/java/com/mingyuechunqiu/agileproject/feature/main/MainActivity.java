@@ -110,7 +110,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     @Override
     protected void release() {
         Log.d("份", "销毁");
-        ExitApplicationManager.exit();
+        ExitApplicationManager.getInstance().exit();
     }
 
     @Override

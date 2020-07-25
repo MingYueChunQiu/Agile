@@ -48,7 +48,7 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation group: 'commons-net', name: 'commons-net', version: '3.6'
     implementation 'com.github.MingYueChunQiu:RoundCornerDialogHelper:0.2.2'
-    implementation 'androidx.slidingpanelayout:slidingpanelayout:1.0.0'
+    implementation 'androidx.slidingpanelayout:slidingpanelayout:1.1.0'
 }
 
 repositories {

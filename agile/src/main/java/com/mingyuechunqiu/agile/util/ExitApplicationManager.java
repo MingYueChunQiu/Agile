@@ -11,7 +11,9 @@ import com.mingyuechunqiu.agile.service.NetworkStateService;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -25,12 +27,14 @@ import java.util.List;
 
 public final class ExitApplicationManager {
 
-    private static volatile ExitApplicationManager sExitApplicationManager;
-    private List<WeakReference<Activity>> mList;
+    private Map<String, WeakReference<Activity>> mActivityMap;
     private List<ExitApplicationCallback> mCallbackList;
 
     private ExitApplicationManager() {
-        mList = new ArrayList<>();
+    }
+
+    public static ExitApplicationManager getInstance() {
+        return ExitApplicationManagerHolder.INSTANCE;
     }
 
     /**
@@ -38,44 +42,67 @@ public final class ExitApplicationManager {
      *
      * @param activity Activity
      */
-    public static void addActivity(@Nullable Activity activity) {
+    public void addActivity(@Nullable Activity activity) {
         if (activity == null) {
             return;
         }
-        checkInstance();
-        sExitApplicationManager.mList.add(new WeakReference<>(activity));
+        if (mActivityMap == null) {
+            mActivityMap = new HashMap<>();
+        }
+        mActivityMap.put(activity.getClass().getCanonicalName(), new WeakReference<>(activity));
+        if (mCallbackList == null) {
+            return;
+        }
+        for (ExitApplicationCallback callback : mCallbackList) {
+            if (callback != null) {
+                callback.onAddActivity(activity);
+            }
+        }
+    }
+
+    public void removeActivity(@Nullable Activity activity) {
+        if (activity == null || mActivityMap == null) {
+            return;
+        }
+        mActivityMap.remove(activity.getClass().getCanonicalName());
+        if (mCallbackList == null) {
+            return;
+        }
+        for (ExitApplicationCallback callback : mCallbackList) {
+            if (callback != null) {
+                callback.onRemoveActivity(activity);
+            }
+        }
     }
 
     /**
      * 彻底退出应用
      */
-    public static void exit() {
-        if (sExitApplicationManager == null ||
-                sExitApplicationManager.mList == null ||
-                sExitApplicationManager.mList.size() == 0) {
-            return;
-        }
+    public void exit() {
         if (Agile.getAppContext() != null) {
             Agile.getAppContext().stopService(new Intent(
                     Agile.getAppContext(), NetworkStateService.class));
         }
-        for (WeakReference<Activity> weakReference : sExitApplicationManager.mList) {
-            if (weakReference.get() != null) {
+        if (mActivityMap == null || mActivityMap.isEmpty()) {
+            return;
+        }
+        for (WeakReference<Activity> weakReference : mActivityMap.values()) {
+            if (weakReference != null && weakReference.get() != null) {
                 weakReference.get().finish();
             }
         }
-        sExitApplicationManager.mList.clear();
-        sExitApplicationManager.mList = null;
-
-        if (sExitApplicationManager.mCallbackList == null) {
+        mActivityMap.clear();
+        mActivityMap = null;
+        if (mCallbackList == null || mCallbackList.isEmpty()) {
             return;
         }
-        for (ExitApplicationCallback callback : sExitApplicationManager.mCallbackList) {
+        for (ExitApplicationCallback callback : mCallbackList) {
             if (callback != null) {
                 callback.onExitApplication();
             }
         }
-        sExitApplicationManager = null;
+        mCallbackList.clear();
+        mCallbackList = null;
     }
 
     public void addExitApplicationCallback(@NonNull ExitApplicationCallback callback) {
@@ -92,20 +119,16 @@ public final class ExitApplicationManager {
         mCallbackList.remove(callback);
     }
 
-    /**
-     * 检测单例是否存在，不存在则创建
-     */
-    private static void checkInstance() {
-        if (sExitApplicationManager == null) {
-            synchronized (ExitApplicationManager.class) {
-                if (sExitApplicationManager == null) {
-                    sExitApplicationManager = new ExitApplicationManager();
-                }
-            }
-        }
+    private static class ExitApplicationManagerHolder {
+
+        private static ExitApplicationManager INSTANCE = new ExitApplicationManager();
     }
 
     public interface ExitApplicationCallback {
+
+        void onAddActivity(@NonNull Activity activity);
+
+        void onRemoveActivity(@NonNull Activity activity);
 
         void onExitApplication();
     }

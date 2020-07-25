@@ -66,6 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             mKeyEventListenerMap = null;
         }
         mStatusViewManager = null;
+        ExitApplicationManager.getInstance().removeActivity(this);
     }
 
     /**
@@ -162,7 +163,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void initOnCreate(@Nullable Bundle savedInstanceState) {
         initView(savedInstanceState);
-        ExitApplicationManager.addActivity(this);
+        ExitApplicationManager.getInstance().addActivity(this);
     }
 
     /**
