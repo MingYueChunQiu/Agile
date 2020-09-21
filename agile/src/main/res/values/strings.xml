@@ -22,5 +22,6 @@
     <string name="set_permission">设置权限</string>
     <string name="set">设置</string>
     <string name="reload">重新加载</string>
+    <string name="title">标题</string>
 
 </resources>

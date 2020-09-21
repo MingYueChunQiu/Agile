@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.framework.function;
+package com.mingyuechunqiu.agile.util;
 
 import android.app.Activity;
 import android.graphics.Rect;
@@ -7,8 +7,6 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
-
-import com.mingyuechunqiu.agile.util.ScreenUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -22,7 +20,7 @@ import java.lang.ref.WeakReference;
  *     version: 1.0
  * </pre>
  */
-public class SoftInputKeyBoardHelper {
+public final class SoftInputKeyBoardHelper {
 
     private WeakReference<Activity> mActivityRef;
     private View mChildOfContent;
@@ -32,27 +30,27 @@ public class SoftInputKeyBoardHelper {
     private boolean changeContentHeight;//标记是否随软键盘弹出更改内容视图高度
     private OnSoftKeyBoardChangeListener mListener;
 
+    private SoftInputKeyBoardHelper(@NonNull Activity activity) {
+        mActivityRef = new WeakReference<>(activity);
+    }
+
     @NonNull
-    public static SoftInputKeyBoardHelper getInstance(Activity activity) {
+    public static SoftInputKeyBoardHelper getInstance(@NonNull Activity activity) {
         return getInstance(activity, false);
     }
 
     @NonNull
-    public static SoftInputKeyBoardHelper getInstance(Activity activity, boolean removeStatusHeight) {
+    public static SoftInputKeyBoardHelper getInstance(@NonNull Activity activity, boolean removeStatusHeight) {
         return getInstance(activity, true, removeStatusHeight);
     }
 
     @NonNull
-    public static SoftInputKeyBoardHelper getInstance(Activity activity, boolean changeContentHeight,
+    public static SoftInputKeyBoardHelper getInstance(@NonNull Activity activity, boolean changeContentHeight,
                                                       boolean removeStatusHeight) {
         SoftInputKeyBoardHelper listener = new SoftInputKeyBoardHelper(activity);
         listener.changeContentHeight = changeContentHeight;
         listener.removeStatusHeight = removeStatusHeight;
         return listener;
-    }
-
-    private SoftInputKeyBoardHelper(Activity activity) {
-        mActivityRef = new WeakReference<>(activity);
     }
 
     public boolean isRemoveStatusHeight() {
@@ -75,12 +73,12 @@ public class SoftInputKeyBoardHelper {
         return mListener;
     }
 
-    public void setOnSoftKeyBoardChangeListener(OnSoftKeyBoardChangeListener listener) {
+    public void setOnSoftKeyBoardChangeListener(@NonNull OnSoftKeyBoardChangeListener listener) {
         mListener = listener;
     }
 
     public void init() {
-        if (mActivityRef.get() == null) {
+        if (mActivityRef == null || mActivityRef.get() == null) {
             return;
         }
         FrameLayout content = mActivityRef.get().findViewById(android.R.id.content);
@@ -99,7 +97,7 @@ public class SoftInputKeyBoardHelper {
      * 重新布局内容视图
      */
     private void possiblyResizeChildOfContent() {
-        if (mActivityRef.get() == null) {
+        if (mActivityRef == null || mActivityRef.get() == null) {
             return;
         }
         int usableHeightNow = computeUsableHeight();
@@ -124,6 +122,8 @@ public class SoftInputKeyBoardHelper {
                 if (changeContentHeight) {
                     frameLayoutParams.height = usableHeightSansKeyboard;
                 }
+                //要减去底部导航栏高度，否则在有导航栏情况下，会导致布局延伸到导航栏里面
+                frameLayoutParams.height -= ScreenUtils.getNavigationBarHeight(mActivityRef.get());
                 if (mListener != null) {
                     mListener.onHideSoftKeyBoard();
                 }
