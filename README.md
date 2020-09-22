@@ -2,7 +2,11 @@
 a agile android framework for MVP.
 一个Android高效框架，提供公共框架、方法，进行敏捷开发。
 
-    最新v0.4.2:完善功能
+    最新v0.4.8:
+    	1.新增BatteryHelper</br>
+    	2.优化代码</br>
+	
+    v0.4.2:完善功能</br>
     v0.4:1.增加圆角图形、圆角WebView、无限循环ViewPager等自定义控件
 	 2.调整优化状态视图模块
 	 3.优化框架代码
