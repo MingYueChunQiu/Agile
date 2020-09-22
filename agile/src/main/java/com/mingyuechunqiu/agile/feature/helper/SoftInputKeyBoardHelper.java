@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.util;
+package com.mingyuechunqiu.agile.feature.helper;
 
 import android.app.Activity;
 import android.graphics.Rect;
@@ -7,6 +7,8 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+
+import com.mingyuechunqiu.agile.util.ScreenUtils;
 
 import java.lang.ref.WeakReference;
 
