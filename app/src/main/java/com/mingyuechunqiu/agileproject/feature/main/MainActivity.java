@@ -32,7 +32,7 @@ import com.mingyuechunqiu.agile.util.ExitApplicationManager;
 import com.mingyuechunqiu.agile.util.FragmentUtils;
 import com.mingyuechunqiu.agile.util.StringUtils;
 import com.mingyuechunqiu.agile.util.ToastUtils;
-import com.mingyuechunqiu.agile.util.ToolbarUtils;
+import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
 import com.mingyuechunqiu.agileproject.R;
 
 import java.lang.ref.WeakReference;
@@ -99,8 +99,8 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    protected ToolbarUtils.ToolbarConfigure initToolbarConfigure() {
-        return new ToolbarUtils.ToolbarConfigure.Builder()
+    protected ToolbarHelper.ToolbarConfigure initToolbarConfigure() {
+        return new ToolbarHelper.ToolbarConfigure.Builder()
                 .setImmerse(true)
                 .setNavigationIconResId(R.drawable.agile_arrow_back_pressed)
                 .setTitle("分为非")

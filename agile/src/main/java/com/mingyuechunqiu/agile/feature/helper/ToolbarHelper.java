@@ -1,7 +1,11 @@
-package com.mingyuechunqiu.agile.util;
+package com.mingyuechunqiu.agile.feature.helper;
 
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.ColorInt;
@@ -12,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+
+import com.mingyuechunqiu.agile.util.ScreenUtils;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
 
@@ -24,9 +30,9 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
  *     version: 1.0
  * </pre>
  */
-public final class ToolbarUtils {
+public final class ToolbarHelper {
 
-    private ToolbarUtils() {
+    private ToolbarHelper() {
     }
 
     /**
@@ -103,6 +109,29 @@ public final class ToolbarUtils {
         }
         if (configure.getOnMenuItemClickListener() != null) {
             toolbar.setOnMenuItemClickListener(configure.getOnMenuItemClickListener());
+        }
+    }
+
+    /**
+     * 应用菜单颜色混合
+     *
+     * @param menu             菜单
+     * @param colorFilterColor 颜色混合颜色
+     */
+    public static void applyMenuColorFilter(@Nullable Menu menu, @ColorInt int colorFilterColor) {
+        if (menu == null || colorFilterColor == 0) {
+            return;
+        }
+        for (int i = 0, size = menu.size(); i < size; i++) {
+            MenuItem menuItem = menu.getItem(i);
+            if (menuItem == null) {
+                continue;
+            }
+            Drawable drawable = menuItem.getIcon();
+            if (drawable == null) {
+                continue;
+            }
+            drawable.setColorFilter(new PorterDuffColorFilter(colorFilterColor, PorterDuff.Mode.SRC_IN));
         }
     }
 
@@ -246,6 +275,15 @@ public final class ToolbarUtils {
             mBuilder.menuResId = menuResId;
         }
 
+        @ColorInt
+        public int getMenuColorFilterColor() {
+            return mBuilder.menuColorFilterColor;
+        }
+
+        public void setMenuColorFilterColor(@ColorInt int menuColorFilterColor) {
+            mBuilder.menuColorFilterColor = menuColorFilterColor;
+        }
+
         public boolean isClearActivityMenu() {
             return mBuilder.clearActivityMenu;
         }
@@ -304,12 +342,16 @@ public final class ToolbarUtils {
             @MenuRes
             private int menuResId;//菜单资源ID
 
+            @ColorInt
+            private int menuColorFilterColor;//混合覆盖颜色
+
             private boolean clearActivityMenu;//用于fragment是否清楚activity的toolbar菜单资源
 
             private Drawable overflowIcon;//溢出图标
 
             public Builder() {
                 hideDisplayTitle = true;
+                menuColorFilterColor = 0;//默认不使用颜色混合
             }
 
             public ToolbarConfigure build() {
@@ -457,6 +499,16 @@ public final class ToolbarUtils {
 
             public Builder setMenuResId(@MenuRes int menuResId) {
                 this.menuResId = menuResId;
+                return this;
+            }
+
+            @ColorInt
+            public int getMenuColorFilterColor() {
+                return menuColorFilterColor;
+            }
+
+            public Builder setMenuColorFilterColor(@ColorInt int menuColorFilterColor) {
+                this.menuColorFilterColor = menuColorFilterColor;
                 return this;
             }
 

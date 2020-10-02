@@ -31,7 +31,7 @@ import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.receiver.NetworkConnectedTypeReceiver;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
-import com.mingyuechunqiu.agile.util.ToolbarUtils;
+import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_NAVIGATION_TITLE;
 import static com.mingyuechunqiu.agile.constants.KeyPrefixConstants.KEY_BUNDLE;
@@ -219,8 +219,8 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
     }
 
     @Override
-    protected ToolbarUtils.ToolbarConfigure initToolbarConfigure() {
-        return new ToolbarUtils.ToolbarConfigure.Builder()
+    protected ToolbarHelper.ToolbarConfigure initToolbarConfigure() {
+        return new ToolbarHelper.ToolbarConfigure.Builder()
                 .setImmerse(true)
                 .build();
     }

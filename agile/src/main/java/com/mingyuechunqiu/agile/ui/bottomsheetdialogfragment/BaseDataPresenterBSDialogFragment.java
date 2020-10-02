@@ -14,5 +14,5 @@ import com.mingyuechunqiu.agile.base.view.IBaseDataView;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseDataPresenterBSDialogFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter> extends BaseStatusViewPresenterBSDialogFragment<V, P> {
+public abstract class BaseDataPresenterBSDialogFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?, ?>> extends BaseStatusViewPresenterBSDialogFragment<V, P> {
 }

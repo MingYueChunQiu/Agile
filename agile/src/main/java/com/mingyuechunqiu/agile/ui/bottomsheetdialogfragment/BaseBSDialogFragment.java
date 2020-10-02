@@ -2,6 +2,8 @@ package com.mingyuechunqiu.agile.ui.bottomsheetdialogfragment;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +20,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
@@ -120,7 +121,8 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
         setDialogWindow(new WindowHandler() {
             @Override
             public void onHandle(@NonNull Window window) {
-                window.setBackgroundDrawable(getResources().getDrawable(R.drawable.agile_shape_round_corners_10_white));
+                //去掉对话框的背景，以便设置自已样式的背景
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             }
         });
     }

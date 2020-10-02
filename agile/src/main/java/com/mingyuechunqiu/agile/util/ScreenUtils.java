@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Point;
+import android.os.Build;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
@@ -220,5 +224,39 @@ public final class ScreenUtils {
             return;
         }
         hideViewSoftInput(dialogFragment.getDialog(), view);
+    }
+
+    /**
+     * 判断窗口是否有虚拟导航条
+     *
+     * @param activity   界面
+     * @param isPortrait 是否垂直方向
+     * @return 如果有返回true，否则返回false
+     */
+    public static boolean judgeWindowHasNavigationBar(@NonNull final Activity activity, final boolean isPortrait) {
+        boolean flag = false;
+
+        final View content = activity.getWindow().getDecorView().findViewById(android.R.id.content);
+        if (content == null) {
+            return false;
+        }
+        WindowManager wm = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        final Point point = new Point();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            display.getRealSize(point);
+        }
+        if (isPortrait) {
+            int bottom = content.getBottom();// 页面的底部
+            if (bottom != point.y) {
+                flag = true;
+            }
+        } else {
+            int right = content.getRight();
+            if (right != point.y) {
+                flag = true;
+            }
+        }
+        return flag;
     }
 }

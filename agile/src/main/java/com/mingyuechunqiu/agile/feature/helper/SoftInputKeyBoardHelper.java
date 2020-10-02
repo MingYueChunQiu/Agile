@@ -1,6 +1,8 @@
 package com.mingyuechunqiu.agile.feature.helper;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -102,8 +104,10 @@ public final class SoftInputKeyBoardHelper {
         if (mActivityRef == null || mActivityRef.get() == null) {
             return;
         }
+        //当前内容显示高度
         int usableHeightNow = computeUsableHeight();
         if (usableHeightNow != usableHeightPrevious) {
+            //内容实际高度
             int usableHeightSansKeyboard = mChildOfContent.getRootView()
                     .getHeight();
             int heightDifference = usableHeightSansKeyboard - usableHeightNow;
@@ -124,8 +128,10 @@ public final class SoftInputKeyBoardHelper {
                 if (changeContentHeight) {
                     frameLayoutParams.height = usableHeightSansKeyboard;
                 }
-                //要减去底部导航栏高度，否则在有导航栏情况下，会导致布局延伸到导航栏里面
-                frameLayoutParams.height -= ScreenUtils.getNavigationBarHeight(mActivityRef.get());
+                if (ScreenUtils.judgeWindowHasNavigationBar(mActivityRef.get(), isScreenPortrait())) {
+                    //要减去底部导航栏高度，否则在有导航栏情况下，会导致布局延伸到导航栏里面
+                    frameLayoutParams.height -= ScreenUtils.getNavigationBarHeight(mActivityRef.get());
+                }
                 if (mListener != null) {
                     mListener.onHideSoftKeyBoard();
                 }
@@ -144,6 +150,28 @@ public final class SoftInputKeyBoardHelper {
         Rect r = new Rect();
         mChildOfContent.getWindowVisibleDisplayFrame(r);
         return (r.bottom - r.top);
+    }
+
+    /**
+     * 判断屏幕是否是竖屏
+     *
+     * @return 如果是竖屏返回true，否则返回false
+     */
+    @SuppressLint("SwitchIntDef")
+    public boolean isScreenPortrait() {
+        if (mActivityRef == null || mActivityRef.get() == null) {
+            return true;
+        }
+        switch (mActivityRef.get().getRequestedOrientation()) {
+            case ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE:// 横屏
+            case ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE:
+                return false;
+            case ActivityInfo.SCREEN_ORIENTATION_PORTRAIT:// 竖屏
+            case ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT:
+                return true;
+            default:
+                return true;
+        }
     }
 
     /**

@@ -16,7 +16,7 @@ import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
-import com.mingyuechunqiu.agile.util.ToolbarUtils;
+import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
 import com.mingyuechunqiu.agileproject.R;
 
 /**
@@ -39,8 +39,8 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
     }
 
     @Override
-    protected ToolbarUtils.ToolbarConfigure initToolbarConfigure() {
-        return new ToolbarUtils.ToolbarConfigure.Builder()
+    protected ToolbarHelper.ToolbarConfigure initToolbarConfigure() {
+        return new ToolbarHelper.ToolbarConfigure.Builder()
                 .setImmerse(true)
                 .setNavigationIconResId(R.drawable.agile_arrow_back_press)
                 .setTitle("分为非")

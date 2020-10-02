@@ -9,7 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
-import com.mingyuechunqiu.agile.util.ToolbarUtils;
+import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
 
@@ -23,12 +23,12 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseToolbarPresenterActivity<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter> extends BaseDataPresenterActivity<V, P> {
+public abstract class BaseToolbarPresenterActivity<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?, ?>> extends BaseDataPresenterActivity<V, P> {
 
     @Nullable
     private Toolbar tbBar;
     @Nullable
-    private ToolbarUtils.ToolbarConfigure mToolbarConfigure;
+    private ToolbarHelper.ToolbarConfigure mToolbarConfigure;
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -36,13 +36,14 @@ public abstract class BaseToolbarPresenterActivity<V extends IBaseDataView<P>, P
         initInflateToolbar();
         setSupportActionBar(tbBar);
         mToolbarConfigure = initToolbarConfigure();
-        ToolbarUtils.initToolbar(tbBar, getSupportActionBar(), mToolbarConfigure);
+        ToolbarHelper.initToolbar(tbBar, getSupportActionBar(), mToolbarConfigure);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (mToolbarConfigure != null && mToolbarConfigure.getMenuResId() != NO_RESOURCE_ID) {
             getMenuInflater().inflate(mToolbarConfigure.getMenuResId(), menu);
+            ToolbarHelper.applyMenuColorFilter(menu, mToolbarConfigure.getMenuColorFilterColor());
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -103,5 +104,5 @@ public abstract class BaseToolbarPresenterActivity<V extends IBaseDataView<P>, P
      * @return 返回创建好的ToolbarBean
      */
     @Nullable
-    protected abstract ToolbarUtils.ToolbarConfigure initToolbarConfigure();
+    protected abstract ToolbarHelper.ToolbarConfigure initToolbarConfigure();
 }
