@@ -2,7 +2,7 @@
 a agile android framework for MVP.
 一个Android高效框架，提供公共框架、方法，进行敏捷开发。
 
-    最新v0.4.9:
+    最新v0.4.10:
     	1.优化代码</br>
     	2.优化SoftInputKeyBoardHelper</br>
 	
