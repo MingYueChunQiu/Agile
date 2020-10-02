@@ -131,6 +131,8 @@ public final class ToolbarHelper {
             if (drawable == null) {
                 continue;
             }
+            //避免其他加载此资源的代码，共用此颜色混合
+            drawable.mutate();
             drawable.setColorFilter(new PorterDuffColorFilter(colorFilterColor, PorterDuff.Mode.SRC_IN));
         }
     }
