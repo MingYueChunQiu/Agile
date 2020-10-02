@@ -2,10 +2,12 @@
 a agile android framework for MVP.
 一个Android高效框架，提供公共框架、方法，进行敏捷开发。
 
-    最新v0.4.8:
-    	1.新增BatteryHelper</br>
-    	2.优化代码</br>
+    最新v0.4.9:
+    	1.优化代码</br>
+    	2.优化SoftInputKeyBoardHelper</br>
 	
+    v0.4.8:1.新增BatteryHelper</br>
+    	2.优化代码</br>
     v0.4.2:完善功能</br>
     v0.4:1.增加圆角图形、圆角WebView、无限循环ViewPager等自定义控件
 	 2.调整优化状态视图模块
@@ -128,25 +130,25 @@ activity:
 		BaseActivity
 		----BaseFullImmerseScreenActivity
 		    ----BaseStatusViewPresenterActivity<V extends IBaseStatusView<P>, P extends BaseAbstractStatusViewPresenter>
-		        ----BaseDataPresenterActivity<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter>
-		            ----BaseToolbarPresenterActivity<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter>
+		        ----BaseDataPresenterActivity<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?,?>>
+		            ----BaseToolbarPresenterActivity<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?,?>>
 	        	        ----WebViewActivity（具体业务实现）
 					
 fragment:	
 		BaseFragment
 		----BaseStatusViewPresenterFragment<V extends IBaseStatusView<P>, P extends BaseAbstractStatusViewPresenter>
-		    ----BaseDataPresenterFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter>
-		        ----BaseToolbarPresenterFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter>
+		    ----BaseDataPresenterFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?,?>>
+		        ----BaseToolbarPresenterFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?,?>>
 			
 dialogFragment:	
 		BaseDialogFragment
 		----BaseStatusViewPresenterDialogFragment<V extends IBaseStatusView<P>, P extends BaseAbstractStatusViewPresenter>
-		    ----BaseDataPresenterDialogFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter>
+		    ----BaseDataPresenterDialogFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?,?>>
 		
 bottomSheetDialogFragment:	
 		BaseBSDialogFragment
 		----BaseStatusViewPresenterBSDialogFragment<V extends IBaseStatusView<P>, P extends BaseAbstractStatusViewPresenter>
-		    ----BaseDataPresenterBSDialogFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter>
+		    ----BaseDataPresenterBSDialogFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?,?>>
 ```
 
 (3).feature包下:
