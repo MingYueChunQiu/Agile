@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
@@ -18,6 +19,7 @@ import android.util.Base64;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
+import androidx.exifinterface.media.ExifInterface;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.frame.Agile;
@@ -32,6 +34,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -274,6 +277,107 @@ public final class BitmapUtils {
             LogManagerProvider.e("getBitmapFromUri", e.getMessage());
         }
         return null;
+    }
+
+    /**
+     * 获取图片旋转角度
+     *
+     * @param inputStream 输入流
+     * @return 返回需要修正的角度
+     */
+    public static int getBitmapRotatedAngle(@Nullable InputStream inputStream) {
+        if (inputStream == null) {
+            LogManagerProvider.i("getAdjustedRotationAngle", "inputStream == null");
+            return 0;
+        }
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(inputStream);
+        } catch (IOException e) {
+            LogManagerProvider.e("getAdjustedRotationAngle", e.getMessage());
+        }
+        if (exif == null) {
+            LogManagerProvider.i("getAdjustedRotationAngle", "ExifInterface == null");
+            return 0;
+        }
+        // 读取图片中相机方向信息
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        // 计算旋转角度
+        int angle = 0;
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                angle = 90;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                angle = 180;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                angle = 270;
+                break;
+            default:
+                break;
+        }
+        return angle;
+    }
+
+    /**
+     * 获取图片旋转角度
+     *
+     * @param filePath 文件路径
+     * @return 返回需要修正的角度
+     */
+    public static int getBitmapRotatedAngle(@Nullable String filePath) {
+        if (filePath == null) {
+            LogManagerProvider.i("getAdjustedRotationAngle", "filePath == null");
+            return 0;
+        }
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(filePath);
+        } catch (IOException e) {
+            LogManagerProvider.e("getAdjustedRotationAngle", e.getMessage());
+        }
+        if (exif == null) {
+            LogManagerProvider.i("getAdjustedRotationAngle", "ExifInterface == null");
+            return 0;
+        }
+        // 读取图片中相机方向信息
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        // 计算旋转角度
+        int angle = 0;
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                angle = 90;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                angle = 180;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                angle = 270;
+                break;
+            default:
+                break;
+        }
+        return angle;
+    }
+
+    /**
+     * 获取调整旋转角度后的图片
+     *
+     * @param bitmap 需要调整的图片
+     * @param angle  调整角度
+     * @return 返回修正后的图片
+     */
+    @Nullable
+    public Bitmap getAdjustedRotationBitmap(@Nullable Bitmap bitmap, int angle) {
+        if (bitmap == null || angle == 0) {
+            return bitmap;
+        }
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        bitmap.recycle();
+        return rotatedBitmap;
     }
 
     /**
