@@ -18,7 +18,7 @@ buildscript {
         maven { url "http://jcenter.bintray.com" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath 'com.android.tools.build:gradle:4.1.0'
 
         classpath "io.realm:realm-gradle-plugin:7.0.0-beta-SNAPSHOT"
 //        classpath "io.realm:realm-gradle-plugin:6.0.2"

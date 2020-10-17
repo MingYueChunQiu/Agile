@@ -35,7 +35,7 @@ import java.util.Set;
  *     version: 1.0
  * </pre>
  */
-final class GsonHelper implements JsonHelperable {
+final class GsonHelper implements IJsonHelper {
 
     private volatile Gson mGson;
 

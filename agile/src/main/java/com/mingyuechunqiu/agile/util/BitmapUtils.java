@@ -296,28 +296,7 @@ public final class BitmapUtils {
         } catch (IOException e) {
             LogManagerProvider.e("getAdjustedRotationAngle", e.getMessage());
         }
-        if (exif == null) {
-            LogManagerProvider.i("getAdjustedRotationAngle", "ExifInterface == null");
-            return 0;
-        }
-        // 读取图片中相机方向信息
-        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-        // 计算旋转角度
-        int angle = 0;
-        switch (orientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                angle = 90;
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                angle = 180;
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                angle = 270;
-                break;
-            default:
-                break;
-        }
-        return angle;
+        return getBitmapRotatedAngle(exif);
     }
 
     /**
@@ -337,28 +316,7 @@ public final class BitmapUtils {
         } catch (IOException e) {
             LogManagerProvider.e("getAdjustedRotationAngle", e.getMessage());
         }
-        if (exif == null) {
-            LogManagerProvider.i("getAdjustedRotationAngle", "ExifInterface == null");
-            return 0;
-        }
-        // 读取图片中相机方向信息
-        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-        // 计算旋转角度
-        int angle = 0;
-        switch (orientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                angle = 90;
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                angle = 180;
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                angle = 270;
-                break;
-            default:
-                break;
-        }
-        return angle;
+        return getBitmapRotatedAngle(exif);
     }
 
     /**
@@ -498,6 +456,31 @@ public final class BitmapUtils {
         } finally {
             IOUtils.closeStream(fos);
         }
+    }
+
+    private static int getBitmapRotatedAngle(@Nullable ExifInterface exif) {
+        if (exif == null) {
+            LogManagerProvider.i("getBitmapRotatedAngle", "ExifInterface == null");
+            return 0;
+        }
+        // 读取图片中相机方向信息
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        // 计算旋转角度
+        int angle = 0;
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                angle = 90;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                angle = 180;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                angle = 270;
+                break;
+            default:
+                break;
+        }
+        return angle;
     }
 
     /**

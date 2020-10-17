@@ -18,7 +18,7 @@ import java.util.Map;
  *     version: 1.0
  * </pre>
  */
-public interface JsonHelperable {
+public interface IJsonHelper {
 
     /**
      * 获取对象转换成的json字符串

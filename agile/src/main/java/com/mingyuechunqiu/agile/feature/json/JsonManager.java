@@ -1,10 +1,17 @@
 package com.mingyuechunqiu.agile.feature.json;
 
+import android.content.Context;
+import android.content.res.AssetManager;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.JsonArray;
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +26,11 @@ import java.util.Map;
  *     version: 1.0
  * </pre>
  */
-final class JsonManager implements JsonManagerable {
+final class JsonManager implements IJsonManager {
 
-    private JsonHelperable mHelper;
+    private IJsonHelper mHelper;
 
-    JsonManager(@Nullable JsonHelperable helper) {
+    JsonManager(@Nullable IJsonHelper helper) {
         mHelper = helper;
         if (mHelper == null) {
             mHelper = new GsonHelper();
@@ -83,8 +90,43 @@ final class JsonManager implements JsonManagerable {
      * @param helper Json处理帮助类实例
      */
     @Override
-    public void setJsonHelper(@NonNull JsonHelperable helper) {
+    public void setJsonHelper(@NonNull IJsonHelper helper) {
         mHelper = helper;
+    }
+
+    @Nullable
+    @Override
+    public String getJsonFromRawFile(@NonNull Context context, int id) {
+        try {
+            InputStreamReader inputReader = new InputStreamReader(context.getResources().openRawResource(id));
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String line;
+            StringBuilder result = new StringBuilder();
+            while ((line = bufReader.readLine()) != null)
+                result.append(line);
+            return result.toString();
+        } catch (IOException e) {
+            LogManagerProvider.e("getJsonFromRawFile", e.getMessage());
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String getJsonFromAssetFile(@NonNull Context context, @NonNull String fileName) {
+        AssetManager manager = context.getAssets();
+        try {
+            InputStreamReader inputReader = new InputStreamReader(manager.open(fileName));
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String line;
+            StringBuilder result = new StringBuilder();
+            while ((line = bufReader.readLine()) != null)
+                result.append(line);
+            return result.toString();
+        } catch (IOException e) {
+            LogManagerProvider.e("getJsonFromAssetFile", e.getMessage());
+        }
+        return null;
     }
 
 }

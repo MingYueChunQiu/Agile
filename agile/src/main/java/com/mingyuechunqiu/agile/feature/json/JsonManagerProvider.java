@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
  */
 public final class JsonManagerProvider {
 
-    private static volatile JsonManagerable sInstance;
+    private static volatile IJsonManager sInstance;
 
     private JsonManagerProvider() {
     }
@@ -25,7 +25,7 @@ public final class JsonManagerProvider {
      * @return 返回Json帮助类管理器实例
      */
     @NonNull
-    public static JsonManagerable getInstance() {
+    public static IJsonManager getInstance() {
         return getInstance(new GsonHelper());
     }
 
@@ -36,7 +36,7 @@ public final class JsonManagerProvider {
      * @return 返回Json帮助类管理器实例
      */
     @NonNull
-    public static JsonManagerable getInstance(@NonNull JsonHelperable helper) {
+    public static IJsonManager getInstance(@NonNull IJsonHelper helper) {
         if (sInstance == null) {
             synchronized (JsonManagerProvider.class) {
                 if (sInstance == null) {
