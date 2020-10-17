@@ -327,7 +327,7 @@ public final class BitmapUtils {
      * @return 返回修正后的图片
      */
     @Nullable
-    public Bitmap getAdjustedRotationBitmap(@Nullable Bitmap bitmap, int angle) {
+    public static Bitmap getAdjustedRotationBitmap(@Nullable Bitmap bitmap, int angle) {
         if (bitmap == null || angle == 0) {
             return bitmap;
         }
