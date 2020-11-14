@@ -2,9 +2,11 @@
 a agile android framework for MVP.
 一个Android高效框架，提供公共框架、方法，进行敏捷开发。
 
-    最新v0.4.12:
-    	1.优化BitmapUtils,JsonManager</br>
+    最新v0.4.13:
+    	1.框架增加对Activity/Fragment/DialogFragment/BottomSheetDialogFragment/Dialog生命周期全局注册监听</br>
 	
+    v0.4.12:
+    	1.优化BitmapUtils,JsonManager</br>
     v0.4.10:
     	1.优化代码</br>
     	2.优化SoftInputKeyBoardHelper</br>
