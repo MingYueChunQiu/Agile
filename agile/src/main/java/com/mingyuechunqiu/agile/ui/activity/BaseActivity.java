@@ -19,6 +19,8 @@ import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView;
+import com.mingyuechunqiu.agile.frame.Agile;
+import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
 import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
 import com.mingyuechunqiu.agile.util.ExitApplicationManager;
 import com.mingyuechunqiu.agile.util.ToastUtils;
@@ -52,14 +54,40 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Agile.getLifecycleDispatcher().updateActivityLifecycleState(this, AgileLifecycle.State.ActivityState.CREATED);
         restoreAgileResource(savedInstanceState);
         initOnCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Agile.getLifecycleDispatcher().updateActivityLifecycleState(this, AgileLifecycle.State.ActivityState.STARTED);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Agile.getLifecycleDispatcher().updateActivityLifecycleState(this, AgileLifecycle.State.ActivityState.RESUMED);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Agile.getLifecycleDispatcher().updateActivityLifecycleState(this, AgileLifecycle.State.ActivityState.PAUSED);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Agile.getLifecycleDispatcher().updateActivityLifecycleState(this, AgileLifecycle.State.ActivityState.STOPPED);
     }
 
     @Override
     protected void onDestroy() {
         dismissStatusView();
         super.onDestroy();
+        Agile.getLifecycleDispatcher().updateActivityLifecycleState(this, AgileLifecycle.State.ActivityState.DESTROYED);
         release();
         if (mKeyEventListenerMap != null) {
             mKeyEventListenerMap.clear();

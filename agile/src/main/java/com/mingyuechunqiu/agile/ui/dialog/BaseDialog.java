@@ -18,6 +18,8 @@ import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
+import com.mingyuechunqiu.agile.frame.Agile;
+import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
 import com.mingyuechunqiu.agile.framework.ui.WindowHandler;
 import com.mingyuechunqiu.agile.util.ToastUtils;
 
@@ -54,6 +56,7 @@ public abstract class BaseDialog extends AppCompatDialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Agile.getLifecycleDispatcher().updateDialogLifecycleState(this, AgileLifecycle.State.DialogState.CREATED);
         initDialogBackground();
         initView(savedInstanceState);
         setOnDismissListener(new OnDismissListener() {
@@ -64,7 +67,20 @@ public abstract class BaseDialog extends AppCompatDialog {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Agile.getLifecycleDispatcher().updateDialogLifecycleState(this, AgileLifecycle.State.DialogState.STARTED);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Agile.getLifecycleDispatcher().updateDialogLifecycleState(this, AgileLifecycle.State.DialogState.STOPPED);
+    }
+
     protected void releaseOnDetach() {
+        Agile.getLifecycleDispatcher().updateDialogLifecycleState(this, AgileLifecycle.State.DialogState.DISMISSED);
         dismissStatusView();
         mStatusViewManager = null;
         release();

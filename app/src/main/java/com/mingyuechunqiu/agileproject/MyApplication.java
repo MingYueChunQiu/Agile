@@ -2,12 +2,17 @@ package com.mingyuechunqiu.agileproject;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.multidex.MultiDex;
 
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.frame.AgileFrameConfigure;
 import com.mingyuechunqiu.agile.frame.data.remote.AgileNetworkConfig;
+import com.mingyuechunqiu.agile.frame.lifecycle.activity.ActivityLifecycleAdapter;
+import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
+
+import org.jetbrains.annotations.NotNull;
 
 import io.realm.Realm;
 
@@ -54,5 +59,13 @@ public class MyApplication extends Application {
                 .build();
         Agile.init(this);
         Agile.setConfigure(configure);
+        Agile.getLifecycleDispatcher().registerActivityLifecycleCallback(new ActivityLifecycleAdapter(){
+
+            @Override
+            public void onCreate(@NotNull BaseActivity activity) {
+                super.onCreate(activity);
+                Log.d("分", activity.getLocalClassName());
+            }
+        });
     }
 }

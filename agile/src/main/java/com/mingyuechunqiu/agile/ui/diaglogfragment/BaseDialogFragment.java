@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agile.ui.diaglogfragment;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -28,6 +29,8 @@ import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView;
+import com.mingyuechunqiu.agile.frame.Agile;
+import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
 import com.mingyuechunqiu.agile.framework.function.TransferDataCallback;
 import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
 import com.mingyuechunqiu.agile.framework.ui.WindowHandler;
@@ -51,9 +54,22 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     private IStatusViewManager mStatusViewManager;
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Agile.getLifecycleDispatcher().updateDialogFragmentLifecycleState(this, AgileLifecycle.State.DialogFragmentState.ATTACHED);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Agile.getLifecycleDispatcher().updateDialogFragmentLifecycleState(this, AgileLifecycle.State.DialogFragmentState.CREATED);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Agile.getLifecycleDispatcher().updateDialogFragmentLifecycleState(this, AgileLifecycle.State.DialogFragmentState.CREATED_VIEW);
         initDialogBackground();
         int id = getInflateLayoutId();
         if (id != 0) {
@@ -70,10 +86,41 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Agile.getLifecycleDispatcher().updateDialogFragmentLifecycleState(this, AgileLifecycle.State.DialogFragmentState.ACTIVITY_CREATED);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Agile.getLifecycleDispatcher().updateDialogFragmentLifecycleState(this, AgileLifecycle.State.DialogFragmentState.STARTED);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Agile.getLifecycleDispatcher().updateDialogFragmentLifecycleState(this, AgileLifecycle.State.DialogFragmentState.RESUMED);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Agile.getLifecycleDispatcher().updateDialogFragmentLifecycleState(this, AgileLifecycle.State.DialogFragmentState.PAUSED);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Agile.getLifecycleDispatcher().updateDialogFragmentLifecycleState(this, AgileLifecycle.State.DialogFragmentState.STOPPED);
+    }
+
+    @Override
     public void onDestroyView() {
         removeAllOnKeyEventListeners();
         dismissStatusView();
         super.onDestroyView();
+        Agile.getLifecycleDispatcher().updateDialogFragmentLifecycleState(this, AgileLifecycle.State.DialogFragmentState.DESTROYED_VIEW);
         releaseOnDestroyView();
         mStatusViewManager = null;
     }
@@ -81,7 +128,14 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Agile.getLifecycleDispatcher().updateDialogFragmentLifecycleState(this, AgileLifecycle.State.DialogFragmentState.DESTROYED);
         releaseOnDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Agile.getLifecycleDispatcher().updateDialogFragmentLifecycleState(this, AgileLifecycle.State.DialogFragmentState.DETACHED);
     }
 
     /**

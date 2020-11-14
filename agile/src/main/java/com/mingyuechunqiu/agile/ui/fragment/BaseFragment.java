@@ -1,6 +1,8 @@
+
 package com.mingyuechunqiu.agile.ui.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -23,6 +25,8 @@ import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView;
+import com.mingyuechunqiu.agile.frame.Agile;
+import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
 import com.mingyuechunqiu.agile.framework.function.TransferDataCallback;
 import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
 import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
@@ -48,9 +52,22 @@ public abstract class BaseFragment extends Fragment {
     private IStatusViewManager mStatusViewManager;
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.ATTACHED);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.CREATED);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.CREATED_VIEW);
         int id = getInflateLayoutId();
         if (id != 0) {
             return inflater.inflate(id, container, false);
@@ -66,10 +83,41 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.ACTIVITY_CREATED);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.STARTED);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.RESUMED);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.PAUSED);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.STOPPED);
+    }
+
+    @Override
     public void onDestroyView() {
         removeAllOnKeyEventListeners();
         dismissStatusView();
         super.onDestroyView();
+        Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.DESTROYED_VIEW);
         releaseOnDestroyView();
         mStatusViewManager = null;
         forbidBackToActivity = forbidBackToFragment = false;
@@ -78,7 +126,14 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.DESTROYED);
         releaseOnDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.DETACHED);
     }
 
     public boolean isForbidBackToActivity() {

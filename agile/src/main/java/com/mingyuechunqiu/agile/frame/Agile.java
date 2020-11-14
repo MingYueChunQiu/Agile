@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.frame.engine.image.IImageEngine;
+import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycleDispatcher;
 
 /**
  * <pre>
@@ -22,6 +23,7 @@ public final class Agile {
     private volatile Context mApplicationContext;//上下文对象
     private AgileFrameConfigure mConfigure;//配置信息对象
     private boolean debug;//标记是否处于debug模式
+    private AgileLifecycleDispatcher mLifecycleDispatcher;
 
     private Agile() {
         mConfigure = new AgileFrameConfigure.Builder().build();
@@ -69,6 +71,19 @@ public final class Agile {
     @NonNull
     public static AgileFrameConfigure getConfigure() {
         return AgileHolder.sInstance.mConfigure;
+    }
+
+    /**
+     * 获取生命周期分发器（单例）
+     *
+     * @return 返回分发器对象
+     */
+    @NonNull
+    public static AgileLifecycleDispatcher getLifecycleDispatcher() {
+        if (AgileHolder.sInstance.mLifecycleDispatcher == null) {
+            AgileHolder.sInstance.mLifecycleDispatcher = AgileLifecycleDispatcher.INSTANCE;
+        }
+        return AgileHolder.sInstance.mLifecycleDispatcher;
     }
 
     /**
