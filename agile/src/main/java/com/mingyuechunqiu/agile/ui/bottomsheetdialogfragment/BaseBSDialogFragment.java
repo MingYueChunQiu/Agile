@@ -69,11 +69,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Agile.getLifecycleDispatcher().updateBottomSheetDialogFragmentLifecycleState(this, AgileLifecycle.State.BottomSheetDialogFragmentState.CREATED_VIEW);
         initDialogBackground();
-        int id = getInflateLayoutId();
-        if (id != 0) {
-            return inflater.inflate(id, container, false);
-        }
-        return getInflateLayoutView();
+        return initInflateLayoutView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -150,6 +146,27 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
             return;
         }
         show(manager, tag);
+    }
+
+    /**
+     * 初始化填充布局视图
+     *
+     * @param inflater           布局填充器
+     * @param container          父布局
+     * @param savedInstanceState 状态存储实例
+     * @return 返回填充视图
+     */
+    @Nullable
+    protected View initInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        IInflateLayoutViewCreator creator = generateInflateLayoutViewCreator();
+        if (creator == null) {
+            return null;
+        }
+        int id = creator.getInflateLayoutId();
+        if (id != 0) {
+            return inflater.inflate(id, container, false);
+        }
+        return creator.getInflateLayoutView(inflater, container);
     }
 
     /**
@@ -430,16 +447,6 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     }
 
     /**
-     * 获取填充布局View（当getInflateLayoutId返回为0时，会被调用）
-     *
-     * @return 返回View容器
-     */
-    @Nullable
-    protected View getInflateLayoutView() {
-        return null;
-    }
-
-    /**
      * 移除所有的按键监听器
      */
     private void removeAllOnKeyEventListeners() {
@@ -450,12 +457,12 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     }
 
     /**
-     * 获取填充布局资源ID
+     * 获取填充布局视图创建者
      *
-     * @return 返回布局资源ID
+     * @return 返回创建者对象，非空
      */
-    @LayoutRes
-    protected abstract int getInflateLayoutId();
+    @Nullable
+    protected abstract IInflateLayoutViewCreator generateInflateLayoutViewCreator();
 
     /**
      * 由子类重写控件的初始化方法
@@ -474,6 +481,30 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      * 释放资源（在onDestroy时调用）
      */
     protected abstract void releaseOnDestroy();
+
+    /**
+     * 布局填充视图创建者接口
+     */
+    protected interface IInflateLayoutViewCreator {
+
+        /**
+         * 获取填充布局资源ID
+         *
+         * @return 返回布局资源ID
+         */
+        @LayoutRes
+        int getInflateLayoutId();
+
+        /**
+         * 获取填充布局View（当getInflateLayoutId返回为0时，会被调用），可为null
+         *
+         * @param inflater  布局填充器
+         * @param container 父布局
+         * @return 返回View容器
+         */
+        @Nullable
+        View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container);
+    }
 
     /**
      * 供Activity实现的回调接口，实现对DialogFragment的调用

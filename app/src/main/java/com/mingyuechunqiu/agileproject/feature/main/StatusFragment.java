@@ -1,7 +1,9 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +24,23 @@ import com.mingyuechunqiu.agileproject.R;
  */
 public class StatusFragment extends BaseFragment {
 
+    @Nullable
+    @Override
+    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator() {
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.fragment_status;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+                return null;
+            }
+        };
+    }
+
     @Override
     protected void releaseOnDestroyView() {
 
@@ -30,11 +49,6 @@ public class StatusFragment extends BaseFragment {
     @Override
     protected void releaseOnDestroy() {
 
-    }
-
-    @Override
-    protected int getInflateLayoutId() {
-        return R.layout.fragment_status;
     }
 
     @Override

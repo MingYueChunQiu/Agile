@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agileproject.feature.loading;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -25,7 +26,6 @@ public class DialogActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loading_dialog_test);
         AppCompatButton btnAdd = findViewById(R.id.btn_add_loading);
         AppCompatButton btnHide = findViewById(R.id.btn_hide_loading);
         AppCompatButton btnShow = findViewById(R.id.btn_show_loading);
@@ -38,6 +38,23 @@ public class DialogActivity extends BaseActivity implements View.OnClickListener
         btnTest.setOnClickListener(this);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fl_loading_container, new DialogFragmentTest()).commit();
+    }
+
+    @NonNull
+    @Override
+    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator() {
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.activity_loading_dialog_test;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView() {
+                return null;
+            }
+        };
     }
 
     @Override

@@ -5,9 +5,11 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -57,8 +59,7 @@ public abstract class BaseDialog extends AppCompatDialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Agile.getLifecycleDispatcher().updateDialogLifecycleState(this, AgileLifecycle.State.DialogState.CREATED);
-        initDialogBackground();
-        initView(savedInstanceState);
+        initOnCreate(savedInstanceState);
         setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -79,11 +80,42 @@ public abstract class BaseDialog extends AppCompatDialog {
         Agile.getLifecycleDispatcher().updateDialogLifecycleState(this, AgileLifecycle.State.DialogState.STOPPED);
     }
 
+    /**
+     * 在创建时执行初始化操作
+     *
+     * @param savedInstanceState 界面销毁时保存的状态数据实例
+     */
+    protected void initOnCreate(@Nullable Bundle savedInstanceState) {
+        initDialogBackground();
+        initInflateLayoutView(savedInstanceState);
+        initView(savedInstanceState);
+    }
+
     protected void releaseOnDetach() {
         Agile.getLifecycleDispatcher().updateDialogLifecycleState(this, AgileLifecycle.State.DialogState.DISMISSED);
         dismissStatusView();
         mStatusViewManager = null;
         release();
+    }
+
+    /**
+     * 初始化填充布局视图
+     *
+     * @param savedInstanceState 状态存储实例
+     */
+    protected void initInflateLayoutView(@Nullable Bundle savedInstanceState) {
+        IInflateLayoutViewCreator creator = generateInflateLayoutViewCreator();
+        int id = creator.getInflateLayoutId();
+        if (id != 0) {
+            setContentView(id);
+            return;
+        }
+        View view = creator.getInflateLayoutView();
+        if (view != null) {
+            setContentView(view);
+            return;
+        }
+        throw new IllegalStateException("initInflateLayoutView must be set inflateLayoutId or inflateLayoutView");
     }
 
     /**
@@ -209,6 +241,14 @@ public abstract class BaseDialog extends AppCompatDialog {
     }
 
     /**
+     * 获取填充布局视图创建者
+     *
+     * @return 返回创建者对象，非空
+     */
+    @NonNull
+    protected abstract IInflateLayoutViewCreator generateInflateLayoutViewCreator();
+
+    /**
      * 由子类重写控件的初始化方法
      *
      * @param savedInstanceState 界面销毁时保存的状态数据实例
@@ -219,4 +259,26 @@ public abstract class BaseDialog extends AppCompatDialog {
      * 释放资源
      */
     protected abstract void release();
+
+    /**
+     * 布局填充视图创建者接口
+     */
+    protected interface IInflateLayoutViewCreator {
+
+        /**
+         * 获取填充布局资源ID
+         *
+         * @return 返回布局资源ID
+         */
+        @LayoutRes
+        int getInflateLayoutId();
+
+        /**
+         * 获取填充布局View（当getInflateLayoutId返回为0时，会被调用），可为null
+         *
+         * @return 返回View容器
+         */
+        @Nullable
+        View getInflateLayoutView();
+    }
 }

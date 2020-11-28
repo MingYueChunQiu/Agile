@@ -2,12 +2,15 @@ package com.mingyuechunqiu.agile.ui.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.mingyuechunqiu.agile.R;
 
@@ -25,12 +28,12 @@ import java.util.List;
  */
 public class PopListLvAdapter extends BaseAdapter {
 
-    private Context mContext;
-    private List<Info> mList;
-    private int mItemHeight;//每个item的高度
+    private final Context mContext;
+    private final List<Info> mList;
+    private final int mItemHeight;//每个item的高度
     private OnClickDeleteBtnListener mListener;
 
-    public PopListLvAdapter(Context context, List<Info> list, int itemHeight) {
+    public PopListLvAdapter(@NonNull Context context, @NonNull List<Info> list, int itemHeight) {
         mContext = context;
         mList = list;
         mItemHeight = itemHeight;
@@ -88,7 +91,7 @@ public class PopListLvAdapter extends BaseAdapter {
         return mListener;
     }
 
-    public void setOnClickDeleteBtnListener(OnClickDeleteBtnListener listener) {
+    public void setOnClickDeleteBtnListener(@Nullable OnClickDeleteBtnListener listener) {
         mListener = listener;
     }
 

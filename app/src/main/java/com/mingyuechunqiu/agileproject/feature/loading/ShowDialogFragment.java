@@ -3,7 +3,9 @@ package com.mingyuechunqiu.agileproject.feature.loading;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 
 import androidx.annotation.NonNull;
@@ -24,9 +26,21 @@ import com.mingyuechunqiu.agileproject.R;
  */
 public class ShowDialogFragment extends BaseDialogFragment {
 
+    @Nullable
     @Override
-    protected int getInflateLayoutId() {
-        return R.layout.dialog_fragment_show;
+    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator() {
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.dialog_fragment_show;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+                return null;
+            }
+        };
     }
 
     @Override

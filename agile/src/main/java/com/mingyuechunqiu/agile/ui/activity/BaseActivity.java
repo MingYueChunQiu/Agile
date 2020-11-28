@@ -6,6 +6,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -169,6 +170,26 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * 初始化填充布局视图
+     *
+     * @param savedInstanceState 状态存储实例
+     */
+    protected void initInflateLayoutView(@Nullable Bundle savedInstanceState) {
+        IInflateLayoutViewCreator creator = generateInflateLayoutViewCreator();
+        int id = creator.getInflateLayoutId();
+        if (id != 0) {
+            setContentView(id);
+            return;
+        }
+        View view = creator.getInflateLayoutView();
+        if (view != null) {
+            setContentView(view);
+            return;
+        }
+        throw new IllegalStateException("initInflateLayoutView must be set inflateLayoutId or inflateLayoutView");
+    }
+
+    /**
      * 恢复意外销毁被保存的资源
      *
      * @param savedInstanceState 实例资源对象
@@ -190,6 +211,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param savedInstanceState 界面销毁时保存的状态数据实例
      */
     protected void initOnCreate(@Nullable Bundle savedInstanceState) {
+        initInflateLayoutView(savedInstanceState);
         initView(savedInstanceState);
         ExitApplicationManager.getInstance().addActivity(this);
     }
@@ -394,6 +416,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * 获取填充布局视图创建者
+     *
+     * @return 返回创建者对象，非空
+     */
+    @NonNull
+    protected abstract IInflateLayoutViewCreator generateInflateLayoutViewCreator();
+
+    /**
      * 释放资源
      */
     protected abstract void release();
@@ -405,4 +435,25 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected abstract void initView(@Nullable Bundle savedInstanceState);
 
+    /**
+     * 布局填充视图创建者接口
+     */
+    protected interface IInflateLayoutViewCreator {
+
+        /**
+         * 获取填充布局资源ID
+         *
+         * @return 返回布局资源ID
+         */
+        @LayoutRes
+        int getInflateLayoutId();
+
+        /**
+         * 获取填充布局View（当getInflateLayoutId返回为0时，会被调用），可为null
+         *
+         * @return 返回View容器
+         */
+        @Nullable
+        View getInflateLayoutView();
+    }
 }

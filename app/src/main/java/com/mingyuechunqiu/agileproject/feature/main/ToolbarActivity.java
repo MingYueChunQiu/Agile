@@ -69,7 +69,6 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
 
     @Override
     protected void initView(@Nullable Bundle savedInstanceState) {
-        setContentView(R.layout.activity_toolbar_test);
 //        StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_ERROR);
 //        option.setContainerElevation(ScreenUtils.getPxFromDp(getResources(), 2F));
 //        option.setDialogAnimationResId(R.style.PopupAnimation);
@@ -116,5 +115,22 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
 //                .setDaisyColor(Color.BLUE)
                         .build());
         manager.applyStatusViewConfigure(configure);
+    }
+
+    @NonNull
+    @Override
+    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator() {
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.activity_toolbar_test;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView() {
+                return null;
+            }
+        };
     }
 }

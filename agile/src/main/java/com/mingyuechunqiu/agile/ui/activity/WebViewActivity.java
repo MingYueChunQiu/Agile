@@ -21,6 +21,7 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -29,6 +30,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
+import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 import com.mingyuechunqiu.agile.receiver.NetworkConnectedTypeReceiver;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
 import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
@@ -58,7 +60,7 @@ import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NE
  *     version: 1.0
  * </pre>
  */
-public class WebViewActivity extends BaseToolbarPresenterActivity {
+public class WebViewActivity extends BaseToolbarPresenterActivity<IBaseDataView<BaseAbstractDataPresenter<?, ?>>, BaseAbstractDataPresenter<?, ?>> {
 
     private static Drawable backDrawable;
     private ProgressBar pbProgress;
@@ -95,7 +97,6 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
 
     @Override
     protected void initView(@Nullable Bundle savedInstanceState) {
-        setContentView(R.layout.agile_layout_navigation);
         FrameLayout container = findViewById(R.id.fl_navigation_container);
         View view = getLayoutInflater().inflate(R.layout.agile_fragment_web_view, container, false);
         AppCompatTextView tvToolbarTitle = findViewById(R.id.tv_navigation_title);
@@ -183,6 +184,23 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
         wvWeb.onPause();
     }
 
+    @NonNull
+    @Override
+    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator() {
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.agile_layout_navigation;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView() {
+                return null;
+            }
+        };
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -225,8 +243,9 @@ public class WebViewActivity extends BaseToolbarPresenterActivity {
                 .build();
     }
 
+    @Nullable
     @Override
-    public BaseAbstractDataPresenter initPresenter() {
+    public BaseAbstractDataPresenter<?, ?> initPresenter() {
         return null;
     }
 

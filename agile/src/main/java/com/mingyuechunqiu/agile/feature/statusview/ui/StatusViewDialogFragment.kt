@@ -2,7 +2,9 @@ package com.mingyuechunqiu.agile.feature.statusview.ui
 
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
@@ -57,6 +59,19 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
         }
     }
 
+    override fun generateInflateLayoutViewCreator(): IInflateLayoutViewCreator {
+        return object : IInflateLayoutViewCreator {
+            override fun getInflateLayoutId(): Int {
+                val id = mDelegate?.statusViewOption?.statusViewContainer?.customLayoutId
+                return if (id == null || id == 0) R.layout.agile_dialog_fragment_status_view else id
+            }
+
+            override fun getInflateLayoutView(inflater: LayoutInflater, container: ViewGroup?): View? {
+                return null
+            }
+        }
+    }
+
     override fun releaseOnDestroyView() {
     }
 
@@ -64,12 +79,6 @@ internal class StatusViewDialogFragment : BaseDialogFragment(), IStatusView {
         mDelegate?.statusViewOption?.onStatusViewDialogListener?.onDismissListener(this)
         mDelegate = null
         mManager = null
-    }
-
-    override fun getInflateLayoutId(): Int {
-        val id = mDelegate?.statusViewOption?.statusViewContainer?.customLayoutId
-        return if (id == null || id == 0) R.layout.agile_dialog_fragment_status_view else id
-
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {

@@ -40,9 +40,10 @@ public class TestBottomDialogFragment extends BaseStatusViewPresenterBSDialogFra
         return super.getStatusViewManager();
     }
 
+    @Nullable
     @Override
-    protected int getInflateLayoutId() {
-        return 0;
+    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return null;
     }
 
     @Override

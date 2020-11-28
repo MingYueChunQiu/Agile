@@ -1,7 +1,9 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +25,23 @@ import com.mingyuechunqiu.agileproject.R;
  */
 public class JumpContainerFragment extends BaseFragment implements BaseFragment.Callback {
 
+    @Nullable
+    @Override
+    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator() {
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.agile_layout_frame;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+                return null;
+            }
+        };
+    }
+
     @Override
     protected void releaseOnDestroyView() {
 
@@ -31,11 +50,6 @@ public class JumpContainerFragment extends BaseFragment implements BaseFragment.
     @Override
     protected void releaseOnDestroy() {
 
-    }
-
-    @Override
-    protected int getInflateLayoutId() {
-        return R.layout.agile_layout_frame;
     }
 
     @Override

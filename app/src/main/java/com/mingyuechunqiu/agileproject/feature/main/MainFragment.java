@@ -2,7 +2,9 @@ package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +28,23 @@ import com.mingyuechunqiu.agileproject.R;
  */
 public class MainFragment extends BaseFragment implements View.OnClickListener {
 
+    @NonNull
+    @Override
+    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator() {
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.fragment_main;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+                return null;
+            }
+        };
+    }
+
     @Override
     protected void releaseOnDestroyView() {
 
@@ -34,11 +53,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     @Override
     protected void releaseOnDestroy() {
 
-    }
-
-    @Override
-    protected int getInflateLayoutId() {
-        return R.layout.fragment_main;
     }
 
     @Override

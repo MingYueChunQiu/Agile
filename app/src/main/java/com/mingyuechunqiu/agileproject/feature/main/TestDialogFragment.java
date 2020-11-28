@@ -2,7 +2,9 @@ package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -66,9 +68,21 @@ public class TestDialogFragment extends BaseStatusViewPresenterDialogFragment<Ma
         return super.getStatusViewManager();
     }
 
+    @Nullable
     @Override
-    protected int getInflateLayoutId() {
-        return R.layout.activity_test;
+    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator() {
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.activity_test;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+                return null;
+            }
+        };
     }
 
     @Override

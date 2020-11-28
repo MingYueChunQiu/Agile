@@ -122,7 +122,6 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 
     @Override
     protected void initView(@Nullable Bundle savedInstanceState) {
-        setContentView(R.layout.agile_layout_navigation);
         AppCompatTextView tvToolbarTitle = findViewById(R.id.tv_navigation_title);
         AppCompatImageView ivBack = findViewById(R.id.iv_navigation_left_icon);
         ivBack.setVisibility(View.VISIBLE);
@@ -330,6 +329,23 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     @Override
     public IStatusViewManager getStatusViewManager() {
         return super.getStatusViewManager();
+    }
+
+    @NonNull
+    @Override
+    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator() {
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.agile_layout_navigation;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView() {
+                return null;
+            }
+        };
     }
 
     @Override

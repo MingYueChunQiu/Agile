@@ -5,7 +5,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,11 +48,6 @@ public class TestFragment extends BaseStatusViewPresenterFragment<MainContract.V
     @Override
     protected void releaseOnDestroy() {
 
-    }
-
-    @Override
-    protected int getInflateLayoutId() {
-        return R.layout.fragment_main;
     }
 
     @Override
@@ -116,5 +113,22 @@ public class TestFragment extends BaseStatusViewPresenterFragment<MainContract.V
 //                .setDaisyColor(Color.BLUE)
                         .build());
         manager.applyStatusViewConfigure(configure);
+    }
+
+    @Nullable
+    @Override
+    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator() {
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.fragment_main;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+                return null;
+            }
+        };
     }
 }

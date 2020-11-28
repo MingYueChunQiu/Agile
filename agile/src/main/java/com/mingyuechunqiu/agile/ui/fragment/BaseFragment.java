@@ -68,11 +68,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.CREATED_VIEW);
-        int id = getInflateLayoutId();
-        if (id != 0) {
-            return inflater.inflate(id, container, false);
-        }
-        return getInflateLayoutView();
+        return initInflateLayoutView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -179,6 +175,27 @@ public abstract class BaseFragment extends Fragment {
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                         View.SYSTEM_UI_FLAG_VISIBLE);
+    }
+
+    /**
+     * 初始化填充布局视图
+     *
+     * @param inflater           布局填充器
+     * @param container          父布局
+     * @param savedInstanceState 状态存储实例
+     * @return 返回填充视图
+     */
+    @Nullable
+    protected View initInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        IInflateLayoutViewCreator creator = generateInflateLayoutViewCreator();
+        if (creator == null) {
+            return null;
+        }
+        int id = creator.getInflateLayoutId();
+        if (id != 0) {
+            return inflater.inflate(id, container, false);
+        }
+        return creator.getInflateLayoutView(inflater, container);
     }
 
     /**
@@ -642,16 +659,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 获取填充布局View（当getInflateLayoutId返回为0时，会被调用）
-     *
-     * @return 返回View容器
-     */
-    @Nullable
-    protected View getInflateLayoutView() {
-        return null;
-    }
-
-    /**
      * 移除所有的按键监听器
      */
     private void removeAllOnKeyEventListeners() {
@@ -660,6 +667,14 @@ public abstract class BaseFragment extends Fragment {
             ((BaseActivity) activity).removeOnKeyEventListeners(this);
         }
     }
+
+    /**
+     * 获取填充布局视图创建者
+     *
+     * @return 返回创建者对象，非空
+     */
+    @Nullable
+    protected abstract IInflateLayoutViewCreator generateInflateLayoutViewCreator();
 
     /**
      * 释放资源（在onDestroyView时调用）
@@ -672,20 +687,36 @@ public abstract class BaseFragment extends Fragment {
     protected abstract void releaseOnDestroy();
 
     /**
-     * 获取填充布局资源ID
-     *
-     * @return 返回布局资源ID
-     */
-    @LayoutRes
-    protected abstract int getInflateLayoutId();
-
-    /**
      * 由子类重写控件的初始化方法
      *
      * @param view               界面父容器View
      * @param savedInstanceState 界面销毁时保存的状态数据实例
      */
     protected abstract void initView(@NonNull View view, @Nullable Bundle savedInstanceState);
+
+    /**
+     * 布局填充视图创建者接口
+     */
+    protected interface IInflateLayoutViewCreator {
+
+        /**
+         * 获取填充布局资源ID
+         *
+         * @return 返回布局资源ID
+         */
+        @LayoutRes
+        int getInflateLayoutId();
+
+        /**
+         * 获取填充布局View（当getInflateLayoutId返回为0时，会被调用），可为null
+         *
+         * @param inflater  布局填充器
+         * @param container 父布局
+         * @return 返回View容器
+         */
+        @Nullable
+        View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container);
+    }
 
     /**
      * 供Activity实现的回调接口，实现对Fragment的调用

@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agileproject.feature.function;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,9 +47,27 @@ public class FunctionActivity extends BaseDataPresenterActivity<FunctionContract
         return new FunctionPresenter();
     }
 
+    @NonNull
     @Override
     public IStatusViewManager getStatusViewManager() {
-        return null;
+        return super.getStatusViewManager();
+    }
+
+    @NonNull
+    @Override
+    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator() {
+            @Override
+            public int getInflateLayoutId() {
+                return 0;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView() {
+                return null;
+            }
+        };
     }
 
     @Override

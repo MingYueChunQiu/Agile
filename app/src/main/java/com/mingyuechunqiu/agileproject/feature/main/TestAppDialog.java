@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 
 import androidx.annotation.NonNull;
@@ -37,9 +38,25 @@ public class TestAppDialog extends BaseDialog {
         super(context, cancelable, cancelListener);
     }
 
+    @NonNull
+    @Override
+    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator() {
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.fragment_status;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView() {
+                return null;
+            }
+        };
+    }
+
     @Override
     protected void initView(@Nullable Bundle savedInstanceState) {
-        setContentView(R.layout.fragment_status);
         setDialogWindow(new WindowHandler() {
             @Override
             public void onHandle(@NonNull Window window) {
