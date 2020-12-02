@@ -5,9 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -118,16 +116,10 @@ public class TestFragment extends BaseStatusViewPresenterFragment<MainContract.V
     @Nullable
     @Override
     protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return new IInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator.InflateLayoutViewCreatorAdapter() {
             @Override
             public int getInflateLayoutId() {
                 return R.layout.fragment_main;
-            }
-
-            @Nullable
-            @Override
-            public View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
-                return null;
             }
         };
     }

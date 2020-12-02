@@ -20,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
@@ -32,7 +33,6 @@ import com.mingyuechunqiu.agile.util.ExitApplicationManager;
 import com.mingyuechunqiu.agile.util.FragmentUtils;
 import com.mingyuechunqiu.agile.util.StringUtils;
 import com.mingyuechunqiu.agile.util.ToastUtils;
-import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
 import com.mingyuechunqiu.agileproject.R;
 
 import java.lang.ref.WeakReference;
@@ -334,16 +334,10 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     @NonNull
     @Override
     protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return new IInflateLayoutViewCreator() {
+        return new IInflateLayoutViewCreator.InflateLayoutViewCreatorAdapter() {
             @Override
             public int getInflateLayoutId() {
                 return R.layout.agile_layout_navigation;
-            }
-
-            @Nullable
-            @Override
-            public View getInflateLayoutView() {
-                return null;
             }
         };
     }

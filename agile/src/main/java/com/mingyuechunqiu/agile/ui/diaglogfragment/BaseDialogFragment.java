@@ -518,6 +518,24 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
          */
         @Nullable
         View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container);
+
+        /**
+         * 布局填充视图创建者适配器
+         * 实现IInflateLayoutViewCreator
+         */
+        class InflateLayoutViewCreatorAdapter implements IInflateLayoutViewCreator {
+
+            @Override
+            public int getInflateLayoutId() {
+                return 0;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+                return null;
+            }
+        }
     }
 
     /**

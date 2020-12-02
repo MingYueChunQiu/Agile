@@ -280,5 +280,23 @@ public abstract class BaseDialog extends AppCompatDialog {
          */
         @Nullable
         View getInflateLayoutView();
+
+        /**
+         * 布局填充视图创建者适配器
+         * 实现IInflateLayoutViewCreator
+         */
+        class InflateLayoutViewCreatorAdapter implements IInflateLayoutViewCreator {
+
+            @Override
+            public int getInflateLayoutId() {
+                return 0;
+            }
+
+            @Nullable
+            @Override
+            public View getInflateLayoutView() {
+                return null;
+            }
+        }
     }
 }
