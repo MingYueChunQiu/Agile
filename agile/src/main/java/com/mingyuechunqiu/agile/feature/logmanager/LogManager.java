@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
  */
 class LogManager implements ILogManager {
 
-    private ILog mLog;
+    private final ILog mLog;
 
     LogManager() {
         mLog = new LogUtils();

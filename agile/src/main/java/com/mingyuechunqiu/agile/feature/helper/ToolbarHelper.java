@@ -139,7 +139,7 @@ public final class ToolbarHelper {
 
     public static class ToolbarConfigure {
 
-        private Builder mBuilder;
+        private final Builder mBuilder;
 
         public ToolbarConfigure() {
             this(new Builder());

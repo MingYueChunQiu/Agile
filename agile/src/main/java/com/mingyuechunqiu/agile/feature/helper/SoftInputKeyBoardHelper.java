@@ -9,6 +9,7 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.util.ScreenUtils;
 
@@ -26,7 +27,7 @@ import java.lang.ref.WeakReference;
  */
 public final class SoftInputKeyBoardHelper {
 
-    private WeakReference<Activity> mActivityRef;
+    private final WeakReference<Activity> mActivityRef;
     private View mChildOfContent;
     private int usableHeightPrevious;
     private FrameLayout.LayoutParams frameLayoutParams;
@@ -39,46 +40,53 @@ public final class SoftInputKeyBoardHelper {
     }
 
     @NonNull
-    public static SoftInputKeyBoardHelper getInstance(@NonNull Activity activity) {
-        return getInstance(activity, false);
+    public static SoftInputKeyBoardHelper newInstance(@NonNull Activity activity) {
+        return newInstance(activity, false);
     }
 
     @NonNull
-    public static SoftInputKeyBoardHelper getInstance(@NonNull Activity activity, boolean removeStatusHeight) {
-        return getInstance(activity, true, removeStatusHeight);
+    public static SoftInputKeyBoardHelper newInstance(@NonNull Activity activity, boolean removeStatusHeight) {
+        return newInstance(activity, true, removeStatusHeight);
     }
 
     @NonNull
-    public static SoftInputKeyBoardHelper getInstance(@NonNull Activity activity, boolean changeContentHeight,
+    public static SoftInputKeyBoardHelper newInstance(@NonNull Activity activity, boolean changeContentHeight,
                                                       boolean removeStatusHeight) {
-        SoftInputKeyBoardHelper listener = new SoftInputKeyBoardHelper(activity);
-        listener.changeContentHeight = changeContentHeight;
-        listener.removeStatusHeight = removeStatusHeight;
-        return listener;
+        SoftInputKeyBoardHelper helper = new SoftInputKeyBoardHelper(activity);
+        helper.changeContentHeight = changeContentHeight;
+        helper.removeStatusHeight = removeStatusHeight;
+        return helper;
     }
 
     public boolean isRemoveStatusHeight() {
         return removeStatusHeight;
     }
 
-    public void setRemoveStatusHeight(boolean removeStatusHeight) {
+    @NonNull
+    public SoftInputKeyBoardHelper setRemoveStatusHeight(boolean removeStatusHeight) {
         this.removeStatusHeight = removeStatusHeight;
+        return this;
     }
 
     public boolean isChangeContentHeight() {
         return changeContentHeight;
     }
 
-    public void setChangeContentHeight(boolean changeContentHeight) {
+    @NonNull
+    public SoftInputKeyBoardHelper setChangeContentHeight(boolean changeContentHeight) {
         this.changeContentHeight = changeContentHeight;
+        return this;
     }
 
+    @Nullable
     public OnSoftKeyBoardChangeListener getOnSoftKeyBoardChangeListener() {
         return mListener;
     }
 
-    public void setOnSoftKeyBoardChangeListener(@NonNull OnSoftKeyBoardChangeListener listener) {
+    @NonNull
+    public SoftInputKeyBoardHelper setOnSoftKeyBoardChangeListener(@NonNull OnSoftKeyBoardChangeListener listener) {
         mListener = listener;
+        return this;
     }
 
     public void init() {
@@ -127,10 +135,10 @@ public final class SoftInputKeyBoardHelper {
                 // keyboard probably just became hidden
                 if (changeContentHeight) {
                     frameLayoutParams.height = usableHeightSansKeyboard;
-                }
-                if (ScreenUtils.judgeWindowHasNavigationBar(mActivityRef.get(), isScreenPortrait())) {
-                    //要减去底部导航栏高度，否则在有导航栏情况下，会导致布局延伸到导航栏里面
-                    frameLayoutParams.height -= ScreenUtils.getNavigationBarHeight(mActivityRef.get());
+                    if (ScreenUtils.judgeWindowHasNavigationBar(mActivityRef.get(), isScreenPortrait())) {
+                        //要减去底部导航栏高度，否则在有导航栏情况下，会导致布局延伸到导航栏里面
+                        frameLayoutParams.height -= ScreenUtils.getNavigationBarHeight(mActivityRef.get());
+                    }
                 }
                 if (mListener != null) {
                     mListener.onHideSoftKeyBoard();
