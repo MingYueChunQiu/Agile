@@ -2,9 +2,11 @@
 a agile android framework for MVP.
 一个Android高效框架，提供公共框架、方法，进行敏捷开发。
 
-    最新v0.4.15:
-    	1.优化框架填充布局</br>
-	2.升级SDK
+    最新v0.4.16:优化代码</br>
+    
+    	v0.4.15:
+    		1.优化框架填充布局</br>
+		2.升级SDK</br>
 	
 	v0.4.13:
     		1.框架增加对Activity/Fragment/DialogFragment/BottomSheetDialogFragment/Dialog生命周期全局注册监听</br>
@@ -161,6 +163,7 @@ bottomSheetDialogFragment:
 目前暂时提供如下功能：&nbsp;</br>
         remote远程包下：1.FTP处理</br>
                        2.Socket处理</br>
+	helper包：辅助工具
 	json包：提供了对json的相关处理</br>
 	loading：提供了加载Fragment的功能</br>
 	logmanager：提供了日志功能</br>
