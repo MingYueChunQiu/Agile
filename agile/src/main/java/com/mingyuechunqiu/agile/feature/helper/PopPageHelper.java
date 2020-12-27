@@ -14,9 +14,10 @@ import androidx.lifecycle.OnLifecycleEvent;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * <pre>
@@ -35,12 +36,11 @@ public final class PopPageHelper implements LifecycleObserver {
 
     private final WeakReference<LifecycleOwner> mLifecycleOwnerRef;
     private final PopPageCallback mCallback;
-    private final CopyOnWriteArrayList<PopPageInfo> mPopInfoList;
+    private final ArrayList<PopPageInfo> mPopInfoList = new ArrayList<>();
 
     private PopPageHelper(@NonNull LifecycleOwner owner, @NonNull PopPageCallback callback) {
         mLifecycleOwnerRef = new WeakReference<>(owner);
         mCallback = callback;
-        mPopInfoList = new CopyOnWriteArrayList<>();
         owner.getLifecycle().addObserver(this);
     }
 
@@ -59,7 +59,7 @@ public final class PopPageHelper implements LifecycleObserver {
     }
 
     @NonNull
-    public PopPageHelper addPopPage(@NonNull PopPageInfo info) {
+    public synchronized PopPageHelper addPopPage(@NonNull PopPageInfo info) {
         mPopInfoList.add(info);
         Collections.sort(mPopInfoList);
         Collections.reverse(mPopInfoList);
@@ -71,10 +71,12 @@ public final class PopPageHelper implements LifecycleObserver {
      *
      * @param id 弹出界面信息Id
      */
-    public void removePopPageWithId(@NonNull String id) {
-        for (PopPageInfo info : mPopInfoList) {
+    public synchronized void removePopPageWithId(@NonNull String id) {
+        Iterator<PopPageInfo> iterator = mPopInfoList.iterator();
+        while (iterator.hasNext()) {
+            PopPageInfo info = iterator.next();
             if (id.equals(info.id)) {
-                mPopInfoList.remove(info);
+                iterator.remove();
                 break;
             }
         }
@@ -85,15 +87,17 @@ public final class PopPageHelper implements LifecycleObserver {
      *
      * @param tag 弹出界面信息Tag
      */
-    public void removePopPageWithTag(@NonNull String tag) {
-        for (PopPageInfo info : mPopInfoList) {
+    public synchronized void removePopPageWithTag(@NonNull String tag) {
+        Iterator<PopPageInfo> iterator = mPopInfoList.iterator();
+        while (iterator.hasNext()) {
+            PopPageInfo info = iterator.next();
             if (tag.equals(info.tag)) {
-                mPopInfoList.remove(info);
+                iterator.remove();
             }
         }
     }
 
-    public void showPopPage(@NonNull Lifecycle.State currentState) {
+    public synchronized void showPopPage(@NonNull Lifecycle.State currentState) {
         if (!mCallback.canShowPopPage()) {
             return;
         }
@@ -110,19 +114,21 @@ public final class PopPageHelper implements LifecycleObserver {
             onDestroy();
             return;
         }
-        for (PopPageInfo info : mPopInfoList) {
+        Iterator<PopPageInfo> iterator = mPopInfoList.iterator();
+        while (iterator.hasNext()) {
+            PopPageInfo info = iterator.next();
             if (info == null || info.page == null || !currentState.isAtLeast(info.showLifecycleState)) {
                 continue;
             }
             if (info.page.isShouldShow(owner)) {
                 info.page.show(owner);
-                mPopInfoList.remove(info);
+                iterator.remove();
                 break;
             }
         }
     }
 
-    public void showHeaderPopPage(@NonNull Lifecycle.State currentState) {
+    public synchronized void showHeaderPopPage(@NonNull Lifecycle.State currentState) {
         if (!mCallback.canShowPopPage()) {
             return;
         }
