@@ -143,4 +143,20 @@
         <attr name="rvg_footer_offset_height" format="dimension" />
         <attr name="rvg_rebound_duration" format="integer" />
     </declare-styleable>
+
+    <!--圆形进度控件-->
+    <declare-styleable name="CircleProgressView">
+        <attr name="cpv_background_color" format="color" />
+        <attr name="cpv_progress_color" format="color" />
+        <attr name="cpv_progress_text" format="string" />
+        <attr name="cpv_progress_text_color" format="color" />
+        <attr name="cpv_progress_text_size" format="dimension" />
+        <attr name="cpv_progress_text_vertical_padding" format="dimension" />
+        <attr name="cpv_progress_text_horizontal_padding" format="dimension" />
+        <attr name="cpv_progress_suffix" format="string" />
+        <attr name="cpv_min_progress" format="integer" />
+        <attr name="cpv_max_progress" format="integer" />
+        <attr name="cpv_progress" format="integer" />
+    </declare-styleable>
+
 </resources>
