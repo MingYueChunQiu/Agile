@@ -26,9 +26,9 @@ object FileHelper {
      * @param file 需要转换的文件
      * @param blockWithNewApi 高版本Api调用时方法
      */
-    fun getUriFromFile(context: Context, file: File, blockWithNewApi: () -> Unit): Uri {
+    fun getUriFromFile(context: Context, file: File, blockWithNewApi: (() -> Unit)? = null): Uri {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            blockWithNewApi()
+            blockWithNewApi?.invoke()
             FileProvider.getUriForFile(context, context.packageName + ".fileprovider", file)
         } else {
             Uri.fromFile(file)
