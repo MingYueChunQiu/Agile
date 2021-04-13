@@ -5,13 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.IdRes;
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -19,6 +17,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventReceiver;
+import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventReceiverHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.key.KeyEventReceiverHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.TransferPageDataHelper;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
@@ -27,10 +30,11 @@ import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerPro
 import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
-import com.mingyuechunqiu.agile.framework.function.TransferDataCallback;
-import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
-import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
+import com.mingyuechunqiu.agile.frame.ui.IAgileFragmentPage;
+import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.util.ToastUtils;
+
+import org.jetbrains.annotations.NotNull;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 import static com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.TAG_AGILE_STATUS_VIEW;
@@ -42,15 +46,18 @@ import static com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewCo
  *     time   : 2018/05/16
  *     desc   : 所有Fragment的基类
  *              继承自Fragment
+ *              实现IAgileFragmentPage, ITransferDataPage, ITransferPageDataOwner, IKeyEventReceiver
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements IAgileFragmentPage {
 
-    //禁止返回界面flag
-    private boolean forbidBackToActivity, forbidBackToFragment;
     private IStatusViewManager mStatusViewManager;
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
+    @Nullable
+    private ITransferPageDataHelper mTransferPageDataHelper;
+    @Nullable
+    private IKeyEventReceiver mKeyEventReceiverHelper;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -110,13 +117,11 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        removeAllOnKeyEventListeners();
         dismissStatusView();
         super.onDestroyView();
         Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.DESTROYED_VIEW);
         releaseOnDestroyView();
         mStatusViewManager = null;
-        forbidBackToActivity = forbidBackToFragment = false;
     }
 
     @Override
@@ -132,20 +137,183 @@ public abstract class BaseFragment extends Fragment {
         Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.DETACHED);
     }
 
+    @NonNull
+    @Override
+    public String getPageTag() {
+        return getClass().getSimpleName();
+    }
+
+    @Nullable
+    @Override
+    public FragmentActivity getOwnedActivity() {
+        return getActivity();
+    }
+
+    @Nullable
+    @Override
+    public Fragment getOwnedParentFragment() {
+        return getParentFragment();
+    }
+
+    @Nullable
+    @Override
+    public Fragment getOwnedTargetFragment() {
+        return getTargetFragment();
+    }
+
+    /**
+     * 向Activity传递数据
+     *
+     * @param data 传递的数据
+     * @return 传递成功返回true，否则返回false
+     */
+    @Override
+    public boolean transferDataToActivity(@Nullable TransferPageDataHelper.TransferPageData data) {
+        return getTransferPageDataHelper().transferDataToActivity(data);
+    }
+
+    /**
+     * 向父Fragment传递数据
+     *
+     * @param data 传递的数据
+     * @return 传递成功返回true，否则返回false
+     */
+    @Override
+    public boolean transferDataToParentFragment(@Nullable TransferPageDataHelper.TransferPageData data) {
+        return getTransferPageDataHelper().transferDataToParentFragment(data);
+    }
+
+    /**
+     * 向目标Fragment传递数据
+     *
+     * @param data 传递的数据
+     * @return 传递成功返回true，否则返回false
+     */
+    @Override
+    public boolean transferDataToTargetFragment(@Nullable TransferPageDataHelper.TransferPageData data) {
+        return getTransferPageDataHelper().transferDataToTargetFragment(data);
+    }
+
+    /**
+     * 向指定界面传递数据
+     *
+     * @param targetPage 目标界面
+     * @param data       传递的数据
+     * @return 传递成功返回true，否则返回false
+     */
+    @Override
+    public boolean transferDataToPage(@NonNull TransferPageDataHelper.TransferPageDataCallback targetPage, @Nullable TransferPageDataHelper.TransferPageData data) {
+        return getTransferPageDataHelper().transferDataToPage(targetPage, data);
+    }
+
+    /**
+     * 返回上一个界面
+     *
+     * @param interceptor 跳转参数拦截设置器
+     * @return 如果进行调用则返回true，否则返回false
+     */
+    @Override
+    public boolean returnToPreviousPageWithActivity(@Nullable TransferPageDataHelper.TransferPageDataInterceptor interceptor) {
+        return getTransferPageDataHelper().returnToPreviousPageWithActivity(interceptor);
+    }
+
+    /**
+     * 返回上一个界面
+     *
+     * @param interceptor 跳转参数拦截设置器
+     * @return 如果进行调用则返回true，否则返回false
+     */
+    @Override
+    public boolean returnToPreviousPageWithParentFragment(@Nullable TransferPageDataHelper.TransferPageDataInterceptor interceptor) {
+        return getTransferPageDataHelper().returnToPreviousPageWithParentFragment(interceptor);
+    }
+
+    /**
+     * 返回上一个界面
+     *
+     * @param interceptor 跳转参数拦截设置器
+     * @return 如果进行调用则返回true，否则返回false
+     */
+    @Override
+    public boolean returnToPreviousPageWithTargetFragment(@Nullable TransferPageDataHelper.TransferPageDataInterceptor interceptor) {
+        return getTransferPageDataHelper().returnToPreviousPageWithTargetFragment(interceptor);
+    }
+
+    @Override
     public boolean isForbidBackToActivity() {
-        return forbidBackToActivity;
+        return getKeyEventReceiverHelper().isForbidBackToActivity();
     }
 
-    public void setForbidBackToActivity(boolean forbidBackToActivity) {
-        this.forbidBackToActivity = forbidBackToActivity;
+    @Override
+    public void setForbidBackToActivity(boolean isForbidBackToActivity) {
+        getKeyEventReceiverHelper().setForbidBackToActivity(isForbidBackToActivity);
     }
 
+    @Override
     public boolean isForbidBackToFragment() {
-        return forbidBackToFragment;
+        return getKeyEventReceiverHelper().isForbidBackToFragment();
     }
 
-    public void setForbidBackToFragment(boolean forbidBackToFragment) {
-        this.forbidBackToFragment = forbidBackToFragment;
+    @Override
+    public void setForbidBackToFragment(boolean isForbidBackToFragment) {
+        getKeyEventReceiverHelper().setForbidBackToFragment(isForbidBackToFragment);
+    }
+
+    /**
+     * 添加按键监听器
+     *
+     * @param listener 按键监听器
+     * @return 返回按键观察者Id
+     */
+    @Nullable
+    @Override
+    public String addOnKeyEventListener(@NotNull OnKeyEventListener listener) {
+        return getKeyEventReceiverHelper().addOnKeyEventListener(listener);
+    }
+
+    /**
+     * 移除按键监听器
+     *
+     * @param observerId 按键观察者Id
+     * @return 移除成功返回true，否则返回false
+     */
+    @Override
+    public boolean removeOnKeyEventListener(@NonNull String observerId) {
+        return getKeyEventReceiverHelper().removeOnKeyEventListener(observerId);
+    }
+
+    /**
+     * 清除当前界面所有按键监听器
+     */
+    @Override
+    public void clearAllOnKeyEventListeners() {
+        getKeyEventReceiverHelper().clearAllOnKeyEventListeners();
+    }
+
+    @Nullable
+    @Override
+    public BackPressedObserver getBackPressedObserver() {
+        return getKeyEventReceiverHelper().getBackPressedObserver();
+    }
+
+    @Override
+    public void setEnableBackPressedCallback(boolean enabled) {
+        getKeyEventReceiverHelper().setEnableBackPressedCallback(enabled);
+    }
+
+    @Override
+    public boolean listenBackKeyToPreviousPageWithActivity(@NonNull ITransferPageDataHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
+        return getKeyEventReceiverHelper().listenBackKeyToPreviousPageWithActivity(getTransferPageDataHelper(), interceptor);
+    }
+
+    @Override
+    public boolean listenBackKeyToPreviousPageWithParentFragment(@NonNull ITransferPageDataHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
+        return getKeyEventReceiverHelper().listenBackKeyToPreviousPageWithParentFragment(getTransferPageDataHelper(), interceptor);
+    }
+
+    @Override
+    public boolean listenBackKeyToPreviousPageWithTargetFragment(@NonNull ITransferPageDataHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
+        return getKeyEventReceiverHelper().listenBackKeyToPreviousPageWithTargetFragment(getTransferPageDataHelper(), interceptor);
     }
 
     /**
@@ -187,7 +355,7 @@ public abstract class BaseFragment extends Fragment {
      */
     @Nullable
     protected View initInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        IInflateLayoutViewCreator creator = generateInflateLayoutViewCreator();
+        IFragmentInflateLayoutViewCreator creator = generateInflateLayoutViewCreator();
         if (creator == null) {
             return null;
         }
@@ -226,204 +394,6 @@ public abstract class BaseFragment extends Fragment {
         }
         activity.finish();
         return true;
-    }
-
-    /**
-     * 添加按返回键通过Activity返回上一个界面
-     */
-    protected void addBackKeyToPreviousPageWithParentFg() {
-        addBackKeyToPreviousPageWithParentFg(null);
-    }
-
-    /**
-     * 添加按返回键通过Activity返回上一个界面
-     *
-     * @param interceptor 跳转参数拦截设置器
-     */
-    protected void addBackKeyToPreviousPageWithParentFg(@Nullable final JumpPageInterceptor interceptor) {
-        FragmentActivity activity = getActivity();
-        if (activity instanceof BaseActivity) {
-            ((BaseActivity) activity).addOnKeyEventListener(this, new OnKeyEventListener() {
-                @Override
-                public boolean onKeyEvent(int keyCode, KeyEvent event) {
-                    if (isVisible() && !forbidBackToFragment) {
-                        return returnToPreviousPageWithParentFg(interceptor);
-                    }
-                    return false;
-                }
-            });
-        }
-    }
-
-    /**
-     * 添加按返回键通过Activity返回上一个界面
-     */
-    protected void addBackKeyToPreviousPageWithActivity() {
-        addBackKeyToPreviousPageWithActivity(null);
-    }
-
-    /**
-     * 添加按返回键通过Activity返回上一个界面
-     *
-     * @param interceptor 跳转参数拦截设置器
-     */
-    protected void addBackKeyToPreviousPageWithActivity(@Nullable final JumpPageInterceptor interceptor) {
-        FragmentActivity activity = getActivity();
-        if (activity instanceof BaseActivity) {
-            ((BaseActivity) activity).addOnKeyEventListener(this, new OnKeyEventListener() {
-                @Override
-                public boolean onKeyEvent(int keyCode, KeyEvent event) {
-                    if (isVisible() && !forbidBackToActivity) {
-                        return returnToPreviousPageWithActivity(interceptor);
-                    }
-                    return false;
-                }
-            });
-        }
-    }
-
-    /**
-     * 移除按键监听器
-     *
-     * @param listener 按键监听器
-     * @return 如果删除成功返回true，否则返回false
-     */
-    protected boolean removeOnKeyEventListener(@Nullable OnKeyEventListener listener) {
-        if (listener == null) {
-            return false;
-        }
-        FragmentActivity activity = getActivity();
-        if (activity instanceof BaseActivity) {
-            return ((BaseActivity) activity).removeOnKeyEventListener(listener);
-        }
-        return false;
-    }
-
-    /**
-     * 返回父fragment界面
-     *
-     * @return 如果成功进行回调则返回true，否则返回false
-     */
-    protected boolean returnToPreviousPageWithParentFg() {
-        return returnToPreviousPageWithParentFg(null);
-    }
-
-    /**
-     * 返回父fragment界面
-     *
-     * @param interceptor 跳转参数拦截设置器
-     * @return 如果成功进行回调则返回true，否则返回false
-     */
-    protected boolean returnToPreviousPageWithParentFg(@Nullable JumpPageInterceptor interceptor) {
-        return returnToPreviousPageWithFragment(getParentFragment(), interceptor);
-    }
-
-    /**
-     * 返回目标fragment界面
-     *
-     * @return 如果成功进行回调则返回true，否则返回false
-     */
-    protected boolean returnToPreviousPageWithTargetFg() {
-        return returnToPreviousPageWithTargetFg(null);
-    }
-
-    /**
-     * 返回目标fragment界面
-     *
-     * @param interceptor 跳转参数拦截设置器
-     * @return 如果成功进行回调则返回true，否则返回false
-     */
-    protected boolean returnToPreviousPageWithTargetFg(@Nullable JumpPageInterceptor interceptor) {
-        return returnToPreviousPageWithFragment(getTargetFragment(), interceptor);
-    }
-
-    /**
-     * 返回前一个界面
-     *
-     * @param callbackFragment 被回调的fragment
-     * @param interceptor      跳转参数拦截设置器
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean returnToPreviousPageWithFragment(@Nullable Fragment callbackFragment,
-                                                       @Nullable final JumpPageInterceptor interceptor) {
-        return returnToPreviousPageWithFragment(this, callbackFragment, interceptor);
-    }
-
-    /**
-     * 返回前一个界面
-     *
-     * @param fragment         指定的fragment
-     * @param callbackFragment 被回调的fragment
-     * @param interceptor      跳转参数拦截设置器
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean returnToPreviousPageWithFragment(@Nullable Fragment fragment,
-                                                       @Nullable Fragment callbackFragment,
-                                                       @Nullable final JumpPageInterceptor interceptor) {
-        return callFragment(fragment, callbackFragment, new TransferDataCallback() {
-            @Override
-            public Bundle transferData() {
-                Bundle bundle = new Bundle();
-                bundle.putBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE, true);
-                if (interceptor != null) {
-                    interceptor.interceptJumpPage(bundle);
-                }
-                return bundle;
-            }
-        });
-    }
-
-    /**
-     * 返回上一个界面
-     *
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean returnToPreviousPageWithActivity() {
-        return returnToPreviousPageWithActivity(null);
-    }
-
-    /**
-     * 返回上一个界面
-     *
-     * @param interceptor 跳转参数拦截设置器
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean returnToPreviousPageWithActivity(@Nullable final JumpPageInterceptor interceptor) {
-        return returnToPreviousPageWithActivity(this, interceptor);
-    }
-
-    /**
-     * 返回上一个界面
-     *
-     * @param fragment    指定的fragment
-     * @param interceptor 跳转参数拦截设置器
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean returnToPreviousPageWithActivity(@Nullable Fragment fragment,
-                                                       @Nullable final JumpPageInterceptor interceptor) {
-        return callActivity(fragment, new TransferDataCallback() {
-            @Override
-            public Bundle transferData() {
-                Bundle bundle = new Bundle();
-                bundle.putBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE, true);
-                if (interceptor != null) {
-                    interceptor.interceptJumpPage(bundle);
-                }
-                return bundle;
-            }
-        });
-    }
-
-    /**
-     * 添加按键监听事件
-     *
-     * @param listener 按键监听器
-     */
-    protected void addOnKeyEventListenerToActivity(@NonNull OnKeyEventListener listener) {
-        FragmentActivity activity = getActivity();
-        if (activity instanceof BaseActivity) {
-            ((BaseActivity) activity).addOnKeyEventListener(this, listener);
-        }
     }
 
     /**
@@ -552,86 +522,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 回调父类Fragment传递数据
-     *
-     * @param callback 传递数据回调
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean callParentFragment(@Nullable TransferDataCallback callback) {
-        return callFragment(getParentFragment(), callback);
-    }
-
-    /**
-     * 回调目标Fragment传递数据
-     *
-     * @param callback 传递数据回调
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean callTargetFragment(@Nullable TransferDataCallback callback) {
-        return callFragment(getTargetFragment(), callback);
-    }
-
-    /**
-     * 回调指定Fragment传递数据
-     *
-     * @param callbackFragment 被回调的fragment
-     * @param callback         传递数据回调
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean callFragment(@Nullable Fragment callbackFragment, @Nullable TransferDataCallback callback) {
-        return callFragment(this, callbackFragment, callback);
-    }
-
-    /**
-     * 回调指定Fragment传递数据
-     *
-     * @param fragment         指定的Fragment
-     * @param callbackFragment 被回调的fragment
-     * @param callback         传递数据回调
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean callFragment(@Nullable Fragment fragment, @Nullable Fragment callbackFragment,
-                                   @Nullable TransferDataCallback callback) {
-        if (fragment == null) {
-            return false;
-        }
-        if (callbackFragment instanceof Callback) {
-            ((Callback) callbackFragment).onCall(fragment, callback == null ? null : callback.transferData());
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 回调Activity传递数据
-     *
-     * @param callback 传递数据回调
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean callActivity(@Nullable TransferDataCallback callback) {
-        return callActivity(this, callback);
-    }
-
-    /**
-     * 回调Activity传递数据
-     *
-     * @param fragment 指定的Fragment
-     * @param callback 传递数据回调
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean callActivity(@Nullable Fragment fragment, @Nullable TransferDataCallback callback) {
-        if (fragment == null) {
-            return false;
-        }
-        FragmentActivity activity = getActivity();
-        if (activity instanceof Callback) {
-            ((Callback) activity).onCall(fragment, callback == null ? null : callback.transferData());
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * 检查是否是返回上一页数据包
      *
      * @param bundle 数据包
@@ -659,22 +549,12 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 移除所有的按键监听器
-     */
-    private void removeAllOnKeyEventListeners() {
-        FragmentActivity activity = getActivity();
-        if (activity instanceof BaseActivity) {
-            ((BaseActivity) activity).removeOnKeyEventListeners(this);
-        }
-    }
-
-    /**
      * 获取填充布局视图创建者
      *
      * @return 返回创建者对象，非空
      */
     @Nullable
-    protected abstract IInflateLayoutViewCreator generateInflateLayoutViewCreator();
+    protected abstract IFragmentInflateLayoutViewCreator generateInflateLayoutViewCreator();
 
     /**
      * 释放资源（在onDestroyView时调用）
@@ -694,73 +574,27 @@ public abstract class BaseFragment extends Fragment {
      */
     protected abstract void initView(@NonNull View view, @Nullable Bundle savedInstanceState);
 
-    /**
-     * 布局填充视图创建者接口
-     */
-    protected interface IInflateLayoutViewCreator {
-
-        /**
-         * 获取填充布局资源ID
-         *
-         * @return 返回布局资源ID
-         */
-        @LayoutRes
-        int getInflateLayoutId();
-
-        /**
-         * 获取填充布局View（当getInflateLayoutId返回为0时，会被调用），可为null
-         *
-         * @param inflater  布局填充器
-         * @param container 父布局
-         * @return 返回View容器
-         */
-        @Nullable
-        View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container);
-
-        /**
-         * 布局填充视图创建者适配器
-         * 实现IInflateLayoutViewCreator
-         */
-        class InflateLayoutViewCreatorAdapter implements IInflateLayoutViewCreator {
-
-            @Override
-            public int getInflateLayoutId() {
-                return 0;
-            }
-
-            @Nullable
-            @Override
-            public View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
-                return null;
+    @NonNull
+    private ITransferPageDataHelper getTransferPageDataHelper() {
+        if (mTransferPageDataHelper == null) {
+            synchronized (this) {
+                if (mTransferPageDataHelper == null) {
+                    mTransferPageDataHelper = new TransferPageDataHelper(this);
+                }
             }
         }
+        return mTransferPageDataHelper;
     }
 
-    /**
-     * 供Activity实现的回调接口，实现对Fragment的调用
-     */
-    public interface Callback {
-
-        /**
-         * 供Activity使用的回调方法
-         *
-         * @param fragment 传递Fragment自身给其所在的Activity使用
-         * @param bundle   用于Fragment向Activity传递数据
-         */
-        void onCall(@NonNull Fragment fragment, @Nullable Bundle bundle);
-    }
-
-    /**
-     * 跳转界面拦截器
-     */
-    public interface JumpPageInterceptor {
-
-        /**
-         * 对跳转界面的参数进行拦截自定义
-         *
-         * @param bundle 携带参数的数据包
-         */
-        void interceptJumpPage(@NonNull Bundle bundle);
-
+    @NonNull
+    private IKeyEventReceiverHelper getKeyEventReceiverHelper() {
+        if (mKeyEventReceiverHelper == null) {
+            synchronized (this) {
+                if (mKeyEventReceiverHelper == null) {
+                    mKeyEventReceiverHelper = new KeyEventReceiverHelper(this);
+                }
+            }
+        }
+        return mKeyEventReceiverHelper;
     }
 }

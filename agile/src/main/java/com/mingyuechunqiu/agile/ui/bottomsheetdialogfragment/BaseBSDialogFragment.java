@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import androidx.annotation.IdRes;
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -21,6 +20,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventReceiverHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.key.KeyEventReceiverHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.TransferPageDataHelper;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
@@ -29,11 +32,12 @@ import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerPro
 import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
-import com.mingyuechunqiu.agile.framework.function.TransferDataCallback;
-import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
+import com.mingyuechunqiu.agile.frame.ui.IAgileFragmentPage;
+import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.framework.ui.WindowHandler;
-import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
 import com.mingyuechunqiu.agile.util.ToastUtils;
+
+import org.jetbrains.annotations.NotNull;
 
 import static com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.TAG_AGILE_STATUS_VIEW;
 
@@ -47,10 +51,14 @@ import static com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewCo
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
+public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment implements IAgileFragmentPage {
 
     private IStatusViewManager mStatusViewManager;
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
+    @Nullable
+    private ITransferPageDataHelper mTransferPageDataHelper;
+    @Nullable
+    private IKeyEventReceiverHelper mKeyEventReceiverHelper;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -111,7 +119,6 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
 
     @Override
     public void onDestroyView() {
-        removeAllOnKeyEventListeners();
         dismissStatusView();
         super.onDestroyView();
         Agile.getLifecycleDispatcher().updateBottomSheetDialogFragmentLifecycleState(this, AgileLifecycle.State.BottomSheetDialogFragmentState.DESTROYED_VIEW);
@@ -130,6 +137,185 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     public void onDetach() {
         super.onDetach();
         Agile.getLifecycleDispatcher().updateBottomSheetDialogFragmentLifecycleState(this, AgileLifecycle.State.BottomSheetDialogFragmentState.DETACHED);
+    }
+
+    @NonNull
+    @Override
+    public String getPageTag() {
+        return getClass().getSimpleName();
+    }
+
+    @Nullable
+    @Override
+    public FragmentActivity getOwnedActivity() {
+        return getActivity();
+    }
+
+    @Nullable
+    @Override
+    public Fragment getOwnedParentFragment() {
+        return getParentFragment();
+    }
+
+    @Nullable
+    @Override
+    public Fragment getOwnedTargetFragment() {
+        return getTargetFragment();
+    }
+
+    /**
+     * 向Activity传递数据
+     *
+     * @param data 传递的数据
+     * @return 传递成功返回true，否则返回false
+     */
+    @Override
+    public boolean transferDataToActivity(@Nullable TransferPageDataHelper.TransferPageData data) {
+        return getTransferPageDataHelper().transferDataToActivity(data);
+    }
+
+    /**
+     * 向父Fragment传递数据
+     *
+     * @param data 传递的数据
+     * @return 传递成功返回true，否则返回false
+     */
+    @Override
+    public boolean transferDataToParentFragment(@Nullable TransferPageDataHelper.TransferPageData data) {
+        return getTransferPageDataHelper().transferDataToParentFragment(data);
+    }
+
+    /**
+     * 向目标Fragment传递数据
+     *
+     * @param data 传递的数据
+     * @return 传递成功返回true，否则返回false
+     */
+    @Override
+    public boolean transferDataToTargetFragment(@Nullable TransferPageDataHelper.TransferPageData data) {
+        return getTransferPageDataHelper().transferDataToTargetFragment(data);
+    }
+
+    /**
+     * 向指定界面传递数据
+     *
+     * @param targetPage 目标界面
+     * @param data       传递的数据
+     * @return 传递成功返回true，否则返回false
+     */
+    @Override
+    public boolean transferDataToPage(@NonNull TransferPageDataHelper.TransferPageDataCallback targetPage, @Nullable TransferPageDataHelper.TransferPageData data) {
+        return getTransferPageDataHelper().transferDataToPage(targetPage, data);
+    }
+
+    /**
+     * 返回上一个界面
+     *
+     * @param interceptor 跳转参数拦截设置器
+     * @return 如果进行调用则返回true，否则返回false
+     */
+    @Override
+    public boolean returnToPreviousPageWithActivity(@Nullable TransferPageDataHelper.TransferPageDataInterceptor interceptor) {
+        return getTransferPageDataHelper().returnToPreviousPageWithActivity(interceptor);
+    }
+
+    /**
+     * 返回上一个界面
+     *
+     * @param interceptor 跳转参数拦截设置器
+     * @return 如果进行调用则返回true，否则返回false
+     */
+    @Override
+    public boolean returnToPreviousPageWithParentFragment(@Nullable TransferPageDataHelper.TransferPageDataInterceptor interceptor) {
+        return getTransferPageDataHelper().returnToPreviousPageWithParentFragment(interceptor);
+    }
+
+    /**
+     * 返回上一个界面
+     *
+     * @param interceptor 跳转参数拦截设置器
+     * @return 如果进行调用则返回true，否则返回false
+     */
+    @Override
+    public boolean returnToPreviousPageWithTargetFragment(@Nullable TransferPageDataHelper.TransferPageDataInterceptor interceptor) {
+        return getTransferPageDataHelper().returnToPreviousPageWithTargetFragment(interceptor);
+    }
+
+    @Override
+    public boolean isForbidBackToActivity() {
+        return getKeyEventReceiverHelper().isForbidBackToActivity();
+    }
+
+    @Override
+    public void setForbidBackToActivity(boolean isForbidBackToActivity) {
+        getKeyEventReceiverHelper().setForbidBackToActivity(isForbidBackToActivity);
+    }
+
+    @Override
+    public boolean isForbidBackToFragment() {
+        return getKeyEventReceiverHelper().isForbidBackToFragment();
+    }
+
+    @Override
+    public void setForbidBackToFragment(boolean isForbidBackToFragment) {
+        getKeyEventReceiverHelper().setForbidBackToFragment(isForbidBackToFragment);
+    }
+
+    /**
+     * 添加按键监听器
+     *
+     * @param listener 按键监听器
+     * @return 返回按键观察者Id
+     */
+    @Nullable
+    @Override
+    public String addOnKeyEventListener(@NotNull OnKeyEventListener listener) {
+        return getKeyEventReceiverHelper().addOnKeyEventListener(listener);
+    }
+
+    /**
+     * 移除按键监听器
+     *
+     * @param observerId 按键观察者Id
+     * @return 移除成功返回true，否则返回false
+     */
+    @Override
+    public boolean removeOnKeyEventListener(@NonNull String observerId) {
+        return getKeyEventReceiverHelper().removeOnKeyEventListener(observerId);
+    }
+
+    /**
+     * 清除当前界面所有按键监听器
+     */
+    @Override
+    public void clearAllOnKeyEventListeners() {
+        getKeyEventReceiverHelper().clearAllOnKeyEventListeners();
+    }
+
+    @Nullable
+    @Override
+    public BackPressedObserver getBackPressedObserver() {
+        return getKeyEventReceiverHelper().getBackPressedObserver();
+    }
+
+    @Override
+    public void setEnableBackPressedCallback(boolean enabled) {
+        getKeyEventReceiverHelper().setEnableBackPressedCallback(enabled);
+    }
+
+    @Override
+    public boolean listenBackKeyToPreviousPageWithActivity(@NonNull ITransferPageDataHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
+        return getKeyEventReceiverHelper().listenBackKeyToPreviousPageWithActivity(getTransferPageDataHelper(), interceptor);
+    }
+
+    @Override
+    public boolean listenBackKeyToPreviousPageWithParentFragment(@NonNull ITransferPageDataHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
+        return getKeyEventReceiverHelper().listenBackKeyToPreviousPageWithParentFragment(getTransferPageDataHelper(), interceptor);
+    }
+
+    @Override
+    public boolean listenBackKeyToPreviousPageWithTargetFragment(@NonNull ITransferPageDataHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
+        return getKeyEventReceiverHelper().listenBackKeyToPreviousPageWithTargetFragment(getTransferPageDataHelper(), interceptor);
     }
 
     /**
@@ -158,7 +344,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      */
     @Nullable
     protected View initInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        IInflateLayoutViewCreator creator = generateInflateLayoutViewCreator();
+        IFragmentInflateLayoutViewCreator creator = generateInflateLayoutViewCreator();
         if (creator == null) {
             return null;
         }
@@ -340,86 +526,6 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
     }
 
     /**
-     * 回调父类Fragment传递数据
-     *
-     * @param callback 传递数据回调
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean callParentFragment(@Nullable TransferDataCallback callback) {
-        return callFragment(getParentFragment(), callback);
-    }
-
-    /**
-     * 回调目标Fragment传递数据
-     *
-     * @param callback 传递数据回调
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean callTargetFragment(@Nullable TransferDataCallback callback) {
-        return callFragment(getTargetFragment(), callback);
-    }
-
-    /**
-     * 回调指定Fragment传递数据
-     *
-     * @param callbackFragment 被回调的fragment
-     * @param callback         传递数据回调
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean callFragment(@Nullable Fragment callbackFragment, @Nullable TransferDataCallback callback) {
-        return callFragment(this, callbackFragment, callback);
-    }
-
-    /**
-     * 回调指定Fragment传递数据
-     *
-     * @param fragment         指定的Fragment
-     * @param callbackFragment 被回调的fragment
-     * @param callback         传递数据回调
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean callFragment(@Nullable BottomSheetDialogFragment fragment, @Nullable Fragment callbackFragment,
-                                   @Nullable TransferDataCallback callback) {
-        if (fragment == null) {
-            return false;
-        }
-        if (callbackFragment instanceof Callback) {
-            ((Callback) callbackFragment).onCall(fragment, callback == null ? null : callback.transferData());
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 回调Activity传递数据
-     *
-     * @param callback 传递数据回调
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean callActivity(@Nullable TransferDataCallback callback) {
-        return callActivity(this, callback);
-    }
-
-    /**
-     * 回调Activity传递数据
-     *
-     * @param fragment 指定的Fragment
-     * @param callback 传递数据回调
-     * @return 如果进行回调则返回true，否则返回false
-     */
-    protected boolean callActivity(@Nullable BottomSheetDialogFragment fragment, @Nullable TransferDataCallback callback) {
-        if (fragment == null) {
-            return false;
-        }
-        FragmentActivity activity = getActivity();
-        if (activity instanceof Callback) {
-            ((Callback) activity).onCall(fragment, callback == null ? null : callback.transferData());
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * 销毁Activity
      *
      * @return 如果成功销毁返回true，否则返回false
@@ -434,26 +540,28 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
         return true;
     }
 
-    /**
-     * 添加按键监听事件
-     *
-     * @param listener 按键监听器
-     */
-    protected void addOnKeyEventListenerToActivity(@NonNull OnKeyEventListener listener) {
-        FragmentActivity activity = getActivity();
-        if (activity instanceof BaseActivity) {
-            ((BaseActivity) activity).addOnKeyEventListener(this, listener);
+    @NonNull
+    private ITransferPageDataHelper getTransferPageDataHelper() {
+        if (mTransferPageDataHelper == null) {
+            synchronized (this) {
+                if (mTransferPageDataHelper == null) {
+                    mTransferPageDataHelper = new TransferPageDataHelper(this);
+                }
+            }
         }
+        return mTransferPageDataHelper;
     }
 
-    /**
-     * 移除所有的按键监听器
-     */
-    private void removeAllOnKeyEventListeners() {
-        FragmentActivity activity = getActivity();
-        if (activity instanceof BaseActivity) {
-            ((BaseActivity) activity).removeOnKeyEventListeners(this);
+    @NonNull
+    private IKeyEventReceiverHelper getKeyEventReceiverHelper() {
+        if (mKeyEventReceiverHelper == null) {
+            synchronized (this) {
+                if (mKeyEventReceiverHelper == null) {
+                    mKeyEventReceiverHelper = new KeyEventReceiverHelper(this);
+                }
+            }
         }
+        return mKeyEventReceiverHelper;
     }
 
     /**
@@ -462,7 +570,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      * @return 返回创建者对象，非空
      */
     @Nullable
-    protected abstract IInflateLayoutViewCreator generateInflateLayoutViewCreator();
+    protected abstract IFragmentInflateLayoutViewCreator generateInflateLayoutViewCreator();
 
     /**
      * 由子类重写控件的初始化方法
@@ -481,61 +589,4 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment {
      * 释放资源（在onDestroy时调用）
      */
     protected abstract void releaseOnDestroy();
-
-    /**
-     * 布局填充视图创建者接口
-     */
-    protected interface IInflateLayoutViewCreator {
-
-        /**
-         * 获取填充布局资源ID
-         *
-         * @return 返回布局资源ID
-         */
-        @LayoutRes
-        int getInflateLayoutId();
-
-        /**
-         * 获取填充布局View（当getInflateLayoutId返回为0时，会被调用），可为null
-         *
-         * @param inflater  布局填充器
-         * @param container 父布局
-         * @return 返回View容器
-         */
-        @Nullable
-        View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container);
-
-        /**
-         * 布局填充视图创建者适配器
-         * 实现IInflateLayoutViewCreator
-         */
-        class InflateLayoutViewCreatorAdapter implements IInflateLayoutViewCreator {
-
-            @Override
-            public int getInflateLayoutId() {
-                return 0;
-            }
-
-            @Nullable
-            @Override
-            public View getInflateLayoutView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
-                return null;
-            }
-        }
-    }
-
-    /**
-     * 供Activity实现的回调接口，实现对DialogFragment的调用
-     */
-    public interface Callback {
-
-        /**
-         * 由Activity实现的回调方法
-         *
-         * @param fragment 回调的fragment
-         * @param bundle   传递的参数值
-         */
-        void onCall(@NonNull BottomSheetDialogFragment fragment, @Nullable Bundle bundle);
-
-    }
 }

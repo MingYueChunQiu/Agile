@@ -46,7 +46,7 @@ import static com.mingyuechunqiu.agile.data.remote.ftp.constants.FTPConstants.PA
  */
 class FTPHandler implements IFTPHandler {
 
-    private FTPClient mClient;
+    private final FTPClient mClient;
     private FTPResponseCallback mCallback;
 
     FTPHandler() {
@@ -107,10 +107,6 @@ class FTPHandler implements IFTPHandler {
     @Override
     public void downloadFile(@NonNull String remotePath, @NonNull String downloadFileName, @NonNull String savePath,
                              @NonNull FTPResponseCallback callback) {
-        if (mClient == null) {
-            callback.onResponseFailure(new FTPException("FTPHandler：FTPClient error"));
-            return;
-        }
         mCallback = callback;
 
         boolean success = false;//是否下载成功标志
@@ -220,10 +216,6 @@ class FTPHandler implements IFTPHandler {
 
     @Override
     public void uploadFile(@NonNull String filePath, @NonNull FTPResponseCallback callback) {
-        if (mClient == null) {
-            callback.onResponseFailure(new FTPException("FTPHandler：FTPClient error"));
-            return;
-        }
         mCallback = callback;
 
         if (TextUtils.isEmpty(filePath)) {
@@ -396,7 +388,7 @@ class FTPHandler implements IFTPHandler {
      * @return 如果不可用返回true，否则返回false
      */
     private boolean checkFTPClientIsError() {
-        if (mClient == null || !mClient.isConnected() || !mClient.isAvailable()) {
+        if (!mClient.isConnected() || !mClient.isAvailable()) {
             if (mCallback != null) {
                 mCallback.onResponseFailure(new FTPException("FTPHandler：FTPClient不可用"));
             }

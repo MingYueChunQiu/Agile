@@ -11,8 +11,9 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
-import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataHelper;
 import com.mingyuechunqiu.agileproject.R;
 
 /**
@@ -37,8 +38,9 @@ public class JumpFragment2 extends Fragment {
         btnJump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (getActivity() instanceof BaseFragment.Callback) {
-                    ((BaseFragment.Callback) getActivity()).onCall(JumpFragment2.this, null);
+                FragmentActivity activity = getActivity();
+                if (activity instanceof ITransferPageDataHelper.TransferPageDataCallback) {
+                    ((ITransferPageDataHelper.TransferPageDataCallback) activity).onReceiveTransferPageData(new ITransferPageDataHelper.TransferPageDataOwner(getClass().getSimpleName()), null);
                 }
             }
         });

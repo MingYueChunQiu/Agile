@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.feature.helper;
+package com.mingyuechunqiu.agile.feature.helper.ui;
 
 import android.os.Build;
 
@@ -149,7 +149,7 @@ public final class PopPageHelper implements LifecycleObserver {
             onDestroy();
             return;
         }
-        if (info == null || info.page == null || !currentState.isAtLeast(info.showLifecycleState)) {
+        if (!currentState.isAtLeast(info.showLifecycleState)) {
             return;
         }
         if (info.page.isShouldShow(owner)) {

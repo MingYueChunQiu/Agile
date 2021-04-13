@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.framework.ui;
+package com.mingyuechunqiu.agile.framework.ui.widget;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -6,7 +6,6 @@ import android.animation.ValueAnimator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.mingyuechunqiu.agile.util.ScreenUtils;

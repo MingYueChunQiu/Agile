@@ -21,14 +21,15 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataHelper;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
+import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agile.ui.activity.WebViewActivity;
-import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agile.util.ExitApplicationManager;
 import com.mingyuechunqiu.agile.util.FragmentUtils;
 import com.mingyuechunqiu.agile.util.StringUtils;
@@ -57,7 +58,7 @@ import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUN
  * </pre>
  */
 public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View<MainContract.Presenter<?, ?>>, MainContract.Presenter<?, ?>>
-        implements MainContract.View<MainContract.Presenter<?, ?>>, View.OnClickListener, BaseFragment.Callback {
+        implements MainContract.View<MainContract.Presenter<?, ?>>, View.OnClickListener, ITransferPageDataHelper.TransferPageDataCallback {
 
     private Fragment mSelectedFg;
 
@@ -128,7 +129,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         tvToolbarTitle.setText(R.string.app_name);
         tvToolbarTitle.setVisibility(View.VISIBLE);
         FrameLayout clContainer = findViewById(R.id.fl_navigation_container);
-        View view = getLayoutInflater().inflate(R.layout.activity_main, null);
+        View view = getLayoutInflater().inflate(R.layout.activity_main, null,false);
         clContainer.addView(view);
         AppCompatTextView actvUrl = view.findViewById(R.id.tv_url);
         actvUrl.setText(StringUtils.createColorUrlSpan("我已阅读并同意《云海螺用户注册协议》",
@@ -314,17 +315,6 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         }
     }
 
-    @Override
-    public void onCall(@NonNull Fragment fragment, Bundle bundle) {
-        if (bundle == null) {
-            return;
-        }
-        if (bundle.getBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE)) {
-            FragmentUtils.removeFragments(getSupportFragmentManager(), true,
-                    R.anim.agile_alpha_slide_in_left, R.anim.agile_alpha_slide_out_right, mSelectedFg);
-        }
-    }
-
     @NonNull
     @Override
     public IStatusViewManager getStatusViewManager() {
@@ -333,8 +323,8 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 
     @NonNull
     @Override
-    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return new IInflateLayoutViewCreator.InflateLayoutViewCreatorAdapter() {
+    protected IActivityInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IActivityInflateLayoutViewCreator.ActivityInflateLayoutViewCreatorAdapter() {
             @Override
             public int getInflateLayoutId() {
                 return R.layout.agile_layout_navigation;
@@ -351,5 +341,16 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     @Override
     public MainContract.Presenter<?, ?> initPresenter() {
         return new MainPresenter();
+    }
+
+    @Override
+    public void onReceiveTransferPageData(@NonNull ITransferPageDataHelper.TransferPageDataOwner dataOwner, @Nullable ITransferPageDataHelper.TransferPageData data) {
+        if (data == null) {
+            return;
+        }
+        if (data.getBundle().getBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE)) {
+            FragmentUtils.removeFragments(getSupportFragmentManager(), true,
+                    R.anim.agile_alpha_slide_in_left, R.anim.agile_alpha_slide_out_right, mSelectedFg);
+        }
     }
 }

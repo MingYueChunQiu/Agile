@@ -6,14 +6,15 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import androidx.annotation.IdRes;
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventDispatcher;
+import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventReceiver;
+import com.mingyuechunqiu.agile.feature.helper.ui.key.KeyEventDispatcherHelper;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
@@ -22,15 +23,12 @@ import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerPro
 import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
-import com.mingyuechunqiu.agile.framework.ui.OnKeyEventListener;
+import com.mingyuechunqiu.agile.frame.ui.IAgileActivityPage;
+import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.util.ExitApplicationManager;
 import com.mingyuechunqiu.agile.util.ToastUtils;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import org.jetbrains.annotations.NotNull;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 import static com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.TAG_AGILE_STATUS_VIEW;
@@ -45,12 +43,13 @@ import static com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewCo
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements IAgileActivityPage {
 
-    @Nullable
-    private Map<Fragment, List<OnKeyEventListener>> mKeyEventListenerMap;
     private IStatusViewManager mStatusViewManager;
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
+    @Nullable
+    private IKeyEventDispatcher mKeyEventDispatcher = null;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,83 +89,35 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         Agile.getLifecycleDispatcher().updateActivityLifecycleState(this, AgileLifecycle.State.ActivityState.DESTROYED);
         release();
-        if (mKeyEventListenerMap != null) {
-            mKeyEventListenerMap.clear();
-            mKeyEventListenerMap = null;
-        }
         mStatusViewManager = null;
         ExitApplicationManager.getInstance().removeActivity(this);
     }
 
-    /**
-     * 添加fragment的按键监听器
-     *
-     * @param listener fragment按键监听器
-     */
-    public void addOnKeyEventListener(@NonNull Fragment fragment, @NonNull OnKeyEventListener listener) {
-        if (mKeyEventListenerMap == null) {
-            mKeyEventListenerMap = new ConcurrentHashMap<>();
-        }
-        List<OnKeyEventListener> list;
-        if (mKeyEventListenerMap.containsKey(fragment)) {
-            list = mKeyEventListenerMap.get(fragment);
-            if (list == null) {
-                list = new ArrayList<>();
-                list.add(listener);
-                mKeyEventListenerMap.put(fragment, list);
-            } else {
-                list.add(listener);
-            }
-        } else {
-            list = new ArrayList<>();
-            list.add(listener);
-            mKeyEventListenerMap.put(fragment, list);
-        }
-    }
-
-    /**
-     * 删除fragment的按键监听器
-     *
-     * @param listener fragment按键监听器
-     * @return 如果删除成功返回true，否则返回false
-     */
-    public boolean removeOnKeyEventListener(@Nullable OnKeyEventListener listener) {
-        if (listener == null || mKeyEventListenerMap == null) {
-            return false;
-        }
-        for (List<OnKeyEventListener> list : mKeyEventListenerMap.values()) {
-            if (list.contains(listener)) {
-                return list.remove(listener);
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 移除与Fragment键关联的所有按键监听器
-     *
-     * @param fragment 与按键监听器相关联的Fragment
-     */
-    public void removeOnKeyEventListeners(@NonNull Fragment fragment) {
-        if (mKeyEventListenerMap == null) {
-            return;
-        }
-        Iterator<Map.Entry<Fragment, List<OnKeyEventListener>>> iterator = mKeyEventListenerMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Fragment, List<OnKeyEventListener>> entry = iterator.next();
-            if (entry.getKey() == fragment) {
-                iterator.remove();
-                break;
-            }
-        }
+    @NonNull
+    @Override
+    public String getPageTag() {
+        return getClass().getSimpleName();
     }
 
     @NonNull
-    public Map<Fragment, List<OnKeyEventListener>> getOnKeyEventListenerList() {
-        if (mKeyEventListenerMap == null) {
-            mKeyEventListenerMap = new ConcurrentHashMap<>();
-        }
-        return mKeyEventListenerMap;
+    @Override
+    public String addOnKeyEventListener(@NotNull String tag, @NotNull IKeyEventReceiver.OnKeyEventListener listener) {
+        return getKeyEventDispatcher().addOnKeyEventListener(tag, listener);
+    }
+
+    @Override
+    public boolean removeOnKeyEventListener(@NotNull String observerId) {
+        return getKeyEventDispatcher().removeOnKeyEventListener(observerId);
+    }
+
+    @Override
+    public boolean removeOnKeyEventListenersWithTag(@NotNull String tag) {
+        return getKeyEventDispatcher().removeOnKeyEventListenersWithTag(tag);
+    }
+
+    @Override
+    public boolean dispatchOnKeyEventListener(int keyCode, @Nullable KeyEvent event) {
+        return getKeyEventDispatcher().dispatchOnKeyEventListener(keyCode, event);
     }
 
     /**
@@ -175,7 +126,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param savedInstanceState 状态存储实例
      */
     protected void initInflateLayoutView(@Nullable Bundle savedInstanceState) {
-        IInflateLayoutViewCreator creator = generateInflateLayoutViewCreator();
+        IActivityInflateLayoutViewCreator creator = generateInflateLayoutViewCreator();
         int id = creator.getInflateLayoutId();
         if (id != 0) {
             setContentView(id);
@@ -214,31 +165,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         initInflateLayoutView(savedInstanceState);
         initView(savedInstanceState);
         ExitApplicationManager.getInstance().addActivity(this);
-    }
-
-    /**
-     * 分发按键事件
-     *
-     * @param keyCode 键值
-     * @param event   按键事件
-     * @return 如果有fragment阻止了事件继续传递则返回true，否则返回false
-     */
-    protected boolean dispatchOnKeyEventListener(int keyCode, KeyEvent event) {
-        if (event == null) {
-            return false;
-        }
-        if (mKeyEventListenerMap == null || mKeyEventListenerMap.size() == 0) {
-            return false;
-        }
-        boolean isForbidTransfer = false;//是否禁止继续传递
-        for (List<OnKeyEventListener> list : mKeyEventListenerMap.values()) {
-            for (OnKeyEventListener listener : list) {
-                if (listener.onKeyEvent(keyCode, event)) {
-                    isForbidTransfer = true;
-                }
-            }
-        }
-        return isForbidTransfer;
     }
 
     /**
@@ -415,13 +341,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         return false;
     }
 
+    @NonNull
+    private IKeyEventDispatcher getKeyEventDispatcher() {
+        if (mKeyEventDispatcher == null) {
+            synchronized (this) {
+                if (mKeyEventDispatcher == null) {
+                    mKeyEventDispatcher = new KeyEventDispatcherHelper(this);
+                }
+            }
+        }
+        return mKeyEventDispatcher;
+    }
+
     /**
      * 获取填充布局视图创建者
      *
      * @return 返回创建者对象，非空
      */
     @NonNull
-    protected abstract IInflateLayoutViewCreator generateInflateLayoutViewCreator();
+    protected abstract IActivityInflateLayoutViewCreator generateInflateLayoutViewCreator();
 
     /**
      * 释放资源
@@ -434,44 +372,4 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param savedInstanceState 界面销毁时保存的状态数据实例
      */
     protected abstract void initView(@Nullable Bundle savedInstanceState);
-
-    /**
-     * 布局填充视图创建者接口
-     */
-    protected interface IInflateLayoutViewCreator {
-
-        /**
-         * 获取填充布局资源ID
-         *
-         * @return 返回布局资源ID
-         */
-        @LayoutRes
-        int getInflateLayoutId();
-
-        /**
-         * 获取填充布局View（当getInflateLayoutId返回为0时，会被调用），可为null
-         *
-         * @return 返回View容器
-         */
-        @Nullable
-        View getInflateLayoutView();
-
-        /**
-         * 布局填充视图创建者适配器
-         * 实现IInflateLayoutViewCreator
-         */
-        class InflateLayoutViewCreatorAdapter implements IInflateLayoutViewCreator {
-
-            @Override
-            public int getInflateLayoutId() {
-                return 0;
-            }
-
-            @Nullable
-            @Override
-            public View getInflateLayoutView() {
-                return null;
-            }
-        }
-    }
 }
