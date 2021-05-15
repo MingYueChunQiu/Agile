@@ -12,26 +12,28 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
-import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventDispatcher;
+import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventDispatcherHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventReceiver;
 import com.mingyuechunqiu.agile.feature.helper.ui.key.KeyEventDispatcherHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
+import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewOwner;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
-import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
-import com.mingyuechunqiu.agile.frame.ui.IAgileActivityPage;
+import com.mingyuechunqiu.agile.frame.ui.activity.IAgileActivityPage;
 import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.util.ExitApplicationManager;
-import com.mingyuechunqiu.agile.util.ToastUtils;
 
 import org.jetbrains.annotations.NotNull;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
-import static com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.TAG_AGILE_STATUS_VIEW;
 
 /**
  * <pre>
@@ -43,12 +45,12 @@ import static com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewCo
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseActivity extends AppCompatActivity implements IAgileActivityPage {
+public abstract class BaseActivity extends AppCompatActivity implements IAgileActivityPage, IPopHintOwner, IStatusViewOwner {
 
     private IStatusViewManager mStatusViewManager;
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
     @Nullable
-    private IKeyEventDispatcher mKeyEventDispatcher = null;
+    private IKeyEventDispatcherHelper mKeyEventDispatcher = null;
 
 
     @Override
@@ -85,9 +87,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
 
     @Override
     protected void onDestroy() {
-        dismissStatusView();
         super.onDestroy();
         Agile.getLifecycleDispatcher().updateActivityLifecycleState(this, AgileLifecycle.State.ActivityState.DESTROYED);
+        dismissStatusView(true);
         release();
         mStatusViewManager = null;
         ExitApplicationManager.getInstance().removeActivity(this);
@@ -99,25 +101,146 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
         return getClass().getSimpleName();
     }
 
+    @Override
+    public void onReceiveTransferPageData(@NonNull ITransferPageDataDispatcherHelper.TransferPageDataOwner dataOwner, @Nullable ITransferPageDataDispatcherHelper.TransferPageData data) {
+    }
+
     @NonNull
     @Override
-    public String addOnKeyEventListener(@NotNull String tag, @NotNull IKeyEventReceiver.OnKeyEventListener listener) {
-        return getKeyEventDispatcher().addOnKeyEventListener(tag, listener);
+    public String addOnKeyEventListener(@NonNull String tag, @NonNull IKeyEventReceiver.OnKeyEventListener listener) {
+        return getKeyEventDispatcherHelper().addOnKeyEventListener(tag, listener);
     }
 
     @Override
-    public boolean removeOnKeyEventListener(@NotNull String observerId) {
-        return getKeyEventDispatcher().removeOnKeyEventListener(observerId);
+    public boolean removeOnKeyEventListener(@NonNull String observerId) {
+        return getKeyEventDispatcherHelper().removeOnKeyEventListener(observerId);
     }
 
     @Override
-    public boolean removeOnKeyEventListenersWithTag(@NotNull String tag) {
-        return getKeyEventDispatcher().removeOnKeyEventListenersWithTag(tag);
+    public boolean removeOnKeyEventListenersWithTag(@NonNull String tag) {
+        return getKeyEventDispatcherHelper().removeOnKeyEventListenersWithTag(tag);
     }
 
     @Override
     public boolean dispatchOnKeyEventListener(int keyCode, @Nullable KeyEvent event) {
-        return getKeyEventDispatcher().dispatchOnKeyEventListener(keyCode, event);
+        return getKeyEventDispatcherHelper().dispatchOnKeyEventListener(keyCode, event);
+    }
+
+    @NonNull
+    @Override
+    public IKeyEventDispatcherHelper getKeyEventDispatcherHelper() {
+        if (mKeyEventDispatcher == null) {
+            synchronized (this) {
+                if (mKeyEventDispatcher == null) {
+                    mKeyEventDispatcher = new KeyEventDispatcherHelper(this);
+                }
+            }
+        }
+        return mKeyEventDispatcher;
+    }
+
+    /**
+     * 根据资源id显示文本
+     *
+     * @param msgResId 文本资源id
+     */
+    @Override
+    public void showToast(@StringRes int msgResId) {
+        ToastHelper.showToast(this, msgResId);
+    }
+
+    /**
+     * 根据文本显示文本
+     *
+     * @param msg 文本
+     */
+    @Override
+    public void showToast(@Nullable String msg) {
+        ToastHelper.showToast(this, msg);
+    }
+
+    /**
+     * 根据配置信息显示文本
+     *
+     * @param config 配置信息对象
+     */
+    @Override
+    public void showToast(@NonNull ToastHelper.ToastConfig config) {
+        ToastHelper.showToast(this, config);
+    }
+
+    /**
+     * 根据错误信息显示文本
+     *
+     * @param info 错误信息对象
+     */
+    @Override
+    public void showToast(@NotNull ErrorInfo info) {
+        showToast(new ToastHelper.ToastConfig.Builder()
+                .setMsg(info.getErrorMsg())
+                .setMsgResId(info.getErrorMsgResId())
+                .build());
+    }
+
+    /**
+     * 显示加载对话框
+     *
+     * @param hint       提示文本
+     * @param cancelable 是否可以取消
+     */
+    @Override
+    public void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
+        StatusViewConfigure configure = getStatusViewManager().getStatusViewConfigure();
+        StatusViewOption option = configure == null ? null : configure.getLoadingOption();
+        if (option == null) {
+            option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
+        }
+        option.getContentOption().setText(hint);
+        option.setCancelWithOutside(cancelable);
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING,
+                getSupportFragmentManager(), option);
+    }
+
+    /**
+     * 显示加载状态视图
+     *
+     * @param containerId 状态视图添加布局ID
+     */
+    @Override
+    public void showLoadingStatusView(@IdRes int containerId) {
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, findViewById(containerId), null);
+    }
+
+    /**
+     * 关闭状态视图
+     *
+     * @param allowStateLoss true允许丧失状态，否则false
+     */
+    @Override
+    public void dismissStatusView(boolean allowStateLoss) {
+        if (mStatusViewManager == null) {
+            return;
+        }
+        getStatusViewManager().dismissStatusView(allowStateLoss);
+    }
+
+    /**
+     * 获取获取状态视图管理器实例（线程安全）
+     *
+     * @return 返回获取状态视图管理器实例
+     */
+    @Override
+    @NonNull
+    public IStatusViewManager getStatusViewManager() {
+        if (mStatusViewManager == null) {
+            synchronized (mStatusViewLock) {
+                if (mStatusViewManager == null) {
+                    mStatusViewManager = StatusViewManagerProvider.newInstance(this);
+                    onInitStatusViewManager(mStatusViewManager);
+                }
+            }
+        }
+        return mStatusViewManager;
     }
 
     /**
@@ -146,14 +269,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
      * @param savedInstanceState 实例资源对象
      */
     protected void restoreAgileResource(@Nullable Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            return;
-        }
-        //DialogFragment在界面意外销毁后会由系统重新创建
-        IStatusView statusView = (IStatusView) getSupportFragmentManager().findFragmentByTag(TAG_AGILE_STATUS_VIEW);
-        if (statusView != null) {
-            getStatusViewManager().setStatusView(statusView);
-        }
+        getStatusViewManager().restoreStatueView(savedInstanceState, getSupportFragmentManager());
     }
 
     /**
@@ -190,123 +306,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
     }
 
     /**
-     * 显示信息
-     *
-     * @param msg 文本
-     */
-    protected void showToast(@Nullable String msg) {
-        ToastUtils.showToast(this, msg);
-    }
-
-    /**
-     * 根据资源id显示信息
-     *
-     * @param msgResId 文本资源id
-     */
-    protected void showToast(@StringRes int msgResId) {
-        ToastUtils.showToast(this, msgResId);
-    }
-
-    /**
-     * 根据资源ID显示信息
-     *
-     * @param config 配置信息对象
-     */
-    protected void showToast(@NonNull ToastUtils.ToastConfig config) {
-        ToastUtils.showToast(this, config);
-    }
-
-    /**
-     * 显示加载对话框
-     *
-     * @param hint       提示文本
-     * @param cancelable 是否可以取消
-     */
-    protected void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
-        StatusViewConfigure configure = getStatusViewManager().getStatusViewConfigure();
-        StatusViewOption option = configure == null ? null : configure.getLoadingOption();
-        if (option == null) {
-            option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
-        }
-        option.getContentOption().setText(hint);
-        option.setCancelWithOutside(cancelable);
-        showStatusView(StatusViewConstants.StatusType.TYPE_LOADING,
-                getSupportFragmentManager(), option);
-    }
-
-    /**
-     * 显示加载状态视图
-     *
-     * @param containerId 状态视图添加布局ID
-     */
-    protected void showLoadingStatusView(@IdRes int containerId) {
-        showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getSupportFragmentManager(),
-                containerId, null);
-    }
-
-    /**
-     * 显示状态视图
-     *
-     * @param type    状态视图类型
-     * @param manager Fragment管理器
-     * @param option  状态视图配置信息类
-     */
-    protected void showStatusView(@NonNull StatusViewConstants.StatusType type,
-                                  @Nullable FragmentManager manager,
-                                  @Nullable StatusViewOption option) {
-        if (manager == null) {
-            return;
-        }
-        dismissStatusView();
-        getStatusViewManager().showStatusView(type, manager, option);
-    }
-
-    /**
-     * 显示状态视图
-     *
-     * @param type        状态视图类型
-     * @param manager     Fragment管理器
-     * @param containerId 状态视图添加布局ID
-     * @param option      状态视图配置信息类
-     */
-    protected void showStatusView(@NonNull StatusViewConstants.StatusType type, @Nullable FragmentManager manager,
-                                  @IdRes int containerId, @Nullable StatusViewOption option) {
-        if (manager == null) {
-            return;
-        }
-        dismissStatusView();
-        getStatusViewManager().showStatusView(type, manager, containerId, option);
-    }
-
-    /**
-     * 关闭状态视图
-     */
-    protected void dismissStatusView() {
-        if (mStatusViewManager != null) {
-            mStatusViewManager.dismissStatusView(true);
-        }
-        mStatusViewManager = null;
-    }
-
-    /**
-     * 获取获取状态视图管理器实例（线程安全）
-     *
-     * @return 返回获取状态视图管理器实例
-     */
-    @NonNull
-    protected IStatusViewManager getStatusViewManager() {
-        if (mStatusViewManager == null) {
-            synchronized (mStatusViewLock) {
-                if (mStatusViewManager == null) {
-                    mStatusViewManager = StatusViewManagerProvider.newInstance();
-                    onInitStatusViewManager(mStatusViewManager);
-                }
-            }
-        }
-        return mStatusViewManager;
-    }
-
-    /**
      * 初始化状态视图管理器
      *
      * @param manager 刚创建好的状态视图
@@ -339,18 +338,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
             return true;
         }
         return false;
-    }
-
-    @NonNull
-    private IKeyEventDispatcher getKeyEventDispatcher() {
-        if (mKeyEventDispatcher == null) {
-            synchronized (this) {
-                if (mKeyEventDispatcher == null) {
-                    mKeyEventDispatcher = new KeyEventDispatcherHelper(this);
-                }
-            }
-        }
-        return mKeyEventDispatcher;
     }
 
     /**

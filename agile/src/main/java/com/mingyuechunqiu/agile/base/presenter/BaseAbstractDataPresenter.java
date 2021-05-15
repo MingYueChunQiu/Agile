@@ -5,9 +5,10 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.R;
+import com.mingyuechunqiu.agile.base.bridge.Request;
+import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
-import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
 import com.mingyuechunqiu.agile.util.SharedPreferencesUtils;
@@ -25,45 +26,29 @@ import static com.mingyuechunqiu.agile.constants.UserConstants.TOKEN;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractDataPresenter<V extends IBaseDataView<?>, M extends BaseAbstractDataModel<?>> extends BaseAbstractStatusViewPresenter<V, M> {
+public abstract class BaseAbstractDataPresenter<V extends IBaseDataView, M extends BaseAbstractDataModel> extends BaseAbstractPresenter<V, M> {
 
-    /**
-     * 带参数的网络请求
-     *
-     * @param info 网络请求参数对象
-     */
     @Override
-    public void requestWithParamsInfo(@NonNull ParamsInfo info) {
-        if (mModel == null) {
+    public <T> boolean executeCall(@NonNull Call<T> call) {
+        if (getModel() == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }
-        if (info.getRequestCategory() == ParamsInfo.RequestCategory.CATEGORY_NETWORK) {
+        if (call.getRequest().getRequestCategory() == Request.RequestCategory.CATEGORY_NETWORK) {
             //判断当前网络状况，是否继续进行网络业务操作
             if (!checkNetworkIsConnected()) {
                 if (!checkViewRefIsNull()) {
                     disconnectNetwork();
                 }
-                return;
+                return false;
             }
         }
-        requestModel(info);
+        return executeCallWithModel(call);
     }
 
     @Override
-    protected void requestModel(@NonNull ParamsInfo info) {
-        if (mModel != null) {
-            mModel.requestWithParamsInfo(info);
-        }
-    }
-
-    /**
-     * 释放网络相关资源
-     */
-    public void releaseNetworkResources() {
-        if (mModel == null) {
-            return;
-        }
-        mModel.releaseNetworkResources();
+    protected <T> boolean executeCallWithModel(@NonNull Call<T> call) {
+        M model = getModel();
+        return model != null && model.executeCall(call);
     }
 
     /**

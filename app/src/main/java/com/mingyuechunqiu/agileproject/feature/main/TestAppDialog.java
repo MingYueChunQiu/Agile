@@ -8,6 +8,7 @@ import android.view.Window;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.mingyuechunqiu.agile.framework.ui.IDialogInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.framework.ui.WindowHandler;
 import com.mingyuechunqiu.agile.ui.dialog.BaseDialog;
 import com.mingyuechunqiu.agileproject.R;
@@ -40,8 +41,8 @@ public class TestAppDialog extends BaseDialog {
 
     @NonNull
     @Override
-    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return new IInflateLayoutViewCreator() {
+    protected IDialogInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IDialogInflateLayoutViewCreator.DialogInflateLayoutViewCreatorAdapter() {
             @Override
             public int getInflateLayoutId() {
                 return R.layout.fragment_status;

@@ -2,8 +2,9 @@ package com.mingyuechunqiu.agileproject.feature.function;
 
 import androidx.annotation.NonNull;
 
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRetrofitCallback;
+import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.model.dao.remote.BaseAbstractRetrofitDao;
+import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRetrofitCallback;
 
 /**
  * <pre>
@@ -17,14 +18,14 @@ import com.mingyuechunqiu.agile.base.model.dao.remote.BaseAbstractRetrofitDao;
  *      Version:    1.0
  * </pre>
  */
-public class FunctionDao extends BaseAbstractRetrofitDao<DaoRetrofitCallback<? extends IFunctionListener>> {
-
-    public FunctionDao(@NonNull DaoRetrofitCallback<? extends IFunctionListener> callback) {
-        super(callback);
-    }
+public class FunctionDao extends BaseAbstractRetrofitDao<DaoRetrofitCallback> {
 
     @Override
     protected void release() {
+    }
 
+    @Override
+    public <T> boolean executeCall(@NonNull Call<T> call) {
+        return false;
     }
 }

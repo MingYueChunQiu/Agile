@@ -22,7 +22,7 @@ import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
  */
 public class StatusViewProgressOption {
 
-    private Builder mBuilder;
+    private final Builder mBuilder;
 
     public StatusViewProgressOption() {
         this(new Builder());

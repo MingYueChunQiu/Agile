@@ -1,14 +1,8 @@
 package com.mingyuechunqiu.agile.feature.statusview.ui;
 
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
-import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 
 /**
  * <pre>
@@ -18,26 +12,13 @@ import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
  *      Github:     https://github.com/MingYueChunQiu
  *      Email:      xiyujieit@163.com
  *      Time:       2019-11-24 19:54
- *      Desc:
+ *      Desc:       状态视图功能代理接口
  *      Version:    1.0
  * </pre>
  */
-interface IStatusViewDelegate {
+public interface IStatusViewDelegate {
 
-    @NonNull
-    StatusViewOption getStatusViewOption();
-
-    void setModeType(@NonNull StatusViewConstants.ModeType type);
-
-    @NonNull
-    StatusViewConstants.ModeType getModeType();
-
-    void setStatusType(@NonNull StatusViewConstants.StatusType type);
-
-    @NonNull
-    StatusViewConstants.StatusType getStatusType();
-
-    void applyOption(@Nullable View vContainer, @Nullable View vProgress, @Nullable ImageView ivIcon, @Nullable TextView tvContent, @Nullable TextView tvReload);
+    void applyOption(@NonNull View view);
 
     void release();
 }

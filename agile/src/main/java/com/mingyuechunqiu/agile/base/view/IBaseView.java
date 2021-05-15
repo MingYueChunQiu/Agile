@@ -2,12 +2,7 @@ package com.mingyuechunqiu.agile.base.view;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-
-import com.mingyuechunqiu.agile.base.presenter.IBasePresenter;
-import com.mingyuechunqiu.agile.util.ToastUtils;
 
 /**
  * <pre>
@@ -18,11 +13,7 @@ import com.mingyuechunqiu.agile.util.ToastUtils;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseView<P extends IBasePresenter> {
-
-    void setPresenter(@NonNull P presenter);
-
-    void showToast(@NonNull ToastUtils.ToastConfig config);
+public interface IBaseView {
 
     /**
      * 获取当前界面的上下文

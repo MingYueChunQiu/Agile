@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
  */
 public final class StatusViewConfigure {
 
-    private Builder mBuilder;
+    private final Builder mBuilder;
 
     private StatusViewConfigure() {
         this(new Builder());

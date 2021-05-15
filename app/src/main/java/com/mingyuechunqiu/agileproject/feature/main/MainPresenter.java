@@ -1,9 +1,6 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 
 /**
  * <pre>
@@ -15,7 +12,7 @@ import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
  *     version: 1.0
  * </pre>
  */
-class MainPresenter extends MainContract.Presenter<MainContract.View<?>, MainContract.Model<?>> {
+class MainPresenter extends MainContract.Presenter<MainContract.View, MainContract.Model> {
 
     @Override
     protected void disconnectNetwork() {
@@ -29,22 +26,7 @@ class MainPresenter extends MainContract.Presenter<MainContract.View<?>, MainCon
 
     @Nullable
     @Override
-    public MainContract.Model<?> initModel() {
-        return new MainModel(new Igeg() {
-            @Override
-            public void onewe() {
-
-            }
-
-            @Override
-            public void onFailure(@NonNull ErrorInfo info) {
-
-            }
-        });
-    }
-
-    public interface Igeg extends MainContract.Listener {
-
-        void onewe();
+    public MainContract.Model initModel() {
+        return new MainModel();
     }
 }

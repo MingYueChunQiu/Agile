@@ -1,12 +1,14 @@
 package com.mingyuechunqiu.agile.feature.statusview.function
 
-import androidx.annotation.IdRes
+import android.os.Bundle
+import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
-import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView
-import com.mingyuechunqiu.agile.feature.statusview.ui.StatusViewDialogFragment
+import com.mingyuechunqiu.agile.feature.statusview.ui.view.DialogStatusView
+import com.mingyuechunqiu.agile.feature.statusview.ui.view.IStatusView
+import com.mingyuechunqiu.agile.feature.statusview.ui.view.WidgetStatusView
 
 /**
  * <pre>
@@ -23,8 +25,8 @@ import com.mingyuechunqiu.agile.feature.statusview.ui.StatusViewDialogFragment
  */
 internal class StatusViewHelper : IStatusViewHelper {
 
-    private var mStatusView: IStatusView? = null
     private var mConfigure: StatusViewConfigure? = null
+    private var mStatusView: IStatusView? = null
 
     override fun applyStatusViewConfigure(configure: StatusViewConfigure) {
         mConfigure = configure
@@ -34,22 +36,16 @@ internal class StatusViewHelper : IStatusViewHelper {
         return mConfigure
     }
 
-    override fun setStatusView(statusView: IStatusView) {
-        mStatusView = statusView
-    }
-
     override fun getStatusView(): IStatusView? {
         return mStatusView
     }
 
-    override fun showStatusView(type: StatusViewConstants.StatusType, manager: FragmentManager, option: StatusViewOption?) {
-        checkOrCreateStatusView(type, option)
-        mStatusView?.showStatusView(type, manager)
+    override fun showStatusView(type: StatusViewConstants.StatusType, container: ViewGroup, option: StatusViewOption?) {
+        checkOrCreateWidgetStatusView(type, option).showStatusView(type, container, checkOrCreateStatusViewOption(type, option))
     }
 
-    override fun showStatusView(type: StatusViewConstants.StatusType, manager: FragmentManager, @IdRes containerId: Int, option: StatusViewOption?) {
-        checkOrCreateStatusView(type, option)
-        mStatusView?.showStatusView(type, manager, containerId)
+    override fun showStatusView(type: StatusViewConstants.StatusType, manager: FragmentManager, option: StatusViewOption?) {
+        checkOrCreateDialogStatusView(type, option).showStatusView(type, manager, checkOrCreateStatusViewOption(type, option))
     }
 
     override fun dismissStatusView(allowStateLoss: Boolean) {
@@ -57,21 +53,50 @@ internal class StatusViewHelper : IStatusViewHelper {
         mStatusView = null
     }
 
-    override fun getModeType(): StatusViewConstants.ModeType {
-        return mStatusView?.getModeType() ?: StatusViewConstants.ModeType.TYPE_INVALID
+    override fun getModeType(): StatusViewConstants.StatusMode {
+        return mStatusView?.getModeType() ?: StatusViewConstants.StatusMode.MODE_INVALID
     }
 
     override fun getStatusMode(): StatusViewConstants.StatusType {
-        return mStatusView?.getStatusMode() ?: StatusViewConstants.StatusType.TYPE_LOADING
+        return mStatusView?.getStatusType() ?: StatusViewConstants.StatusType.TYPE_LOADING
     }
 
-    private fun checkOrCreateStatusView(type: StatusViewConstants.StatusType, option: StatusViewOption?) {
-        if (mStatusView != null) {
-            return
+    override fun restoreStatueView(savedInstanceState: Bundle?, manager: FragmentManager) {
+        (mStatusView as? DialogStatusView)?.restoreStatueView(savedInstanceState, manager)
+    }
+
+    private fun checkOrCreateWidgetStatusView(type: StatusViewConstants.StatusType, option: StatusViewOption?): IStatusView {
+        mStatusView?.let {
+            if (it.getModeType() == StatusViewConstants.StatusMode.MODE_WIDGET) {
+                dismissStatusView()
+            }
         }
-        val statusViewOption = option
-                ?: StatusViewHandler.getStatusViewOptionByType(mConfigure, type, false)
-        mStatusView = StatusViewDialogFragment.newInstance(statusViewOption
-                ?: StatusViewHandler.getGlobalStatusViewOptionByType(type))
+        return mStatusView ?: run {
+            synchronized(this) {
+                val view = WidgetStatusView(checkOrCreateStatusViewOption(type, option))
+                mStatusView = view
+                view
+            }
+        }
+    }
+
+    private fun checkOrCreateDialogStatusView(type: StatusViewConstants.StatusType, option: StatusViewOption?): IStatusView {
+        mStatusView?.let {
+            if (it.getModeType() == StatusViewConstants.StatusMode.MODE_DIALOG) {
+                dismissStatusView()
+            }
+        }
+        return mStatusView ?: run {
+            synchronized(this) {
+                val view = DialogStatusView(checkOrCreateStatusViewOption(type, option))
+                mStatusView = view
+                view
+            }
+        }
+    }
+
+    private fun checkOrCreateStatusViewOption(type: StatusViewConstants.StatusType, option: StatusViewOption?): StatusViewOption {
+        return option ?: StatusViewHandler.getStatusViewOptionByType(mConfigure, type, false)
+        ?: StatusViewHandler.getGlobalStatusViewOptionByType(type)
     }
 }

@@ -1,8 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.dao.remote;
 
-import androidx.annotation.NonNull;
-
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoNetworkCallback;
+import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoNetworkCallback;
 
 /**
  * <pre>
@@ -15,12 +13,5 @@ import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoNetw
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractNetworkDao<C extends DaoNetworkCallback<?>> extends BaseAbstractRemoteDao<C> {
-
-    public BaseAbstractNetworkDao() {
-    }
-
-    public BaseAbstractNetworkDao(@NonNull C callback) {
-        super(callback);
-    }
+public abstract class BaseAbstractNetworkDao<C extends DaoNetworkCallback> extends BaseAbstractRemoteDao<C> {
 }

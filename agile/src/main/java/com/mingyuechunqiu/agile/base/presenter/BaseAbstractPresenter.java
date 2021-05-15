@@ -3,16 +3,21 @@ package com.mingyuechunqiu.agile.base.presenter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
+import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.model.IBaseModel;
 import com.mingyuechunqiu.agile.base.presenter.engine.IBasePresenterEngine;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
-import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
-import com.mingyuechunqiu.agile.util.ToastUtils;
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
+import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewOwner;
+import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -28,11 +33,11 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractPresenter<V extends IBaseView<?>, M extends IBaseModel<?>> implements IBasePresenter<V, M>, LifecycleObserver {
+public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBaseModel> implements IBasePresenter<V, M> {
 
-    protected WeakReference<V> mViewRef;
+    private WeakReference<V> mViewRef;
     @Nullable
-    protected M mModel;
+    private M mModel;
     @Nullable
     private List<IBasePresenterEngine> mPresenterEngineList;
 
@@ -56,17 +61,84 @@ public abstract class BaseAbstractPresenter<V extends IBaseView<?>, M extends IB
         }
     }
 
-    /**
-     * 带参数的业务请求（在model为空情况下会抛出IllegalArgumentException）
-     *
-     * @param info 请求参数对象
-     */
     @Override
-    public void requestWithParamsInfo(@NonNull ParamsInfo info) {
+    public <T> boolean executeCall(@NonNull Call<T> call) {
         if (mModel == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }
-        requestModel(info);
+        return executeCallWithModel(call);
+    }
+
+    /**
+     * 根据资源id显示提示
+     *
+     * @param msgResId 文本资源ID
+     */
+    @Override
+    public void showToast(@StringRes int msgResId) {
+        if (!checkViewRefIsNull()) {
+            V v = mViewRef.get();
+            if (v instanceof IPopHintOwner) {
+                ((IPopHintOwner) v).showToast(msgResId);
+            }
+        }
+    }
+
+    /**
+     * 根据文本显示提示
+     *
+     * @param msg 文本
+     */
+    @Override
+    public void showToast(@Nullable String msg) {
+        if (!checkViewRefIsNull()) {
+            V v = mViewRef.get();
+            if (v instanceof IPopHintOwner) {
+                ((IPopHintOwner) v).showToast(msg);
+            }
+        }
+    }
+
+    /**
+     * 根据错误信息显示提示
+     *
+     * @param info 错误信息对象
+     */
+    @Override
+    public void showToast(@NonNull ErrorInfo info) {
+        if (!checkViewRefIsNull()) {
+            V v = mViewRef.get();
+            if (v instanceof IPopHintOwner) {
+                ((IPopHintOwner) v).showToast(info);
+            }
+        }
+    }
+
+    /**
+     * 根据配置信息显示提示
+     *
+     * @param config 配置信息对象
+     */
+    @Override
+    public void showToast(@NonNull ToastHelper.ToastConfig config) {
+        if (!checkViewRefIsNull()) {
+            V v = mViewRef.get();
+            if (v instanceof IPopHintOwner) {
+                ((IPopHintOwner) v).showToast(config);
+            }
+        }
+    }
+
+    @Nullable
+    @Override
+    public V getView() {
+        return mViewRef == null ? null : mViewRef.get();
+    }
+
+    @Nullable
+    @Override
+    public M getModel() {
+        return mModel;
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -99,6 +171,99 @@ public abstract class BaseAbstractPresenter<V extends IBaseView<?>, M extends IB
         if (mModel != null) {
             mModel.callOnStop();
         }
+    }
+
+    @Override
+    public void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
+        V v = getView();
+        if (v instanceof IStatusViewOwner) {
+            ((IStatusViewOwner) v).showLoadingStatusView(hint, cancelable);
+        }
+    }
+
+    @Override
+    public void showLoadingStatusView(int containerId) {
+        V v = getView();
+        if (v instanceof IStatusViewOwner) {
+            ((IStatusViewOwner) v).showLoadingStatusView(containerId);
+        }
+    }
+
+    @Nullable
+    protected IStatusViewManager getStatusViewManager() {
+        V v = getView();
+        if (v instanceof IStatusViewOwner) {
+            return ((IStatusViewOwner) v).getStatusViewManager();
+        }
+        return null;
+    }
+
+    /**
+     * 显示信息并关闭加载对话框
+     *
+     * @param msg 文本
+     */
+    protected void showToastAndDismissStatusView(@Nullable String msg) {
+        showToastAndDismissStatusView(new ToastHelper.ToastConfig.Builder()
+                .setMsg(msg)
+                .build());
+    }
+
+    /**
+     * 显示信息并关闭加载对话框
+     *
+     * @param msgResId 文本资源ID
+     */
+    protected void showToastAndDismissStatusView(@StringRes int msgResId) {
+        showToastAndDismissStatusView(new ToastHelper.ToastConfig.Builder()
+                .setMsgResId(msgResId)
+                .build());
+    }
+
+    /**
+     * 显示信息并关闭加载对话框
+     *
+     * @param info 错误信息对象
+     */
+    protected void showToastAndDismissStatusView(@NonNull ErrorInfo info) {
+        showToastAndDismissStatusView(new ToastHelper.ToastConfig.Builder()
+                .setMsg(info.getErrorMsg())
+                .setMsgResId(info.getErrorMsgResId())
+                .build());
+    }
+
+    /**
+     * 显示信息并关闭加载对话框
+     *
+     * @param config 配置信息对象
+     */
+    protected void showToastAndDismissStatusView(@NonNull ToastHelper.ToastConfig config) {
+        V v = getView();
+        if (v instanceof IPopHintOwner) {
+            ((IPopHintOwner) v).showToast(config);
+        }
+        if (v instanceof IStatusViewOwner) {
+            ((IStatusViewOwner) v).dismissStatusView(true);
+        }
+    }
+
+    /**
+     * 获取当前层级的主FragmentManager
+     *
+     * @return 返回FragmentManager对象
+     */
+    @Nullable
+    protected FragmentManager getCurrentFragmentManager() {
+        if (checkViewRefIsNull()) {
+            return null;
+        }
+        FragmentManager manager = null;
+        if (mViewRef.get() instanceof FragmentActivity) {
+            manager = ((FragmentActivity) mViewRef.get()).getSupportFragmentManager();
+        } else if (mViewRef.get() instanceof Fragment) {
+            manager = ((Fragment) mViewRef.get()).getFragmentManager();
+        }
+        return manager;
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
@@ -161,46 +326,6 @@ public abstract class BaseAbstractPresenter<V extends IBaseView<?>, M extends IB
     }
 
     /**
-     * 显示信息
-     *
-     * @param msg 文本
-     */
-    protected void showToast(@Nullable String msg) {
-        showToast(new ToastUtils.ToastConfig.Builder()
-                .setMsg(msg)
-                .build());
-    }
-
-    /**
-     * 显示信息
-     *
-     * @param msgResId 文本资源ID
-     */
-    protected void showToast(@StringRes int msgResId) {
-        showToast(new ToastUtils.ToastConfig.Builder()
-                .setMsgResId(msgResId)
-                .build());
-    }
-
-    protected void showToast(@NonNull ErrorInfo info) {
-        showToast(new ToastUtils.ToastConfig.Builder()
-                .setMsg(info.getErrorMsg())
-                .setMsgResId(info.getErrorMsgResId())
-                .build());
-    }
-
-    /**
-     * 显示信息
-     *
-     * @param config 配置信息对象
-     */
-    protected void showToast(@NonNull ToastUtils.ToastConfig config) {
-        if (!checkViewRefIsNull()) {
-            mViewRef.get().showToast(config);
-        }
-    }
-
-    /**
      * 当和视图View进行依附关联时调用
      *
      * @param view  依附的View
@@ -221,9 +346,11 @@ public abstract class BaseAbstractPresenter<V extends IBaseView<?>, M extends IB
     /**
      * 由子类重写，调用model进行业务请求操作
      *
-     * @param info 请求参数对象
+     * @param call 调用对象
+     * @param <T>  响应数据类型
+     * @return 执行请求返回true，否则返回false
      */
-    protected abstract void requestModel(@NonNull ParamsInfo info);
+    protected abstract <T> boolean executeCallWithModel(@NonNull Call<T> call);
 
     /**
      * 释放资源

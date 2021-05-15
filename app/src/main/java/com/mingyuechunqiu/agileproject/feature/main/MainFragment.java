@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
+import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -30,8 +31,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
 
     @NonNull
     @Override
-    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return new IInflateLayoutViewCreator() {
+    protected IFragmentInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IFragmentInflateLayoutViewCreator.FragmentInflateLayoutViewCreatorAdapter() {
             @Override
             public int getInflateLayoutId() {
                 return R.layout.fragment_main;
@@ -78,7 +79,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                     }
                 })
                 .build();
-        showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getFragmentManager(), option);
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getParentFragmentManager(), option);
     }
 
     @Override
@@ -86,7 +87,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_fragment_main_show:
 //                showLoadingStatusView("被我", false);
-                showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getFragmentManager(), new StatusViewOption.Builder()
+                getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getParentFragmentManager(), new StatusViewOption.Builder()
                         .setDialogWidth(500)
                         .setDialogHeight(400)
                         .setCancelWithOutside(true)
@@ -105,7 +106,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                         }).build());
                 break;
             case R.id.btn_fragment_main_hide:
-                dismissStatusView();
+                dismissStatusView(true);
                 break;
         }
     }

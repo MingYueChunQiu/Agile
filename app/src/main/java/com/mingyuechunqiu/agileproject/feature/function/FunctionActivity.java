@@ -8,8 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
+import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.activity.BaseDataPresenterActivity;
-import com.mingyuechunqiu.agile.util.ToastUtils;
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 
 /**
  * <pre>
@@ -22,16 +23,11 @@ import com.mingyuechunqiu.agile.util.ToastUtils;
  *      Version:    1.0
  * </pre>
  */
-public class FunctionActivity extends BaseDataPresenterActivity<FunctionContract.View<FunctionContract.Presenter<?, ?>>, FunctionContract.Presenter<?, ?>>
-        implements FunctionContract.View<FunctionContract.Presenter<?, ?>> {
+public class FunctionActivity extends BaseDataPresenterActivity<FunctionContract.View, FunctionContract.Presenter<FunctionContract.View, ?>>
+        implements FunctionContract.View {
 
     @Override
-    public void setPresenter(@NonNull FunctionContract.Presenter<?, ?> presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
-    public void showToast(@NonNull ToastUtils.ToastConfig config) {
+    public void showToast(@NonNull ToastHelper.ToastConfig config) {
 
     }
 
@@ -39,12 +35,6 @@ public class FunctionActivity extends BaseDataPresenterActivity<FunctionContract
     @Override
     public Context getCurrentContext() {
         return null;
-    }
-
-    @Nullable
-    @Override
-    public FunctionContract.Presenter<?, ?> initPresenter() {
-        return new FunctionPresenter();
     }
 
     @NonNull
@@ -55,8 +45,8 @@ public class FunctionActivity extends BaseDataPresenterActivity<FunctionContract
 
     @NonNull
     @Override
-    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return new IInflateLayoutViewCreator() {
+    protected IActivityInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IActivityInflateLayoutViewCreator.ActivityInflateLayoutViewCreatorAdapter() {
             @Override
             public int getInflateLayoutId() {
                 return 0;
@@ -81,12 +71,14 @@ public class FunctionActivity extends BaseDataPresenterActivity<FunctionContract
     }
 
     @Override
-    public void dismissStatusView() {
+    public void doSomeTest() {
 
     }
 
+    @Nullable
+    @org.jetbrains.annotations.Nullable
     @Override
-    public void doSomeTest() {
-
+    public FunctionContract.Presenter<FunctionContract.View, ?> initPresenter() {
+        return new FunctionPresenter();
     }
 }

@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.R;
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 import com.mingyuechunqiu.agile.frame.Agile;
 
 import java.io.File;
@@ -163,7 +164,7 @@ public final class DownloadUtils {
      */
     private static boolean deleteResidualOldFile(@Nullable File file) {
         if (file != null && file.exists() && !file.delete()) {
-            ToastUtils.showToast("删除残留旧版本apk失败！");
+            ToastHelper.showToast("删除残留旧版本apk失败！");
             return false;
         }
         return true;

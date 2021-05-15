@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
 import com.mingyuechunqiu.agile.util.FragmentUtils;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -23,7 +23,7 @@ import com.mingyuechunqiu.agileproject.R;
  *     version: 1.0
  * </pre>
  */
-public class JumpActivity extends AppCompatActivity implements BaseFragment.Callback {
+public class JumpActivity extends AppCompatActivity implements ITransferPageDataDispatcherHelper.TransferPageDataCallback {
 
     private Fragment mSelectedFg;
     private Fragment mCurrentFg;
@@ -49,18 +49,18 @@ public class JumpActivity extends AppCompatActivity implements BaseFragment.Call
     }
 
     @Override
-    public void onCall(@NonNull Fragment fragment, @Nullable Bundle bundle) {
-        if (fragment.getClass().getSimpleName().equals(JumpFragment2.class.getSimpleName())) {
+    public void onReceiveTransferPageData(@NonNull ITransferPageDataDispatcherHelper.TransferPageDataOwner dataOwner, @Nullable ITransferPageDataDispatcherHelper.TransferPageData data) {
+        if (dataOwner.getTag().equals(JumpFragment2.class.getSimpleName())) {
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 getSupportFragmentManager().popBackStack();
             }
-//            getSupportFragmentManager().beginTransaction()
+            //            getSupportFragmentManager().beginTransaction()
 //                    .setCustomAnimations(R.anim.agile_slide_in_right, R.anim.agile_slide_out_left)
 //                    .show(mCurrentFg)
 //                    .commitAllowingStateLoss();
             return;
         }
-//        getSupportFragmentManager().beginTransaction()
+        //        getSupportFragmentManager().beginTransaction()
 //                .setCustomAnimations(R.anim.agile_slide_in_right, R.anim.agile_slide_out_left)
 //                .hide(mSelectedFg)
 //                .commitAllowingStateLoss();

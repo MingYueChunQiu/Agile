@@ -3,14 +3,18 @@ package com.mingyuechunqiu.agile.base.model;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.framework.IBaseListener;
+import com.mingyuechunqiu.agile.base.bridge.Request;
+import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.model.dao.IBaseDao;
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
 import com.mingyuechunqiu.agile.base.model.part.IBaseModelPart;
-import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <pre>
@@ -22,27 +26,20 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractModel<I extends IBaseListener> implements IBaseModel<I> {
+public abstract class BaseAbstractModel implements IBaseModel {
 
-    protected final String TAG = getClass().getSimpleName();//日志标签
     protected final String TAG_FAILURE = getClass().getSimpleName() + " failure";//打印错误日志标签
 
-    @Nullable
-    protected I mListener;
+    public BaseAbstractModel() {
+        initModelPart();
+        initDao();
+    }
+
     @Nullable
     private List<IBaseModelPart> mModelPartList;
+    //Dao映射集合，一个Dao可以响应多个Request请求
     @Nullable
-    private List<IBaseDao<?>> mDaoList;
-
-    public BaseAbstractModel(@NonNull I listener) {
-        attachListener(listener);
-    }
-
-    @Override
-    public void attachListener(@NonNull I listener) {
-        mListener = listener;
-        onAttachListener(listener);
-    }
+    private Map<IBaseDao<?>, Set<String>> mDaoMap;
 
     @Override
     public void callOnStart() {
@@ -61,16 +58,98 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
     }
 
     /**
-     * 设置网络请求参数对象，进行网络请求
+     * 添加模型层part单元（同步方法）
      *
-     * @param info 网络请求参数对象
+     * @param part part单元模块
+     * @return 如果添加成功返回true，否则返回false
      */
     @Override
-    public void requestWithParamsInfo(@NonNull ParamsInfo info) {
-        if (mListener == null) {
-            throw new IllegalArgumentException("Listener has not been set!");
+    public synchronized boolean addModelPart(@NonNull IBaseModelPart part) {
+        return getModelPartList().add(part);
+    }
+
+    /**
+     * 删除指定的模型层part单元
+     *
+     * @param part part单元模块
+     * @return 如果删除成功返回true，否则返回false
+     */
+    @Override
+    public boolean removeModelPart(@Nullable IBaseModelPart part) {
+        if (part == null || mModelPartList == null) {
+            return false;
         }
-        doRequest(info);
+        return getModelPartList().remove(part);
+    }
+
+    @NonNull
+    @Override
+    public List<IBaseModelPart> getModelPartList() {
+        if (mModelPartList == null) {
+            synchronized (this) {
+                if (mModelPartList == null) {
+                    mModelPartList = new ArrayList<>();
+                }
+            }
+        }
+        return mModelPartList;
+    }
+
+    /**
+     * 添加Dao层单元
+     *
+     * @param dao dao单元
+     * @return 如果添加成功返回true，否则返回false
+     */
+    @Override
+    public boolean addDao(@NonNull IBaseDao<?> dao) {
+        List<String> requestTags = new ArrayList<>();
+        requestTags.add(Request.DEFAULT_KEY_REQUEST_TAG);
+        return addDao(dao, requestTags);
+    }
+
+    /**
+     * 添加Dao层单元（同步方法）
+     *
+     * @param dao dao单元
+     * @return 如果添加成功返回true，否则返回false
+     */
+    @Override
+    public synchronized boolean addDao(@NonNull IBaseDao<?> dao, @NonNull List<String> requestTags) {
+        Set<String> originalRequestTags = getDaoMap().get(dao);
+        if (originalRequestTags == null) {
+            originalRequestTags = new HashSet<>();
+        }
+        originalRequestTags.addAll(requestTags);
+        return getDaoMap().put(dao, originalRequestTags) != null;
+    }
+
+    /**
+     * 删除dao单元
+     *
+     * @param dao dao单元
+     * @return 如果删除成功返回true，否则返回false
+     */
+    @Override
+    public boolean removeDao(@Nullable IBaseDao<?> dao) {
+        if (dao == null || mDaoMap == null) {
+            return false;
+        }
+        return getDaoMap().remove(dao) != null;
+    }
+
+    @NonNull
+    @Override
+    public List<IBaseDao<?>> getDaoList() {
+        return new ArrayList<>(getDaoMap().keySet());
+    }
+
+    @Override
+    public <T> boolean executeCall(@NonNull Call<T> call) {
+        if (executeCallWithCustom(call)) {
+            return true;
+        }
+        return executeCallInternal(call);
     }
 
     /**
@@ -88,103 +167,84 @@ public abstract class BaseAbstractModel<I extends IBaseListener> implements IBas
             mModelPartList.clear();
             mModelPartList = null;
         }
-        if (mDaoList != null) {
-            for (IBaseDao<?> dao : mDaoList) {
+        if (mDaoMap != null) {
+            for (IBaseDao<?> dao : mDaoMap.keySet()) {
                 if (dao != null) {
                     dao.releaseOnDetach();
                 }
             }
-            mDaoList.clear();
-            mDaoList = null;
+            mDaoMap.clear();
+            mDaoMap = null;
         }
-        mListener = null;
     }
 
-    /**
-     * 添加模型层part单元
-     *
-     * @param part part单元模块
-     * @return 如果添加成功返回true，否则返回false
-     */
-    protected boolean addModelPart(@Nullable IBaseModelPart part) {
-        if (part == null) {
-            return false;
+    private <T> boolean executeCallWithDaoMap(@NonNull Map<IBaseDao<?>, Set<String>> map, @NonNull Call<T> call) {
+        for (Map.Entry<IBaseDao<?>, Set<String>> entry : map.entrySet()) {
+            if (entry.getValue().contains(call.getRequest().getRequestTag())) {
+                entry.getKey().executeCall(call);
+                return true;
+            }
         }
-        if (mModelPartList == null) {
-            mModelPartList = new ArrayList<>();
-        }
-        return mModelPartList.add(part);
+        return false;
     }
 
-    /**
-     * 删除指定的模型层part单元
-     *
-     * @param part part单元模块
-     * @return 如果删除成功返回true，否则返回false
-     */
-    protected boolean removeModelPart(@Nullable IBaseModelPart part) {
-        if (part == null || mModelPartList == null) {
-            return false;
-        }
-        return mModelPartList.remove(part);
-    }
-
-    /**
-     * 添加Dao层单元
-     *
-     * @param dao dao单元
-     * @return 如果添加成功返回true，否则返回false
-     */
-    protected <C extends DaoCallback<?>> boolean addDao(@Nullable IBaseDao<C> dao) {
-        if (dao == null) {
-            return false;
-        }
-        if (mDaoList == null) {
-            mDaoList = new ArrayList<>();
-        }
-        return mDaoList.add(dao);
-    }
-
-    /**
-     * 删除dao单元
-     *
-     * @param dao dao单元
-     * @return 如果删除成功返回true，否则返回false
-     */
-    protected <C extends DaoCallback<?>> boolean removeDao(@Nullable IBaseDao<C> dao) {
-        if (dao == null || mDaoList == null) {
-            return false;
-        }
-        return mDaoList.remove(dao);
-    }
-
-    /**
-     * 当和监听器关联时回调
-     *
-     * @param listener 监听器
-     */
-    protected void onAttachListener(@NonNull I listener) {
-    }
-
-    /**
-     * 将参数转成对应参数类型
-     *
-     * @param info 参数基本类型
-     * @param <T>  转换成类型
-     * @return 返回转换后的类型（如果类型错误，会抛出ClassCastException）
-     */
-    @SuppressWarnings("unchecked")
     @NonNull
-    protected <T extends ParamsInfo> T asParamsInfo(@NonNull ParamsInfo info) {
-        return (T) info;
+    private Map<IBaseDao<?>, Set<String>> getModelPartDaoMap() {
+        Map<IBaseDao<?>, Set<String>> daoMap = new HashMap<>();
+        if (mModelPartList == null) {
+            return daoMap;
+        }
+        for (IBaseModelPart part : mModelPartList) {
+            daoMap.putAll(part.getDaoMap());
+        }
+        return daoMap;
+    }
+
+    @NonNull
+    private Map<IBaseDao<?>, Set<String>> getDaoMap() {
+        if (mDaoMap == null) {
+            synchronized (this) {
+                if (mDaoMap == null) {
+                    mDaoMap = new ConcurrentHashMap<>();
+                }
+            }
+        }
+        return mDaoMap;
     }
 
     /**
-     * 由子类重写进行网络请求
+     * 用户自定义执行调用逻辑
      *
-     * @param info 网络请求参数对象
+     * @param call 调用对象
+     * @param <T>  响应对象类型
+     * @return 请求已处理返回true，否则返回false
      */
-    protected abstract void doRequest(@NonNull ParamsInfo info);
+    protected <T> boolean executeCallWithCustom(@NonNull Call<T> call) {
+        return false;
+    }
+
+    /**
+     * 内部执行调用逻辑
+     *
+     * @param call 调用对象
+     * @param <T>  响应类型
+     * @return 请求已处理返回true，否则返回false
+     */
+    private <T> boolean executeCallInternal(@NonNull Call<T> call) {
+        if (executeCallWithDaoMap(getModelPartDaoMap(), call)) {
+            return true;
+        }
+        if (mDaoMap == null) {
+            return false;
+        }
+        return executeCallWithDaoMap(getDaoMap(), call);
+    }
+
+    public void initModelPart() {
+    }
+
+    public void initDao() {
+    }
 
     /**
      * 销毁资源

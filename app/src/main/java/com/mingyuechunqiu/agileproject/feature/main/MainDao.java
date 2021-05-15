@@ -1,6 +1,11 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRetrofitCallback;
+import androidx.annotation.NonNull;
+
+import com.mingyuechunqiu.agile.base.bridge.call.Call;
+import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRetrofitCallback;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <pre>
@@ -14,9 +19,15 @@ import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRetr
  *      Version:    1.0
  * </pre>
  */
-public class MainDao extends MainContract.Dao<DaoRetrofitCallback<MainContract.Listener>> {
+public class MainDao extends MainContract.Dao<DaoRetrofitCallback> {
+
     @Override
     protected void release() {
 
+    }
+
+    @Override
+    public <T> boolean executeCall(@NonNull @NotNull Call<T> call) {
+        return false;
     }
 }

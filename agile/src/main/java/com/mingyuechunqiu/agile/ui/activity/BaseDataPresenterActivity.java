@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agile.ui.activity;
 
+import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 
@@ -14,5 +15,7 @@ import com.mingyuechunqiu.agile.base.view.IBaseDataView;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseDataPresenterActivity<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?,?>> extends BaseStatusViewPresenterActivity<V, P> {
+public abstract class BaseDataPresenterActivity<V extends IBaseDataView, P extends BaseAbstractDataPresenter<V, ? extends BaseAbstractDataModel>> extends BaseAbstractPresenterActivity<V, P> {
+
+
 }

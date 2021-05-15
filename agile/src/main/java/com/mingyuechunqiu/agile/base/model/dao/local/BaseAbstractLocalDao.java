@@ -1,9 +1,9 @@
 package com.mingyuechunqiu.agile.base.model.dao.local;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.local.DaoLocalCallback;
+import com.mingyuechunqiu.agile.base.model.dao.BaseAbstractDao;
+import com.mingyuechunqiu.agile.base.model.framework.callback.local.DaoLocalCallback;
 import com.mingyuechunqiu.agile.base.model.dao.operation.local.IBaseLocalDaoOperation;
 
 import java.util.ArrayList;
@@ -21,40 +21,10 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback<?>> implements IBaseLocalDao<C> {
+public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback> extends BaseAbstractDao<C> implements IBaseLocalDao {
 
-    @Nullable
-    protected C mDaoCallback;
     @Nullable
     private List<IBaseLocalDaoOperation<?>> mLocalDaoOperationList;
-
-    public BaseAbstractLocalDao() {
-    }
-
-    public BaseAbstractLocalDao(@NonNull C callback) {
-        attachDaoCallback(callback);
-    }
-
-    @Override
-    public void attachDaoCallback(@NonNull C callback) {
-        mDaoCallback = callback;
-        onAttachDaoCallback(callback);
-    }
-
-    @Override
-    public void releaseOnDetach() {
-        preRelease();
-        release();
-        postRelease();
-    }
-
-    /**
-     * 当和Model层Dao回调关联时调用
-     *
-     * @param callback 回调对象
-     */
-    protected void onAttachDaoCallback(@NonNull C callback) {
-    }
 
     /**
      * 添加本地数据操作
@@ -100,7 +70,9 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback<?>> implem
         mLocalDaoOperationList.remove(operation);
     }
 
+    @Override
     protected void preRelease() {
+        super.preRelease();
         if (mLocalDaoOperationList == null) {
             return;
         }
@@ -115,13 +87,4 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback<?>> implem
         mLocalDaoOperationList.clear();
         mLocalDaoOperationList = null;
     }
-
-    protected void postRelease() {
-        mDaoCallback = null;
-    }
-
-    /**
-     * 释放资源
-     */
-    protected abstract void release();
 }

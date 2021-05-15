@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.frame.data.remote.AgileNetworkConfig;
-import com.mingyuechunqiu.agile.frame.engine.image.IImageEngine;
+import com.mingyuechunqiu.agile.frame.engine.image.IAgileImageEngine;
 
 /**
  * <pre>
@@ -38,11 +38,11 @@ public class AgileFrameConfigure {
         mBuilder.networkConfig = networkConfig;
     }
 
-    public IImageEngine getImageEngine() {
+    public IAgileImageEngine getImageEngine() {
         return mBuilder.imageEngine;
     }
 
-    public void setImageEngine(@NonNull IImageEngine imageEngine) {
+    public void setImageEngine(@NonNull IAgileImageEngine imageEngine) {
         mBuilder.imageEngine = imageEngine;
     }
 
@@ -52,7 +52,7 @@ public class AgileFrameConfigure {
     public static class Builder {
 
         private AgileNetworkConfig networkConfig;//网络框架配置信息对象
-        private IImageEngine imageEngine;//图片显示引擎
+        private IAgileImageEngine imageEngine;//图片显示引擎
 
         public Builder() {
             //设置默认配置
@@ -72,11 +72,11 @@ public class AgileFrameConfigure {
             return this;
         }
 
-        public IImageEngine getImageEngine() {
+        public IAgileImageEngine getImageEngine() {
             return imageEngine;
         }
 
-        public Builder setImageEngine(@NonNull IImageEngine imageEngine) {
+        public Builder setImageEngine(@NonNull IAgileImageEngine imageEngine) {
             this.imageEngine = imageEngine;
             return this;
         }

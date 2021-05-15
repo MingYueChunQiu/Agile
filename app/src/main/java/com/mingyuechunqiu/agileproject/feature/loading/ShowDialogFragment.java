@@ -11,6 +11,7 @@ import android.view.Window;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.diaglogfragment.BaseDialogFragment;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -28,8 +29,8 @@ public class ShowDialogFragment extends BaseDialogFragment {
 
     @Nullable
     @Override
-    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return new IInflateLayoutViewCreator() {
+    protected IFragmentInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IFragmentInflateLayoutViewCreator.FragmentInflateLayoutViewCreatorAdapter() {
             @Override
             public int getInflateLayoutId() {
                 return R.layout.dialog_fragment_show;

@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
-import com.mingyuechunqiu.agile.frame.engine.image.IImageEngine;
+import com.mingyuechunqiu.agile.frame.engine.image.IAgileImageEngine;
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycleDispatcher;
 
 /**
@@ -92,8 +92,8 @@ public final class Agile {
      * @return 返回图片加载引擎接口
      */
     @NonNull
-    public static IImageEngine getImageEngine() {
-        IImageEngine engine = getConfigure().getImageEngine();
+    public static IAgileImageEngine getImageEngine() {
+        IAgileImageEngine engine = getConfigure().getImageEngine();
         if (engine == null) {
             throw new IllegalStateException("ImageEngine must be set first");
         }

@@ -2,10 +2,13 @@ package com.mingyuechunqiu.agile.base.presenter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleObserver;
 
+import com.mingyuechunqiu.agile.base.bridge.call.ICallExecutor;
 import com.mingyuechunqiu.agile.base.model.IBaseModel;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
-import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
+import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewable;
 
 /**
  * <pre>
@@ -16,7 +19,7 @@ import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
  *     version: 1.0
  * </pre>
  */
-public interface IBasePresenter<V extends IBaseView<?>, M extends IBaseModel<?>> {
+public interface IBasePresenter<V extends IBaseView, M extends IBaseModel> extends LifecycleObserver, ICallExecutor, IPopHintOwner, IStatusViewable {
 
     void attachView(@NonNull V view);
 
@@ -33,10 +36,9 @@ public interface IBasePresenter<V extends IBaseView<?>, M extends IBaseModel<?>>
     @Nullable
     M initModel();
 
-    /**
-     * 设置请求参数对象，进行请求
-     *
-     * @param info 请求参数对象
-     */
-    void requestWithParamsInfo(@NonNull ParamsInfo info);
+    @Nullable
+    V getView();
+
+    @Nullable
+    M getModel();
 }

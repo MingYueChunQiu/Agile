@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agile.feature.statusview.function;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
@@ -19,7 +20,7 @@ import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
  */
 public final class StatusViewManagerProvider {
 
-    private static StatusViewConfigure sConfigure;
+    private static volatile StatusViewConfigure sConfigure;
 
     private StatusViewManagerProvider() {
     }
@@ -30,8 +31,8 @@ public final class StatusViewManagerProvider {
      * @return 返回实例对象
      */
     @NonNull
-    public static IStatusViewManager newInstance() {
-        return newInstance(new StatusViewHelper());
+    public static IStatusViewManager newInstance(@NonNull LifecycleOwner owner) {
+        return newInstance(owner, new StatusViewHelper());
     }
 
     /**
@@ -41,15 +42,18 @@ public final class StatusViewManagerProvider {
      * @return 返回状态视图管理器实例对象
      */
     @NonNull
-    public static IStatusViewManager newInstance(IStatusViewHelper helper) {
-        return new StatusViewManager(helper);
+    public static IStatusViewManager newInstance(@NonNull LifecycleOwner owner, @NonNull IStatusViewHelper helper) {
+        IStatusViewManager manager = new StatusViewManager(helper);
+        owner.getLifecycle().addObserver(manager);
+        return manager;
     }
 
+    @Nullable
     public static StatusViewConfigure getGlobalConfigure() {
         return sConfigure;
     }
 
-    public static void applyGlobalConfigure(@Nullable StatusViewConfigure configure) {
+    public static synchronized void applyGlobalConfigure(@Nullable StatusViewConfigure configure) {
         StatusViewManagerProvider.sConfigure = configure;
     }
 

@@ -1,11 +1,5 @@
 package com.mingyuechunqiu.agileproject.feature.function;
 
-import androidx.annotation.NonNull;
-
-import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
-
-import java.util.Map;
-
 /**
  * <pre>
  *      Project:    Agile
@@ -17,23 +11,9 @@ import java.util.Map;
  *      Version:    1.0
  * </pre>
  */
-public class FunctionModel extends FunctionContract.Model<FunctionContract.Listener> {
+public class FunctionModel extends FunctionContract.Model{
 
     private FunctionContract.Dao<?> mDao = null;
-
-    FunctionModel(FunctionContract.Listener listener) {
-        super(listener);
-    }
-
-    @Override
-    protected void redoRequest(@NonNull Map<String, String> paramMap) {
-
-    }
-
-    @Override
-    protected void doRequest(@NonNull ParamsInfo info) {
-
-    }
 
     @Override
     protected void release() {

@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
 import com.mingyuechunqiu.agileproject.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
  *     version: 1.0
  * </pre>
  */
-public class JumpFragment1 extends Fragment implements ITransferPageDataHelper.TransferPageDataCallback {
+public class JumpFragment1 extends Fragment implements ITransferPageDataDispatcherHelper.TransferPageDataCallback {
 
     @Nullable
     @Override
@@ -41,8 +41,8 @@ public class JumpFragment1 extends Fragment implements ITransferPageDataHelper.T
             @Override
             public void onClick(View view) {
                 FragmentActivity activity = getActivity();
-                if (activity instanceof ITransferPageDataHelper.TransferPageDataCallback) {
-                    ((ITransferPageDataHelper.TransferPageDataCallback) activity).onReceiveTransferPageData(new ITransferPageDataHelper.TransferPageDataOwner(getClass().getSimpleName()), null);
+                if (activity instanceof ITransferPageDataDispatcherHelper.TransferPageDataCallback) {
+                    ((ITransferPageDataDispatcherHelper.TransferPageDataCallback) activity).onReceiveTransferPageData(new ITransferPageDataDispatcherHelper.TransferPageDataOwner(getClass().getSimpleName()), null);
                 }
             }
         });
@@ -50,7 +50,7 @@ public class JumpFragment1 extends Fragment implements ITransferPageDataHelper.T
     }
 
     @Override
-    public void onReceiveTransferPageData(@NotNull ITransferPageDataHelper.TransferPageDataOwner dataOwner, @org.jetbrains.annotations.Nullable ITransferPageDataHelper.TransferPageData data) {
+    public void onReceiveTransferPageData(@NotNull ITransferPageDataDispatcherHelper.TransferPageDataOwner dataOwner, @org.jetbrains.annotations.Nullable ITransferPageDataDispatcherHelper.TransferPageData data) {
         if (getChildFragmentManager().getBackStackEntryCount() > 0) {
             getChildFragmentManager().popBackStack();
         }

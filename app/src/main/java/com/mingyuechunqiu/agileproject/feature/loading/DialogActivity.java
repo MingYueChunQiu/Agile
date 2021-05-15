@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
+import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -42,8 +43,8 @@ public class DialogActivity extends BaseActivity implements View.OnClickListener
 
     @NonNull
     @Override
-    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return new IInflateLayoutViewCreator() {
+    protected IActivityInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IActivityInflateLayoutViewCreator.ActivityInflateLayoutViewCreatorAdapter() {
             @Override
             public int getInflateLayoutId() {
                 return R.layout.activity_loading_dialog_test;
@@ -69,22 +70,15 @@ public class DialogActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_add_loading:
-                showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getSupportFragmentManager(), R.id.fl_loading_container, null);
-                break;
-            case R.id.btn_hide_loading:
-                dismissStatusView();
-                break;
-            case R.id.btn_show_loading:
-                showLoadingStatusView(null, true);
-                break;
-            case R.id.btn_dismiss_loading:
-                dismissStatusView();
-                break;
-            case R.id.btn_loading_test:
-                showToast("能点击到");
-                break;
+        int id = v.getId();
+        if (id == R.id.btn_add_loading) {
+            getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, findViewById(R.id.fl_loading_container), null);
+        } else if (id == R.id.btn_hide_loading || id == R.id.btn_dismiss_loading) {
+            dismissStatusView(true);
+        } else if (id == R.id.btn_show_loading) {
+            showLoadingStatusView(null, true);
+        } else if (id == R.id.btn_loading_test) {
+            showToast("能点击到");
         }
     }
 }

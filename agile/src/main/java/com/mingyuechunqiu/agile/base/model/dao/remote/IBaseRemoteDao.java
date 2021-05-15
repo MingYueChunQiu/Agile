@@ -1,8 +1,5 @@
 package com.mingyuechunqiu.agile.base.model.dao.remote;
 
-import com.mingyuechunqiu.agile.base.model.dao.IBaseDao;
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRemoteCallback;
-
 /**
  * <pre>
  *     author : xyj
@@ -10,9 +7,8 @@ import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRemo
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/3/14
  *     desc   : 远程Dao层接口
- *              继承自IBaseDao
  *     version: 1.0
  * </pre>
  */
-public interface IBaseRemoteDao<C extends DaoRemoteCallback<?>> extends IBaseDao<C> {
+public interface IBaseRemoteDao {
 }

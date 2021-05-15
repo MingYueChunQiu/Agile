@@ -1,7 +1,6 @@
 package com.mingyuechunqiu.agile.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -31,9 +30,12 @@ import androidx.appcompat.widget.Toolbar;
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
+import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
+import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.receiver.NetworkConnectedTypeReceiver;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
-import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
+
+import org.jetbrains.annotations.NotNull;
 
 import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_NAVIGATION_TITLE;
 import static com.mingyuechunqiu.agile.constants.KeyPrefixConstants.KEY_BUNDLE;
@@ -60,7 +62,7 @@ import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NE
  *     version: 1.0
  * </pre>
  */
-public class WebViewActivity extends BaseToolbarPresenterActivity<IBaseDataView<BaseAbstractDataPresenter<?, ?>>, BaseAbstractDataPresenter<?, ?>> {
+public class WebViewActivity extends BaseToolbarPresenterActivity<IBaseDataView, BaseAbstractDataPresenter<IBaseDataView, ?>> {
 
     private static Drawable backDrawable;
     private ProgressBar pbProgress;
@@ -105,12 +107,7 @@ public class WebViewActivity extends BaseToolbarPresenterActivity<IBaseDataView<
         if (backDrawable != null) {
             ivBack.setImageDrawable(backDrawable);
         }
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        ivBack.setOnClickListener(v -> finish());
         mBundle = getIntent().getExtras();
         if (mBundle != null && mBundle.getBoolean(BUNDLE_TITLE_VISIBLE, false)) {
             tvToolbarTitle.setVisibility(View.VISIBLE);
@@ -186,8 +183,8 @@ public class WebViewActivity extends BaseToolbarPresenterActivity<IBaseDataView<
 
     @NonNull
     @Override
-    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return new IInflateLayoutViewCreator() {
+    protected IActivityInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IActivityInflateLayoutViewCreator.ActivityInflateLayoutViewCreatorAdapter() {
             @Override
             public int getInflateLayoutId() {
                 return R.layout.agile_layout_navigation;
@@ -207,12 +204,8 @@ public class WebViewActivity extends BaseToolbarPresenterActivity<IBaseDataView<
             if (mBundle != null && mBundle.getBoolean(BUNDLE_SHOW_BACK_DIALOG, false)) {
                 new AlertDialog.Builder(this)
                         .setMessage(R.string.agile_prompt_exit)
-                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        }).setNegativeButton(R.string.cancel, null)
+                        .setPositiveButton(R.string.confirm, (dialog, which) -> finish())
+                        .setNegativeButton(R.string.cancel, null)
                         .create().show();
                 return true;
             }
@@ -241,12 +234,6 @@ public class WebViewActivity extends BaseToolbarPresenterActivity<IBaseDataView<
         return new ToolbarHelper.ToolbarConfigure.Builder()
                 .setImmerse(true)
                 .build();
-    }
-
-    @Nullable
-    @Override
-    public BaseAbstractDataPresenter<?, ?> initPresenter() {
-        return null;
     }
 
     @Override
@@ -317,29 +304,16 @@ public class WebViewActivity extends BaseToolbarPresenterActivity<IBaseDataView<
      * 注册网络连接类型改变广播
      */
     private void registerNetworkTypeReceiver() {
-        mReceiver = new NetworkConnectedTypeReceiver(new NetworkConnectedTypeReceiver.OnNetworkTypeChangedListener() {
-            @Override
-            public void onNetworkTypeChanged(boolean isMobile) {
-                if (isMobile) {
-                    if (isSelectedMobileNet) {
-                        showToast(R.string.agile_prompt_use_mobile_network);
-                    } else {
-                        new AlertDialog.Builder(WebViewActivity.this)
-                                .setCancelable(false)
-                                .setMessage(R.string.agile_prompt_query_mobile_network)
-                                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        isSelectedMobileNet = true;
-                                    }
-                                })
-                                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        finish();
-                                    }
-                                }).create().show();
-                    }
+        mReceiver = new NetworkConnectedTypeReceiver(isMobile -> {
+            if (isMobile) {
+                if (isSelectedMobileNet) {
+                    showToast(R.string.agile_prompt_use_mobile_network);
+                } else {
+                    new AlertDialog.Builder(WebViewActivity.this)
+                            .setCancelable(false)
+                            .setMessage(R.string.agile_prompt_query_mobile_network)
+                            .setPositiveButton(R.string.confirm, (dialog, which) -> isSelectedMobileNet = true)
+                            .setNegativeButton(R.string.cancel, (dialog, which) -> finish()).create().show();
                 }
             }
         });
@@ -358,6 +332,18 @@ public class WebViewActivity extends BaseToolbarPresenterActivity<IBaseDataView<
         if (!TextUtils.isEmpty(url)) {
             wvWeb.loadUrl(url);
         }
+    }
+
+    @Override
+    public void setPresenter(@NonNull @NotNull BaseAbstractDataPresenter<IBaseDataView, ?> presenter) {
+
+    }
+
+    @Nullable
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public BaseAbstractDataPresenter<IBaseDataView, ?> initPresenter() {
+        return null;
     }
 
     /**

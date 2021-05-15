@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
  *      Version:    1.0
  * </pre>
  */
-public class FunctionPresenter extends FunctionContract.Presenter<FunctionContract.View<?>, FunctionContract.Model<FunctionContract.Listener>> {
+public class FunctionPresenter extends FunctionContract.Presenter<FunctionContract.View, FunctionContract.Model> {
 
     @Override
     protected void disconnectNetwork() {
@@ -25,9 +25,13 @@ public class FunctionPresenter extends FunctionContract.Presenter<FunctionContra
     }
 
     @Nullable
+    @org.jetbrains.annotations.Nullable
     @Override
-    public FunctionContract.Model<FunctionContract.Listener> initModel() {
-        mViewRef.get().doSomeTest();
+    public FunctionContract.Model initModel() {
+        FunctionContract.View view = getView();
+        if (view != null) {
+            view.doSomeTest();
+        }
         return null;
     }
 }

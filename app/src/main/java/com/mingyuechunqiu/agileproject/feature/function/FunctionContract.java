@@ -1,9 +1,8 @@
 package com.mingyuechunqiu.agileproject.feature.function;
 
-import com.mingyuechunqiu.agile.base.framework.IBaseListener;
 import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRetrofitCallback;
 import com.mingyuechunqiu.agile.base.model.dao.remote.BaseAbstractRetrofitDao;
+import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRetrofitCallback;
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 
@@ -20,28 +19,18 @@ import com.mingyuechunqiu.agile.base.view.IBaseDataView;
  */
 interface FunctionContract {
 
-    interface View<P extends Presenter<?, ?>> extends IBaseDataView<P> {
+    interface View extends IBaseDataView {
 
         void doSomeTest();
     }
 
-    interface Listener extends IBaseListener {
-
-        void onGetTest();
+    abstract class Dao<C extends DaoRetrofitCallback> extends BaseAbstractRetrofitDao<C> {
     }
 
-    abstract class Dao<C extends DaoRetrofitCallback<Listener>> extends BaseAbstractRetrofitDao<C>{
-
+    abstract class Model extends BaseAbstractDataModel {
     }
 
-    abstract class Model<I extends Listener> extends BaseAbstractDataModel<I> {
-
-        Model(I listener) {
-            super(listener);
-        }
-    }
-
-    abstract class Presenter<V extends View<?>, M extends Model<?>> extends BaseAbstractDataPresenter<V, M> {
+    abstract class Presenter<V extends View, M extends Model> extends BaseAbstractDataPresenter<V, M> {
 
     }
 }

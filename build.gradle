@@ -14,11 +14,10 @@ buildscript {
             url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
         }
         maven { url 'https://maven.google.com' }
-        jcenter()
         maven { url "http://jcenter.bintray.com" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.3'
+        classpath 'com.android.tools.build:gradle:4.2.1'
 
         classpath "io.realm:realm-gradle-plugin:7.0.0-beta-SNAPSHOT"
 //        classpath "io.realm:realm-gradle-plugin:6.0.2"
@@ -41,7 +40,6 @@ allprojects {
             url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
         }
         maven { url 'https://maven.google.com' }
-        jcenter()
         maven { url "http://jcenter.bintray.com" }
     }
 }

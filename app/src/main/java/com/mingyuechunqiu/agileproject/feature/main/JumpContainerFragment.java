@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
 import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agile.util.FragmentUtils;
@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
  *     version: 1.0
  * </pre>
  */
-public class JumpContainerFragment extends BaseFragment implements ITransferPageDataHelper.TransferPageDataCallback {
+public class JumpContainerFragment extends BaseFragment implements ITransferPageDataDispatcherHelper.TransferPageDataCallback {
 
     @Nullable
     @Override

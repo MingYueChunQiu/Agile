@@ -7,9 +7,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
-import com.mingyuechunqiu.agile.ui.bottomsheetdialogfragment.BaseStatusViewPresenterBSDialogFragment;
-import com.mingyuechunqiu.agile.util.ToastUtils;
+import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
+import com.mingyuechunqiu.agile.ui.diaglogfragment.BaseDataPresenterDialogFragment;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <pre>
@@ -21,8 +22,44 @@ import com.mingyuechunqiu.agile.util.ToastUtils;
  *     version: 1.0
  * </pre>
  */
-public class TestBottomDialogFragment extends BaseStatusViewPresenterBSDialogFragment<MainContract.View<MainContract.Presenter<?, ?>>, MainContract.Presenter<?, ?>>
-        implements MainContract.View<MainContract.Presenter<?, ?>> {
+public class TestBottomDialogFragment extends BaseDataPresenterDialogFragment<MainContract.View, MainContract.Presenter<MainContract.View, ?>>
+        implements MainContract.View {
+
+    @Nullable
+    @Override
+    public Context getCurrentContext() {
+        return getContext();
+    }
+
+    @Override
+    public void setPresenter(@NonNull @NotNull MainContract.Presenter<MainContract.View, ?> presenter) {
+
+    }
+
+    @Nullable
+    @Override
+    public MainContract.Presenter<MainContract.View, ?> initPresenter() {
+        return null;
+    }
+
+    @Nullable
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public MainContract.Presenter<MainContract.View, ?> getPresenter() {
+        return null;
+    }
+
+    @Nullable
+    @org.jetbrains.annotations.Nullable
+    @Override
+    protected IFragmentInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return null;
+    }
+
+    @Override
+    protected void initView(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+
+    }
 
     @Override
     protected void releaseOnDestroyView() {
@@ -32,48 +69,5 @@ public class TestBottomDialogFragment extends BaseStatusViewPresenterBSDialogFra
     @Override
     protected void releaseOnDestroy() {
 
-    }
-
-    @NonNull
-    @Override
-    public IStatusViewManager getStatusViewManager() {
-        return super.getStatusViewManager();
-    }
-
-    @Nullable
-    @Override
-    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return null;
-    }
-
-    @Override
-    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    public void dismissStatusView() {
-        super.dismissStatusView();
-    }
-
-    @Override
-    public void setPresenter(@NonNull MainContract.Presenter<?, ?> presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
-    public void showToast(@NonNull ToastUtils.ToastConfig config) {
-
-    }
-
-    @Override
-    public Context getCurrentContext() {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public MainContract.Presenter<?, ?> initPresenter() {
-        return new MainPresenter();
     }
 }

@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agile.ui.dialog;
 
 import android.content.Context;
 
+import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 
@@ -14,11 +15,11 @@ import com.mingyuechunqiu.agile.base.view.IBaseDataView;
  *      Email:      xiyujieit@163.com
  *      Time:       2020/4/7 9:31 PM
  *      Desc:       所有MVP层具有网络功能的对话框的基类
- *                  继承自BaseStatusViewPresenterDialog
+ *                  继承自BaseAbstractPresenterDialog
  *      Version:    1.0
  * </pre>
  */
-public abstract class BaseDataPresenterDialog<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter> extends BaseStatusViewPresenterDialog<V, P> {
+public abstract class BaseDataPresenterDialog<V extends IBaseDataView, P extends BaseAbstractDataPresenter<V, ? extends BaseAbstractDataModel>> extends BaseAbstractPresenterDialog<V, P> {
 
     public BaseDataPresenterDialog(Context context) {
         super(context);

@@ -1,12 +1,13 @@
 package com.mingyuechunqiu.agile.feature.statusview.function
 
-import androidx.annotation.IdRes
+import android.os.Bundle
+import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.StatusType
-import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView
+import com.mingyuechunqiu.agile.feature.statusview.ui.view.IStatusView
 
 /**
  * <pre>
@@ -26,17 +27,36 @@ interface IStatusViewHelper {
 
     fun getStatusViewConfigure(): StatusViewConfigure?
 
-    fun setStatusView(statusView: IStatusView)
-
     fun getStatusView(): IStatusView?
 
+    /**
+     * 显示状态视图
+     *
+     * @param type    状态视图类型
+     * @param container 视图添加父容器
+     * @param option  状态视图配置信息类
+     */
+    fun showStatusView(type: StatusType, container: ViewGroup, option: StatusViewOption?)
+
+    /**
+     * 显示状态视图
+     *
+     * @param type    状态视图类型
+     * @param manager Fragment管理器
+     * @param option  状态视图配置信息类
+     */
     fun showStatusView(type: StatusType, manager: FragmentManager, option: StatusViewOption?)
 
-    fun showStatusView(type: StatusType, manager: FragmentManager, @IdRes containerId: Int, option: StatusViewOption?)
-
+    /**
+     * 关闭状态视图
+     *
+     * @param allowStateLoss true允许丧失状态，否则false
+     */
     fun dismissStatusView(allowStateLoss: Boolean = true)
 
-    fun getModeType(): StatusViewConstants.ModeType
+    fun getModeType(): StatusViewConstants.StatusMode
 
     fun getStatusMode(): StatusType
+
+    fun restoreStatueView(savedInstanceState: Bundle?, manager: FragmentManager)
 }

@@ -9,12 +9,15 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
+import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewProgressOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
+import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
 import com.mingyuechunqiu.agileproject.R;
@@ -31,7 +34,7 @@ import com.mingyuechunqiu.agileproject.R;
  *      Version:    1.0
  * </pre>
  */
-public class ToolbarActivity extends BaseToolbarPresenterActivity {
+public class ToolbarActivity extends BaseToolbarPresenterActivity<IBaseDataView, BaseAbstractDataPresenter<IBaseDataView, ?>> {
 
     @Override
     protected int getInflateToolbarResId() {
@@ -55,11 +58,6 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
                 .setLogoResId(R.drawable.agile_arrow_back_pressed)
                 .build();
 
-    }
-
-    @Override
-    public Object initPresenter() {
-        return null;
     }
 
     @Override
@@ -119,8 +117,8 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
 
     @NonNull
     @Override
-    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return new IInflateLayoutViewCreator() {
+    protected IActivityInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IActivityInflateLayoutViewCreator.ActivityInflateLayoutViewCreatorAdapter() {
             @Override
             public int getInflateLayoutId() {
                 return R.layout.activity_toolbar_test;
@@ -132,5 +130,11 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity {
                 return null;
             }
         };
+    }
+
+    @Nullable
+    @Override
+    public BaseAbstractDataPresenter<IBaseDataView, ?> initPresenter() {
+        return null;
     }
 }

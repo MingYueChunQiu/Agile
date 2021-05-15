@@ -4,21 +4,19 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
-import com.mingyuechunqiu.agile.R;
-import com.mingyuechunqiu.agile.base.framework.IBaseListener;
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.local.DaoLocalCallback;
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRetrofitCallback;
-import com.mingyuechunqiu.agile.base.model.dao.framework.result.DaoResultHandler;
-import com.mingyuechunqiu.agile.base.model.framework.local.IModelLocalData;
-import com.mingyuechunqiu.agile.base.model.framework.remote.IModelRetrofitData;
+import com.mingyuechunqiu.agile.base.bridge.Request;
+import com.mingyuechunqiu.agile.base.bridge.call.Call;
+import com.mingyuechunqiu.agile.base.model.framework.callback.local.DaoLocalCallback;
+import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRetrofitCallback;
+import com.mingyuechunqiu.agile.base.model.framework.data.local.IModelLocalData;
+import com.mingyuechunqiu.agile.base.model.framework.data.remote.IModelNetworkData;
 import com.mingyuechunqiu.agile.constants.URLConstants;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
-import com.mingyuechunqiu.agile.util.ToastUtils;
 
-import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 
 import retrofit2.Response;
 
@@ -32,60 +30,7 @@ import retrofit2.Response;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractDataModel<I extends IBaseListener> extends BaseAbstractModel<I> implements DaoLocalCallback<I>, DaoRetrofitCallback<I>,
-        IModelLocalData, IModelRetrofitData {
-
-    public BaseAbstractDataModel(@NonNull I listener) {
-        super(listener);
-    }
-
-    @Override
-    public void releaseOnDetach() {
-        releaseNetworkResources();
-        super.releaseOnDetach();
-    }
-
-    /**
-     * 检测Retrofit的网络响应是否为空
-     *
-     * @param response 网络响应
-     * @return 如果网络响应为空返回true，否则返回false
-     */
-    @Override
-    public boolean checkRetrofitResponseIsNull(@Nullable Response response) {
-        if (response == null || response.body() == null) {
-            onNetworkResponseFailed(new IllegalStateException("服务器响应异常，请重试！"),
-                    R.string.agile_error_service_response);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 处理Retrofit网络响应失败事件
-     *
-     * @param t             抛出的异常
-     * @param errorMsgResId 错误提示字符串资源ID
-     */
-    @Override
-    public void onNetworkResponseFailed(@Nullable Throwable t, @StringRes int errorMsgResId) {
-        onNetworkResponseFailed(t, new ErrorInfo(errorMsgResId));
-    }
-
-    @Override
-    public void onNetworkResponseFailed(@Nullable Throwable t, @NonNull ErrorInfo info) {
-        if (t != null) {
-            LogManagerProvider.d(TAG_FAILURE, t.getMessage());
-        }
-        if (mListener != null) {
-            mListener.onFailure(info);
-        }
-    }
-
-    @Override
-    public void onExecuteDaoResult(@NonNull DaoResultHandler<I> handler) {
-        handler.handleDaoResult(mListener);
-    }
+public abstract class BaseAbstractDataModel extends BaseAbstractModel implements IModelLocalData, IModelNetworkData, DaoLocalCallback, DaoRetrofitCallback {
 
     /**
      * 根据网络响应返回码，进行不同处理
@@ -95,25 +40,46 @@ public abstract class BaseAbstractDataModel<I extends IBaseListener> extends Bas
      * @return 返回true表示响应成功，否则返回false失败
      */
     @Override
-    public boolean handleNetworkResponseCode(int code, @Nullable String errorMsg) {
+    public <T> boolean preHandleNetworkResponseFailureWithCode(@NonNull Call<T> call, int code, @Nullable String errorMsg) {
         if (code == getNetworkSuccessCode()) {
             return true;
         }
         if (code == getTokenOverdueCode()) {
-            handleOnTokenOverdue();
+            handleOnTokenOverdue(call);
         } else if (code == getTokenInvalidCode()) {
             handleOnTokenInvalid(errorMsg);
         } else {
-            handleOnNetworkResponseError(code, errorMsg);
+            handleOnNetworkResponseError(call.getCallback(), errorMsg);
         }
         return false;
     }
 
     /**
-     * 释放网络相关资源
+     * 处理网络响应失败事件
+     *
+     * @param callback 请求回调
+     * @param errorMsg 错误信息
      */
     @Override
-    public void releaseNetworkResources() {
+    public <T> void handleOnNetworkResponseError(@NonNull Request.Callback<T> callback, @Nullable String errorMsg) {
+        handleOnNetworkResponseError(callback, new ErrorInfo(TextUtils.isEmpty(errorMsg) ? "信息异常" : errorMsg));
+    }
+
+    /**
+     * 处理网络响应失败事件
+     *
+     * @param callback 请求回调
+     * @param info     错误对象
+     */
+    @Override
+    public <T> void handleOnNetworkResponseError(@NonNull @NotNull Request.Callback<T> callback, @NonNull @NotNull ErrorInfo info) {
+        LogManagerProvider.d(TAG_FAILURE, "网络响应错误");
+        callback.onFailure(info);
+    }
+
+    @Override
+    public <T> boolean checkRetrofitResponseIsNull(@Nullable Response<T> response) {
+        return response == null || response.body() == null;
     }
 
     /**
@@ -145,56 +111,34 @@ public abstract class BaseAbstractDataModel<I extends IBaseListener> extends Bas
 
     /**
      * 处理Token过期
+     *
+     * @param call 调用对象
+     * @param <T>  响应对象类型
      */
-    protected void handleOnTokenOverdue() {
-        callOnTokenOverdue();
+    protected <T> void handleOnTokenOverdue(@NonNull Call<T> call) {
+        callOnTokenOverdue(call);
     }
 
     /**
      * 处理Token无效
      */
     protected void handleOnTokenInvalid(@Nullable String errorMsg) {
-        ToastUtils.showToast(errorMsg);
+        ToastHelper.showToast(errorMsg);
         callOnTokenInvalid();
     }
 
     /**
-     * 处理网络响应发生未知异常
-     *
-     * @param code     错误码
-     * @param errorMsg 错误信息
-     */
-    protected void handleOnNetworkResponseError(int code, @Nullable String errorMsg) {
-        callOnNetworkResponseError(code, errorMsg);
-        onNetworkResponseFailed(new IllegalArgumentException("网络响应错误"), new ErrorInfo(TextUtils.isEmpty(errorMsg) ? "信息异常" : errorMsg));
-    }
-
-    /**
      * 当token过期时进行回调
+     *
+     * @param call 调用对象
+     * @param <T>  响应对象类型
      */
-    protected void callOnTokenOverdue() {
+    protected <T> void callOnTokenOverdue(@NonNull Call<T> call) {
     }
 
     /**
      * 当token无效时回调
      */
     protected void callOnTokenInvalid() {
-    }
-
-    /**
-     * 当网络响应发生未知异常时回调
-     *
-     * @param code     错误码
-     * @param errorMsg 错误信息
-     */
-    protected void callOnNetworkResponseError(int code, @Nullable String errorMsg) {
-    }
-
-    /**
-     * 当请求失败后，由子类重写调用进行再次请求
-     *
-     * @param paramMap 请求参数集合
-     */
-    protected void redoRequest(@NonNull Map<String, String> paramMap) {
     }
 }

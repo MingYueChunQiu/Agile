@@ -1,8 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.dao.remote;
 
-import androidx.annotation.NonNull;
-
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRetrofitCallback;
+import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRetrofitCallback;
 
 /**
  * <pre>
@@ -15,12 +13,5 @@ import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRetr
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractRetrofitDao<C extends DaoRetrofitCallback<?>> extends BaseAbstractNetworkDao<C> {
-
-    public BaseAbstractRetrofitDao() {
-    }
-
-    public BaseAbstractRetrofitDao(@NonNull C callback) {
-        super(callback);
-    }
+public abstract class BaseAbstractRetrofitDao<C extends DaoRetrofitCallback> extends BaseAbstractNetworkDao<C> {
 }

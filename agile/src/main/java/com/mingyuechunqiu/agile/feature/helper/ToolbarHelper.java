@@ -149,6 +149,7 @@ public final class ToolbarHelper {
             mBuilder = builder;
         }
 
+        @DrawableRes
         public int getNavigationIconResId() {
             return mBuilder.navigationIconResId;
         }
@@ -157,6 +158,7 @@ public final class ToolbarHelper {
             mBuilder.navigationIconResId = navigationIconResId;
         }
 
+        @Nullable
         public Drawable getNavigationIcon() {
             return mBuilder.navigationIcon;
         }
@@ -173,6 +175,7 @@ public final class ToolbarHelper {
             mBuilder.enableDisplayHomeAsUp = enableDisplayHomeAsUp;
         }
 
+        @DrawableRes
         public int getLogoResId() {
             return mBuilder.logoResId;
         }
@@ -181,6 +184,7 @@ public final class ToolbarHelper {
             mBuilder.logoResId = logoResId;
         }
 
+        @Nullable
         public Drawable getLogoDrawable() {
             return mBuilder.logoDrawable;
         }
@@ -189,6 +193,7 @@ public final class ToolbarHelper {
             mBuilder.logoDrawable = logoDrawable;
         }
 
+        @Nullable
         public View.OnClickListener getOnNavigationIconClickListener() {
             return mBuilder.onNavigationIconClickListener;
         }
@@ -205,6 +210,7 @@ public final class ToolbarHelper {
             mBuilder.hideDisplayTitle = hideDisplayTitle;
         }
 
+        @Nullable
         public String getTitle() {
             return mBuilder.title;
         }
@@ -213,6 +219,7 @@ public final class ToolbarHelper {
             mBuilder.title = title;
         }
 
+        @ColorInt
         public int getTitleColor() {
             return mBuilder.titleColor;
         }
@@ -221,6 +228,7 @@ public final class ToolbarHelper {
             mBuilder.titleColor = titleColor;
         }
 
+        @Nullable
         public String getSubTitle() {
             return mBuilder.subTitle;
         }
@@ -229,6 +237,7 @@ public final class ToolbarHelper {
             mBuilder.subTitle = subTitle;
         }
 
+        @ColorInt
         public int getSubTitleColor() {
             return mBuilder.subTitleColor;
         }
@@ -237,6 +246,7 @@ public final class ToolbarHelper {
             mBuilder.subTitleColor = subTitleColor;
         }
 
+        @StyleRes
         public int getTitleTextAppearance() {
             return mBuilder.titleTextAppearance;
         }
@@ -245,6 +255,7 @@ public final class ToolbarHelper {
             mBuilder.titleTextAppearance = titleTextAppearance;
         }
 
+        @StyleRes
         public int getSubTitleTextAppearance() {
             return mBuilder.subTitleTextAppearance;
         }
@@ -261,6 +272,7 @@ public final class ToolbarHelper {
             mBuilder.immerse = immerse;
         }
 
+        @Nullable
         public Toolbar.OnMenuItemClickListener getOnMenuItemClickListener() {
             return mBuilder.onMenuItemClickListener;
         }
@@ -269,6 +281,7 @@ public final class ToolbarHelper {
             mBuilder.onMenuItemClickListener = listener;
         }
 
+        @MenuRes
         public int getMenuResId() {
             return mBuilder.menuResId;
         }
@@ -294,6 +307,7 @@ public final class ToolbarHelper {
             mBuilder.clearActivityMenu = clearActivityMenu;
         }
 
+        @Nullable
         public Drawable getOverflowIcon() {
             return mBuilder.overflowIcon;
         }
@@ -308,6 +322,7 @@ public final class ToolbarHelper {
             @DrawableRes
             private int navigationIconResId;//左侧导航图标资源ID
 
+            @Nullable
             private Drawable navigationIcon;//左侧导航图标
 
             private boolean enableDisplayHomeAsUp;//是否启用默认系统返回键
@@ -315,30 +330,35 @@ public final class ToolbarHelper {
             @DrawableRes
             private int logoResId;//左侧logo图标资源ID
 
+            @Nullable
             private Drawable logoDrawable;//左侧logo图片
 
+            @Nullable
             private View.OnClickListener onNavigationIconClickListener;//导航图标点击事件
 
             private boolean hideDisplayTitle;//隐藏系统默认标题
 
+            @Nullable
             private String title;//标题
 
             @ColorInt
             private int titleColor;//标题文本颜色
 
+            @Nullable
             private String subTitle;//副标题
 
             @ColorInt
             private int subTitleColor;//副标题文本颜色
 
-            private @StyleRes
-            int titleTextAppearance;//标题文本样式
+            @StyleRes
+            private int titleTextAppearance;//标题文本样式
 
-            private @StyleRes
-            int subTitleTextAppearance;//副标题文本样式
+            @StyleRes
+            private int subTitleTextAppearance;//副标题文本样式
 
             private boolean immerse;//标记是否是沉浸式
 
+            @Nullable
             private Toolbar.OnMenuItemClickListener onMenuItemClickListener;//菜单监听器
 
             @MenuRes
@@ -349,6 +369,7 @@ public final class ToolbarHelper {
 
             private boolean clearActivityMenu;//用于fragment是否清楚activity的toolbar菜单资源
 
+            @Nullable
             private Drawable overflowIcon;//溢出图标
 
             public Builder() {
@@ -356,10 +377,12 @@ public final class ToolbarHelper {
                 menuColorFilterColor = 0;//默认不使用颜色混合
             }
 
+            @NonNull
             public ToolbarConfigure build() {
                 return new ToolbarConfigure(this);
             }
 
+            @DrawableRes
             public int getNavigationIconResId() {
                 return this.navigationIconResId;
             }
@@ -369,11 +392,12 @@ public final class ToolbarHelper {
                 return this;
             }
 
+            @Nullable
             public Drawable getNavigationIcon() {
                 return this.navigationIcon;
             }
 
-            public Builder setNavigationIcon(Drawable navigationIcon) {
+            public Builder setNavigationIcon(@Nullable Drawable navigationIcon) {
                 this.navigationIcon = navigationIcon;
                 return this;
             }
@@ -387,6 +411,7 @@ public final class ToolbarHelper {
                 return this;
             }
 
+            @DrawableRes
             public int getLogoResId() {
                 return this.logoResId;
             }
@@ -396,15 +421,17 @@ public final class ToolbarHelper {
                 return this;
             }
 
+            @Nullable
             public Drawable getLogoDrawable() {
                 return this.logoDrawable;
             }
 
-            public Builder setLogoDrawable(Drawable logoDrawable) {
+            public Builder setLogoDrawable(@Nullable Drawable logoDrawable) {
                 this.logoDrawable = logoDrawable;
                 return this;
             }
 
+            @Nullable
             public View.OnClickListener getOnNavigationIconClickListener() {
                 return this.onNavigationIconClickListener;
             }
@@ -423,6 +450,7 @@ public final class ToolbarHelper {
                 return this;
             }
 
+            @Nullable
             public String getTitle() {
                 return this.title;
             }
@@ -432,6 +460,7 @@ public final class ToolbarHelper {
                 return this;
             }
 
+            @ColorInt
             public int getTitleColor() {
                 return this.titleColor;
             }
@@ -441,6 +470,7 @@ public final class ToolbarHelper {
                 return this;
             }
 
+            @Nullable
             public String getSubTitle() {
                 return this.subTitle;
             }
@@ -450,6 +480,7 @@ public final class ToolbarHelper {
                 return this;
             }
 
+            @ColorInt
             public int getSubTitleColor() {
                 return this.subTitleColor;
             }
@@ -459,6 +490,7 @@ public final class ToolbarHelper {
                 return this;
             }
 
+            @StyleRes
             public int getTitleTextAppearance() {
                 return this.titleTextAppearance;
             }
@@ -468,6 +500,7 @@ public final class ToolbarHelper {
                 return this;
             }
 
+            @StyleRes
             public int getSubTitleTextAppearance() {
                 return this.subTitleTextAppearance;
             }
@@ -486,6 +519,7 @@ public final class ToolbarHelper {
                 return this;
             }
 
+            @Nullable
             public Toolbar.OnMenuItemClickListener getOnMenuItemClickListener() {
                 return this.onMenuItemClickListener;
             }
@@ -495,6 +529,7 @@ public final class ToolbarHelper {
                 return this;
             }
 
+            @MenuRes
             public int getMenuResId() {
                 return this.menuResId;
             }
@@ -523,6 +558,7 @@ public final class ToolbarHelper {
                 return this;
             }
 
+            @Nullable
             public Drawable getOverflowIcon() {
                 return overflowIcon;
             }

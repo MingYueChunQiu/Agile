@@ -1,10 +1,10 @@
 package com.mingyuechunqiu.agile.base.model.dao.remote;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.remote.DaoRemoteCallback;
+import com.mingyuechunqiu.agile.base.model.dao.BaseAbstractDao;
 import com.mingyuechunqiu.agile.base.model.dao.operation.remote.IBaseRemoteDaoOperation;
+import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRemoteCallback;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,40 +21,10 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractRemoteDao<C extends DaoRemoteCallback<?>> implements IBaseRemoteDao<C> {
+public abstract class BaseAbstractRemoteDao<C extends DaoRemoteCallback> extends BaseAbstractDao<C> implements IBaseRemoteDao {
 
-    @Nullable
-    protected C mDaoCallback;
     @Nullable
     private List<IBaseRemoteDaoOperation<?>> mRemoteDaoOperationList;
-
-    public BaseAbstractRemoteDao() {
-    }
-
-    public BaseAbstractRemoteDao(@NonNull C callback) {
-        attachDaoCallback(callback);
-    }
-
-    @Override
-    public void attachDaoCallback(@NonNull C callback) {
-        mDaoCallback = callback;
-        onAttachDaoCallback(callback);
-    }
-
-    @Override
-    public void releaseOnDetach() {
-        preRelease();
-        release();
-        postRelease();
-    }
-
-    /**
-     * 当和Model层Dao回调关联时调用
-     *
-     * @param callback 回调对象
-     */
-    protected void onAttachDaoCallback(@NonNull C callback) {
-    }
 
     /**
      * 添加远程操作
@@ -100,7 +70,9 @@ public abstract class BaseAbstractRemoteDao<C extends DaoRemoteCallback<?>> impl
         mRemoteDaoOperationList.remove(operation);
     }
 
+    @Override
     protected void preRelease() {
+        super.preRelease();
         if (mRemoteDaoOperationList == null) {
             return;
         }
@@ -115,13 +87,4 @@ public abstract class BaseAbstractRemoteDao<C extends DaoRemoteCallback<?>> impl
         mRemoteDaoOperationList.clear();
         mRemoteDaoOperationList = null;
     }
-
-    protected void postRelease() {
-        mDaoCallback = null;
-    }
-
-    /**
-     * 释放资源
-     */
-    protected abstract void release();
 }

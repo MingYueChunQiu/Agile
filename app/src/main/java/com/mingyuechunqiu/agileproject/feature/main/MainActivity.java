@@ -21,7 +21,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
@@ -33,7 +34,6 @@ import com.mingyuechunqiu.agile.ui.activity.WebViewActivity;
 import com.mingyuechunqiu.agile.util.ExitApplicationManager;
 import com.mingyuechunqiu.agile.util.FragmentUtils;
 import com.mingyuechunqiu.agile.util.StringUtils;
-import com.mingyuechunqiu.agile.util.ToastUtils;
 import com.mingyuechunqiu.agileproject.R;
 
 import java.lang.ref.WeakReference;
@@ -57,8 +57,8 @@ import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUN
  *     version: 1.0
  * </pre>
  */
-public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View<MainContract.Presenter<?, ?>>, MainContract.Presenter<?, ?>>
-        implements MainContract.View<MainContract.Presenter<?, ?>>, View.OnClickListener, ITransferPageDataHelper.TransferPageDataCallback {
+public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View, MainContract.Presenter<MainContract.View, ?>>
+        implements MainContract.View, View.OnClickListener {
 
     private Fragment mSelectedFg;
 
@@ -75,12 +75,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void setPresenter(@NonNull MainContract.Presenter<?, ?> presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
-    public void showToast(@NonNull ToastUtils.ToastConfig config) {
+    public void showToast(@NonNull ToastHelper.ToastConfig config) {
         super.showToast(config);
     }
 
@@ -258,7 +253,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                     }
                 });
 //                showLoadingStatusView("测试", false);
-                showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getSupportFragmentManager(), option);
+                getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getSupportFragmentManager(), option);
 //                showLoadingStatusView(R.id.fl_main_container);
 
 //                getCurrentLoadingDialog().resetLoadingDialog();
@@ -310,7 +305,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 //                        .show();
                 break;
             case R.id.btn_main_hide:
-                dismissStatusView();
+                dismissStatusView(true);
                 break;
         }
     }
@@ -333,18 +328,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    public void dismissStatusView() {
-        super.dismissStatusView();
-    }
-
-    @Nullable
-    @Override
-    public MainContract.Presenter<?, ?> initPresenter() {
-        return new MainPresenter();
-    }
-
-    @Override
-    public void onReceiveTransferPageData(@NonNull ITransferPageDataHelper.TransferPageDataOwner dataOwner, @Nullable ITransferPageDataHelper.TransferPageData data) {
+    public void onReceiveTransferPageData(@NonNull ITransferPageDataDispatcherHelper.TransferPageDataOwner dataOwner, @Nullable ITransferPageDataDispatcherHelper.TransferPageData data) {
         if (data == null) {
             return;
         }
@@ -352,5 +336,11 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
             FragmentUtils.removeFragments(getSupportFragmentManager(), true,
                     R.anim.agile_alpha_slide_in_left, R.anim.agile_alpha_slide_out_right, mSelectedFg);
         }
+    }
+
+    @Nullable
+    @Override
+    public MainContract.Presenter<MainContract.View, ?> initPresenter() {
+        return null;
     }
 }

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
+import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -26,8 +27,8 @@ public class DialogFragmentTest extends BaseFragment {
 
     @Nullable
     @Override
-    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return new IInflateLayoutViewCreator() {
+    protected IFragmentInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IFragmentInflateLayoutViewCreator.FragmentInflateLayoutViewCreatorAdapter() {
             @Override
             public int getInflateLayoutId() {
                 return R.layout.fragment_main;
@@ -53,6 +54,6 @@ public class DialogFragmentTest extends BaseFragment {
 
     @Override
     protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getChildFragmentManager(), R.id.fl_fragment_main_loading, null);
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, view.findViewById(R.id.fl_fragment_main_loading), null);
     }
 }

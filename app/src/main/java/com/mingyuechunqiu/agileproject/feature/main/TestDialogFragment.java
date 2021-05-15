@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
-import com.mingyuechunqiu.agile.ui.diaglogfragment.BaseStatusViewPresenterDialogFragment;
-import com.mingyuechunqiu.agile.util.ToastUtils;
+import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
+import com.mingyuechunqiu.agile.ui.diaglogfragment.BaseAbstractPresenterDialogFragment;
 import com.mingyuechunqiu.agileproject.R;
 
 /**
@@ -24,8 +25,8 @@ import com.mingyuechunqiu.agileproject.R;
  *     version: 1.0
  * </pre>
  */
-public class TestDialogFragment extends BaseStatusViewPresenterDialogFragment<MainContract.View<MainContract.Presenter<?, ?>>, MainContract.Presenter<?, ?>>
-        implements MainContract.View<MainContract.Presenter<?, ?>> {
+public class TestDialogFragment extends BaseAbstractPresenterDialogFragment<MainContract.View, MainContract.Presenter<MainContract.View, ?>>
+        implements MainContract.View {
 
     @Override
     public void onStart() {
@@ -48,12 +49,7 @@ public class TestDialogFragment extends BaseStatusViewPresenterDialogFragment<Ma
     }
 
     @Override
-    public void setPresenter(@NonNull MainContract.Presenter<?, ?> presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
-    public void showToast(@NonNull ToastUtils.ToastConfig config) {
+    public void showToast(@NonNull ToastHelper.ToastConfig config) {
 
     }
 
@@ -70,8 +66,8 @@ public class TestDialogFragment extends BaseStatusViewPresenterDialogFragment<Ma
 
     @Nullable
     @Override
-    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return new IInflateLayoutViewCreator() {
+    protected IFragmentInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IFragmentInflateLayoutViewCreator.FragmentInflateLayoutViewCreatorAdapter() {
             @Override
             public int getInflateLayoutId() {
                 return R.layout.activity_test;
@@ -92,14 +88,9 @@ public class TestDialogFragment extends BaseStatusViewPresenterDialogFragment<Ma
         }
     }
 
-    @Override
-    public void dismissStatusView() {
-
-    }
-
     @Nullable
     @Override
-    public MainContract.Presenter<?, ?> initPresenter() {
+    public MainContract.Presenter<MainContract.View, ?> initPresenter() {
         return new MainPresenter();
     }
 }

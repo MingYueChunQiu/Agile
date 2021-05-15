@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.fragment.app.DialogFragment;
 
-import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewContainer;
+import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusViewContainer;
 
 /**
  * <pre>
@@ -24,7 +24,7 @@ import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewContaine
  */
 public class StatusViewOption {
 
-    private Builder mBuilder;
+    private final Builder mBuilder;
 
     public StatusViewOption() {
         this(new Builder());

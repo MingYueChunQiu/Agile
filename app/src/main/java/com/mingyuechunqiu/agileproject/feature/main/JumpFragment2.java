@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
 import com.mingyuechunqiu.agileproject.R;
 
 /**
@@ -39,8 +39,8 @@ public class JumpFragment2 extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentActivity activity = getActivity();
-                if (activity instanceof ITransferPageDataHelper.TransferPageDataCallback) {
-                    ((ITransferPageDataHelper.TransferPageDataCallback) activity).onReceiveTransferPageData(new ITransferPageDataHelper.TransferPageDataOwner(getClass().getSimpleName()), null);
+                if (activity instanceof ITransferPageDataDispatcherHelper.TransferPageDataCallback) {
+                    ((ITransferPageDataDispatcherHelper.TransferPageDataCallback) activity).onReceiveTransferPageData(new ITransferPageDataDispatcherHelper.TransferPageDataOwner(getClass().getSimpleName()), null);
                 }
             }
         });

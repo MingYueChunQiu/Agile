@@ -4,7 +4,6 @@ import android.view.KeyEvent
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.mingyuechunqiu.agile.frame.ui.IAgileActivityPage
 import com.mingyuechunqiu.agile.util.UUIDUtils
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -22,7 +21,8 @@ import java.util.concurrent.ConcurrentHashMap
  *      Version:    1.0
  * </pre>
  */
-class KeyEventDispatcherHelper(page: IAgileActivityPage) : IKeyEventDispatcher, LifecycleEventObserver {
+class KeyEventDispatcherHelper(page: IKeyEventDispatcherPage) : IKeyEventDispatcherHelper,
+    LifecycleEventObserver {
 
     private val mKeyEventListenerMap: MutableMap<String, MutableList<IKeyEventReceiverHelper.KeyEventObserver>> by lazy { ConcurrentHashMap() }
 
@@ -42,7 +42,10 @@ class KeyEventDispatcherHelper(page: IAgileActivityPage) : IKeyEventDispatcher, 
      * @param listener Tag按键监听器
      * @return 返回按键观察者Id
      */
-    override fun addOnKeyEventListener(tag: String, listener: IKeyEventReceiverHelper.OnKeyEventListener): String {
+    override fun addOnKeyEventListener(
+        tag: String,
+        listener: IKeyEventReceiverHelper.OnKeyEventListener
+    ): String {
         val observer = IKeyEventReceiverHelper.KeyEventObserver(UUIDUtils.getUUID(), listener)
         val key = createRealKey(tag)
         var list = mKeyEventListenerMap[key]

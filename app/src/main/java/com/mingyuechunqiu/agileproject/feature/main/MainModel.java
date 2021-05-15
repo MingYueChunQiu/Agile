@@ -1,11 +1,6 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
-import androidx.annotation.NonNull;
-
-import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
 import com.mingyuechunqiu.agileproject.feature.function.FunctionDao;
-
-import java.util.Map;
 
 /**
  * <pre>
@@ -17,23 +12,15 @@ import java.util.Map;
  *     version: 1.0
  * </pre>
  */
-class MainModel extends MainContract.Model<MainContract.Listener> {
+class MainModel extends MainContract.Model {
 
     private FunctionDao mDao;
 
-    MainModel(MainContract.Listener listener) {
-        super(listener);
-        mDao = new FunctionDao(this);
-    }
-
     @Override
-    protected void redoRequest(@NonNull Map<String, String> paramMap) {
-
-    }
-
-    @Override
-    protected void doRequest(@NonNull ParamsInfo info) {
-
+    public void initDao() {
+        super.initDao();
+        mDao = new FunctionDao();
+        mDao.attachModelCallback(this);
     }
 
     @Override

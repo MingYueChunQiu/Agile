@@ -22,7 +22,7 @@ import androidx.annotation.StyleRes;
  */
 public class StatusViewTextOption {
 
-    private Builder mBuilder;
+    private final Builder mBuilder;
 
     public StatusViewTextOption() {
         this(new Builder());

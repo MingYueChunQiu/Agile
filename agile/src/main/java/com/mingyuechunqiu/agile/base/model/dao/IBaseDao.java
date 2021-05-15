@@ -1,8 +1,10 @@
 package com.mingyuechunqiu.agile.base.model.dao;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
+import com.mingyuechunqiu.agile.base.bridge.call.ICallExecutor;
+import com.mingyuechunqiu.agile.base.model.framework.callback.DaoCallback;
 
 /**
  * <pre>
@@ -14,14 +16,17 @@ import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseDao<C extends DaoCallback<?>> {
+public interface IBaseDao<C extends DaoCallback> extends ICallExecutor {
+
+    /**
+     * 关联Model层回调
+     *
+     * @param callback Model层回调
+     */
+    void attachModelCallback(@NonNull C callback);
 
     void releaseOnDetach();
 
-    /**
-     * 关联Model层Dao对象回调
-     *
-     * @param callback 回调对象
-     */
-    void attachDaoCallback(@NonNull C callback);
+    @Nullable
+    C getModelCallback();
 }

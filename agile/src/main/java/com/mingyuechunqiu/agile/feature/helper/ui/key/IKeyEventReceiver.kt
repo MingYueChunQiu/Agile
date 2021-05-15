@@ -13,4 +13,7 @@ package com.mingyuechunqiu.agile.feature.helper.ui.key
  *      Version:    1.0
  * </pre>
  */
-interface IKeyEventReceiver : IKeyEventReceiverHelper
+interface IKeyEventReceiver : IKeyEventReceiverHelper {
+
+    fun getKeyEventReceiverHelper(): IKeyEventReceiverHelper
+}

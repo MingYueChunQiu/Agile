@@ -1,13 +1,18 @@
 package com.mingyuechunqiu.agile.base.model.part;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.mingyuechunqiu.agile.base.bridge.Request;
 import com.mingyuechunqiu.agile.base.model.dao.IBaseDao;
-import com.mingyuechunqiu.agile.base.model.dao.framework.callback.DaoCallback;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <pre>
@@ -22,20 +27,34 @@ import java.util.List;
  */
 public abstract class BaseAbstractModelPart implements IBaseModelPart {
 
+    //Dao映射集合，一个Dao可以响应多个Request请求
     @Nullable
-    private List<IBaseDao<?>> mDaoList;
+    private Map<IBaseDao<?>, Set<String>> mDaoMap;
+
+    @NonNull
+    @Override
+    public Map<IBaseDao<?>, Set<String>> getDaoMap() {
+        if (mDaoMap == null) {
+            synchronized (this) {
+                if (mDaoMap == null) {
+                    mDaoMap = new ConcurrentHashMap<>();
+                }
+            }
+        }
+        return mDaoMap;
+    }
 
     @Override
     public void releaseOnDetach() {
         release();
-        if (mDaoList != null) {
-            for (IBaseDao<?> dao : mDaoList) {
+        if (mDaoMap != null) {
+            for (IBaseDao<?> dao : mDaoMap.keySet()) {
                 if (dao != null) {
                     dao.releaseOnDetach();
                 }
             }
-            mDaoList.clear();
-            mDaoList = null;
+            mDaoMap.clear();
+            mDaoMap = null;
         }
     }
 
@@ -45,14 +64,30 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
      * @param dao dao单元
      * @return 如果添加成功返回true，否则返回false
      */
-    protected <C extends DaoCallback<?>> boolean addDao(@Nullable IBaseDao<C> dao) {
+    @Override
+    public boolean addDao(@Nullable IBaseDao<?> dao) {
         if (dao == null) {
             return false;
         }
-        if (mDaoList == null) {
-            mDaoList = new ArrayList<>();
+        List<String> requestTags = new ArrayList<>();
+        requestTags.add(Request.DEFAULT_KEY_REQUEST_TAG);
+        return addDao(dao, requestTags);
+    }
+
+    /**
+     * 添加Dao层单元（同步方法）
+     *
+     * @param dao dao单元
+     * @return 如果添加成功返回true，否则返回false
+     */
+    @Override
+    public synchronized boolean addDao(@NonNull IBaseDao<?> dao, @NonNull List<String> requestTags) {
+        Set<String> originalRequestTags = getDaoMap().get(dao);
+        if (originalRequestTags == null) {
+            originalRequestTags = new HashSet<>();
         }
-        return mDaoList.add(dao);
+        originalRequestTags.addAll(requestTags);
+        return getDaoMap().put(dao, originalRequestTags) != null;
     }
 
     /**
@@ -61,11 +96,12 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
      * @param dao dao单元
      * @return 如果删除成功返回true，否则返回false
      */
-    protected <C extends DaoCallback<?>> boolean removeDao(@Nullable IBaseDao<C> dao) {
-        if (dao == null || mDaoList == null) {
+    @Override
+    public boolean removeDao(@Nullable IBaseDao<?> dao) {
+        if (dao == null || mDaoMap == null) {
             return false;
         }
-        return mDaoList.remove(dao);
+        return getDaoMap().remove(dao) != null;
     }
 
     /**

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
 
+import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
@@ -29,7 +30,7 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseToolbarPresenterFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?, ?>> extends BaseDataPresenterFragment<V, P> {
+public abstract class BaseToolbarPresenterFragment<V extends IBaseDataView, P extends BaseAbstractDataPresenter<V, ? extends BaseAbstractDataModel>> extends BaseDataPresenterFragment<V, P> {
 
     @Nullable
     private Toolbar tbBar;

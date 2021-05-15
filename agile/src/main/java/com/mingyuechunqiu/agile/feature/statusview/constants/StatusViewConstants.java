@@ -12,16 +12,13 @@ package com.mingyuechunqiu.agile.feature.statusview.constants;
  */
 public final class StatusViewConstants {
 
-    //状态视图TAG
-    public static final String TAG_AGILE_STATUS_VIEW = "TAG_AGILE_STATUS_VIEW";
-
     private StatusViewConstants() {
     }
 
     //模式类型
-    public enum ModeType {
-        //无效模式，对话框模式，Fragment模式
-        TYPE_INVALID, TYPE_DIALOG, TYPE_FRAGMENT
+    public enum StatusMode {
+        //无效模式，控件模式，对话框模式
+        MODE_INVALID, MODE_WIDGET, MODE_DIALOG
     }
 
     /**

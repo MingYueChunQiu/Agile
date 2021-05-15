@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
-import com.mingyuechunqiu.agile.util.ToastUtils;
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 
 /**
  * <pre>
@@ -30,11 +30,11 @@ public class NetworkStateReceiver extends BroadcastReceiver {
         }
         if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
             if (!NetworkUtils.checkNetworkIsConnected()) {
-                ToastUtils.showToast(context, R.string.agile_network_disconnected);
+                ToastHelper.showToast(context, R.string.agile_network_disconnected);
                 return;
             }
             if (!isFirstNetConnected) {
-                ToastUtils.showToast(context, R.string.agile_network_connected);
+                ToastHelper.showToast(context, R.string.agile_network_connected);
             } else {
                 isFirstNetConnected = false;
             }

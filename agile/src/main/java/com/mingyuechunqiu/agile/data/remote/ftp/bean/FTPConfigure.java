@@ -18,7 +18,7 @@ import static com.mingyuechunqiu.agile.data.remote.ftp.constants.FTPConstants.DE
  */
 public class FTPConfigure {
 
-    private Builder mBuilder;
+    private final Builder mBuilder;
 
     public FTPConfigure(@NonNull Builder builder) {
         mBuilder = builder;

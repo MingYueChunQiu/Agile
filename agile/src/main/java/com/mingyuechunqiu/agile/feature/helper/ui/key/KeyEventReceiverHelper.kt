@@ -4,9 +4,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataHelper
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider
-import com.mingyuechunqiu.agile.frame.ui.IAgileFragmentPage
 
 /**
  * <pre>
@@ -21,7 +20,7 @@ import com.mingyuechunqiu.agile.frame.ui.IAgileFragmentPage
  *      Version:    1.0
  * </pre>
  */
-class KeyEventReceiverHelper(private val page: IAgileFragmentPage) : IKeyEventReceiver, LifecycleEventObserver {
+class KeyEventReceiverHelper(private val page: IKeyEventReceiverPage) : IKeyEventReceiverHelper, LifecycleEventObserver {
 
     private var mBackPressedObserver: IKeyEventReceiverHelper.BackPressedObserver? = null
 
@@ -80,7 +79,7 @@ class KeyEventReceiverHelper(private val page: IAgileFragmentPage) : IKeyEventRe
      * @param interceptor 跳转参数拦截设置器
      * @return 添加监听成功返回true, 否则返回false
      */
-    override fun listenBackKeyToPreviousPageWithActivity(helper: ITransferPageDataHelper, interceptor: ITransferPageDataHelper.TransferPageDataInterceptor?): Boolean {
+    override fun listenBackKeyToPreviousPageWithActivity(helper: ITransferPageDataDispatcherHelper, interceptor: ITransferPageDataDispatcherHelper.TransferPageDataInterceptor?): Boolean {
         return listenBackKeyToPreviousPage {
             if (isForbidBackToActivity) {
                 LogManagerProvider.d("KeyEventReceiverHelper", "listenBackKeyToPreviousPageWithTargetFragment: isForbidBackToActivity")
@@ -97,7 +96,7 @@ class KeyEventReceiverHelper(private val page: IAgileFragmentPage) : IKeyEventRe
      * @param interceptor 跳转参数拦截设置器
      * @return 添加监听成功返回true, 否则返回false
      */
-    override fun listenBackKeyToPreviousPageWithParentFragment(helper: ITransferPageDataHelper, interceptor: ITransferPageDataHelper.TransferPageDataInterceptor?): Boolean {
+    override fun listenBackKeyToPreviousPageWithParentFragment(helper: ITransferPageDataDispatcherHelper, interceptor: ITransferPageDataDispatcherHelper.TransferPageDataInterceptor?): Boolean {
         return listenBackKeyToPreviousPage {
             if (isForbidBackToFragment) {
                 LogManagerProvider.d("KeyEventReceiverHelper", "listenBackKeyToPreviousPageWithTargetFragment: isForbidBackToFragment")
@@ -114,7 +113,7 @@ class KeyEventReceiverHelper(private val page: IAgileFragmentPage) : IKeyEventRe
      * @param interceptor 跳转参数拦截设置器
      * @return 添加监听成功返回true, 否则返回false
      */
-    override fun listenBackKeyToPreviousPageWithTargetFragment(helper: ITransferPageDataHelper, interceptor: ITransferPageDataHelper.TransferPageDataInterceptor?): Boolean {
+    override fun listenBackKeyToPreviousPageWithTargetFragment(helper: ITransferPageDataDispatcherHelper, interceptor: ITransferPageDataDispatcherHelper.TransferPageDataInterceptor?): Boolean {
         return listenBackKeyToPreviousPage {
             if (isForbidBackToFragment) {
                 LogManagerProvider.d("KeyEventReceiverHelper", "listenBackKeyToPreviousPageWithTargetFragment: isForbidBackToFragment")

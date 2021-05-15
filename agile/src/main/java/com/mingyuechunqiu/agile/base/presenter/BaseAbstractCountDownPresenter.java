@@ -1,8 +1,8 @@
 package com.mingyuechunqiu.agile.base.presenter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.framework.ICountDownListener;
 import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 
@@ -19,10 +19,13 @@ import java.util.TimerTask;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractCountDownPresenter<V extends IBaseDataView<?>, M extends BaseAbstractDataModel<?>> extends BaseAbstractDataPresenter<V, M> {
+public abstract class BaseAbstractCountDownPresenter<V extends IBaseDataView, M extends BaseAbstractDataModel> extends BaseAbstractDataPresenter<V, M> {
 
+    @Nullable
     private Timer mTimer;
+    @Nullable
     private TimerTask mTimerTask;
+    @Nullable
     private ICountDownListener mListener;
 
     @Override
@@ -94,14 +97,34 @@ public abstract class BaseAbstractCountDownPresenter<V extends IBaseDataView<?>,
      * @param score 当前计数进度
      */
     private void startCountDown(int count, int score) {
-        mListener.onCountDown(count - score);
+        if (mListener != null) {
+            mListener.onCountDown(count - score);
+        }
         if (score == count) {
-            mTimerTask.cancel();
-            mTimer.cancel();
+            if (mTimerTask != null) {
+                mTimerTask.cancel();
+            }
+            if (mTimer != null) {
+                mTimer.cancel();
+            }
             mTimerTask = null;
             mTimer = null;
             mListener.onCountDownComplete();
         }
     }
 
+    public interface ICountDownListener {
+
+        /**
+         * 当倒计时时回调
+         *
+         * @param count 当前的计数
+         */
+        void onCountDown(int count);
+
+        /**
+         * 当倒计时结束时调用
+         */
+        void onCountDownComplete();
+    }
 }

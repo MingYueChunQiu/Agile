@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agile.feature.statusview.function
 
+import androidx.lifecycle.LifecycleEventObserver
+
 /**
  * <pre>
  *      author : xyj
@@ -11,4 +13,4 @@ package com.mingyuechunqiu.agile.feature.statusview.function
  *      version: 1.0
  * </pre>
  */
-interface IStatusViewManager : IStatusViewHelper
+interface IStatusViewManager : IStatusViewHelper, LifecycleEventObserver

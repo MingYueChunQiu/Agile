@@ -10,14 +10,15 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewProgressOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
-import com.mingyuechunqiu.agile.ui.fragment.BaseStatusViewPresenterFragment;
-import com.mingyuechunqiu.agile.util.ToastUtils;
+import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
+import com.mingyuechunqiu.agile.ui.fragment.BaseAbstractPresenterFragment;
 import com.mingyuechunqiu.agileproject.R;
 
 /**
@@ -30,8 +31,8 @@ import com.mingyuechunqiu.agileproject.R;
  *     version: 1.0
  * </pre>
  */
-public class TestFragment extends BaseStatusViewPresenterFragment<MainContract.View<MainContract.Presenter<?, ?>>, MainContract.Presenter<?, ?>>
-        implements MainContract.View<MainContract.Presenter<?, ?>> {
+public class TestFragment extends BaseAbstractPresenterFragment<MainContract.View, MainContract.Presenter<MainContract.View, ?>>
+        implements MainContract.View {
 
     @Override
     public void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
@@ -63,12 +64,7 @@ public class TestFragment extends BaseStatusViewPresenterFragment<MainContract.V
     }
 
     @Override
-    public void setPresenter(@NonNull MainContract.Presenter<?, ?> presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
-    public void showToast(@NonNull ToastUtils.ToastConfig config) {
+    public void showToast(@NonNull ToastHelper.ToastConfig config) {
 
     }
 
@@ -81,17 +77,6 @@ public class TestFragment extends BaseStatusViewPresenterFragment<MainContract.V
     @Override
     public IStatusViewManager getStatusViewManager() {
         return super.getStatusViewManager();
-    }
-
-    @Override
-    public void dismissStatusView() {
-        super.dismissStatusView();
-    }
-
-    @Nullable
-    @Override
-    public MainContract.Presenter<?, ?> initPresenter() {
-        return new MainPresenter();
     }
 
     @Override
@@ -115,12 +100,18 @@ public class TestFragment extends BaseStatusViewPresenterFragment<MainContract.V
 
     @Nullable
     @Override
-    protected IInflateLayoutViewCreator generateInflateLayoutViewCreator() {
-        return new IInflateLayoutViewCreator.InflateLayoutViewCreatorAdapter() {
+    protected IFragmentInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IFragmentInflateLayoutViewCreator.FragmentInflateLayoutViewCreatorAdapter() {
             @Override
             public int getInflateLayoutId() {
                 return R.layout.fragment_main;
             }
         };
+    }
+
+    @Nullable
+    @Override
+    public MainContract.Presenter<MainContract.View, ?> initPresenter() {
+        return new MainPresenter();
     }
 }

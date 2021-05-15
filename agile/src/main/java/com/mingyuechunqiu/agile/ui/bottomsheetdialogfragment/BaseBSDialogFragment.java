@@ -20,26 +20,26 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventReceiverHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.key.KeyEventReceiverHelper;
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataHelper;
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.TransferPageDataHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.TransferPageDataDispatcherHelper;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
+import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewOwner;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
-import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusView;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
-import com.mingyuechunqiu.agile.frame.ui.IAgileFragmentPage;
+import com.mingyuechunqiu.agile.frame.ui.fragment.IAgileFragmentPage;
 import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.framework.ui.WindowHandler;
-import com.mingyuechunqiu.agile.util.ToastUtils;
 
 import org.jetbrains.annotations.NotNull;
-
-import static com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.TAG_AGILE_STATUS_VIEW;
 
 /**
  * <pre>
@@ -51,12 +51,12 @@ import static com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewCo
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment implements IAgileFragmentPage {
+public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment implements IAgileFragmentPage, IPopHintOwner, IStatusViewOwner {
 
     private IStatusViewManager mStatusViewManager;
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
     @Nullable
-    private ITransferPageDataHelper mTransferPageDataHelper;
+    private ITransferPageDataDispatcherHelper mTransferPageDataHelper;
     @Nullable
     private IKeyEventReceiverHelper mKeyEventReceiverHelper;
 
@@ -119,9 +119,9 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
 
     @Override
     public void onDestroyView() {
-        dismissStatusView();
         super.onDestroyView();
         Agile.getLifecycleDispatcher().updateBottomSheetDialogFragmentLifecycleState(this, AgileLifecycle.State.BottomSheetDialogFragmentState.DESTROYED_VIEW);
+        dismissStatusView(true);
         releaseOnDestroyView();
         mStatusViewManager = null;
     }
@@ -170,7 +170,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
      * @return 传递成功返回true，否则返回false
      */
     @Override
-    public boolean transferDataToActivity(@Nullable TransferPageDataHelper.TransferPageData data) {
+    public boolean transferDataToActivity(@Nullable TransferPageData data) {
         return getTransferPageDataHelper().transferDataToActivity(data);
     }
 
@@ -181,7 +181,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
      * @return 传递成功返回true，否则返回false
      */
     @Override
-    public boolean transferDataToParentFragment(@Nullable TransferPageDataHelper.TransferPageData data) {
+    public boolean transferDataToParentFragment(@Nullable TransferPageData data) {
         return getTransferPageDataHelper().transferDataToParentFragment(data);
     }
 
@@ -192,7 +192,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
      * @return 传递成功返回true，否则返回false
      */
     @Override
-    public boolean transferDataToTargetFragment(@Nullable TransferPageDataHelper.TransferPageData data) {
+    public boolean transferDataToTargetFragment(@Nullable TransferPageData data) {
         return getTransferPageDataHelper().transferDataToTargetFragment(data);
     }
 
@@ -204,7 +204,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
      * @return 传递成功返回true，否则返回false
      */
     @Override
-    public boolean transferDataToPage(@NonNull TransferPageDataHelper.TransferPageDataCallback targetPage, @Nullable TransferPageDataHelper.TransferPageData data) {
+    public boolean transferDataToPage(@NonNull TransferPageDataCallback targetPage, @Nullable TransferPageData data) {
         return getTransferPageDataHelper().transferDataToPage(targetPage, data);
     }
 
@@ -215,7 +215,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
      * @return 如果进行调用则返回true，否则返回false
      */
     @Override
-    public boolean returnToPreviousPageWithActivity(@Nullable TransferPageDataHelper.TransferPageDataInterceptor interceptor) {
+    public boolean returnToPreviousPageWithActivity(@Nullable TransferPageDataInterceptor interceptor) {
         return getTransferPageDataHelper().returnToPreviousPageWithActivity(interceptor);
     }
 
@@ -226,7 +226,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
      * @return 如果进行调用则返回true，否则返回false
      */
     @Override
-    public boolean returnToPreviousPageWithParentFragment(@Nullable TransferPageDataHelper.TransferPageDataInterceptor interceptor) {
+    public boolean returnToPreviousPageWithParentFragment(@Nullable TransferPageDataInterceptor interceptor) {
         return getTransferPageDataHelper().returnToPreviousPageWithParentFragment(interceptor);
     }
 
@@ -237,7 +237,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
      * @return 如果进行调用则返回true，否则返回false
      */
     @Override
-    public boolean returnToPreviousPageWithTargetFragment(@Nullable TransferPageDataHelper.TransferPageDataInterceptor interceptor) {
+    public boolean returnToPreviousPageWithTargetFragment(@Nullable TransferPageDataInterceptor interceptor) {
         return getTransferPageDataHelper().returnToPreviousPageWithTargetFragment(interceptor);
     }
 
@@ -259,6 +259,19 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
     @Override
     public void setForbidBackToFragment(boolean isForbidBackToFragment) {
         getKeyEventReceiverHelper().setForbidBackToFragment(isForbidBackToFragment);
+    }
+
+    @NonNull
+    @Override
+    public ITransferPageDataDispatcherHelper getTransferPageDataHelper() {
+        if (mTransferPageDataHelper == null) {
+            synchronized (this) {
+                if (mTransferPageDataHelper == null) {
+                    mTransferPageDataHelper = new TransferPageDataDispatcherHelper(this);
+                }
+            }
+        }
+        return mTransferPageDataHelper;
     }
 
     /**
@@ -304,18 +317,139 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
     }
 
     @Override
-    public boolean listenBackKeyToPreviousPageWithActivity(@NonNull ITransferPageDataHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
+    public boolean listenBackKeyToPreviousPageWithActivity(@NonNull ITransferPageDataDispatcherHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
         return getKeyEventReceiverHelper().listenBackKeyToPreviousPageWithActivity(getTransferPageDataHelper(), interceptor);
     }
 
     @Override
-    public boolean listenBackKeyToPreviousPageWithParentFragment(@NonNull ITransferPageDataHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
+    public boolean listenBackKeyToPreviousPageWithParentFragment(@NonNull ITransferPageDataDispatcherHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
         return getKeyEventReceiverHelper().listenBackKeyToPreviousPageWithParentFragment(getTransferPageDataHelper(), interceptor);
     }
 
     @Override
-    public boolean listenBackKeyToPreviousPageWithTargetFragment(@NonNull ITransferPageDataHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
+    public boolean listenBackKeyToPreviousPageWithTargetFragment(@NonNull ITransferPageDataDispatcherHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
         return getKeyEventReceiverHelper().listenBackKeyToPreviousPageWithTargetFragment(getTransferPageDataHelper(), interceptor);
+    }
+
+    @NonNull
+    @Override
+    public IKeyEventReceiverHelper getKeyEventReceiverHelper() {
+        if (mKeyEventReceiverHelper == null) {
+            synchronized (this) {
+                if (mKeyEventReceiverHelper == null) {
+                    mKeyEventReceiverHelper = new KeyEventReceiverHelper(this);
+                }
+            }
+        }
+        return mKeyEventReceiverHelper;
+    }
+
+    /**
+     * 根据资源id显示文本
+     *
+     * @param msgResId 文本资源id
+     */
+    @Override
+    public void showToast(@StringRes int msgResId) {
+        ToastHelper.showToast(getContext(), msgResId);
+    }
+
+    /**
+     * 显示文本
+     *
+     * @param msg 文本
+     */
+    @Override
+    public void showToast(@Nullable String msg) {
+        ToastHelper.showToast(getContext(), msg);
+    }
+
+    /**
+     * 根据资源ID显示文本
+     *
+     * @param config 配置信息对象
+     */
+    @Override
+    public void showToast(@NonNull ToastHelper.ToastConfig config) {
+        ToastHelper.showToast(getContext(), config);
+    }
+
+    /**
+     * 根据错误信息显示文本
+     *
+     * @param info 错误信息对象
+     */
+    @Override
+    public void showToast(@NotNull ErrorInfo info) {
+        showToast(new ToastHelper.ToastConfig.Builder()
+                .setMsg(info.getErrorMsg())
+                .setMsgResId(info.getErrorMsgResId())
+                .build());
+    }
+
+    /**
+     * 显示加载对话框
+     *
+     * @param hint       提示文本
+     * @param cancelable 是否可以取消
+     */
+    @Override
+    public void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
+        StatusViewConfigure configure = getStatusViewManager().getStatusViewConfigure();
+        StatusViewOption option = configure == null ? null : configure.getLoadingOption();
+        if (option == null) {
+            option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
+        }
+        option.getContentOption().setText(hint);
+        option.setCancelWithOutside(cancelable);
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING,
+                getParentFragmentManager(), option);
+    }
+
+    /**
+     * 显示加载状态视图
+     *
+     * @param containerId 状态视图添加布局ID
+     */
+    @Override
+    public void showLoadingStatusView(@IdRes int containerId) {
+        View view = getView();
+        if (view == null) {
+            return;
+        }
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getView().findViewById(containerId), null);
+    }
+
+    /**
+     * 关闭状态视图
+     *
+     * @param allowStateLoss true允许丧失状态，否则false
+     */
+    @Override
+    public void dismissStatusView(boolean allowStateLoss) {
+        if (mStatusViewManager == null) {
+            return;
+        }
+        getStatusViewManager().dismissStatusView(allowStateLoss);
+    }
+
+    /**
+     * 获取获取状态视图管理器实例（线程安全）
+     *
+     * @return 返回获取状态视图管理器实例
+     */
+    @NonNull
+    @Override
+    public IStatusViewManager getStatusViewManager() {
+        if (mStatusViewManager == null) {
+            synchronized (mStatusViewLock) {
+                if (mStatusViewManager == null) {
+                    mStatusViewManager = StatusViewManagerProvider.newInstance(getViewLifecycleOwner());
+                    onInitStatusViewManager(mStatusViewManager);
+                }
+            }
+        }
+        return mStatusViewManager;
     }
 
     /**
@@ -328,7 +462,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
         if (manager.findFragmentByTag(tag) != null) {
             return;
         }
-        if (isAdded()) {
+        if (isAdded() || isStateSaved()) {
             return;
         }
         show(manager, tag);
@@ -361,26 +495,16 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
      * @param savedInstanceState 实例资源对象
      */
     protected void restoreAgileResource(@Nullable Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            return;
-        }
-        //DialogFragment在界面意外销毁后会由系统重新创建
-        IStatusView statusView = (IStatusView) getParentFragmentManager().findFragmentByTag(TAG_AGILE_STATUS_VIEW);
-        if (statusView != null) {
-            getStatusViewManager().setStatusView(statusView);
-        }
+        getStatusViewManager().restoreStatueView(savedInstanceState, getParentFragmentManager());
     }
 
     /**
      * 设置对话框背景
      */
     protected void initDialogBackground() {
-        setDialogWindow(new WindowHandler() {
-            @Override
-            public void onHandle(@NonNull Window window) {
-                //去掉对话框的背景，以便设置自已样式的背景
-                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            }
+        setDialogWindow(window -> {
+            //去掉对话框的背景，以便设置自已样式的背景
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         });
     }
 
@@ -398,123 +522,6 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
         if (window != null) {
             handler.onHandle(window);
         }
-    }
-
-    /**
-     * 显示信息
-     *
-     * @param msg 文本
-     */
-    protected void showToast(@Nullable String msg) {
-        ToastUtils.showToast(getContext(), msg);
-    }
-
-    /**
-     * 根据资源id显示信息
-     *
-     * @param msgResId 文本资源id
-     */
-    protected void showToast(@StringRes int msgResId) {
-        ToastUtils.showToast(getContext(), msgResId);
-    }
-
-    /**
-     * 根据资源ID显示信息
-     *
-     * @param config 配置信息对象
-     */
-    protected void showToast(@NonNull ToastUtils.ToastConfig config) {
-        ToastUtils.showToast(getContext(), config);
-    }
-
-    /**
-     * 显示加载对话框
-     *
-     * @param hint       提示文本
-     * @param cancelable 是否可以取消
-     */
-    protected void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
-        StatusViewConfigure configure = getStatusViewManager().getStatusViewConfigure();
-        StatusViewOption option = configure == null ? null : configure.getLoadingOption();
-        if (option == null) {
-            option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
-        }
-        option.getContentOption().setText(hint);
-        option.setCancelWithOutside(cancelable);
-        showStatusView(StatusViewConstants.StatusType.TYPE_LOADING,
-                getParentFragmentManager(), option);
-    }
-
-    /**
-     * 显示加载状态视图
-     *
-     * @param containerId 状态视图添加布局ID
-     */
-    protected void showLoadingStatusView(@IdRes int containerId) {
-        showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getChildFragmentManager(),
-                containerId, null);
-    }
-
-    /**
-     * 显示状态视图
-     *
-     * @param type    状态视图类型
-     * @param manager Fragment管理器
-     * @param option  状态视图配置信息类
-     */
-    protected void showStatusView(@NonNull StatusViewConstants.StatusType type,
-                                  @Nullable FragmentManager manager,
-                                  @Nullable StatusViewOption option) {
-        if (manager == null) {
-            return;
-        }
-        dismissStatusView();
-        getStatusViewManager().showStatusView(type, manager, option);
-    }
-
-    /**
-     * 显示状态视图
-     *
-     * @param type        状态视图类型
-     * @param manager     Fragment管理器
-     * @param containerId 状态视图添加布局ID
-     * @param option      状态视图配置信息类
-     */
-    protected void showStatusView(@NonNull StatusViewConstants.StatusType type, @Nullable FragmentManager manager,
-                                  @IdRes int containerId, @Nullable StatusViewOption option) {
-        if (manager == null) {
-            return;
-        }
-        dismissStatusView();
-        getStatusViewManager().showStatusView(type, manager, containerId, option);
-    }
-
-    /**
-     * 关闭状态视图
-     */
-    protected void dismissStatusView() {
-        if (mStatusViewManager != null) {
-            mStatusViewManager.dismissStatusView(true);
-        }
-        mStatusViewManager = null;
-    }
-
-    /**
-     * 获取获取状态视图管理器实例（线程安全）
-     *
-     * @return 返回获取状态视图管理器实例
-     */
-    @NonNull
-    protected IStatusViewManager getStatusViewManager() {
-        if (mStatusViewManager == null) {
-            synchronized (mStatusViewLock) {
-                if (mStatusViewManager == null) {
-                    mStatusViewManager = StatusViewManagerProvider.newInstance();
-                    onInitStatusViewManager(mStatusViewManager);
-                }
-            }
-        }
-        return mStatusViewManager;
     }
 
     /**
@@ -538,30 +545,6 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
         }
         activity.finish();
         return true;
-    }
-
-    @NonNull
-    private ITransferPageDataHelper getTransferPageDataHelper() {
-        if (mTransferPageDataHelper == null) {
-            synchronized (this) {
-                if (mTransferPageDataHelper == null) {
-                    mTransferPageDataHelper = new TransferPageDataHelper(this);
-                }
-            }
-        }
-        return mTransferPageDataHelper;
-    }
-
-    @NonNull
-    private IKeyEventReceiverHelper getKeyEventReceiverHelper() {
-        if (mKeyEventReceiverHelper == null) {
-            synchronized (this) {
-                if (mKeyEventReceiverHelper == null) {
-                    mKeyEventReceiverHelper = new KeyEventReceiverHelper(this);
-                }
-            }
-        }
-        return mKeyEventReceiverHelper;
     }
 
     /**

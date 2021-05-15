@@ -6,12 +6,11 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.Nullable
+import com.mingyuechunqiu.agile.R
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewTextOption
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
-import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.StatusType
 import com.mingyuechunqiu.agile.ui.widget.DaisyLoadingView
-import java.lang.IllegalArgumentException
 
 /**
  * <pre>
@@ -26,36 +25,45 @@ import java.lang.IllegalArgumentException
  *      Version:    1.0
  * </pre>
  */
-internal class StatusViewDelegate(private val mOption: StatusViewOption) : IStatusViewDelegate {
-
-    private var mModeType: StatusViewConstants.ModeType = StatusViewConstants.ModeType.TYPE_INVALID
-    private var mStatusType = StatusType.TYPE_LOADING
-
-    override fun getStatusViewOption(): StatusViewOption {
-        return mOption
-    }
-
-    override fun setModeType(type: StatusViewConstants.ModeType) {
-        mModeType = type
-    }
-
-    override fun getModeType(): StatusViewConstants.ModeType {
-        return mModeType
-    }
-
-    override fun setStatusType(type: StatusType) {
-        mStatusType = type
-    }
-
-    override fun getStatusType(): StatusType {
-        return mStatusType
-    }
+internal class StatusViewDelegate(private val mOption: StatusViewOption?) : IStatusViewDelegate {
 
     override fun release() {
-        mModeType = StatusViewConstants.ModeType.TYPE_INVALID
     }
 
-    override fun applyOption(vContainer: View?, vProgress: View?, ivIcon: ImageView?, tvContent: TextView?, tvReload: TextView?) {
+    override fun applyOption(view:View) {
+        var vContainer: View? = null
+        var vProgress: View? = null
+        var ivIcon: ImageView? = null
+        var tvContent: TextView? = null
+        var tvReload: TextView? = null
+        mOption?.let {
+            if (it.statusViewContainer?.customLayoutId != null) {
+                vContainer = view.findViewById(it.statusViewContainer.containerId)
+                vProgress = view.findViewById(it.statusViewContainer.progressViewId)
+                ivIcon = view.findViewById(it.statusViewContainer.iconViewId)
+                tvContent = view.findViewById(it.statusViewContainer.contentViewId)
+                tvReload = view.findViewById(it.statusViewContainer.reloadViewId)
+            } else {
+                vContainer = view.findViewById(R.id.ll_agile_dfg_status_view_container)
+
+                val progressViewId = when (it.progressOption?.progressStyle) {
+                    StatusViewConstants.ProgressStyle.STYLE_SYSTEM -> R.id.pb_agile_dfg_status_view_progress
+                    StatusViewConstants.ProgressStyle.STYLE_DAISY -> R.id.dlv_agile_dfg_status_view_progress
+                    else -> R.id.pb_agile_dfg_status_view_progress
+                }
+                if (progressViewId != 0) {
+                    vProgress = view.findViewById(progressViewId)
+                    vProgress?.visibility = View.VISIBLE
+                }
+
+                ivIcon = view.findViewById(R.id.iv_agile_dfg_status_view_icon)
+                tvContent = view.findViewById(R.id.tv_agile_dfg_status_view_content)
+                tvReload = view.findViewById(R.id.tv_agile_dfg_status_view_reload)
+            }
+            tvReload?.setOnClickListener { _ ->
+                it.onStatusViewButtonListener?.onClickReload()
+            }
+        }
         applyContainerConfigure(vContainer)
         applyProgressConfigure(vProgress)
         applyIconConfigure(ivIcon)
@@ -63,8 +71,8 @@ internal class StatusViewDelegate(private val mOption: StatusViewOption) : IStat
     }
 
     private fun applyProgressConfigure(vProgress: View?) {
-        vProgress?.visibility = if (mOption.isShowProgressView) View.VISIBLE else View.GONE
-        val progressOption = mOption.progressOption ?: return
+        vProgress?.visibility = if (mOption?.isShowProgressView == true) View.VISIBLE else View.GONE
+        val progressOption = mOption?.progressOption ?: return
         when (progressOption.progressStyle) {
             StatusViewConstants.ProgressStyle.STYLE_SYSTEM -> {
                 vProgress?.takeIf { it is ProgressBar }?.let {
@@ -97,39 +105,45 @@ internal class StatusViewDelegate(private val mOption: StatusViewOption) : IStat
     }
 
     private fun applyIconConfigure(ivIcon: ImageView?) {
-        ivIcon?.visibility = if (mOption.isShowReloadIcon) View.VISIBLE else View.GONE
-        ivIcon?.let {
-            mOption.reloadDrawable?.let { drawable ->
-                it.setImageDrawable(drawable)
-            }
-            mOption.reloadDrawableResId.takeIf { it != 0 }?.let { id ->
-                it.setImageResource(id)
+        mOption?.let { option ->
+            ivIcon?.visibility = if (option.isShowReloadIcon) View.VISIBLE else View.GONE
+            ivIcon?.let {
+                option.reloadDrawable?.let { drawable ->
+                    it.setImageDrawable(drawable)
+                }
+                option.reloadDrawableResId.takeIf { it != 0 }?.let { id ->
+                    it.setImageResource(id)
+                }
             }
         }
     }
 
     private fun applyTextConfigure(tvContent: TextView?, tvReload: TextView?) {
-        tvContent?.visibility = if (mOption.isShowContentText) View.VISIBLE else View.GONE
-        if (mOption.isShowContentText) {
-            initTextButton(tvContent, mOption.contentOption)
-        }
-        tvReload?.visibility = if (mOption.isShowReloadText) View.VISIBLE else View.GONE
-        if (mOption.isShowReloadText) {
-            initTextButton(tvReload, mOption.reloadOption)
+        mOption?.let {
+            tvContent?.visibility = if (it.isShowContentText) View.VISIBLE else View.GONE
+            if (it.isShowContentText) {
+                initTextButton(tvContent, it.contentOption)
+            }
+            tvReload?.visibility = if (it.isShowReloadText) View.VISIBLE else View.GONE
+            if (it.isShowReloadText) {
+                initTextButton(tvReload, it.reloadOption)
+            }
         }
     }
 
     private fun applyContainerConfigure(vContainer: View?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (mOption.containerElevation != 0F) {
-                vContainer?.elevation = mOption.containerElevation
+        mOption?.let { option ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (option.containerElevation != 0F) {
+                    vContainer?.elevation = option.containerElevation
+                }
             }
-        }
-        mOption.containerBackgroundResId.takeIf { it != 0 }?.let {
-            vContainer?.setBackgroundResource(it)
-        }
-        mOption.containerBackground?.let {
-            vContainer?.background = it
+            option.containerBackgroundResId.takeIf { it != 0 }?.let {
+                vContainer?.setBackgroundResource(it)
+            }
+            option.containerBackground?.let {
+                vContainer?.background = it
+            }
         }
     }
 

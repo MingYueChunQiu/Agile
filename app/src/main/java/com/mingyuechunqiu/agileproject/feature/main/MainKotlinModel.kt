@@ -1,7 +1,5 @@
 package com.mingyuechunqiu.agileproject.feature.main
 
-import com.mingyuechunqiu.agile.data.bean.ParamsInfo
-
 /**
  * <pre>
  * Project:    Agile
@@ -14,15 +12,12 @@ import com.mingyuechunqiu.agile.data.bean.ParamsInfo
  * Version:    1.0
 </pre> *
  */
-internal class MainKotlinModel(listener: MainContract.Listener?) : MainContract.Model<MainContract.Listener?>(listener) {
+internal class MainKotlinModel() : MainContract.Model() {
 
-    private var mDao: MainContract.Dao<*>? = null
-
-    override fun doRequest(info: ParamsInfo) {
-        if (mDao == null) {
-            mDao = MainDao()
-            addDao(mDao)
-        }
+    private val mDao: MainContract.Dao<*> by lazy {
+        val dao = MainDao()
+        addDao(dao)
+        dao
     }
 
     override fun release() {}
