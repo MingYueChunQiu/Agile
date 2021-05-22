@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agileproject.R;
@@ -59,14 +60,18 @@ public class StatusFragment extends BaseFragment {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setDarkStatusBar();
+//                setDarkStatusBar();
 //                returnToPreviousPageWithActivity();
+                getWindowInsetsHelper().setDarkStatusBars();
+                ToastHelper.showToast("few" + getWindowInsetsHelper().isLightStatusBars() + " " + getWindowInsetsHelper().isStatusBarsVisible());
             }
         });
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setLightStatusBar();
+//                setLightStatusBar();
+//                getWindowInsetsHelper().showLightStatusBars(true);
+                getWindowInsetsHelper().setLightNavigationBars();
             }
         });
     }

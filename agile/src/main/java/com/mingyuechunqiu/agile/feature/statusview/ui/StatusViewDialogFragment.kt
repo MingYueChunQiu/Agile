@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.FragmentManager
 import com.mingyuechunqiu.agile.R
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
+import com.mingyuechunqiu.agile.feature.statusview.ui.view.IStatusView
 import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator
 import com.mingyuechunqiu.agile.ui.diaglogfragment.BaseDialogFragment
 
@@ -25,6 +26,7 @@ import com.mingyuechunqiu.agile.ui.diaglogfragment.BaseDialogFragment
  */
 internal class StatusViewDialogFragment : BaseDialogFragment() {
 
+    var statusView: IStatusView? = null
     var option: StatusViewOption? = null
     private val mDelegate: IStatusViewDelegate by lazy { StatusViewDelegate(option) }
 
@@ -63,7 +65,9 @@ internal class StatusViewDialogFragment : BaseDialogFragment() {
     }
 
     override fun releaseOnDestroy() {
-        option?.onStatusViewDialogListener?.onDismissListener(this)
+        statusView?.let {
+            option?.onStatusViewDialogListener?.onDismissListener(it)
+        }
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
@@ -96,11 +100,20 @@ internal class StatusViewDialogFragment : BaseDialogFragment() {
     private fun applyDialogConfigure() {
         dialog?.let {
             it.setCanceledOnTouchOutside(option?.isCancelWithOutside ?: false)
-            it.setOnKeyListener { dialog, keyCode, _ ->
+            it.setOnKeyListener { _, keyCode, _ ->
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
                     //拦截返回键事件，是否要做额外处理
                     option?.onStatusViewDialogListener?.let { listener ->
-                        return@setOnKeyListener listener.onClickKeyBack(dialog)
+                        return@setOnKeyListener statusView?.let { view ->
+                            listener.onClickKeyBack(
+                                view
+                            )
+                        } ?: false
+                    } ?: kotlin.run {
+                        if (option?.isBackWithDismiss == true) {
+                            dismissStatusView(true)
+                        }
+                        true
                     }
                 }
                 false
@@ -113,8 +126,12 @@ internal class StatusViewDialogFragment : BaseDialogFragment() {
         //状态视图TAG
         const val AGILE_TAG_STATUS_VIEW = "TAG_AGILE_STATUS_VIEW"
 
-        fun newInstance(option: StatusViewOption): StatusViewDialogFragment {
+        fun newInstance(
+            statusView: IStatusView,
+            option: StatusViewOption
+        ): StatusViewDialogFragment {
             return StatusViewDialogFragment().apply {
+                this.statusView = statusView
                 this.option = option
             }
         }

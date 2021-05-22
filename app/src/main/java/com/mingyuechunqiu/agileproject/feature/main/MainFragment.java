@@ -1,6 +1,5 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,13 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.fragment.app.DialogFragment;
 
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
+import com.mingyuechunqiu.agile.feature.statusview.ui.view.IStatusView;
 import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agileproject.R;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <pre>
@@ -68,18 +69,17 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                 .setCancelWithOutside(true)
                 .setOnStatusViewDialogListener(new StatusViewOption.OnStatusViewDialogListener() {
                     @Override
-                    public boolean onClickKeyBack(DialogInterface dialog) {
-//                        dismissLoadingDialog();
-                        return true;
+                    public boolean onClickKeyBack(@NonNull @NotNull IStatusView view) {
+                        return false;
                     }
 
                     @Override
-                    public void onDismissListener(DialogFragment dialogFragment) {
+                    public void onDismissListener(@NonNull @NotNull IStatusView view) {
                         showToast("温热");
                     }
                 })
                 .build();
-        getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getParentFragmentManager(), option);
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, getParentFragmentManager(), option);
     }
 
     @Override
@@ -87,20 +87,19 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_fragment_main_show:
 //                showLoadingStatusView("被我", false);
-                getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getParentFragmentManager(), new StatusViewOption.Builder()
+                getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, getParentFragmentManager(), new StatusViewOption.Builder()
                         .setDialogWidth(500)
                         .setDialogHeight(400)
                         .setCancelWithOutside(true)
                         .setOnStatusViewDialogListener(new StatusViewOption.OnStatusViewDialogListener() {
                             @Override
-                            public boolean onClickKeyBack(DialogInterface dialog) {
-//                                dismissLoadingDialog();
+                            public boolean onClickKeyBack(@NonNull @NotNull IStatusView view) {
                                 showToast("分为");
                                 return false;
                             }
 
                             @Override
-                            public void onDismissListener(DialogFragment dialogFragment) {
+                            public void onDismissListener(@NonNull @NotNull IStatusView view) {
                                 showToast("VB我vwe");
                             }
                         }).build());

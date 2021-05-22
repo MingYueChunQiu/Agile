@@ -16,7 +16,7 @@ public final class StatusViewConstants {
     }
 
     //模式类型
-    public enum StatusMode {
+    public enum StatusViewMode {
         //无效模式，控件模式，对话框模式
         MODE_INVALID, MODE_WIDGET, MODE_DIALOG
     }
@@ -24,7 +24,7 @@ public final class StatusViewConstants {
     /**
      * 状态类型
      */
-    public enum StatusType {
+    public enum StatusViewType {
         //加载，空，网络异常，错误，自定义
         TYPE_LOADING, TYPE_EMPTY, TYPE_NETWORK_ANOMALY, TYPE_ERROR, TYPE_CUSTOM
     }

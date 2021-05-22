@@ -3,11 +3,11 @@ package com.mingyuechunqiu.agile.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -20,10 +20,13 @@ import androidx.fragment.app.FragmentManager;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.insets.IWindowInsetsHelperOwner;
+import com.mingyuechunqiu.agile.feature.helper.ui.insets.WindowInsetsHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventReceiverHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.key.KeyEventReceiverHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.transfer.TransferPageDataDispatcherHelper;
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
@@ -32,6 +35,7 @@ import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
+import com.mingyuechunqiu.agile.frame.ui.fragment.FragmentViewPage;
 import com.mingyuechunqiu.agile.frame.ui.fragment.IAgileFragmentPage;
 import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
 
@@ -50,9 +54,14 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_T
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseFragment extends Fragment implements IAgileFragmentPage, IPopHintOwner, IStatusViewOwner {
+public abstract class BaseFragment extends Fragment implements IAgileFragmentPage, IWindowInsetsHelperOwner, IPopHintOwner, IStatusViewOwner {
 
+    private FragmentViewPage mFragmentViewPage;
+    @Nullable
+    private WindowInsetsHelper mWindowInsetsHelper;
+    @Nullable
     private IStatusViewManager mStatusViewManager;
+    @NonNull
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
     @Nullable
     private ITransferPageDataDispatcherHelper mTransferPageDataHelper;
@@ -75,6 +84,7 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.CREATED_VIEW);
+        mFragmentViewPage = new FragmentViewPage(getViewLifecycleOwner(), getPageTag());
         return initInflateLayoutView(inflater, container, savedInstanceState);
     }
 
@@ -119,7 +129,6 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
     public void onDestroyView() {
         super.onDestroyView();
         Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.DESTROYED_VIEW);
-        dismissStatusView(true);
         releaseOnDestroyView();
         mStatusViewManager = null;
     }
@@ -137,10 +146,22 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
         Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.DETACHED);
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getStatusViewManager().saveStatueViewInstanceState(outState, getParentFragmentManager());
+    }
+
     @NonNull
     @Override
     public String getPageTag() {
         return getClass().getSimpleName();
+    }
+
+    @NonNull
+    @Override
+    public FragmentViewPage getFragmentViewPage() {
+        return mFragmentViewPage;
     }
 
     @Nullable
@@ -159,6 +180,27 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
     @Override
     public Fragment getOwnedTargetFragment() {
         return getTargetFragment();
+    }
+
+    @NonNull
+    @Override
+    public WindowInsetsHelper getWindowInsetsHelper() {
+        FragmentActivity activity = getOwnedActivity();
+        if (activity == null) {
+            throw new IllegalStateException("GetOwnedActivity() must not be null!");
+        }
+        Window window = activity.getWindow();
+        if (window == null) {
+            throw new IllegalStateException("Window must not be null!");
+        }
+        if (mWindowInsetsHelper == null) {
+            synchronized (this) {
+                if (mWindowInsetsHelper == null) {
+                    mWindowInsetsHelper = new WindowInsetsHelper(window);
+                }
+            }
+        }
+        return mWindowInsetsHelper;
     }
 
     /**
@@ -393,15 +435,20 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
      */
     @Override
     public void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
+        FragmentActivity activity = getActivity();
+        if (activity == null) {
+            LogManagerProvider.e("BaseFragment", "showLoadingStatusView: activity == null");
+            return;
+        }
         StatusViewConfigure configure = getStatusViewManager().getStatusViewConfigure();
         StatusViewOption option = configure == null ? null : configure.getLoadingOption();
         if (option == null) {
-            option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
+            option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusViewType.TYPE_LOADING);
         }
         option.getContentOption().setText(hint);
         option.setCancelWithOutside(cancelable);
-        getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING,
-                getParentFragmentManager(), option);
+        option.setBackWithDismiss(true);
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, (ViewGroup) activity.getWindow().getDecorView(), option);
     }
 
     /**
@@ -415,7 +462,7 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
         if (view == null) {
             return;
         }
-        getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getView().findViewById(containerId), null);
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, getView().findViewById(containerId), null);
     }
 
     /**
@@ -442,41 +489,12 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
         if (mStatusViewManager == null) {
             synchronized (mStatusViewLock) {
                 if (mStatusViewManager == null) {
-                    mStatusViewManager = StatusViewManagerProvider.newInstance(getViewLifecycleOwner());
+                    mStatusViewManager = StatusViewManagerProvider.newInstance(mFragmentViewPage);
                     onInitStatusViewManager(mStatusViewManager);
                 }
             }
         }
         return mStatusViewManager;
-    }
-
-    /**
-     * 设置状态栏为轻色调，避免白色字体被白色活动条遮挡
-     */
-    protected void setLightStatusBar() {
-        FragmentActivity activity = getActivity();
-        if (activity == null) {
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN必须加，否则手机状态栏会显示底层背景，内容颜色没有延伸
-            activity.getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
-    }
-
-    /**
-     * 设置状态栏为深色调
-     */
-    protected void setDarkStatusBar() {
-        if (getActivity() == null) {
-            return;
-        }
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                        View.SYSTEM_UI_FLAG_VISIBLE);
     }
 
     /**
@@ -506,7 +524,7 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
      * @param savedInstanceState 实例资源对象
      */
     protected void restoreAgileResource(@Nullable Bundle savedInstanceState) {
-        getStatusViewManager().restoreStatueView(savedInstanceState, getParentFragmentManager());
+        getStatusViewManager().restoreStatueViewInstanceState(savedInstanceState, getParentFragmentManager());
     }
 
     /**

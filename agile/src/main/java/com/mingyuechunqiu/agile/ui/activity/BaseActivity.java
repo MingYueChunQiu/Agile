@@ -1,9 +1,10 @@
 package com.mingyuechunqiu.agile.ui.activity;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -15,6 +16,8 @@ import androidx.fragment.app.FragmentManager;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.insets.IWindowInsetsHelperOwner;
+import com.mingyuechunqiu.agile.feature.helper.ui.insets.WindowInsetsHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventDispatcherHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventReceiver;
 import com.mingyuechunqiu.agile.feature.helper.ui.key.KeyEventDispatcherHelper;
@@ -45,9 +48,13 @@ import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_T
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseActivity extends AppCompatActivity implements IAgileActivityPage, IPopHintOwner, IStatusViewOwner {
+public abstract class BaseActivity extends AppCompatActivity implements IAgileActivityPage, IWindowInsetsHelperOwner, IPopHintOwner, IStatusViewOwner {
 
+    @Nullable
+    private WindowInsetsHelper mWindowInsetsHelper;
+    @Nullable
     private IStatusViewManager mStatusViewManager;
+    @NonNull
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
     @Nullable
     private IKeyEventDispatcherHelper mKeyEventDispatcher = null;
@@ -89,16 +96,38 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
     protected void onDestroy() {
         super.onDestroy();
         Agile.getLifecycleDispatcher().updateActivityLifecycleState(this, AgileLifecycle.State.ActivityState.DESTROYED);
-        dismissStatusView(true);
         release();
         mStatusViewManager = null;
         ExitApplicationManager.getInstance().removeActivity(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getStatusViewManager().saveStatueViewInstanceState(outState, getSupportFragmentManager());
     }
 
     @NonNull
     @Override
     public String getPageTag() {
         return getClass().getSimpleName();
+    }
+
+    @NonNull
+    @Override
+    public WindowInsetsHelper getWindowInsetsHelper() {
+        Window window = getWindow();
+        if (window == null) {
+            throw new IllegalStateException("Window must not be null!");
+        }
+        if (mWindowInsetsHelper == null) {
+            synchronized (this) {
+                if (mWindowInsetsHelper == null) {
+                    mWindowInsetsHelper = new WindowInsetsHelper(window);
+                }
+            }
+        }
+        return mWindowInsetsHelper;
     }
 
     @Override
@@ -193,12 +222,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
         StatusViewConfigure configure = getStatusViewManager().getStatusViewConfigure();
         StatusViewOption option = configure == null ? null : configure.getLoadingOption();
         if (option == null) {
-            option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
+            option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusViewType.TYPE_LOADING);
         }
         option.getContentOption().setText(hint);
         option.setCancelWithOutside(cancelable);
-        getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING,
-                getSupportFragmentManager(), option);
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, (ViewGroup) getWindow().getDecorView(), option);
     }
 
     /**
@@ -208,7 +236,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
      */
     @Override
     public void showLoadingStatusView(@IdRes int containerId) {
-        getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, findViewById(containerId), null);
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, findViewById(containerId), null);
     }
 
     /**
@@ -269,7 +297,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
      * @param savedInstanceState 实例资源对象
      */
     protected void restoreAgileResource(@Nullable Bundle savedInstanceState) {
-        getStatusViewManager().restoreStatueView(savedInstanceState, getSupportFragmentManager());
+        getStatusViewManager().restoreStatueViewInstanceState(savedInstanceState, getSupportFragmentManager());
     }
 
     /**
@@ -281,28 +309,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
         initInflateLayoutView(savedInstanceState);
         initView(savedInstanceState);
         ExitApplicationManager.getInstance().addActivity(this);
-    }
-
-    /**
-     * 设置状态栏为轻色调，避免白色字体被白色活动条遮挡
-     */
-    protected void setLightStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN必须加，否则手机状态栏会显示底层背景，内容颜色没有延伸
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
-    }
-
-    /**
-     * 设置状态栏为深色调
-     */
-    protected void setDarkStatusBar() {
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                        View.SYSTEM_UI_FLAG_VISIBLE);
     }
 
     /**

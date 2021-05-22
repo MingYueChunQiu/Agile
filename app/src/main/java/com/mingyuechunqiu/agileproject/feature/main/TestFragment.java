@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,13 @@ public class TestFragment extends BaseAbstractPresenterFragment<MainContract.Vie
     @Override
     protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
         showLoadingStatusView("发的凤凰网", false);
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                ToastHelper.showToast("范围分为非ewfwefew");
+                return true;
+            }
+        });
 //        showLoadingStatusView(R.id.fl_fragment_main_loading);
     }
 
@@ -60,7 +68,7 @@ public class TestFragment extends BaseAbstractPresenterFragment<MainContract.Vie
         super.onStart();
         Log.d("份", "背包");
 //        setLightStatusBar();
-        setDarkStatusBar();
+        getWindowInsetsHelper().setDarkStatusBars();
     }
 
     @Override
@@ -83,7 +91,7 @@ public class TestFragment extends BaseAbstractPresenterFragment<MainContract.Vie
     protected void onInitStatusViewManager(@NonNull IStatusViewManager manager) {
         super.onInitStatusViewManager(manager);
         StatusViewConfigure configure = new StatusViewConfigure.Builder().build();
-        StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
+        StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusViewType.TYPE_LOADING);
         configure.setLoadingOption(option);
         StatusViewOption.Builder builder = option.getBuilder();
         builder.getContentOption().setText("废物范围蜂窝网");

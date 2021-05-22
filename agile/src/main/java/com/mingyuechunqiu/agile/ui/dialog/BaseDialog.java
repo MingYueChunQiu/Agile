@@ -20,11 +20,13 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
-import com.mingyuechunqiu.agile.framework.ui.dialog.DialogLifecycleOwner;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.insets.IWindowInsetsHelperOwner;
+import com.mingyuechunqiu.agile.feature.helper.ui.insets.WindowInsetsHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.transfer.TransferPageDataDispatcherHelper;
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
@@ -36,6 +38,7 @@ import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
 import com.mingyuechunqiu.agile.frame.ui.dialog.IAgileDialogPage;
 import com.mingyuechunqiu.agile.framework.ui.IDialogInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.framework.ui.WindowHandler;
+import com.mingyuechunqiu.agile.framework.ui.dialog.DialogLifecycleOwner;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,8 +55,11 @@ import org.jetbrains.annotations.NotNull;
  *      Version:    1.0
  * </pre>
  */
-public abstract class BaseDialog extends AppCompatDialog implements IAgileDialogPage, IPopHintOwner, IStatusViewOwner {
+public abstract class BaseDialog extends AppCompatDialog implements IAgileDialogPage, IWindowInsetsHelperOwner, IPopHintOwner, IStatusViewOwner {
 
+    @Nullable
+    private WindowInsetsHelper mWindowInsetsHelper;
+    @Nullable
     private IStatusViewManager mStatusViewManager;
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
     @Nullable
@@ -81,6 +87,7 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
         super.onCreate(savedInstanceState);
         getDialogLifecycleOwner().handleLifecycleEvent(Lifecycle.Event.ON_CREATE);
         Agile.getLifecycleDispatcher().updateDialogLifecycleState(this, AgileLifecycle.State.DialogState.CREATED);
+        restoreAgileResource(savedInstanceState);
         initOnCreate(savedInstanceState);
         setOnDismissListener(dialog -> releaseOnDetach());
     }
@@ -97,6 +104,14 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
         super.onStop();
         getDialogLifecycleOwner().handleLifecycleEvent(Lifecycle.Event.ON_STOP);
         Agile.getLifecycleDispatcher().updateDialogLifecycleState(this, AgileLifecycle.State.DialogState.STOPPED);
+    }
+
+    @NonNull
+    @Override
+    public Bundle onSaveInstanceState() {
+        Bundle bundle = super.onSaveInstanceState();
+        getStatusViewManager().saveStatueViewInstanceState(bundle, null);
+        return bundle;
     }
 
     @NonNull
@@ -131,6 +146,27 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
     @Override
     public Fragment getOwnedTargetFragment() {
         return null;
+    }
+
+    @NonNull
+    @Override
+    public WindowInsetsHelper getWindowInsetsHelper() {
+        FragmentActivity activity = getOwnedActivity();
+        if (activity == null) {
+            throw new IllegalStateException("GetOwnedActivity() must not be null!");
+        }
+        Window window = activity.getWindow();
+        if (window == null) {
+            throw new IllegalStateException("Window must not be null!");
+        }
+        if (mWindowInsetsHelper == null) {
+            synchronized (this) {
+                if (mWindowInsetsHelper == null) {
+                    mWindowInsetsHelper = new WindowInsetsHelper(window);
+                }
+            }
+        }
+        return mWindowInsetsHelper;
     }
 
     /**
@@ -288,17 +324,17 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
     public void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
         Window window = getWindow();
         if (window == null) {
+            LogManagerProvider.e("BaseFragment", "showLoadingStatusView: window == null");
             return;
         }
         StatusViewConfigure configure = getStatusViewManager().getStatusViewConfigure();
         StatusViewOption option = configure == null ? null : configure.getLoadingOption();
         if (option == null) {
-            option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
+            option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusViewType.TYPE_LOADING);
         }
         option.getContentOption().setText(hint);
         option.setCancelWithOutside(cancelable);
-        getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, (ViewGroup) window.getDecorView(), null);
-
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, (ViewGroup) window.getDecorView(), option);
     }
 
     /**
@@ -308,11 +344,7 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
      */
     @Override
     public void showLoadingStatusView(@IdRes int containerId) {
-        Window window = getWindow();
-        if (window == null) {
-            return;
-        }
-        getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, window.findViewById(containerId), null);
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, getWindow().findViewById(containerId), null);
     }
 
     /**
@@ -339,7 +371,7 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
         if (mStatusViewManager == null) {
             synchronized (mStatusViewLock) {
                 if (mStatusViewManager == null) {
-                    mStatusViewManager = StatusViewManagerProvider.newInstance(getDialogLifecycleOwner());
+                    mStatusViewManager = StatusViewManagerProvider.newInstance(this);
                     onInitStatusViewManager(mStatusViewManager);
                 }
             }
@@ -361,7 +393,6 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
     protected void releaseOnDetach() {
         getDialogLifecycleOwner().handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
         Agile.getLifecycleDispatcher().updateDialogLifecycleState(this, AgileLifecycle.State.DialogState.DISMISSED);
-        dismissStatusView(true);
         mStatusViewManager = null;
         release();
     }
@@ -384,6 +415,15 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
             return;
         }
         throw new IllegalStateException("initInflateLayoutView must be set inflateLayoutId or inflateLayoutView");
+    }
+
+    /**
+     * 恢复意外销毁被保存的资源
+     *
+     * @param savedInstanceState 实例资源对象
+     */
+    protected void restoreAgileResource(@Nullable Bundle savedInstanceState) {
+        getStatusViewManager().restoreStatueViewInstanceState(savedInstanceState, null);
     }
 
     /**

@@ -1,7 +1,6 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
@@ -28,6 +26,7 @@ import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
+import com.mingyuechunqiu.agile.feature.statusview.ui.view.IStatusView;
 import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agile.ui.activity.WebViewActivity;
@@ -35,6 +34,8 @@ import com.mingyuechunqiu.agile.util.ExitApplicationManager;
 import com.mingyuechunqiu.agile.util.FragmentUtils;
 import com.mingyuechunqiu.agile.util.StringUtils;
 import com.mingyuechunqiu.agileproject.R;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
 
@@ -113,7 +114,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     protected void onStart() {
         super.onStart();
 //        setDarkStatusBar();
-        setLightStatusBar();
+        getWindowInsetsHelper().setLightStatusBars();
     }
 
     @Override
@@ -124,7 +125,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
         tvToolbarTitle.setText(R.string.app_name);
         tvToolbarTitle.setVisibility(View.VISIBLE);
         FrameLayout clContainer = findViewById(R.id.fl_navigation_container);
-        View view = getLayoutInflater().inflate(R.layout.activity_main, null,false);
+        View view = getLayoutInflater().inflate(R.layout.activity_main, null, false);
         clContainer.addView(view);
         AppCompatTextView actvUrl = view.findViewById(R.id.tv_url);
         actvUrl.setText(StringUtils.createColorUrlSpan("我已阅读并同意《云海螺用户注册协议》",
@@ -234,15 +235,15 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_main_show:
-                StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
+                StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusViewType.TYPE_LOADING);
                 option.setOnStatusViewDialogListener(new StatusViewOption.OnStatusViewDialogListener() {
                     @Override
-                    public boolean onClickKeyBack(DialogInterface dialog) {
+                    public boolean onClickKeyBack(@NonNull @NotNull IStatusView view) {
                         return false;
                     }
 
                     @Override
-                    public void onDismissListener(DialogFragment dialogFragment) {
+                    public void onDismissListener(@NonNull @NotNull IStatusView view) {
                         Toast.makeText(MainActivity.this, "关闭", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -253,7 +254,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                     }
                 });
 //                showLoadingStatusView("测试", false);
-                getStatusViewManager().showStatusView(StatusViewConstants.StatusType.TYPE_LOADING, getSupportFragmentManager(), option);
+                getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, getSupportFragmentManager(), option);
 //                showLoadingStatusView(R.id.fl_main_container);
 
 //                getCurrentLoadingDialog().resetLoadingDialog();

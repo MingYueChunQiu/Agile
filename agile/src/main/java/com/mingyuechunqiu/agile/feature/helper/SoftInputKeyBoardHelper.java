@@ -90,7 +90,7 @@ public final class SoftInputKeyBoardHelper {
     }
 
     public void init() {
-        if (mActivityRef == null || mActivityRef.get() == null) {
+        if (mActivityRef.get() == null) {
             return;
         }
         FrameLayout content = mActivityRef.get().findViewById(android.R.id.content);
@@ -109,7 +109,7 @@ public final class SoftInputKeyBoardHelper {
      * 重新布局内容视图
      */
     private void possiblyResizeChildOfContent() {
-        if (mActivityRef == null || mActivityRef.get() == null) {
+        if (mActivityRef.get() == null) {
             return;
         }
         //当前内容显示高度
@@ -167,7 +167,7 @@ public final class SoftInputKeyBoardHelper {
      */
     @SuppressLint("SwitchIntDef")
     public boolean isScreenPortrait() {
-        if (mActivityRef == null || mActivityRef.get() == null) {
+        if (mActivityRef.get() == null) {
             return true;
         }
         switch (mActivityRef.get().getRequestedOrientation()) {

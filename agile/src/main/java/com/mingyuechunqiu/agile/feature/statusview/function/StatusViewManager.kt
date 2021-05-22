@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
-import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.StatusType
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.StatusViewType
 import com.mingyuechunqiu.agile.feature.statusview.ui.view.IStatusView
 
 /**
@@ -36,11 +36,19 @@ internal class StatusViewManager(private val mHelper: IStatusViewHelper) : IStat
         return mHelper.getStatusView()
     }
 
-    override fun showStatusView(type: StatusType, container: ViewGroup, option: StatusViewOption?) {
+    override fun showStatusView(
+        type: StatusViewType,
+        container: ViewGroup,
+        option: StatusViewOption?
+    ) {
         mHelper.showStatusView(type, container, option)
     }
 
-    override fun showStatusView(type: StatusType, manager: FragmentManager, option: StatusViewOption?) {
+    override fun showStatusView(
+        type: StatusViewType,
+        manager: FragmentManager,
+        option: StatusViewOption?
+    ) {
         mHelper.showStatusView(type, manager, option)
     }
 
@@ -48,20 +56,27 @@ internal class StatusViewManager(private val mHelper: IStatusViewHelper) : IStat
         mHelper.dismissStatusView(allowStateLoss)
     }
 
-    override fun getModeType(): StatusViewConstants.StatusMode {
-        return mHelper.getModeType()
+    override fun getStatusViewMode(): StatusViewConstants.StatusViewMode {
+        return mHelper.getStatusViewMode()
     }
 
-    override fun getStatusMode(): StatusType {
-        return mHelper.getStatusMode()
+    override fun getStatusViewType(): StatusViewType {
+        return mHelper.getStatusViewType()
     }
 
-    override fun restoreStatueView(savedInstanceState: Bundle?, manager: FragmentManager) {
-        mHelper.restoreStatueView(savedInstanceState, manager)
+    override fun saveStatueViewInstanceState(outState: Bundle, manager: FragmentManager?) {
+        mHelper.saveStatueViewInstanceState(outState, manager)
+    }
+
+    override fun restoreStatueViewInstanceState(
+        savedInstanceState: Bundle?,
+        manager: FragmentManager?
+    ) {
+        mHelper.restoreStatueViewInstanceState(savedInstanceState, manager)
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        if (source.lifecycle.currentState == Lifecycle.State.DESTROYED){
+        if (source.lifecycle.currentState == Lifecycle.State.DESTROYED) {
             mHelper.dismissStatusView()
         }
     }

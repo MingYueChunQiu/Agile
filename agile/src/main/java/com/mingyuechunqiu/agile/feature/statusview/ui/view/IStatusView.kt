@@ -1,10 +1,11 @@
 package com.mingyuechunqiu.agile.feature.statusview.ui.view
 
+import android.os.Bundle
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
-import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.StatusType
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.StatusViewType
 
 /**
  * <pre>
@@ -20,13 +21,19 @@ import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
  */
 interface IStatusView {
 
-    fun showStatusView(type: StatusType, container: ViewGroup, option: StatusViewOption)
+    fun showStatusView(type: StatusViewType, container: ViewGroup, option: StatusViewOption)
 
-    fun showStatusView(type: StatusType, manager: FragmentManager, option: StatusViewOption)
+    fun showStatusView(type: StatusViewType, manager: FragmentManager, option: StatusViewOption)
 
     fun dismissStatusView(allowStateLoss: Boolean = true)
 
-    fun getModeType(): StatusViewConstants.StatusMode
+    fun saveStatueViewInstanceState(outState: Bundle, manager: FragmentManager?)
 
-    fun getStatusType(): StatusType
+    fun restoreStatueViewInstanceState(savedInstanceState: Bundle?, manager: FragmentManager?)
+
+    fun getStatusViewMode(): StatusViewConstants.StatusViewMode
+
+    fun getStatusViewType(): StatusViewType
+
+    fun getStatusViewOption(): StatusViewOption
 }

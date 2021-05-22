@@ -100,7 +100,7 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity<IBaseDataView,
     protected void onInitStatusViewManager(@NonNull IStatusViewManager manager) {
         super.onInitStatusViewManager(manager);
         StatusViewConfigure configure = new StatusViewConfigure.Builder().build();
-        StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusType.TYPE_LOADING);
+        StatusViewOption option = StatusViewManagerProvider.getGlobalStatusViewOptionByType(StatusViewConstants.StatusViewType.TYPE_LOADING);
         configure.setLoadingOption(option);
         StatusViewOption.Builder builder = option.getBuilder();
         builder.getContentOption().setText("废物范围蜂窝网");

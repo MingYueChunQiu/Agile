@@ -32,7 +32,7 @@ final class StatusViewHandler {
      * @return 返回状态视图配置信息对象
      */
     @NonNull
-    static StatusViewOption getGlobalStatusViewOptionByType(@NonNull StatusViewConstants.StatusType type) {
+    static StatusViewOption getGlobalStatusViewOptionByType(@NonNull StatusViewConstants.StatusViewType type) {
         StatusViewOption option = getStatusViewOptionByType(StatusViewManagerProvider.getGlobalConfigure(), type, true);
         if (option == null) {
             option = new StatusViewOption();
@@ -49,7 +49,7 @@ final class StatusViewHandler {
      * @return 返回状态视图配置信息对象
      */
     @Nullable
-    static StatusViewOption getStatusViewOptionByType(@Nullable StatusViewConfigure configure, @NonNull StatusViewConstants.StatusType type, boolean useDefaultValue) {
+    static StatusViewOption getStatusViewOptionByType(@Nullable StatusViewConfigure configure, @NonNull StatusViewConstants.StatusViewType type, boolean useDefaultValue) {
         StatusViewOption option = null;
         switch (type) {
             case TYPE_LOADING:

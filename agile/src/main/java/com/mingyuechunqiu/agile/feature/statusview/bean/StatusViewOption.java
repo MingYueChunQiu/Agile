@@ -1,6 +1,5 @@
 package com.mingyuechunqiu.agile.feature.statusview.bean;
 
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.DrawableRes;
@@ -8,9 +7,9 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import androidx.fragment.app.DialogFragment;
 
 import com.mingyuechunqiu.agile.feature.statusview.ui.IStatusViewContainer;
+import com.mingyuechunqiu.agile.feature.statusview.ui.view.IStatusView;
 
 /**
  * <pre>
@@ -53,6 +52,14 @@ public class StatusViewOption {
 
     public void setCancelWithOutside(boolean cancelWithOutside) {
         mBuilder.cancelWithOutside = cancelWithOutside;
+    }
+
+    public boolean isBackWithDismiss() {
+        return mBuilder.backWithDismiss;
+    }
+
+    public void setBackWithDismiss(boolean backWithDismiss) {
+        mBuilder.backWithDismiss = backWithDismiss;
     }
 
     public int getDialogWidth() {
@@ -207,6 +214,7 @@ public class StatusViewOption {
 
         private IStatusViewContainer container;//对话框布局容器
         private boolean cancelWithOutside;//是否能触摸外围区域取消对话框
+        private boolean backWithDismiss;//是否按返回键时视图消失（当设置OnStatusViewDialogListener时，backWithDismiss属性失效）
         private int dialogWidth, dialogHeight;//对话框宽高
         @FloatRange(from = 0.0, to = 1.0)
         private float dialogDimAmount;//对话框背景遮罩
@@ -230,6 +238,7 @@ public class StatusViewOption {
         private OnStatusViewButtonListener buttonListener;//按钮监听器
 
         public Builder() {
+            backWithDismiss = false;
             showProgressView = false;
             showReloadIcon = false;
             showContentText = true;
@@ -256,6 +265,15 @@ public class StatusViewOption {
 
         public Builder setCancelWithOutside(boolean cancelWithOutside) {
             this.cancelWithOutside = cancelWithOutside;
+            return this;
+        }
+
+        public boolean isBackWithDismiss() {
+            return backWithDismiss;
+        }
+
+        public Builder setBackWithDismiss(boolean backWithDismiss) {
+            this.backWithDismiss = backWithDismiss;
             return this;
         }
 
@@ -431,17 +449,17 @@ public class StatusViewOption {
         /**
          * 当点击返回键时回调
          *
-         * @param dialog 对话框实例
+         * @param view 状态视图实例
          * @return 拦截返回键事件返回true，否则返回false
          */
-        boolean onClickKeyBack(DialogInterface dialog);
+        boolean onClickKeyBack(@NonNull IStatusView view);
 
         /**
          * 当对话框消失时回调
          *
-         * @param dialogFragment 对话框实例
+         * @param view 状态视图实例
          */
-        void onDismissListener(DialogFragment dialogFragment);
+        void onDismissListener(@NonNull IStatusView view);
 
     }
 

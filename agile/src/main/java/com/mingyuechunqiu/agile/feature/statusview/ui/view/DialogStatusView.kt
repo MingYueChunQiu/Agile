@@ -16,35 +16,38 @@ import com.mingyuechunqiu.agile.feature.statusview.ui.StatusViewDialogFragment
  *      Github:     https://github.com/MingYueChunQiu
  *      Email:      xiyujieit@163.com
  *      Time:       4/21/21 11:22 PM
- *      Desc:
+ *      Desc:       对话框模式状态视图
+ *                  实现IStatusView
  *      Version:    1.0
  * </pre>
  */
 internal class DialogStatusView(private val mOption: StatusViewOption) : IStatusView {
 
     private var mFragment: StatusViewDialogFragment? = null
-    private var mStatusType: StatusViewConstants.StatusType =
-        StatusViewConstants.StatusType.TYPE_LOADING
+    private var mStatusType: StatusViewConstants.StatusViewType =
+        StatusViewConstants.StatusViewType.TYPE_LOADING
 
     override fun showStatusView(
-        type: StatusViewConstants.StatusType,
+        type: StatusViewConstants.StatusViewType,
         container: ViewGroup,
         option: StatusViewOption
     ) {
+        LogManagerProvider.i("DialogStatusView", "showStatusView : not correct mode")
     }
 
     override fun showStatusView(
-        type: StatusViewConstants.StatusType,
+        type: StatusViewConstants.StatusViewType,
         manager: FragmentManager,
         option: StatusViewOption
     ) {
+        LogManagerProvider.i("DialogStatusView", "showStatusView : Dialog")
         if (manager.findFragmentByTag(StatusViewDialogFragment.AGILE_TAG_STATUS_VIEW) != null) {
             LogManagerProvider.e("DialogStatusView", "showStatusView: has in the manager")
             return
         }
         mStatusType = type
         dismissStatusView(true)
-        mFragment = StatusViewDialogFragment.newInstance(mOption).apply {
+        mFragment = StatusViewDialogFragment.newInstance(this, mOption).apply {
             showSafely(manager, StatusViewDialogFragment.AGILE_TAG_STATUS_VIEW)
         }
     }
@@ -62,22 +65,33 @@ internal class DialogStatusView(private val mOption: StatusViewOption) : IStatus
         }
     }
 
-    override fun getModeType(): StatusViewConstants.StatusMode {
-        return StatusViewConstants.StatusMode.MODE_DIALOG
+    override fun saveStatueViewInstanceState(outState: Bundle, manager: FragmentManager?) {
     }
 
-    override fun getStatusType(): StatusViewConstants.StatusType {
-        return mStatusType
-    }
-
-    fun restoreStatueView(savedInstanceState: Bundle?, manager: FragmentManager) {
+    override fun restoreStatueViewInstanceState(
+        savedInstanceState: Bundle?,
+        manager: FragmentManager?
+    ) {
         if (savedInstanceState == null) {
             return
         }
         //DialogFragment在界面意外销毁后会由系统重新创建
-        (manager.findFragmentByTag(StatusViewDialogFragment.AGILE_TAG_STATUS_VIEW) as? StatusViewDialogFragment)?.let {
+        (manager?.findFragmentByTag(StatusViewDialogFragment.AGILE_TAG_STATUS_VIEW) as? StatusViewDialogFragment)?.let {
+            it.statusView = this
             it.option = mOption
             mFragment = it
         }
+    }
+
+    override fun getStatusViewMode(): StatusViewConstants.StatusViewMode {
+        return StatusViewConstants.StatusViewMode.MODE_DIALOG
+    }
+
+    override fun getStatusViewType(): StatusViewConstants.StatusViewType {
+        return mStatusType
+    }
+
+    override fun getStatusViewOption(): StatusViewOption {
+        return mOption
     }
 }

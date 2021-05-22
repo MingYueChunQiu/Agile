@@ -19,4 +19,7 @@ import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferDataDispatch
  * </pre>
  */
 interface IAgileFragmentPage : ITransferDataDispatcher, ITransferDataDispatcherPage,
-    IKeyEventReceiver, IKeyEventReceiverPage
+    IKeyEventReceiver, IKeyEventReceiverPage {
+
+    fun getFragmentViewPage(): FragmentViewPage
+}

@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
-import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.StatusType
+import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.StatusViewType
 import com.mingyuechunqiu.agile.feature.statusview.ui.view.IStatusView
 
 /**
@@ -36,7 +36,7 @@ interface IStatusViewHelper {
      * @param container 视图添加父容器
      * @param option  状态视图配置信息类
      */
-    fun showStatusView(type: StatusType, container: ViewGroup, option: StatusViewOption?)
+    fun showStatusView(type: StatusViewType, container: ViewGroup, option: StatusViewOption?)
 
     /**
      * 显示状态视图
@@ -45,7 +45,7 @@ interface IStatusViewHelper {
      * @param manager Fragment管理器
      * @param option  状态视图配置信息类
      */
-    fun showStatusView(type: StatusType, manager: FragmentManager, option: StatusViewOption?)
+    fun showStatusView(type: StatusViewType, manager: FragmentManager, option: StatusViewOption?)
 
     /**
      * 关闭状态视图
@@ -54,9 +54,11 @@ interface IStatusViewHelper {
      */
     fun dismissStatusView(allowStateLoss: Boolean = true)
 
-    fun getModeType(): StatusViewConstants.StatusMode
+    fun saveStatueViewInstanceState(outState: Bundle, manager: FragmentManager?)
 
-    fun getStatusMode(): StatusType
+    fun restoreStatueViewInstanceState(savedInstanceState: Bundle?, manager: FragmentManager?)
 
-    fun restoreStatueView(savedInstanceState: Bundle?, manager: FragmentManager)
+    fun getStatusViewMode(): StatusViewConstants.StatusViewMode
+
+    fun getStatusViewType(): StatusViewType
 }

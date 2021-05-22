@@ -2,11 +2,16 @@ package com.mingyuechunqiu.agile.feature.statusview.function;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Lifecycle;
 
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
+import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewStateInfo;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
+import com.mingyuechunqiu.agile.frame.ui.IAgilePage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <pre>
@@ -21,6 +26,7 @@ import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
 public final class StatusViewManagerProvider {
 
     private static volatile StatusViewConfigure sConfigure;
+    private static final Map<String, StatusViewStateInfoObserver> sSavedStatusViewInfoMap = new HashMap<>();
 
     private StatusViewManagerProvider() {
     }
@@ -31,8 +37,8 @@ public final class StatusViewManagerProvider {
      * @return 返回实例对象
      */
     @NonNull
-    public static IStatusViewManager newInstance(@NonNull LifecycleOwner owner) {
-        return newInstance(owner, new StatusViewHelper());
+    public static IStatusViewManager newInstance(@NonNull IAgilePage page) {
+        return newInstance(page, new StatusViewHelper(page));
     }
 
     /**
@@ -42,9 +48,9 @@ public final class StatusViewManagerProvider {
      * @return 返回状态视图管理器实例对象
      */
     @NonNull
-    public static IStatusViewManager newInstance(@NonNull LifecycleOwner owner, @NonNull IStatusViewHelper helper) {
+    public static IStatusViewManager newInstance(@NonNull IAgilePage page, @NonNull IStatusViewHelper helper) {
         IStatusViewManager manager = new StatusViewManager(helper);
-        owner.getLifecycle().addObserver(manager);
+        page.getLifecycle().addObserver(manager);
         return manager;
     }
 
@@ -57,7 +63,26 @@ public final class StatusViewManagerProvider {
         StatusViewManagerProvider.sConfigure = configure;
     }
 
-    public static StatusViewOption getGlobalStatusViewOptionByType(@NonNull StatusViewConstants.StatusType type) {
+    public static StatusViewOption getGlobalStatusViewOptionByType(@NonNull StatusViewConstants.StatusViewType type) {
         return StatusViewHandler.getGlobalStatusViewOptionByType(type);
+    }
+
+    public static void saveInstanceStateInfo(@NonNull IAgilePage page, @NonNull StatusViewStateInfo info) {
+        if (page.getLifecycle().getCurrentState() == Lifecycle.State.DESTROYED) {
+            return;
+        }
+        StatusViewStateInfoObserver observer = new StatusViewStateInfoObserver(page, info);
+        page.getLifecycle().addObserver(observer);
+        sSavedStatusViewInfoMap.put(page.getPageTag(), observer);
+    }
+
+    public static void removeInstanceStateInfo(@NonNull StatusViewStateInfoObserver observer) {
+        sSavedStatusViewInfoMap.remove(observer.getPage().getPageTag());
+    }
+
+    @Nullable
+    public static StatusViewStateInfo getInstanceStateInfo(@NonNull IAgilePage page) {
+        StatusViewStateInfoObserver observer = sSavedStatusViewInfoMap.get(page.getPageTag());
+        return observer == null ? null : observer.getInfo();
     }
 }
