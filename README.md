@@ -88,7 +88,7 @@ presenter:
 model:		
 		IBaseModel extends IModelPartOwner, IDaoOwner, ICallExecutor
 		----BaseAbstractModel implements IBaseModel
-		    ----BaseAbstractDataModel extends BaseAbstractModel implements IModelLocalData, IModelNetworkData, DaoLocalCallback, DaoRetrofitCallback
+		    ----BaseAbstractDataModel extends BaseAbstractModel implements IModelLocalDataProcessor, IModelNetworkDataProcessor, DaoLocalCallback, 				DaoRetrofitCallback
 		
 		part:
 		----IBaseModelPart extends IDaoOwner
@@ -116,6 +116,15 @@ model:
 			    ----DaoRemoteCallback extends DaoCallback
 				----DaoNetworkCallback extends DaoRemoteCallback
 				----DaoRetrofitCallback extends DaoNetworkCallback
+				
+			data:
+			----IModelDataProcessor:
+			    local:
+			    ----IModelLocalDataProcessor extends IModelDataProcessor
+			    remote:
+			    ----IModelRemoteDataProcessor extends IModelDataProcessor
+			        ----IModelNetworkDataProcessor extends IModelRemoteDataProcessor
+				    ----IModelRetrofitDataProcessor extends IModelNetworkDataProcessor
 			
 		operation:
 		    ----IBaseDaoOperation<T>
