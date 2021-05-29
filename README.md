@@ -2,7 +2,11 @@
 a agile android framework for MVP.
 一个Android高效框架，提供公共框架、方法，进行敏捷开发。
 
-    最新v0.4.19:add CircleProgressView</br>
+    最新v0.5.0:1.升级SDK</br>
+    	2.更新API</br>
+	3.重构框架</br>
+	
+    	v0.4.19:add CircleProgressView</br>
         v0.4.17:add PopPageHelper</br>
     	v0.4.15:
     		1.优化框架填充布局</br>
@@ -68,51 +72,50 @@ Agile.debug(true);//设置是否启动调试模式
 
 ```
 view:		
-		IBaseView<P extends IBasePresenter>
-	  	----IBaseStatusView<P extends BaseAbstractStatusViewPresenter>
-	     	    ----IBaseDataView<P extends BaseAbstractDataPresenter>
+		IBaseView
+	  	----IBaseDataView extends IBaseView
 		    
-		IViewAttachPresenter<P>
+		IViewAttachPresenter<P extends IBasePresenter<? extends IBaseView, ? extends IBaseModel>>
 	
 presenter:	
-		IBasePresenter<V extends IBaseView<?>, M extends IBaseModel<?>>
-		----BaseAbstractPresenter<V extends IBaseView<?>, M extends IBaseModel<?>>
-		    ----BaseAbstractStatusViewPresenter<V extends IBaseStatusView<?>, M extends BaseAbstractModel<?>>
-		        ----BaseAbstractDataPresenter<V extends IBaseDataView<?>, M extends BaseAbstractDataModel<?>>
-			    ----BaseAbstractCountDownPresenter（具体业务Presenter）
+		IBasePresenter<V extends IBaseView, M extends IBaseModel> extends LifecycleObserver, ICallExecutor, IPopHintOwner, IStatusViewable
+		----BaseAbstractPresenter<V extends IBaseView, M extends IBaseModel> implements IBasePresenter<V, M>
+		    ----BaseAbstractDataPresenter<V extends IBaseDataView, M extends BaseAbstractDataModel> extends BaseAbstractPresenter<V, M>
+		        ----BaseAbstractCountDownPresenter<V extends IBaseDataView, M extends BaseAbstractDataModel> extends BaseAbstractDataPresenter<V, M>
 	        ----engine
 		    ----IBasePresenterEngine
 		    
 model:		
-		IBaseModel<I extends IBaseListener>
-		----BaseAbstractModel<I extends IBaseListener>
-		    ----BaseAbstractDataModel<I extends IBaseListener>
+		IBaseModel extends IModelPartOwner, IDaoOwner, ICallExecutor
+		----BaseAbstractModel implements IBaseModel
+		    ----BaseAbstractDataModel extends BaseAbstractModel implements IModelLocalData, IModelNetworkData, DaoLocalCallback, DaoRetrofitCallback
 		
 		part:
-		----IBaseModelPart
-		    ----BaseAbstractModelPart
+		----IBaseModelPart extends IDaoOwner
+		    ----BaseAbstractModelPart implements IBaseModelPart
 		    
 		dao:
-		----IBaseDao<C extends DaoCallback<?>>
+		----IBaseDao<C extends DaoCallback> extends ICallExecutor
+		    ----BaseAbstractDao<C : DaoCallback> : IBaseDao<C>
 		
 		----local:
-		    ----IBaseLocalDao<C extends DaoLocalCallback<?>>
-		        ----BaseAbstractLocalDao<C extends DaoLocalCallback<?>>
+		    ----IBaseLocalDao
+		        ----BaseAbstractLocalDao<C extends DaoLocalCallback> extends BaseAbstractDao<C> implements IBaseLocalDao
 			
 		----remote:
-		    ----IBaseRemoteDao<C extends DaoRemoteCallback<?>>
-		        ----BaseAbstractRemoteDao<C extends DaoRemoteCallback<?>>
-			    ----BaseAbstractNetworkDao<C extends DaoNetworkCallback<?>>
-			        ----BaseAbstractRetrofitDao<C extends DaoRetrofitCallback<?>>
+		    ----IBaseRemoteDao
+		        ----BaseAbstractRemoteDao<C extends DaoRemoteCallback> extends BaseAbstractDao<C> implements IBaseRemoteDao
+			    ----BaseAbstractNetworkDao<C extends DaoNetworkCallback> extends BaseAbstractRemoteDao<C>
+			        ----BaseAbstractRetrofitDao<C extends DaoRetrofitCallback> extends BaseAbstractNetworkDao<C>
 			
 			DaoCallback:
-			----DaoCallback<I extends IBaseListener>
+			----DaoCallback
 			    local:
-			    ----DaoLocalCallback<I extends IBaseListener>
+			    ----DaoLocalCallback extends DaoCallback
 			    remote:
-			    ----DaoRemoteCallback<I extends IBaseListener>
-				----DaoNetworkCallback<I extends IBaseListener>
-				----DaoRetrofitCallback<I extends IBaseListener>
+			    ----DaoRemoteCallback extends DaoCallback
+				----DaoNetworkCallback extends DaoRemoteCallback
+				----DaoRetrofitCallback extends DaoNetworkCallback
 			
 		operation:
 		    ----IBaseDaoOperation<T>
@@ -125,9 +128,11 @@ model:
 			        ----BaseAbstractNetworkDaoOperation<T>
 			        ----RetrofitCallDaoOperation<T>
 				
-Listener:
-		IBaseListener
-		----ICountDownListener（具体业务接口）
+bridge:
+		call:
+		    ----ICallExecutor
+		    ----Call<T>
+		   	----RequestCall<T> constructor(private val mRequest: Request, private val mCallback: Request.Callback<T>) : Call<T>
 ```
 
 (2).ui包下:
@@ -136,26 +141,31 @@ Listener:
 activity:	
 		BaseActivity
 		----BaseFullImmerseScreenActivity
-		    ----BaseStatusViewPresenterActivity<V extends IBaseStatusView<P>, P extends BaseAbstractStatusViewPresenter>
-		        ----BaseDataPresenterActivity<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?,?>>
-		            ----BaseToolbarPresenterActivity<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?,?>>
+		    ----BaseAbstractPresenterActivity
+		        ----BaseDataPresenterActivity
+		            ----BaseToolbarPresenterActivity
 	        	        ----WebViewActivity（具体业务实现）
 					
 fragment:	
 		BaseFragment
-		----BaseStatusViewPresenterFragment<V extends IBaseStatusView<P>, P extends BaseAbstractStatusViewPresenter>
-		    ----BaseDataPresenterFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?,?>>
-		        ----BaseToolbarPresenterFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?,?>>
+		----BaseAbstractPresenterFragment
+		    ----BaseDataPresenterFragment
+		        ----BaseToolbarPresenterFragment
 			
 dialogFragment:	
 		BaseDialogFragment
-		----BaseStatusViewPresenterDialogFragment<V extends IBaseStatusView<P>, P extends BaseAbstractStatusViewPresenter>
-		    ----BaseDataPresenterDialogFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?,?>>
+		----BaseAbstractPresenterDialogFragment
+		    ----BaseDataPresenterDialogFragment
 		
 bottomSheetDialogFragment:	
 		BaseBSDialogFragment
-		----BaseStatusViewPresenterBSDialogFragment<V extends IBaseStatusView<P>, P extends BaseAbstractStatusViewPresenter>
-		    ----BaseDataPresenterBSDialogFragment<V extends IBaseDataView<P>, P extends BaseAbstractDataPresenter<?,?>>
+		----BaseAbstractPresenterBSDialogFragment
+		    ----BaseDataPresenterBSDialogFragment
+
+dialog:
+		BaseDialog
+		----BaseAbstractPresenterDialog
+		    ----BaseDataPresenterDialog
 ```
 
 (3).feature包下:
