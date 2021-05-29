@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.framework.data.remote;
 
-import com.mingyuechunqiu.agile.base.model.framework.data.IModelData;
+import com.mingyuechunqiu.agile.base.model.framework.data.IModelDataProcessor;
 
 /**
  * <pre>
@@ -10,10 +10,10 @@ import com.mingyuechunqiu.agile.base.model.framework.data.IModelData;
  *      Github:     https://github.com/MingYueChunQiu
  *      Email:      xiyujieit@163.com
  *      Time:       2020-01-17 20:31
- *      Desc:       所有Model层远程数据父接口
- *                  继承自IModelData
+ *      Desc:       所有Model层远程数据处理器父接口
+ *                  继承自IModelDataProcessor
  *      Version:    1.0
  * </pre>
  */
-public interface IModelRemoteData extends IModelData {
+public interface IModelRemoteDataProcessor extends IModelDataProcessor {
 }

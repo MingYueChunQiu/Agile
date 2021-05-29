@@ -9,8 +9,8 @@ import com.mingyuechunqiu.agile.base.bridge.Request;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.model.framework.callback.local.DaoLocalCallback;
 import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRetrofitCallback;
-import com.mingyuechunqiu.agile.base.model.framework.data.local.IModelLocalData;
-import com.mingyuechunqiu.agile.base.model.framework.data.remote.IModelNetworkData;
+import com.mingyuechunqiu.agile.base.model.framework.data.local.IModelLocalDataProcessor;
+import com.mingyuechunqiu.agile.base.model.framework.data.remote.IModelNetworkDataProcessor;
 import com.mingyuechunqiu.agile.constants.URLConstants;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
@@ -30,7 +30,7 @@ import retrofit2.Response;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractDataModel extends BaseAbstractModel implements IModelLocalData, IModelNetworkData, DaoLocalCallback, DaoRetrofitCallback {
+public abstract class BaseAbstractDataModel extends BaseAbstractModel implements IModelLocalDataProcessor, IModelNetworkDataProcessor, DaoLocalCallback, DaoRetrofitCallback {
 
     /**
      * 根据网络响应返回码，进行不同处理

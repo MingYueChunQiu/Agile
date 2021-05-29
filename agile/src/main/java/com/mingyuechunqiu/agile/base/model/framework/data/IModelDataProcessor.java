@@ -7,9 +7,9 @@ package com.mingyuechunqiu.agile.base.model.framework.data;
  *      Author:     XiYuJie
  *      Email:      xiyujie@jinying.com
  *      Time:       2020/1/19 16:54
- *      Desc:       所有Model层数据处理父接口
+ *      Desc:       所有Model层数据处理器父接口
  *      Version:    1.0
  * </pre>
  */
-public interface IModelData {
+public interface IModelDataProcessor {
 }

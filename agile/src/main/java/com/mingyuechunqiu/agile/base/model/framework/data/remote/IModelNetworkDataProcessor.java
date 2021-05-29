@@ -9,9 +9,9 @@ package com.mingyuechunqiu.agile.base.model.framework.data.remote;
  *      Email:      xiyujieit@163.com
  *      Time:       2020-01-17 20:34
  *      Desc:       Model层网络数据处理接口
- *                  继承自IModelRemoteData
+ *                  继承自IModelRemoteDataProcessor
  *      Version:    1.0
  * </pre>
  */
-public interface IModelNetworkData extends IModelRemoteData {
+public interface IModelNetworkDataProcessor extends IModelRemoteDataProcessor {
 }
