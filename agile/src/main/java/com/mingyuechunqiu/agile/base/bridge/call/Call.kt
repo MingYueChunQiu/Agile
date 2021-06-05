@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agile.base.bridge.call
 
+import com.mingyuechunqiu.agile.base.bridge.Callback
 import com.mingyuechunqiu.agile.base.bridge.Request
 
 /**
@@ -18,7 +19,7 @@ interface Call<T> {
 
     fun getRequest(): Request
 
-    fun getCallback(): Request.Callback<T>
+    fun getCallback(): Callback<T>
 
     companion object {
 
@@ -29,7 +30,7 @@ interface Call<T> {
          * @param callback 请求回调
          * @param <T> 响应数据类型
          */
-        fun <T> newCall(request: Request, callback: Request.Callback<T>): Call<T> {
+        fun <T> newCall(request: Request, callback: Callback<T>): Call<T> {
             return RequestCall(request, callback)
         }
     }

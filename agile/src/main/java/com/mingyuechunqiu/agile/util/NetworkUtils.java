@@ -2,7 +2,6 @@ package com.mingyuechunqiu.agile.util;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
@@ -122,18 +121,8 @@ public final class NetworkUtils {
                 new AlertDialog.Builder(context)
                         .setCancelable(false)
                         .setMessage(R.string.agile_prompt_query_mobile_network)
-                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                selectListener.onConfirmConnectedInMobile();
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                selectListener.onCancelConnectedInMobile();
-                            }
-                        }).create().show();
+                        .setPositiveButton(R.string.agile_confirm, (dialog, which) -> selectListener.onConfirmConnectedInMobile())
+                        .setNegativeButton(R.string.agile_cancel, (dialog, which) -> selectListener.onCancelConnectedInMobile()).create().show();
             }
         }
     }

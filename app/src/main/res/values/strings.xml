@@ -39,7 +39,7 @@
     <string name="fill_common_header">课程数量：%1$d#%2$s</string>
 
     <string name="no_content">本节课无此内容</string>
-    <string name="reload">重新加载</string>
+    <string name="agile_reload">重新加载</string>
     <string name="my_class">我的课堂</string>
     <string name="ignore">忽略</string>
     <string name="calendar">日历</string>

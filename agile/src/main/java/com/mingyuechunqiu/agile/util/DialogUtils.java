@@ -1,9 +1,11 @@
 package com.mingyuechunqiu.agile.util;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -12,11 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.fragment.app.Fragment;
 
 import com.mingyuechunqiu.agile.R;
-
-import pub.devrel.easypermissions.AppSettingsDialog;
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 
 /**
  * <pre>
@@ -47,8 +47,8 @@ public final class DialogUtils {
         new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(R.string.confirm, positiveListener)
-                .setNegativeButton(R.string.cancel, negativeListener)
+                .setPositiveButton(R.string.agile_confirm, positiveListener)
+                .setNegativeButton(R.string.agile_cancel, negativeListener)
                 .create()
                 .show();
     }
@@ -89,34 +89,29 @@ public final class DialogUtils {
     /**
      * 显示权限设置对话框
      *
-     * @param activity 界面
+     * @param context 上下文
      */
-    public static void showSetPermissionsDialog(@Nullable Activity activity, @StringRes int rationaleResId) {
-        if (activity == null) {
+    public static void showSetPermissionsDialog(@Nullable Context context, @StringRes int rationaleResId) {
+        if (context == null) {
             return;
         }
-        new AppSettingsDialog.Builder(activity)
-                .setTitle(R.string.set_permission)
-                .setRationale(rationaleResId)
-                .setPositiveButton(R.string.set)
-                .setNegativeButton(R.string.cancel)
-                .build().show();
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.agile_set_permission)
+                .setMessage(rationaleResId)
+                .setPositiveButton(R.string.agile_set, (dialog, which) -> startDetailSettingsActivity(context))
+                .setNegativeButton(R.string.agile_cancel, (dialog, which) -> {
+                })
+                .create()
+                .show();
     }
 
-    /**
-     * 显示权限设置对话框
-     *
-     * @param fragment 界面
-     */
-    public static void showSetPermissionsDialog(@Nullable Fragment fragment, @StringRes int rationaleResId) {
-        if (fragment == null) {
-            return;
+    private static void startDetailSettingsActivity(@NonNull Context context) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                .setData(Uri.fromParts("package", context.getPackageName(), null));
+        if (context.getPackageManager().resolveActivity(intent, 0) != null) {
+            context.startActivity(intent);
+        } else {
+            ToastHelper.showToast(R.string.agile_error_not_found_app_permissions_page);
         }
-        new AppSettingsDialog.Builder(fragment)
-                .setTitle(R.string.set_permission)
-                .setRationale(rationaleResId)
-                .setPositiveButton(R.string.set)
-                .setNegativeButton(R.string.cancel)
-                .build().show();
     }
 }

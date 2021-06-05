@@ -204,8 +204,8 @@ public class WebViewActivity extends BaseToolbarPresenterActivity<IBaseDataView,
             if (mBundle != null && mBundle.getBoolean(BUNDLE_SHOW_BACK_DIALOG, false)) {
                 new AlertDialog.Builder(this)
                         .setMessage(R.string.agile_prompt_exit)
-                        .setPositiveButton(R.string.confirm, (dialog, which) -> finish())
-                        .setNegativeButton(R.string.cancel, null)
+                        .setPositiveButton(R.string.agile_confirm, (dialog, which) -> finish())
+                        .setNegativeButton(R.string.agile_cancel, null)
                         .create().show();
                 return true;
             }
@@ -312,8 +312,8 @@ public class WebViewActivity extends BaseToolbarPresenterActivity<IBaseDataView,
                     new AlertDialog.Builder(WebViewActivity.this)
                             .setCancelable(false)
                             .setMessage(R.string.agile_prompt_query_mobile_network)
-                            .setPositiveButton(R.string.confirm, (dialog, which) -> isSelectedMobileNet = true)
-                            .setNegativeButton(R.string.cancel, (dialog, which) -> finish()).create().show();
+                            .setPositiveButton(R.string.agile_confirm, (dialog, which) -> isSelectedMobileNet = true)
+                            .setNegativeButton(R.string.agile_cancel, (dialog, which) -> finish()).create().show();
                 }
             }
         });

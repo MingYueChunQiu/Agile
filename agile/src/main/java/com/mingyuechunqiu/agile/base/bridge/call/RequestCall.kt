@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agile.base.bridge.call
 
+import com.mingyuechunqiu.agile.base.bridge.Callback
 import com.mingyuechunqiu.agile.base.bridge.Request
 
 /**
@@ -15,13 +16,13 @@ import com.mingyuechunqiu.agile.base.bridge.Request
  *      Version:    1.0
  * </pre>
  */
-internal class RequestCall<T> constructor(private val mRequest: Request, private val mCallback: Request.Callback<T>) : Call<T> {
+internal class RequestCall<T> constructor(private val mRequest: Request, private val mCallback: Callback<T>) : Call<T> {
 
     override fun getRequest(): Request {
         return mRequest
     }
 
-    override fun getCallback(): Request.Callback<T> {
+    override fun getCallback(): Callback<T> {
         return mCallback
     }
 }

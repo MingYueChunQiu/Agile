@@ -5,6 +5,7 @@
     <string name="agile_error_set_net_params">网络请求参数设置异常，请重试</string>
     <string name="agile_error_service_response">服务器响应异常，请重试</string>
     <string name="agile_error_save_bitmap_to_album">保存图片到相册失败，请重试</string>
+    <string name="agile_error_not_found_app_permissions_page">无法自动打开设置界面，请您手动尝试</string>
 
     <string name="agile_prompt_exit">您确定要退出吗？</string>
     <string name="agile_prompt_use_mobile_network">您正在使用移动网络</string>
@@ -16,12 +17,12 @@
     <string name="agile_update_application">应用更新</string>
     <string name="agile_installation_package_is_downloading">安装包正在下载中</string>
 
-    <string name="hint">提示</string>
-    <string name="confirm">确定</string>
-    <string name="cancel">取消</string>
-    <string name="set_permission">设置权限</string>
-    <string name="set">设置</string>
-    <string name="reload">重新加载</string>
-    <string name="title">标题</string>
+    <string name="agile_hint">提示</string>
+    <string name="agile_confirm">确定</string>
+    <string name="agile_cancel">取消</string>
+    <string name="agile_set_permission">设置权限</string>
+    <string name="agile_set">设置</string>
+    <string name="agile_reload">重新加载</string>
+    <string name="agile_title">标题</string>
 
 </resources>
