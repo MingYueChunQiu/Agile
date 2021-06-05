@@ -59,7 +59,7 @@ public final class AppUtils {
      * @return 如果在前台显示返回true，否则返回false
      */
     public static boolean checkActivityIsForeground(@Nullable Context context, @Nullable String className) {
-        if (context == null || TextUtils.isEmpty(className)) {
+        if (context == null || className == null || TextUtils.isEmpty(className)) {
             return false;
         }
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);

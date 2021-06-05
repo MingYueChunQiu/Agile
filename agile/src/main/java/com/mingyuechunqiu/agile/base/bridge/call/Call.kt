@@ -11,7 +11,7 @@ import com.mingyuechunqiu.agile.base.bridge.Request
  *      Github:     https://github.com/MingYueChunQiu
  *      Email:      xiyujieit@163.com
  *      Time:       4/17/21 7:30 PM
- *      Desc:       请求调用类
+ *      Desc:       请求调用接口
  *      Version:    1.0
  * </pre>
  */
