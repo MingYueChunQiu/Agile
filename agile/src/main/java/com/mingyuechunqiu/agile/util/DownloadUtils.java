@@ -164,7 +164,7 @@ public final class DownloadUtils {
      */
     private static boolean deleteResidualOldFile(@Nullable File file) {
         if (file != null && file.exists() && !file.delete()) {
-            ToastHelper.showToast("删除残留旧版本apk失败！");
+            ToastHelper.showToast(R.string.agile_error_failed_to_delete_old_version_apk);
             return false;
         }
         return true;

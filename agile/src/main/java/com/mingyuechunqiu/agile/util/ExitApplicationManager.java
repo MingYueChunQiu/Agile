@@ -121,7 +121,7 @@ public final class ExitApplicationManager {
 
     private static class ExitApplicationManagerHolder {
 
-        private static ExitApplicationManager INSTANCE = new ExitApplicationManager();
+        private static final ExitApplicationManager INSTANCE = new ExitApplicationManager();
     }
 
     public interface ExitApplicationCallback {

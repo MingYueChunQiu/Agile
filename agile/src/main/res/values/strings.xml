@@ -6,6 +6,7 @@
     <string name="agile_error_service_response">服务器响应异常，请重试</string>
     <string name="agile_error_save_bitmap_to_album">保存图片到相册失败，请重试</string>
     <string name="agile_error_not_found_app_permissions_page">无法自动打开设置界面，请您手动尝试</string>
+    <string name="agile_error_failed_to_delete_old_version_apk">删除残留旧版本apk失败！</string>
 
     <string name="agile_prompt_exit">您确定要退出吗？</string>
     <string name="agile_prompt_use_mobile_network">您正在使用移动网络</string>

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.PixelFormat;
+import android.graphics.ImageFormat;
 import android.hardware.display.DisplayManager;
 import android.media.Image;
 import android.media.ImageReader;
@@ -79,7 +79,7 @@ public final class CaptureUtils {
         int screenWidth = metrics.widthPixels;
         int screenHeight = metrics.heightPixels;
         int densityDpi = metrics.densityDpi;
-        ImageReader imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 1);
+        ImageReader imageReader = ImageReader.newInstance(screenWidth, screenHeight, ImageFormat.JPEG, 1);
         mediaProjection.createVirtualDisplay("screenShot", screenWidth, screenHeight
                 , densityDpi, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
                 imageReader.getSurface(), null, null);
