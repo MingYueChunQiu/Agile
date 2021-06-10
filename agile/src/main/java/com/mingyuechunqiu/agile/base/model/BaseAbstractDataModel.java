@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.bridge.Request;
+import com.mingyuechunqiu.agile.base.bridge.Callback;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.model.framework.callback.local.DaoLocalCallback;
 import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRetrofitCallback;
@@ -61,7 +61,7 @@ public abstract class BaseAbstractDataModel extends BaseAbstractModel implements
      * @param errorMsg 错误信息
      */
     @Override
-    public <T> void handleOnNetworkResponseError(@NonNull Request.Callback<T> callback, @Nullable String errorMsg) {
+    public <T> void handleOnNetworkResponseError(@NonNull Callback<T> callback, @Nullable String errorMsg) {
         handleOnNetworkResponseError(callback, new ErrorInfo(TextUtils.isEmpty(errorMsg) ? "信息异常" : errorMsg));
     }
 
@@ -72,7 +72,7 @@ public abstract class BaseAbstractDataModel extends BaseAbstractModel implements
      * @param info     错误对象
      */
     @Override
-    public <T> void handleOnNetworkResponseError(@NonNull @NotNull Request.Callback<T> callback, @NonNull @NotNull ErrorInfo info) {
+    public <T> void handleOnNetworkResponseError(@NonNull @NotNull Callback<T> callback, @NonNull @NotNull ErrorInfo info) {
         LogManagerProvider.d(TAG_FAILURE, "网络响应错误");
         callback.onFailure(info);
     }

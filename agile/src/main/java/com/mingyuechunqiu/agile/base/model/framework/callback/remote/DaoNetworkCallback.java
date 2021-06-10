@@ -3,7 +3,7 @@ package com.mingyuechunqiu.agile.base.model.framework.callback.remote;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.bridge.Request;
+import com.mingyuechunqiu.agile.base.bridge.Callback;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 
@@ -38,7 +38,7 @@ public interface DaoNetworkCallback extends DaoRemoteCallback {
      * @param callback 请求回调
      * @param errorMsg 错误信息
      */
-    <T> void handleOnNetworkResponseError(@NonNull Request.Callback<T> callback, @Nullable String errorMsg);
+    <T> void handleOnNetworkResponseError(@NonNull Callback<T> callback, @Nullable String errorMsg);
 
     /**
      * 处理网络响应失败事件
@@ -46,5 +46,5 @@ public interface DaoNetworkCallback extends DaoRemoteCallback {
      * @param callback 请求回调
      * @param info     错误对象
      */
-    <T> void handleOnNetworkResponseError(@NonNull Request.Callback<T> callback, @NonNull ErrorInfo info);
+    <T> void handleOnNetworkResponseError(@NonNull Callback<T> callback, @NonNull ErrorInfo info);
 }

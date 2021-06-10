@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-android-extensions'
     id 'realm-android'
 }
 
@@ -66,7 +65,7 @@ dependencies {
     // https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxandroid
     implementation group: 'io.reactivex.rxjava2', name: 'rxandroid', version: '2.1.1'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
-    implementation 'com.github.MingYueChunQiu:RecorderManager:0.2.29'
+    implementation 'com.github.MingYueChunQiu:RecorderManager:0.4.0-beta.5'
     implementation 'com.lxj:xpopup:1.8.10-x'
 }
 repositories {
