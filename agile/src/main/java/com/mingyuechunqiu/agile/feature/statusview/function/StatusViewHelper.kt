@@ -1,17 +1,11 @@
 package com.mingyuechunqiu.agile.feature.statusview.function
 
-import android.os.Bundle
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
-import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewStateInfo
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
-import com.mingyuechunqiu.agile.feature.statusview.ui.StatusViewDialogFragment
-import com.mingyuechunqiu.agile.feature.statusview.ui.view.DialogStatusView
 import com.mingyuechunqiu.agile.feature.statusview.ui.view.IStatusView
 import com.mingyuechunqiu.agile.feature.statusview.ui.view.WidgetStatusView
-import com.mingyuechunqiu.agile.frame.ui.IAgilePage
 
 /**
  * <pre>
@@ -26,7 +20,7 @@ import com.mingyuechunqiu.agile.frame.ui.IAgilePage
  *      Version:    1.0
  * </pre>
  */
-internal class StatusViewHelper(private val page: IAgilePage) : IStatusViewHelper {
+internal class StatusViewHelper : IStatusViewHelper {
 
     private var mConfigure: StatusViewConfigure? = null
     private var mStatusView: IStatusView? = null
@@ -55,56 +49,17 @@ internal class StatusViewHelper(private val page: IAgilePage) : IStatusViewHelpe
         )
     }
 
-    override fun showStatusView(
-        type: StatusViewConstants.StatusViewType,
-        manager: FragmentManager,
-        option: StatusViewOption?
-    ) {
-        checkOrCreateDialogStatusView(type, option).showStatusView(
-            type,
-            manager,
-            checkOrCreateStatusViewOption(type, option)
-        )
-    }
-
-    override fun dismissStatusView(allowStateLoss: Boolean) {
-        mStatusView?.dismissStatusView(allowStateLoss)
+    override fun dismissStatusView() {
+        mStatusView?.dismissStatusView()
         mStatusView = null
     }
 
-    override fun saveStatueViewInstanceState(outState: Bundle, manager: FragmentManager?) {
-        mStatusView?.let {
-            StatusViewManagerProvider.saveInstanceStateInfo(
-                page,
-                StatusViewStateInfo(
-                    it.getStatusViewMode(),
-                    it.getStatusViewType(),
-                    it.getStatusViewOption()
-                )
-            )
-        }
-    }
-
-    override fun restoreStatueViewInstanceState(
-        savedInstanceState: Bundle?,
-        manager: FragmentManager?
-    ) {
-        (manager?.findFragmentByTag(StatusViewDialogFragment.AGILE_TAG_STATUS_VIEW) as? StatusViewDialogFragment)?.let {
-            val stateInfo = StatusViewManagerProvider.getInstanceStateInfo(page)
-            initDialogStatusView(
-                stateInfo?.type ?: StatusViewConstants.StatusViewType.TYPE_LOADING,
-                stateInfo?.option
-            )
-        }
-        mStatusView?.restoreStatueViewInstanceState(savedInstanceState, manager)
-    }
-
-    override fun getStatusViewMode(): StatusViewConstants.StatusViewMode {
-        return mStatusView?.getStatusViewMode() ?: StatusViewConstants.StatusViewMode.MODE_INVALID
-    }
-
     override fun getStatusViewType(): StatusViewConstants.StatusViewType {
-        return mStatusView?.getStatusViewType() ?: StatusViewConstants.StatusViewType.TYPE_LOADING
+        return mStatusView?.getStatusViewType() ?: StatusViewConstants.StatusViewType.TYPE_UNKNOWN
+    }
+
+    override fun getStatusViewOption(): StatusViewOption? {
+        return mStatusView?.getStatusViewOption()
     }
 
     @Synchronized
@@ -112,41 +67,11 @@ internal class StatusViewHelper(private val page: IAgilePage) : IStatusViewHelpe
         type: StatusViewConstants.StatusViewType,
         option: StatusViewOption?
     ): IStatusView {
-        mStatusView?.let {
-            if (it.getStatusViewMode() == StatusViewConstants.StatusViewMode.MODE_WIDGET) {
-                dismissStatusView()
-            }
-        }
         return mStatusView ?: run {
             val view = WidgetStatusView(checkOrCreateStatusViewOption(type, option))
             mStatusView = view
             view
         }
-    }
-
-    @Synchronized
-    private fun checkOrCreateDialogStatusView(
-        type: StatusViewConstants.StatusViewType,
-        option: StatusViewOption?
-    ): IStatusView {
-        mStatusView?.let {
-            if (it.getStatusViewMode() == StatusViewConstants.StatusViewMode.MODE_DIALOG) {
-                dismissStatusView()
-            }
-        }
-        return mStatusView ?: run {
-            val view = initDialogStatusView(type, option)
-            view
-        }
-    }
-
-    private fun initDialogStatusView(
-        type: StatusViewConstants.StatusViewType,
-        option: StatusViewOption?
-    ): DialogStatusView {
-        val view = DialogStatusView(checkOrCreateStatusViewOption(type, option))
-        mStatusView = view
-        return view
     }
 
     private fun checkOrCreateStatusViewOption(

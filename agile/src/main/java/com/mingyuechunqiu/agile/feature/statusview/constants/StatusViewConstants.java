@@ -25,8 +25,8 @@ public final class StatusViewConstants {
      * 状态类型
      */
     public enum StatusViewType {
-        //加载，空，网络异常，错误，自定义
-        TYPE_LOADING, TYPE_EMPTY, TYPE_NETWORK_ANOMALY, TYPE_ERROR, TYPE_CUSTOM
+        //未知，加载，空，网络异常，错误，自定义
+        TYPE_UNKNOWN, TYPE_LOADING, TYPE_EMPTY, TYPE_NETWORK_ANOMALY, TYPE_ERROR, TYPE_CUSTOM
     }
 
     /**

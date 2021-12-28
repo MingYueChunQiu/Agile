@@ -1,13 +1,10 @@
 package com.mingyuechunqiu.agile.feature.statusview.function
 
-import android.os.Bundle
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
-import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants.StatusViewType
 import com.mingyuechunqiu.agile.feature.statusview.ui.view.IStatusView
 
@@ -44,35 +41,16 @@ internal class StatusViewManager(private val mHelper: IStatusViewHelper) : IStat
         mHelper.showStatusView(type, container, option)
     }
 
-    override fun showStatusView(
-        type: StatusViewType,
-        manager: FragmentManager,
-        option: StatusViewOption?
-    ) {
-        mHelper.showStatusView(type, manager, option)
-    }
-
-    override fun dismissStatusView(allowStateLoss: Boolean) {
-        mHelper.dismissStatusView(allowStateLoss)
-    }
-
-    override fun getStatusViewMode(): StatusViewConstants.StatusViewMode {
-        return mHelper.getStatusViewMode()
+    override fun dismissStatusView() {
+        mHelper.dismissStatusView()
     }
 
     override fun getStatusViewType(): StatusViewType {
         return mHelper.getStatusViewType()
     }
 
-    override fun saveStatueViewInstanceState(outState: Bundle, manager: FragmentManager?) {
-        mHelper.saveStatueViewInstanceState(outState, manager)
-    }
-
-    override fun restoreStatueViewInstanceState(
-        savedInstanceState: Bundle?,
-        manager: FragmentManager?
-    ) {
-        mHelper.restoreStatueViewInstanceState(savedInstanceState, manager)
+    override fun getStatusViewOption(): StatusViewOption? {
+        return mHelper.getStatusViewOption()
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {

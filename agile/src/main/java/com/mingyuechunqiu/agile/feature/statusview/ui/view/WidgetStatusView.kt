@@ -1,11 +1,9 @@
 package com.mingyuechunqiu.agile.feature.statusview.ui.view
 
-import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.fragment.app.FragmentManager
 import com.mingyuechunqiu.agile.R
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
@@ -62,7 +60,7 @@ internal class WidgetStatusView(private val mOption: StatusViewOption) : IStatus
                                 "WidgetStatusView",
                                 "onKeyEvent: isBackWithDismiss enter"
                             )
-                            dismissStatusView(true)
+                            dismissStatusView()
                         }
                         true
                     }
@@ -77,39 +75,18 @@ internal class WidgetStatusView(private val mOption: StatusViewOption) : IStatus
                 mDelegate.applyOption(this)
                 setOnClickListener {
                     if (option.isCancelWithOutside) {
-                        dismissStatusView(true)
+                        dismissStatusView()
                     }
                 }
             }
     }
 
-    override fun showStatusView(
-        type: StatusViewConstants.StatusViewType,
-        manager: FragmentManager,
-        option: StatusViewOption
-    ) {
-        LogManagerProvider.i("WidgetStatusView", "showStatusView : not correct mode")
-    }
-
-    override fun dismissStatusView(allowStateLoss: Boolean) {
+    override fun dismissStatusView() {
         mOption.onStatusViewDialogListener?.onDismissListener(this)
         mView?.let {
             (it.parent as? ViewGroup)?.removeView(it)
         }
         mView = null
-    }
-
-    override fun saveStatueViewInstanceState(outState: Bundle, manager: FragmentManager?) {
-    }
-
-    override fun restoreStatueViewInstanceState(
-        savedInstanceState: Bundle?,
-        manager: FragmentManager?
-    ) {
-    }
-
-    override fun getStatusViewMode(): StatusViewConstants.StatusViewMode {
-        return StatusViewConstants.StatusViewMode.MODE_WIDGET
     }
 
     override fun getStatusViewType(): StatusViewConstants.StatusViewType {
