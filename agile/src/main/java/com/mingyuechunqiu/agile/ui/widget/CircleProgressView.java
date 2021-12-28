@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agile.ui.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -69,9 +70,9 @@ public final class CircleProgressView extends View {
     public CircleProgressView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleProgressView);
-        mBackgroundColor = a.getColor(R.styleable.CircleProgressView_cpv_background_color, getResources().getColor(R.color.colorPrimary));
-        mProgressColor = a.getColor(R.styleable.CircleProgressView_cpv_progress_color, getResources().getColor(R.color.colorAccent));
-        mProgressTextColor = a.getColor(R.styleable.CircleProgressView_cpv_progress_text_color, getResources().getColor(R.color.colorPrimaryDark));
+        mBackgroundColor = a.getColor(R.styleable.CircleProgressView_cpv_background_color, Color.WHITE);
+        mProgressColor = a.getColor(R.styleable.CircleProgressView_cpv_progress_color, Color.RED);
+        mProgressTextColor = a.getColor(R.styleable.CircleProgressView_cpv_progress_text_color, Color.BLACK);
         mProgressTextSize = a.getDimension(R.styleable.CircleProgressView_cpv_progress_text_size,
                 TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14F, getResources().getDisplayMetrics()));
         mProgressTextVerticalPadding = a.getDimension(R.styleable.CircleProgressView_cpv_progress_text_vertical_padding,

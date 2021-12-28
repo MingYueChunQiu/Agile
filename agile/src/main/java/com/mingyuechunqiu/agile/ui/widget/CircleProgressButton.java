@@ -114,7 +114,7 @@ public class CircleProgressButton extends View {
         int ringWidth = getRingWidth();
         int realWidth = getWidth() - getPaddingLeft() - getPaddingRight();
         int realHeight = getHeight() - getPaddingTop() - getPaddingBottom();
-        int size = realWidth < realHeight ? realWidth : realHeight;
+        int size = Math.min(realWidth, realHeight);
         checkInnerPadding(ringWidth, size);
         int radius = (size - ringWidth * 2 - mInnerPadding * 2) / 2;
         int currentX = getWidth() / 2;
@@ -356,16 +356,13 @@ public class CircleProgressButton extends View {
             end = mCurrentProgress;
         }
         mProgressAnimator = ValueAnimator.ofFloat(0, end);
-        mProgressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float progress = (float) animation.getAnimatedValue();
-                mEndAngle = progress / mMaxProgress * 360;
-                if (mListener != null) {
-                    mListener.onProgress(CircleProgressButton.this, progress);
-                }
-                invalidate();
+        mProgressAnimator.addUpdateListener(animation -> {
+            float progress = (float) animation.getAnimatedValue();
+            mEndAngle = progress / mMaxProgress * 360;
+            if (mListener != null) {
+                mListener.onProgress(CircleProgressButton.this, progress);
             }
+            invalidate();
         });
         mProgressAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -374,7 +371,7 @@ public class CircleProgressButton extends View {
             }
         });
         if (mTimerMode) {
-            mProgressAnimator.setDuration(mMaxProgress * 1000);
+            mProgressAnimator.setDuration(mMaxProgress * 1000L);
         } else {
             mProgressAnimator.setDuration(mProgressDuration);
         }

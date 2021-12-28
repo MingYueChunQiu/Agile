@@ -1,5 +1,14 @@
 package com.mingyuechunqiu.agile.data.remote.socket.function.tcp;
 
+import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConnectState.STATE_ERROR;
+import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConnectState.STATE_IDLE;
+import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConnectState.STATE_SUCCESS;
+import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_TIME_OUT;
+import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketErrorType.TYPE_EMPTY_RESPONSE_DATA;
+import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketErrorType.TYPE_IP_ERROR;
+import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketErrorType.TYPE_REQUEST_PARAMS_ERROR;
+import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketErrorType.TYPE_SOCKET_ERROR;
+
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -20,20 +29,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConnectState.STATE_ERROR;
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConnectState.STATE_IDLE;
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConnectState.STATE_SUCCESS;
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_TIME_OUT;
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketErrorType.TYPE_EMPTY_RESPONSE_DATA;
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketErrorType.TYPE_IP_ERROR;
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketErrorType.TYPE_REQUEST_PARAMS_ERROR;
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketErrorType.TYPE_SOCKET_ERROR;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * <pre>
@@ -54,7 +51,8 @@ public class SocketTCPHandler implements ISocketTCPHandler {
     private Socket mSocket;
     private SocketSendData mSendData;
     private boolean waitReceiveData = false;//是否等待接受数据
-    private Disposable mHeartBeatDisposable;
+    @Nullable
+    private Timer mHeartBeatTimer;
     private int mState = STATE_IDLE;//当前Socket状态
     private boolean beInConnection;//是否处于成功连接状态
     private long mSendDataTime;//记录下发送数据时间，用于超过无数据传递时持续时间时断开连接
@@ -86,25 +84,21 @@ public class SocketTCPHandler implements ISocketTCPHandler {
         }
         mDataCallback = callback;
         final SocketIpInfo finalInfo = info;
-        mCallback.executeTask(new Runnable() {
-            @Override
-            public void run() {
-                if (!initTCPSocket(finalInfo)) {
-                    return;
-                }
-                if (SocketManagerProvider.getGlobalSocketConfigure().isLongConnection()) {
-                    releaseHeartBeatDisposable();
-                    mHeartBeatDisposable = Observable.interval(5, TimeUnit.SECONDS)
-                            .doOnNext(new Consumer<Long>() {
-                                @Override
-                                public void accept(Long aLong) {
-                                    sendHeartBeat();
-                                }
-                            })
-                            .subscribe();
-                } else {
-                    sendData(mSendData, mDataCallback);
-                }
+        mCallback.executeTask(() -> {
+            if (!initTCPSocket(finalInfo)) {
+                return;
+            }
+            if (SocketManagerProvider.getGlobalSocketConfigure().isLongConnection()) {
+                releaseHeartBeatDisposable();
+                mHeartBeatTimer = new Timer();
+                mHeartBeatTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        sendHeartBeat();
+                    }
+                }, 0, 5000L);
+            } else {
+                sendData(mSendData, mDataCallback);
             }
         });
     }
@@ -128,22 +122,19 @@ public class SocketTCPHandler implements ISocketTCPHandler {
         if (mCallback == null) {
             return;
         }
-        mCallback.executeTask(new Runnable() {
-            @Override
-            public void run() {
-                if (mSocket == null) {
-                    return;
-                }
-                BufferedReader bfr;
-                try {
-                    bfr = new BufferedReader(new InputStreamReader(mSocket.getInputStream(), "GB2312"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return;
-                }
-                waitReceiveData = true;
-                handleResponse(bfr);
+        mCallback.executeTask(() -> {
+            if (mSocket == null) {
+                return;
             }
+            BufferedReader bfr;
+            try {
+                bfr = new BufferedReader(new InputStreamReader(mSocket.getInputStream(), "GB2312"));
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+            waitReceiveData = true;
+            handleResponse(bfr);
         });
     }
 
@@ -300,12 +291,10 @@ public class SocketTCPHandler implements ISocketTCPHandler {
     }
 
     private void releaseHeartBeatDisposable() {
-        if (mHeartBeatDisposable != null) {
-            if (!mHeartBeatDisposable.isDisposed()) {
-                mHeartBeatDisposable.dispose();
-            }
+        if (mHeartBeatTimer != null) {
+            mHeartBeatTimer.cancel();
+            mHeartBeatTimer = null;
             waitReceiveData = false;
-            mHeartBeatDisposable = null;
         }
     }
 }

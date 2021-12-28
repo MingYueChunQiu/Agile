@@ -1,6 +1,14 @@
 package com.mingyuechunqiu.agile.feature.logmanager;
 
-import android.Manifest;
+import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.DEBUG;
+import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.DIRECTORY_LOG_NAME;
+import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.ERROR;
+import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.HIDDEN;
+import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.INFO;
+import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.SUFFIX_LOG;
+import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.VERBOSE;
+import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.WARN;
+
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,17 +20,6 @@ import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.io.IOUtils;
 
 import java.io.File;
-
-import pub.devrel.easypermissions.EasyPermissions;
-
-import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.DEBUG;
-import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.DIRECTORY_LOG_NAME;
-import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.ERROR;
-import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.HIDDEN;
-import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.INFO;
-import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.SUFFIX_LOG;
-import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.VERBOSE;
-import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.WARN;
 
 /**
  * <pre>
@@ -36,10 +33,6 @@ import static com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider.WAR
  * </pre>
  */
 class LogUtils implements ILog {
-
-    //申请权限
-    private static final String[] permissions = new String[]{
-            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     private int current = VERBOSE;//记录当前日志记录级别，当正式上线时，将日志屏蔽
 
@@ -197,21 +190,18 @@ class LogUtils implements ILog {
     private String getDefaultFilePath(@NonNull String title) {
         String prefixPath = null;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            if (!EasyPermissions.hasPermissions(Agile.getAppContext(), permissions)) {
-                e("LogUtils", "请申请存储读写权限，以便进行日志写入");
-            }
-            File file = Agile.getAppContext().getExternalFilesDir(Environment.DIRECTORY_ALARMS);
+            File file = Agile.getAppContext().getExternalCacheDir();
             if (file != null) {
                 prefixPath = file.getAbsolutePath();
             }
         }
         if (TextUtils.isEmpty(prefixPath)) {
-            prefixPath = Agile.getAppContext().getFilesDir().getAbsolutePath();
+            prefixPath = Agile.getAppContext().getCacheDir().getAbsolutePath();
         }
         File dir = new File(prefixPath + File.separator + DIRECTORY_LOG_NAME);
         boolean isMakingDirSuccess = true;
         if (!dir.exists()) {
-            isMakingDirSuccess = dir.mkdir();
+            isMakingDirSuccess = dir.mkdirs();
         }
         return isMakingDirSuccess ? dir.getAbsolutePath() + File.separator + title + "_" + System.currentTimeMillis() + SUFFIX_LOG : null;
     }
@@ -228,7 +218,7 @@ class LogUtils implements ILog {
         if (TextUtils.isEmpty(filePath)) {
             destPath = getDefaultFilePath(title);
         }
-        if (TextUtils.isEmpty(destPath)) {
+        if (destPath == null || destPath.isEmpty()) {
             return;
         }
         IOUtils.writeStringToLocalFile(title, msg, destPath);
