@@ -182,16 +182,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
     }
 
     /**
-     * 根据配置信息显示文本
-     *
-     * @param config 配置信息对象
-     */
-    @Override
-    public void showToast(@NonNull ToastHelper.ToastConfig config) {
-        ToastHelper.showToast(this, config);
-    }
-
-    /**
      * 根据错误信息显示文本
      *
      * @param info 错误信息对象
@@ -202,6 +192,16 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
                 .setMsg(info.getErrorMsg())
                 .setMsgResId(info.getErrorMsgResId())
                 .build());
+    }
+
+    /**
+     * 根据配置信息显示文本
+     *
+     * @param config 配置信息对象
+     */
+    @Override
+    public void showToast(@NonNull ToastHelper.ToastConfig config) {
+        ToastHelper.showToast(this, config);
     }
 
     /**

@@ -401,16 +401,6 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
     }
 
     /**
-     * 根据资源ID显示文本
-     *
-     * @param config 配置信息对象
-     */
-    @Override
-    public void showToast(@NonNull ToastHelper.ToastConfig config) {
-        ToastHelper.showToast(getContext(), config);
-    }
-
-    /**
      * 根据错误信息显示文本
      *
      * @param info 错误信息对象
@@ -421,6 +411,16 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
                 .setMsg(info.getErrorMsg())
                 .setMsgResId(info.getErrorMsgResId())
                 .build());
+    }
+
+    /**
+     * 根据资源ID显示文本
+     *
+     * @param config 配置信息对象
+     */
+    @Override
+    public void showToast(@NonNull ToastHelper.ToastConfig config) {
+        ToastHelper.showToast(getContext(), config);
     }
 
     /**

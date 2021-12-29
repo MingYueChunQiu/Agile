@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
-import com.mingyuechunqiu.agileproject.feature.function.FunctionDao;
+import com.mingyuechunqiu.agileproject.feature.function.FunctionRepository;
 
 /**
  * <pre>
@@ -14,13 +14,13 @@ import com.mingyuechunqiu.agileproject.feature.function.FunctionDao;
  */
 class MainModel extends MainContract.Model {
 
-    private FunctionDao mDao;
+    private FunctionRepository mRepository;
 
     @Override
-    public void initDao() {
-        super.initDao();
-        mDao = new FunctionDao();
-        mDao.attachModelCallback(this);
+    public void initRepositories() {
+        super.initRepositories();
+        mRepository = new FunctionRepository();
+        mRepository.attachModelCallback(this);
     }
 
     @Override

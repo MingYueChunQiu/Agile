@@ -1,6 +1,8 @@
 
 package com.mingyuechunqiu.agile.ui.fragment;
 
+import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -40,8 +42,6 @@ import com.mingyuechunqiu.agile.frame.ui.fragment.IAgileFragmentPage;
 import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
 
 import org.jetbrains.annotations.NotNull;
-
-import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 
 /**
  * <pre>
@@ -398,16 +398,6 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
     }
 
     /**
-     * 根据资源ID显示文本
-     *
-     * @param config 配置信息对象
-     */
-    @Override
-    public void showToast(@NonNull ToastHelper.ToastConfig config) {
-        ToastHelper.showToast(getContext(), config);
-    }
-
-    /**
      * 根据错误信息显示文本
      *
      * @param info 错误信息对象
@@ -418,6 +408,16 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
                 .setMsg(info.getErrorMsg())
                 .setMsgResId(info.getErrorMsgResId())
                 .build());
+    }
+
+    /**
+     * 根据资源ID显示文本
+     *
+     * @param config 配置信息对象
+     */
+    @Override
+    public void showToast(@NonNull ToastHelper.ToastConfig config) {
+        ToastHelper.showToast(getContext(), config);
     }
 
     /**

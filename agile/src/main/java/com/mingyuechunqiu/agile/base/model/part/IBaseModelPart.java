@@ -2,8 +2,8 @@ package com.mingyuechunqiu.agile.base.model.part;
 
 import androidx.annotation.NonNull;
 
-import com.mingyuechunqiu.agile.base.model.dao.IBaseDao;
-import com.mingyuechunqiu.agile.base.model.dao.IDaoOwner;
+import com.mingyuechunqiu.agile.base.model.repository.IBaseRepository;
+import com.mingyuechunqiu.agile.base.model.repository.IRepositoryOwner;
 
 import java.util.Map;
 import java.util.Set;
@@ -19,10 +19,10 @@ import java.util.Set;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseModelPart extends IDaoOwner {
+public interface IBaseModelPart extends IRepositoryOwner {
 
     @NonNull
-    Map<IBaseDao<?>, Set<String>> getDaoMap();
+    Map<IBaseRepository<?>, Set<String>> getRepositoryMap();
 
     /**
      * 释放资源

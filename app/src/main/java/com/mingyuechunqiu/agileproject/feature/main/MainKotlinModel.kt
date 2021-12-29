@@ -14,9 +14,9 @@ package com.mingyuechunqiu.agileproject.feature.main
  */
 internal class MainKotlinModel() : MainContract.Model() {
 
-    private val mDao: MainContract.Dao<*> by lazy {
-        val dao = MainDao()
-        addDao(dao)
+    private val mDao: MainContract.Repository<*> by lazy {
+        val dao = MainRepository()
+        addRepository(dao)
         dao
     }
 

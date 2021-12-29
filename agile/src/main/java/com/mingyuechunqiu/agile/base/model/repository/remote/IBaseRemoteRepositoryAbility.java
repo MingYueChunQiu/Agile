@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.base.model.dao.remote;
+package com.mingyuechunqiu.agile.base.model.repository.remote;
 
 /**
  * <pre>
@@ -6,9 +6,9 @@ package com.mingyuechunqiu.agile.base.model.dao.remote;
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/3/14
- *     desc   : 远程Dao层接口
+ *     desc   : 远程Repository层接口
  *     version: 1.0
  * </pre>
  */
-public interface IBaseRemoteDao {
+public interface IBaseRemoteRepositoryAbility {
 }

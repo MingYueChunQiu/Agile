@@ -1,10 +1,10 @@
-package com.mingyuechunqiu.agile.base.model.dao.local;
+package com.mingyuechunqiu.agile.base.model.repository.local;
 
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.model.dao.BaseAbstractDao;
+import com.mingyuechunqiu.agile.base.model.repository.BaseAbstractRepository;
 import com.mingyuechunqiu.agile.base.model.framework.callback.local.DaoLocalCallback;
-import com.mingyuechunqiu.agile.base.model.dao.operation.local.IBaseLocalDaoOperation;
+import com.mingyuechunqiu.agile.base.model.repository.operation.local.IBaseLocalRepositoryOperationAbility;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,22 +16,22 @@ import java.util.List;
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/6/26
- *     desc   : 本地Dao层抽象基类
- *              实现IBaseLocalDao
+ *     desc   : 本地Repository层抽象基类
+ *              实现IBaseLocalRepository
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback> extends BaseAbstractDao<C> implements IBaseLocalDao {
+public abstract class BaseAbstractLocalRepository<C extends DaoLocalCallback> extends BaseAbstractRepository<C> implements IBaseLocalRepositoryAbility {
 
     @Nullable
-    private List<IBaseLocalDaoOperation<?>> mLocalDaoOperationList;
+    private List<IBaseLocalRepositoryOperationAbility<?>> mLocalDaoOperationList;
 
     /**
      * 添加本地数据操作
      *
      * @param operation 本地数据操作
      */
-    protected <T> void addLocalOperation(@Nullable IBaseLocalDaoOperation<T> operation) {
+    protected <T> void addLocalOperation(@Nullable IBaseLocalRepositoryOperationAbility<T> operation) {
         if (operation == null || operation.isCanceled()) {
             return;
         }
@@ -40,9 +40,9 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback> extends B
         }
         //移除已经失效了的操作
         if (mLocalDaoOperationList.size() > 0) {
-            Iterator<IBaseLocalDaoOperation<?>> iterator = mLocalDaoOperationList.iterator();
+            Iterator<IBaseLocalRepositoryOperationAbility<?>> iterator = mLocalDaoOperationList.iterator();
             while (iterator.hasNext()) {
-                IBaseLocalDaoOperation<?> o = iterator.next();
+                IBaseLocalRepositoryOperationAbility<?> o = iterator.next();
                 if (o != null && o.isCanceled()) {
                     o.releaseOnDetach();
                     iterator.remove();
@@ -59,7 +59,7 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback> extends B
      *
      * @param operation 本地数据操作
      */
-    protected <T> void removeLocalOperation(@Nullable IBaseLocalDaoOperation<T> operation) {
+    protected <T> void removeLocalOperation(@Nullable IBaseLocalRepositoryOperationAbility<T> operation) {
         if (operation == null || mLocalDaoOperationList == null || mLocalDaoOperationList.size() == 0) {
             return;
         }
@@ -76,7 +76,7 @@ public abstract class BaseAbstractLocalDao<C extends DaoLocalCallback> extends B
         if (mLocalDaoOperationList == null) {
             return;
         }
-        for (IBaseLocalDaoOperation<?> operation : mLocalDaoOperationList) {
+        for (IBaseLocalRepositoryOperationAbility<?> operation : mLocalDaoOperationList) {
             if (operation != null) {
                 if (!operation.isCanceled()) {
                     operation.cancel();

@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.bridge.Request;
-import com.mingyuechunqiu.agile.base.model.dao.IBaseDao;
+import com.mingyuechunqiu.agile.base.model.repository.IBaseRepository;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,81 +27,81 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class BaseAbstractModelPart implements IBaseModelPart {
 
-    //Dao映射集合，一个Dao可以响应多个Request请求
+    //Repository映射集合，一个Repository可以响应多个Request请求
     @Nullable
-    private Map<IBaseDao<?>, Set<String>> mDaoMap;
+    private Map<IBaseRepository<?>, Set<String>> mRepositoryMap;
 
     @NonNull
     @Override
-    public Map<IBaseDao<?>, Set<String>> getDaoMap() {
-        if (mDaoMap == null) {
+    public Map<IBaseRepository<?>, Set<String>> getRepositoryMap() {
+        if (mRepositoryMap == null) {
             synchronized (this) {
-                if (mDaoMap == null) {
-                    mDaoMap = new ConcurrentHashMap<>();
+                if (mRepositoryMap == null) {
+                    mRepositoryMap = new ConcurrentHashMap<>();
                 }
             }
         }
-        return mDaoMap;
+        return mRepositoryMap;
     }
 
     @Override
     public void releaseOnDetach() {
         release();
-        if (mDaoMap != null) {
-            for (IBaseDao<?> dao : mDaoMap.keySet()) {
-                if (dao != null) {
-                    dao.releaseOnDetach();
+        if (mRepositoryMap != null) {
+            for (IBaseRepository<?> repository : mRepositoryMap.keySet()) {
+                if (repository != null) {
+                    repository.releaseOnDetach();
                 }
             }
-            mDaoMap.clear();
-            mDaoMap = null;
+            mRepositoryMap.clear();
+            mRepositoryMap = null;
         }
     }
 
     /**
-     * 添加Dao层单元
+     * 添加Repository层单元
      *
-     * @param dao dao单元
+     * @param repository Repository单元
      * @return 如果添加成功返回true，否则返回false
      */
     @Override
-    public boolean addDao(@Nullable IBaseDao<?> dao) {
-        if (dao == null) {
+    public boolean addRepository(@Nullable IBaseRepository<?> repository) {
+        if (repository == null) {
             return false;
         }
         List<String> requestTags = new ArrayList<>();
         requestTags.add(Request.DEFAULT_KEY_REQUEST_TAG);
-        return addDao(dao, requestTags);
+        return addRepository(repository, requestTags);
     }
 
     /**
-     * 添加Dao层单元（同步方法）
+     * 添加Repository层单元（同步方法）
      *
-     * @param dao dao单元
+     * @param repository Repository单元
      * @return 如果添加成功返回true，否则返回false
      */
     @Override
-    public synchronized boolean addDao(@NonNull IBaseDao<?> dao, @NonNull List<String> requestTags) {
-        Set<String> originalRequestTags = getDaoMap().get(dao);
+    public synchronized boolean addRepository(@NonNull IBaseRepository<?> repository, @NonNull List<String> requestTags) {
+        Set<String> originalRequestTags = getRepositoryMap().get(repository);
         if (originalRequestTags == null) {
             originalRequestTags = new HashSet<>();
         }
         originalRequestTags.addAll(requestTags);
-        return getDaoMap().put(dao, originalRequestTags) != null;
+        return getRepositoryMap().put(repository, originalRequestTags) != null;
     }
 
     /**
-     * 删除dao单元
+     * 删除Repository单元
      *
-     * @param dao dao单元
+     * @param repository Repository单元
      * @return 如果删除成功返回true，否则返回false
      */
     @Override
-    public boolean removeDao(@Nullable IBaseDao<?> dao) {
-        if (dao == null || mDaoMap == null) {
+    public boolean removeRepository(@Nullable IBaseRepository<?> repository) {
+        if (repository == null || mRepositoryMap == null) {
             return false;
         }
-        return getDaoMap().remove(dao) != null;
+        return getRepositoryMap().remove(repository) != null;
     }
 
     /**

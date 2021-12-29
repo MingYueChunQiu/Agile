@@ -94,7 +94,7 @@ model:
 		----IBaseModelPart extends IDaoOwner
 		    ----BaseAbstractModelPart implements IBaseModelPart
 		    
-		dao:
+		repository:
 		----IBaseDao<C extends DaoCallback> extends ICallExecutor
 		    ----BaseAbstractDao<C : DaoCallback> : IBaseDao<C>
 		

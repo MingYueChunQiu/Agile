@@ -33,16 +33,16 @@ interface IPopHintOwner {
     fun showToast(msg: String?)
 
     /**
-     * 根据配置信息显示提示
-     *
-     * @param config 配置信息对象
-     */
-    fun showToast(config: ToastConfig)
-
-    /**
      * 根据错误信息显示提示
      *
      * @param info 错误信息对象
      */
     fun showToast(info: ErrorInfo)
+
+    /**
+     * 根据配置信息显示提示
+     *
+     * @param config 配置信息对象
+     */
+    fun showToast(config: ToastConfig)
 }

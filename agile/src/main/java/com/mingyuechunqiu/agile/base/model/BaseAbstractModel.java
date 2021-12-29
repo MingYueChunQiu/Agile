@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.bridge.Request;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
-import com.mingyuechunqiu.agile.base.model.dao.IBaseDao;
+import com.mingyuechunqiu.agile.base.model.repository.IBaseRepository;
 import com.mingyuechunqiu.agile.base.model.part.IBaseModelPart;
 
 import java.util.ArrayList;
@@ -31,15 +31,15 @@ public abstract class BaseAbstractModel implements IBaseModel {
     protected final String TAG_FAILURE = getClass().getSimpleName() + " failure";//打印错误日志标签
 
     public BaseAbstractModel() {
-        initModelPart();
-        initDao();
+        initModelParts();
+        initRepositories();
     }
 
     @Nullable
     private List<IBaseModelPart> mModelPartList;
-    //Dao映射集合，一个Dao可以响应多个Request请求
+    //Repository映射集合，一个Repository可以响应多个Request请求
     @Nullable
-    private Map<IBaseDao<?>, Set<String>> mDaoMap;
+    private Map<IBaseRepository<?>, Set<String>> mRepositoryMap;
 
     @Override
     public void callOnStart() {
@@ -96,52 +96,52 @@ public abstract class BaseAbstractModel implements IBaseModel {
     }
 
     /**
-     * 添加Dao层单元
+     * 添加Repository层单元
      *
-     * @param dao dao单元
+     * @param repository Repository单元
      * @return 如果添加成功返回true，否则返回false
      */
     @Override
-    public boolean addDao(@NonNull IBaseDao<?> dao) {
+    public boolean addRepository(@NonNull IBaseRepository<?> repository) {
         List<String> requestTags = new ArrayList<>();
         requestTags.add(Request.DEFAULT_KEY_REQUEST_TAG);
-        return addDao(dao, requestTags);
+        return addRepository(repository, requestTags);
     }
 
     /**
-     * 添加Dao层单元（同步方法）
+     * 添加Repository层单元（同步方法）
      *
-     * @param dao dao单元
+     * @param repository Repository单元
      * @return 如果添加成功返回true，否则返回false
      */
     @Override
-    public synchronized boolean addDao(@NonNull IBaseDao<?> dao, @NonNull List<String> requestTags) {
-        Set<String> originalRequestTags = getDaoMap().get(dao);
+    public synchronized boolean addRepository(@NonNull IBaseRepository<?> repository, @NonNull List<String> requestTags) {
+        Set<String> originalRequestTags = getRepositoryMap().get(repository);
         if (originalRequestTags == null) {
             originalRequestTags = new HashSet<>();
         }
         originalRequestTags.addAll(requestTags);
-        return getDaoMap().put(dao, originalRequestTags) != null;
+        return getRepositoryMap().put(repository, originalRequestTags) != null;
     }
 
     /**
-     * 删除dao单元
+     * 删除Repository单元
      *
-     * @param dao dao单元
+     * @param repository Repository单元
      * @return 如果删除成功返回true，否则返回false
      */
     @Override
-    public boolean removeDao(@Nullable IBaseDao<?> dao) {
-        if (dao == null || mDaoMap == null) {
+    public boolean removeRepository(@Nullable IBaseRepository<?> repository) {
+        if (repository == null || mRepositoryMap == null) {
             return false;
         }
-        return getDaoMap().remove(dao) != null;
+        return getRepositoryMap().remove(repository) != null;
     }
 
     @NonNull
     @Override
-    public List<IBaseDao<?>> getDaoList() {
-        return new ArrayList<>(getDaoMap().keySet());
+    public List<IBaseRepository<?>> getRepositoryList() {
+        return new ArrayList<>(getRepositoryMap().keySet());
     }
 
     @Override
@@ -167,49 +167,15 @@ public abstract class BaseAbstractModel implements IBaseModel {
             mModelPartList.clear();
             mModelPartList = null;
         }
-        if (mDaoMap != null) {
-            for (IBaseDao<?> dao : mDaoMap.keySet()) {
-                if (dao != null) {
-                    dao.releaseOnDetach();
+        if (mRepositoryMap != null) {
+            for (IBaseRepository<?> repository : mRepositoryMap.keySet()) {
+                if (repository != null) {
+                    repository.releaseOnDetach();
                 }
             }
-            mDaoMap.clear();
-            mDaoMap = null;
+            mRepositoryMap.clear();
+            mRepositoryMap = null;
         }
-    }
-
-    private <T> boolean executeCallWithDaoMap(@NonNull Map<IBaseDao<?>, Set<String>> map, @NonNull Call<T> call) {
-        for (Map.Entry<IBaseDao<?>, Set<String>> entry : map.entrySet()) {
-            if (entry.getValue().contains(call.getRequest().getRequestTag())) {
-                entry.getKey().executeCall(call);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @NonNull
-    private Map<IBaseDao<?>, Set<String>> getModelPartDaoMap() {
-        Map<IBaseDao<?>, Set<String>> daoMap = new HashMap<>();
-        if (mModelPartList == null) {
-            return daoMap;
-        }
-        for (IBaseModelPart part : mModelPartList) {
-            daoMap.putAll(part.getDaoMap());
-        }
-        return daoMap;
-    }
-
-    @NonNull
-    private Map<IBaseDao<?>, Set<String>> getDaoMap() {
-        if (mDaoMap == null) {
-            synchronized (this) {
-                if (mDaoMap == null) {
-                    mDaoMap = new ConcurrentHashMap<>();
-                }
-            }
-        }
-        return mDaoMap;
     }
 
     /**
@@ -223,6 +189,46 @@ public abstract class BaseAbstractModel implements IBaseModel {
         return false;
     }
 
+    protected void initModelParts() {
+    }
+
+    protected void initRepositories() {
+    }
+
+    private <T> boolean executeCallWithRepositoryMap(@NonNull Map<IBaseRepository<?>, Set<String>> map, @NonNull Call<T> call) {
+        for (Map.Entry<IBaseRepository<?>, Set<String>> entry : map.entrySet()) {
+            if (entry.getValue().contains(call.getRequest().getRequestTag())) {
+                entry.getKey().executeCall(call);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @NonNull
+    private Map<IBaseRepository<?>, Set<String>> getModelPartRepositoryMap() {
+        Map<IBaseRepository<?>, Set<String>> repositoryMap = new HashMap<>();
+        if (mModelPartList == null) {
+            return repositoryMap;
+        }
+        for (IBaseModelPart part : mModelPartList) {
+            repositoryMap.putAll(part.getRepositoryMap());
+        }
+        return repositoryMap;
+    }
+
+    @NonNull
+    private Map<IBaseRepository<?>, Set<String>> getRepositoryMap() {
+        if (mRepositoryMap == null) {
+            synchronized (this) {
+                if (mRepositoryMap == null) {
+                    mRepositoryMap = new ConcurrentHashMap<>();
+                }
+            }
+        }
+        return mRepositoryMap;
+    }
+
     /**
      * 内部执行调用逻辑
      *
@@ -231,19 +237,13 @@ public abstract class BaseAbstractModel implements IBaseModel {
      * @return 请求已处理返回true，否则返回false
      */
     private <T> boolean executeCallInternal(@NonNull Call<T> call) {
-        if (executeCallWithDaoMap(getModelPartDaoMap(), call)) {
+        if (executeCallWithRepositoryMap(getModelPartRepositoryMap(), call)) {
             return true;
         }
-        if (mDaoMap == null) {
+        if (mRepositoryMap == null) {
             return false;
         }
-        return executeCallWithDaoMap(getDaoMap(), call);
-    }
-
-    public void initModelPart() {
-    }
-
-    public void initDao() {
+        return executeCallWithRepositoryMap(getRepositoryMap(), call);
     }
 
     /**

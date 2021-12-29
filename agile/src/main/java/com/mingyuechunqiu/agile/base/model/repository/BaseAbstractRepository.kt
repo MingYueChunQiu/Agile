@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.base.model.dao
+package com.mingyuechunqiu.agile.base.model.repository
 
 import com.mingyuechunqiu.agile.base.model.framework.callback.DaoCallback
 
@@ -10,12 +10,13 @@ import com.mingyuechunqiu.agile.base.model.framework.callback.DaoCallback
  *      Github:     https://github.com/MingYueChunQiu
  *      Email:      xiyujieit@163.com
  *      Time:       4/18/21 8:01 PM
- *      Desc:       Dao层抽象基类
- *                  实现IBaseDao
+ *      Desc:       Repository层抽象基类
+ *                  实现IBaseRepository
  *      Version:    1.0
  * </pre>
  */
-abstract class BaseAbstractDao<C : DaoCallback> : IBaseDao<C> {
+abstract class BaseAbstractRepository<C : DaoCallback> :
+    IBaseRepository<C> {
 
     private var mModelCallback: C? = null
 

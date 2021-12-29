@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.base.model.dao.local;
+package com.mingyuechunqiu.agile.base.model.repository.local;
 
 /**
  * <pre>
@@ -6,9 +6,9 @@ package com.mingyuechunqiu.agile.base.model.dao.local;
  *     Github : https://github.com/MingYueChunQiu
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/3/14
- *     desc   : 本地Dao层接口
+ *     desc   : 所有本地Repository层接口
  *     version: 1.0
  * </pre>
  */
-public interface IBaseLocalDao {
+public interface IBaseLocalRepositoryAbility {
 }

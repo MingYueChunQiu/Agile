@@ -10,16 +10,24 @@ import com.mingyuechunqiu.agile.frame.Agile
 import com.mingyuechunqiu.agile.util.NetworkUtils
 import com.mingyuechunqiu.agile.util.SharedPreferencesUtils
 
+/**
+ * <pre>
+ *     author : xyj
+ *     e-mail : xiyujieit@163.com
+ *     time   : 2021/12/29
+ *     desc   : 所有带数据处理功能的ViewModel层的基类
+ *              继承自BaseAbstractViewModel
+ *     version: 1.0
+ * </pre>
+ */
 abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstractViewModel<M>() {
 
-    open fun <T> executeCall(call: Call<T>): Boolean {
-        requireNotNull(getModel()) { "Model has not been set!" }
+    override fun <T> executeCall(call: Call<T>): Boolean {
+        requireNotNull(model) { "Model has not been set!" }
         if (call.getRequest().requestCategory === Request.RequestCategory.CATEGORY_NETWORK) {
             //判断当前网络状况，是否继续进行网络业务操作
             if (!checkNetworkIsConnected()) {
-                if (!checkViewRefIsNull()) {
-                    disconnectNetwork()
-                }
+                disconnectNetwork()
                 return false
             }
         }
@@ -27,8 +35,7 @@ abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstra
     }
 
     protected open fun <T> executeCallWithModel(call: Call<T>): Boolean {
-        val model: M = getModel()
-        return model != null && model.executeCall(call)
+        return model?.executeCall(call) ?: false
     }
 
     /**
