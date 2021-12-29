@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.model.repository.BaseAbstractRepository;
 import com.mingyuechunqiu.agile.base.model.framework.callback.local.DaoLocalCallback;
+import com.mingyuechunqiu.agile.base.model.repository.operation.local.BaseAbstractLocalRepositoryOperation;
 import com.mingyuechunqiu.agile.base.model.repository.operation.local.IBaseLocalRepositoryOperationAbility;
 
 import java.util.ArrayList;
