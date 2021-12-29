@@ -94,7 +94,6 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        restoreAgileResource(savedInstanceState);
         initView(view, savedInstanceState);
     }
 
@@ -147,12 +146,6 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
     public void onDetach() {
         super.onDetach();
         Agile.getLifecycleDispatcher().updateDialogFragmentLifecycleState(this, AgileLifecycle.State.DialogFragmentState.DETACHED);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        getStatusViewManager().saveStatueViewInstanceState(outState, getParentFragmentManager());
     }
 
     @NonNull
@@ -469,15 +462,13 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
 
     /**
      * 关闭状态视图
-     *
-     * @param allowStateLoss true允许丧失状态，否则false
      */
     @Override
-    public void dismissStatusView(boolean allowStateLoss) {
+    public void dismissStatusView() {
         if (mStatusViewManager == null) {
             return;
         }
-        getStatusViewManager().dismissStatusView(allowStateLoss);
+        getStatusViewManager().dismissStatusView();
     }
 
     /**
@@ -546,15 +537,6 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
             return inflater.inflate(id, container, false);
         }
         return creator.getInflateLayoutView(inflater, container);
-    }
-
-    /**
-     * 恢复意外销毁被保存的资源
-     *
-     * @param savedInstanceState 实例资源对象
-     */
-    protected void restoreAgileResource(@Nullable Bundle savedInstanceState) {
-        getStatusViewManager().restoreStatueViewInstanceState(savedInstanceState, getParentFragmentManager());
     }
 
     /**

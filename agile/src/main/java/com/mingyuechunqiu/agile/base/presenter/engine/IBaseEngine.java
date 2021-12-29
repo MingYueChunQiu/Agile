@@ -10,7 +10,7 @@ package com.mingyuechunqiu.agile.base.presenter.engine;
  *     version: 1.0
  * </pre>
  */
-public interface IBasePresenterEngine {
+public interface IBaseEngine {
 
     /**
      * 释放资源

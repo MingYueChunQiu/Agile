@@ -74,7 +74,7 @@ public class DialogActivity extends BaseActivity implements View.OnClickListener
         if (id == R.id.btn_add_loading) {
             getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, findViewById(R.id.fl_loading_container), null);
         } else if (id == R.id.btn_hide_loading || id == R.id.btn_dismiss_loading) {
-            dismissStatusView(true);
+            dismissStatusView();
         } else if (id == R.id.btn_show_loading) {
             showLoadingStatusView(null, true);
         } else if (id == R.id.btn_loading_test) {

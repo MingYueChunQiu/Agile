@@ -14,7 +14,7 @@ import java.util.*
  *      Version:    1.0
  * </pre>
  */
-class TimingPresenterEngine : ITimingPresenterEngine {
+class TimingEngine : ITimingEngine {
 
     private var mTimer: Timer? = null
     private var mTimerTask: TimerTask? = null
@@ -37,7 +37,7 @@ class TimingPresenterEngine : ITimingPresenterEngine {
         mTimer?.schedule(mTimerTask, delay, period)
     }
 
-    override fun startCountDownTask(count: Int, callback: ITimingPresenterEngine.CountDownCallback) {
+    override fun startCountDownTask(count: Int, callback: ITimingEngine.CountDownCallback) {
         releaseTimingResource()
         mTotalCountDownCount = count
         mCountDownCount = 0

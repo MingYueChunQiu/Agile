@@ -62,22 +62,6 @@ public class StatusViewOption {
         mBuilder.backWithDismiss = backWithDismiss;
     }
 
-    public int getDialogWidth() {
-        return mBuilder.dialogWidth;
-    }
-
-    public void setDialogWidth(int dialogWidth) {
-        mBuilder.dialogWidth = dialogWidth;
-    }
-
-    public int getDialogHeight() {
-        return mBuilder.dialogHeight;
-    }
-
-    public void setDialogHeight(int dialogHeight) {
-        mBuilder.dialogHeight = dialogHeight;
-    }
-
     public float getDialogDimAmount() {
         return mBuilder.dialogDimAmount;
     }
@@ -215,7 +199,6 @@ public class StatusViewOption {
         private IStatusViewContainer container;//对话框布局容器
         private boolean cancelWithOutside;//是否能触摸外围区域取消对话框
         private boolean backWithDismiss;//是否按返回键时视图消失（当设置OnStatusViewDialogListener时，backWithDismiss属性失效）
-        private int dialogWidth, dialogHeight;//对话框宽高
         @FloatRange(from = 0.0, to = 1.0)
         private float dialogDimAmount;//对话框背景遮罩
         private @StyleRes
@@ -274,24 +257,6 @@ public class StatusViewOption {
 
         public Builder setBackWithDismiss(boolean backWithDismiss) {
             this.backWithDismiss = backWithDismiss;
-            return this;
-        }
-
-        public int getDialogWidth() {
-            return dialogWidth;
-        }
-
-        public Builder setDialogWidth(int dialogWidth) {
-            this.dialogWidth = dialogWidth;
-            return this;
-        }
-
-        public int getDialogHeight() {
-            return dialogHeight;
-        }
-
-        public Builder setDialogHeight(int dialogHeight) {
-            this.dialogHeight = dialogHeight;
             return this;
         }
 

@@ -87,7 +87,6 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
         super.onCreate(savedInstanceState);
         getDialogLifecycleOwner().handleLifecycleEvent(Lifecycle.Event.ON_CREATE);
         Agile.getLifecycleDispatcher().updateDialogLifecycleState(this, AgileLifecycle.State.DialogState.CREATED);
-        restoreAgileResource(savedInstanceState);
         initOnCreate(savedInstanceState);
         setOnDismissListener(dialog -> releaseOnDetach());
     }
@@ -104,14 +103,6 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
         super.onStop();
         getDialogLifecycleOwner().handleLifecycleEvent(Lifecycle.Event.ON_STOP);
         Agile.getLifecycleDispatcher().updateDialogLifecycleState(this, AgileLifecycle.State.DialogState.STOPPED);
-    }
-
-    @NonNull
-    @Override
-    public Bundle onSaveInstanceState() {
-        Bundle bundle = super.onSaveInstanceState();
-        getStatusViewManager().saveStatueViewInstanceState(bundle, null);
-        return bundle;
     }
 
     @NonNull
@@ -349,15 +340,13 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
 
     /**
      * 关闭状态视图
-     *
-     * @param allowStateLoss true允许丧失状态，否则false
      */
     @Override
-    public void dismissStatusView(boolean allowStateLoss) {
+    public void dismissStatusView() {
         if (mStatusViewManager == null) {
             return;
         }
-        getStatusViewManager().dismissStatusView(allowStateLoss);
+        getStatusViewManager().dismissStatusView();
     }
 
     /**
@@ -415,15 +404,6 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
             return;
         }
         throw new IllegalStateException("initInflateLayoutView must be set inflateLayoutId or inflateLayoutView");
-    }
-
-    /**
-     * 恢复意外销毁被保存的资源
-     *
-     * @param savedInstanceState 实例资源对象
-     */
-    protected void restoreAgileResource(@Nullable Bundle savedInstanceState) {
-        getStatusViewManager().restoreStatueViewInstanceState(savedInstanceState, null);
     }
 
     /**

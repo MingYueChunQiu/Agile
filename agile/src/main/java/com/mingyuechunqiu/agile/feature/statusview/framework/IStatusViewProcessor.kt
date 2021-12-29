@@ -14,7 +14,14 @@ import androidx.annotation.IdRes
  *      Version:    1.0
  * </pre>
  */
-interface IStatusViewable {
+interface IStatusViewProcessor {
+
+    /**
+     * 显示加载状态视图
+     *
+     * @param containerId 状态视图添加布局ID
+     */
+    fun showLoadingStatusView(@IdRes containerId: Int)
 
     /**
      * 显示加载对话框
@@ -25,9 +32,7 @@ interface IStatusViewable {
     fun showLoadingStatusView(hint: String?, cancelable: Boolean)
 
     /**
-     * 显示加载状态视图
-     *
-     * @param containerId 状态视图添加布局ID
+     * 关闭状态视图
      */
-    fun showLoadingStatusView(@IdRes containerId: Int)
+    fun dismissStatusView()
 }

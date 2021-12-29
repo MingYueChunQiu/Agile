@@ -64,8 +64,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         btnShow.setOnClickListener(this);
         btnHide.setOnClickListener(this);
         StatusViewOption option = new StatusViewOption.Builder()
-                .setDialogWidth(200)
-                .setDialogHeight(600)
                 .setCancelWithOutside(true)
                 .setOnStatusViewDialogListener(new StatusViewOption.OnStatusViewDialogListener() {
                     @Override
@@ -79,7 +77,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                     }
                 })
                 .build();
-        getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, getParentFragmentManager(), option);
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, this, option);
     }
 
     @Override
@@ -87,9 +85,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_fragment_main_show:
 //                showLoadingStatusView("被我", false);
-                getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, getParentFragmentManager(), new StatusViewOption.Builder()
-                        .setDialogWidth(500)
-                        .setDialogHeight(400)
+                getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, this, new StatusViewOption.Builder()
                         .setCancelWithOutside(true)
                         .setOnStatusViewDialogListener(new StatusViewOption.OnStatusViewDialogListener() {
                             @Override
@@ -105,7 +101,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                         }).build());
                 break;
             case R.id.btn_fragment_main_hide:
-                dismissStatusView(true);
+                dismissStatusView();
                 break;
         }
     }

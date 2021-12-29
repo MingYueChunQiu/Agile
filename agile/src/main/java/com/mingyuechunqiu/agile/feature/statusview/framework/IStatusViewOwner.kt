@@ -15,9 +15,7 @@ import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager
  *      Version:    1.0
  * </pre>
  */
-interface IStatusViewOwner : IStatusViewable {
-
-    fun dismissStatusView(allowStateLoss: Boolean)
+interface IStatusViewOwner : IStatusViewProcessor {
 
     fun getStatusViewManager(): IStatusViewManager
 }

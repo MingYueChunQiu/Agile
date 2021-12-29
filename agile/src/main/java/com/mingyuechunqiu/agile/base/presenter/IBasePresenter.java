@@ -2,13 +2,13 @@ package com.mingyuechunqiu.agile.base.presenter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleEventObserver;
 
 import com.mingyuechunqiu.agile.base.bridge.call.ICallExecutor;
 import com.mingyuechunqiu.agile.base.model.IBaseModel;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
-import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewable;
+import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewProcessor;
 
 /**
  * <pre>
@@ -19,7 +19,7 @@ import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewable;
  *     version: 1.0
  * </pre>
  */
-public interface IBasePresenter<V extends IBaseView, M extends IBaseModel> extends LifecycleObserver, ICallExecutor, IPopHintOwner, IStatusViewable {
+public interface IBasePresenter<V extends IBaseView, M extends IBaseModel> extends LifecycleEventObserver, ICallExecutor, IPopHintOwner, IStatusViewProcessor {
 
     void attachView(@NonNull V view);
 

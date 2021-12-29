@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agile.ui.activity;
 
+import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
+
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -36,8 +38,6 @@ import com.mingyuechunqiu.agile.util.ExitApplicationManager;
 
 import org.jetbrains.annotations.NotNull;
 
-import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
-
 /**
  * <pre>
  *     author : xyj
@@ -64,7 +64,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Agile.getLifecycleDispatcher().updateActivityLifecycleState(this, AgileLifecycle.State.ActivityState.CREATED);
-        restoreAgileResource(savedInstanceState);
         initOnCreate(savedInstanceState);
     }
 
@@ -99,12 +98,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
         release();
         mStatusViewManager = null;
         ExitApplicationManager.getInstance().removeActivity(this);
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        getStatusViewManager().saveStatueViewInstanceState(outState, getSupportFragmentManager());
     }
 
     @NonNull
@@ -241,15 +234,13 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
 
     /**
      * 关闭状态视图
-     *
-     * @param allowStateLoss true允许丧失状态，否则false
      */
     @Override
-    public void dismissStatusView(boolean allowStateLoss) {
+    public void dismissStatusView() {
         if (mStatusViewManager == null) {
             return;
         }
-        getStatusViewManager().dismissStatusView(allowStateLoss);
+        getStatusViewManager().dismissStatusView();
     }
 
     /**
@@ -289,15 +280,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
             return;
         }
         throw new IllegalStateException("initInflateLayoutView must be set inflateLayoutId or inflateLayoutView");
-    }
-
-    /**
-     * 恢复意外销毁被保存的资源
-     *
-     * @param savedInstanceState 实例资源对象
-     */
-    protected void restoreAgileResource(@Nullable Bundle savedInstanceState) {
-        getStatusViewManager().restoreStatueViewInstanceState(savedInstanceState, getSupportFragmentManager());
     }
 
     /**

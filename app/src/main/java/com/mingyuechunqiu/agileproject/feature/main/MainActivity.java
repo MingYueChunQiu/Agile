@@ -1,5 +1,14 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
+import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_NAVIGATION_TITLE;
+import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_NAVIGATION_BG_COLOR;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_SHOW_BACK_DIALOG;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_COLOR;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_TEXT_SIZE;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_VISIBLE;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_WEB_URL;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -38,15 +47,6 @@ import com.mingyuechunqiu.agileproject.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
-
-import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_NAVIGATION_TITLE;
-import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_NAVIGATION_BG_COLOR;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_SHOW_BACK_DIALOG;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_COLOR;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_TEXT_SIZE;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_VISIBLE;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_WEB_URL;
 
 /**
  * <pre>
@@ -254,7 +254,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                     }
                 });
 //                showLoadingStatusView("测试", false);
-                getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, getSupportFragmentManager(), option);
+                getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, this, option);
 //                showLoadingStatusView(R.id.fl_main_container);
 
 //                getCurrentLoadingDialog().resetLoadingDialog();
@@ -306,7 +306,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 //                        .show();
                 break;
             case R.id.btn_main_hide:
-                dismissStatusView(true);
+                dismissStatusView();
                 break;
         }
     }

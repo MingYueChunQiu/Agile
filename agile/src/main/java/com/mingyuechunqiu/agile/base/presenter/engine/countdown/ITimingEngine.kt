@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.presenter.engine.countdown
 
-import com.mingyuechunqiu.agile.base.presenter.engine.IBasePresenterEngine
+import com.mingyuechunqiu.agile.base.presenter.engine.IBaseEngine
 
 /**
  * <pre>
@@ -14,7 +14,8 @@ import com.mingyuechunqiu.agile.base.presenter.engine.IBasePresenterEngine
  *      Version:    1.0
  * </pre>
  */
-interface ITimingPresenterEngine : IBasePresenterEngine {
+interface ITimingEngine :
+    IBaseEngine {
 
     /**
      * 开启一个延迟任务

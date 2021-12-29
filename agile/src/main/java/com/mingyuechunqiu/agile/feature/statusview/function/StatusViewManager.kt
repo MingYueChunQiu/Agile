@@ -1,6 +1,8 @@
 package com.mingyuechunqiu.agile.feature.statusview.function
 
+import android.app.Activity
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure
@@ -31,6 +33,22 @@ internal class StatusViewManager(private val mHelper: IStatusViewHelper) : IStat
 
     override fun getStatusView(): IStatusView? {
         return mHelper.getStatusView()
+    }
+
+    override fun showStatusView(
+        type: StatusViewType,
+        activity: Activity,
+        option: StatusViewOption?
+    ) {
+        mHelper.showStatusView(type, activity, option)
+    }
+
+    override fun showStatusView(
+        type: StatusViewType,
+        fragment: Fragment,
+        option: StatusViewOption?
+    ) {
+        mHelper.showStatusView(type, fragment, option)
     }
 
     override fun showStatusView(

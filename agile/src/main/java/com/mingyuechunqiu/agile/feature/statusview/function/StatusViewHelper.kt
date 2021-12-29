@@ -1,6 +1,8 @@
 package com.mingyuechunqiu.agile.feature.statusview.function
 
+import android.app.Activity
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
@@ -35,6 +37,34 @@ internal class StatusViewHelper : IStatusViewHelper {
 
     override fun getStatusView(): IStatusView? {
         return mStatusView
+    }
+
+    override fun showStatusView(
+        type: StatusViewConstants.StatusViewType,
+        activity: Activity,
+        option: StatusViewOption?
+    ) {
+        (activity.findViewById(android.R.id.content) as? ViewGroup)?.let {
+            checkOrCreateWidgetStatusView(type, option).showStatusView(
+                type,
+                it,
+                checkOrCreateStatusViewOption(type, option)
+            )
+        }
+    }
+
+    override fun showStatusView(
+        type: StatusViewConstants.StatusViewType,
+        fragment: Fragment,
+        option: StatusViewOption?
+    ) {
+        (fragment.view as? ViewGroup)?.let {
+            checkOrCreateWidgetStatusView(type, option).showStatusView(
+                type,
+                it,
+                checkOrCreateStatusViewOption(type, option)
+            )
+        }
     }
 
     override fun showStatusView(

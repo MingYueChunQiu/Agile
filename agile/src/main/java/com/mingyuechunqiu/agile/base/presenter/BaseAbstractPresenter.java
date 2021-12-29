@@ -7,11 +7,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.model.IBaseModel;
-import com.mingyuechunqiu.agile.base.presenter.engine.IBasePresenterEngine;
+import com.mingyuechunqiu.agile.base.presenter.engine.IBaseEngine;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
@@ -39,7 +40,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     @Nullable
     private M mModel;
     @Nullable
-    private List<IBasePresenterEngine> mPresenterEngineList;
+    private List<IBaseEngine> mPresenterEngineList;
 
     @Override
     public void attachView(@NonNull V view) {
@@ -141,7 +142,24 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
         return mModel;
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    @Override
+    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+        switch (event) {
+            case ON_START:
+                callOnStart();
+                break;
+            case ON_RESUME:
+                callOnResume();
+                break;
+            case ON_PAUSE:
+                callOnPause();
+                break;
+            case ON_STOP:
+                callOnStop();
+                break;
+        }
+    }
+
     public void callOnStart() {
         onStart();
         if (mModel != null) {
@@ -149,7 +167,6 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void callOnResume() {
         onResume();
         if (mModel != null) {
@@ -157,7 +174,6 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     public void callOnPause() {
         onPause();
         if (mModel != null) {
@@ -165,7 +181,6 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     public void callOnStop() {
         onStop();
         if (mModel != null) {
@@ -186,6 +201,14 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
         V v = getView();
         if (v instanceof IStatusViewOwner) {
             ((IStatusViewOwner) v).showLoadingStatusView(containerId);
+        }
+    }
+
+    @Override
+    public void dismissStatusView() {
+        V v = getView();
+        if (v instanceof IStatusViewOwner) {
+            ((IStatusViewOwner) v).dismissStatusView();
         }
     }
 
@@ -243,7 +266,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
             ((IPopHintOwner) v).showToast(config);
         }
         if (v instanceof IStatusViewOwner) {
-            ((IStatusViewOwner) v).dismissStatusView(true);
+            ((IStatusViewOwner) v).dismissStatusView();
         }
     }
 
@@ -286,7 +309,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     protected void releaseOnDetach() {
         release();
         if (mPresenterEngineList != null) {
-            for (IBasePresenterEngine engine : mPresenterEngineList) {
+            for (IBaseEngine engine : mPresenterEngineList) {
                 if (engine != null) {
                     engine.release();
                 }
@@ -302,7 +325,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param engine engine单元模块
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addPresenterEngine(@Nullable IBasePresenterEngine engine) {
+    protected boolean addPresenterEngine(@Nullable IBaseEngine engine) {
         if (engine == null) {
             return false;
         }
@@ -318,7 +341,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param engine engine单元模块
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removePresenterEngine(@Nullable IBasePresenterEngine engine) {
+    protected boolean removePresenterEngine(@Nullable IBaseEngine engine) {
         if (engine == null || mPresenterEngineList == null) {
             return false;
         }
