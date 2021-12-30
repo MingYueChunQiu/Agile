@@ -5,8 +5,8 @@ import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.bridge.Request;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
-import com.mingyuechunqiu.agile.base.model.repository.IBaseRepository;
 import com.mingyuechunqiu.agile.base.model.part.IBaseModelPart;
+import com.mingyuechunqiu.agile.base.model.repository.IBaseRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <pre>
@@ -35,11 +34,11 @@ public abstract class BaseAbstractModel implements IBaseModel {
         initRepositories();
     }
 
-    @Nullable
-    private List<IBaseModelPart> mModelPartList;
+    @NonNull
+    private List<IBaseModelPart> mModelPartList = new ArrayList<>();
     //Repository映射集合，一个Repository可以响应多个Request请求
-    @Nullable
-    private Map<IBaseRepository, Set<String>> mRepositoryMap;
+    @NonNull
+    private Map<IBaseRepository, Set<String>> mRepositoryMap = new HashMap<>();
 
     @Override
     public void callOnStart() {
@@ -76,7 +75,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
      */
     @Override
     public boolean removeModelPart(@Nullable IBaseModelPart part) {
-        if (part == null || mModelPartList == null) {
+        if (part == null) {
             return false;
         }
         return getModelPartList().remove(part);
@@ -85,13 +84,6 @@ public abstract class BaseAbstractModel implements IBaseModel {
     @NonNull
     @Override
     public List<IBaseModelPart> getModelPartList() {
-        if (mModelPartList == null) {
-            synchronized (this) {
-                if (mModelPartList == null) {
-                    mModelPartList = new ArrayList<>();
-                }
-            }
-        }
         return mModelPartList;
     }
 
@@ -132,7 +124,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
      */
     @Override
     public boolean removeRepository(@Nullable IBaseRepository repository) {
-        if (repository == null || mRepositoryMap == null) {
+        if (repository == null) {
             return false;
         }
         return getRepositoryMap().remove(repository) != null;
@@ -158,24 +150,18 @@ public abstract class BaseAbstractModel implements IBaseModel {
     @Override
     public void releaseOnDetach() {
         release();
-        if (mModelPartList != null) {
-            for (IBaseModelPart part : mModelPartList) {
-                if (part != null) {
-                    part.releaseOnDetach();
-                }
+        for (IBaseModelPart part : mModelPartList) {
+            if (part != null) {
+                part.releaseOnDetach();
             }
-            mModelPartList.clear();
-            mModelPartList = null;
         }
-        if (mRepositoryMap != null) {
-            for (IBaseRepository repository : mRepositoryMap.keySet()) {
-                if (repository != null) {
-                    repository.releaseOnDetach();
-                }
+        mModelPartList.clear();
+        for (IBaseRepository repository : mRepositoryMap.keySet()) {
+            if (repository != null) {
+                repository.releaseOnDetach();
             }
-            mRepositoryMap.clear();
-            mRepositoryMap = null;
         }
+        mRepositoryMap.clear();
     }
 
     /**
@@ -190,6 +176,10 @@ public abstract class BaseAbstractModel implements IBaseModel {
     }
 
     protected void initModelParts() {
+        mModelPartList.addAll(initializeModelParts());
+        for (IBaseModelPart modelPart : mModelPartList) {
+            addModelPart(modelPart);
+        }
     }
 
     protected void initRepositories() {
@@ -208,9 +198,6 @@ public abstract class BaseAbstractModel implements IBaseModel {
     @NonNull
     private Map<IBaseRepository, Set<String>> getModelPartRepositoryMap() {
         Map<IBaseRepository, Set<String>> repositoryMap = new HashMap<>();
-        if (mModelPartList == null) {
-            return repositoryMap;
-        }
         for (IBaseModelPart part : mModelPartList) {
             repositoryMap.putAll(part.getRepositoryMap());
         }
@@ -219,13 +206,6 @@ public abstract class BaseAbstractModel implements IBaseModel {
 
     @NonNull
     private Map<IBaseRepository, Set<String>> getRepositoryMap() {
-        if (mRepositoryMap == null) {
-            synchronized (this) {
-                if (mRepositoryMap == null) {
-                    mRepositoryMap = new ConcurrentHashMap<>();
-                }
-            }
-        }
         return mRepositoryMap;
     }
 
@@ -240,11 +220,14 @@ public abstract class BaseAbstractModel implements IBaseModel {
         if (executeCallWithRepositoryMap(getModelPartRepositoryMap(), call)) {
             return true;
         }
-        if (mRepositoryMap == null) {
-            return false;
-        }
         return executeCallWithRepositoryMap(getRepositoryMap(), call);
     }
+
+    @NonNull
+    protected abstract List<IBaseModelPart> initializeModelParts();
+
+    @NonNull
+    protected abstract List<IBaseRepository> initializeRepositories();
 
     /**
      * 销毁资源
