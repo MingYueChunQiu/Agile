@@ -69,6 +69,11 @@ public class DialogActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
+    protected void initData(@Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btn_add_loading) {

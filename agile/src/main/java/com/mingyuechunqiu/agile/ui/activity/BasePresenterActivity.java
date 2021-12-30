@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.ui.diaglogfragment;
+package com.mingyuechunqiu.agile.ui.activity;
 
 import android.os.Bundle;
 
@@ -19,29 +19,28 @@ import org.jetbrains.annotations.NotNull;
  *      Author:     xiyujie
  *      Github:     https://github.com/MingYueChunQiu
  *      Email:      xiyujieit@163.com
- *      Time:       2021/5/9 9:31 下午
- *      Desc:       P层功能的DialogFragment的基类
- *                  继承自BaseDialogFragment
+ *      Time:       2021/5/9 2:08 下午
+ *      Desc:       所有具有P层功能的Activity层基类
+ *                  继承自BaseFullImmerseScreenActivity
  *      Version:    1.0
  * </pre>
  */
-public abstract class BaseAbstractPresenterDialogFragment<V extends IBaseView, P extends IBasePresenter<V, ? extends BaseAbstractModel>> extends BaseDialogFragment implements IViewAttachPresenter<P> {
+public abstract class BasePresenterActivity<V extends IBaseView, P extends IBasePresenter<V, ? extends BaseAbstractModel>> extends BaseFullImmerseScreenActivity implements IViewAttachPresenter<P> {
 
     @Nullable
     private P mPresenter;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initOnCreate(@Nullable Bundle savedInstanceState) {
         attachPresenter();
+        super.initOnCreate(savedInstanceState);
     }
 
     @Override
-    public void onDestroy() {
+    protected void onDestroy() {
         super.onDestroy();
         if (mPresenter != null) {
             getLifecycle().removeObserver(mPresenter);
-            //不能放在onDestroyView中执行，因为像输入框失去焦点这种事件会在onDestroyView之后才被调用
             mPresenter = null;
         }
     }
@@ -68,7 +67,7 @@ public abstract class BaseAbstractPresenterDialogFragment<V extends IBaseView, P
     public void bindPresenter(@NonNull P presenter) {
         setPresenter(presenter);
         if (!(this instanceof IBaseView)) {
-            throw new IllegalStateException("Current DialogFragment must implements IBaseView or it subclass");
+            throw new IllegalStateException("Current Activity must implements IBaseView or it subclass");
         }
         if (mPresenter != null) {
             mPresenter.attachView((V) this);

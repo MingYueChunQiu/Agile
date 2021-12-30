@@ -22,7 +22,7 @@ import java.util.Set;
 public interface IBaseModelPart extends IRepositoryOwner {
 
     @NonNull
-    Map<IBaseRepository<?>, Set<String>> getRepositoryMap();
+    Map<IBaseRepository, Set<String>> getRepositoryMap();
 
     /**
      * 释放资源

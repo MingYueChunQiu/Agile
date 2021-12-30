@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
-import com.mingyuechunqiu.agile.ui.diaglogfragment.BaseAbstractPresenterDialogFragment;
+import com.mingyuechunqiu.agile.ui.diaglogfragment.BasePresenterDialogFragment;
 import com.mingyuechunqiu.agileproject.R;
 
 /**
@@ -25,7 +25,7 @@ import com.mingyuechunqiu.agileproject.R;
  *     version: 1.0
  * </pre>
  */
-public class TestDialogFragment extends BaseAbstractPresenterDialogFragment<MainContract.View, MainContract.Presenter<MainContract.View, ?>>
+public class TestDialogFragment extends BasePresenterDialogFragment<MainContract.View, MainContract.Presenter<MainContract.View, ?>>
         implements MainContract.View {
 
     @Override
@@ -86,6 +86,11 @@ public class TestDialogFragment extends BaseAbstractPresenterDialogFragment<Main
         if (getDialog() != null && getDialog().getWindow() != null) {
             getDialog().getWindow().setWindowAnimations(R.style.PopupAnimation);
         }
+    }
+
+    @Override
+    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
     }
 
     @Nullable

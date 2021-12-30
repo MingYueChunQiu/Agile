@@ -56,4 +56,9 @@ public class DialogFragmentTest extends BaseFragment {
     protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
         getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, view.findViewById(R.id.fl_fragment_main_loading), null);
     }
+
+    @Override
+    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+    }
 }

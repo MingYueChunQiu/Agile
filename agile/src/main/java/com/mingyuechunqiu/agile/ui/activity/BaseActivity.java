@@ -289,8 +289,17 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
      */
     protected void initOnCreate(@Nullable Bundle savedInstanceState) {
         initInflateLayoutView(savedInstanceState);
-        initView(savedInstanceState);
+        initOnView(savedInstanceState);
+        initOnData(savedInstanceState);
         ExitApplicationManager.getInstance().addActivity(this);
+    }
+
+    protected void initOnView(@Nullable Bundle savedInstanceState) {
+        initView(savedInstanceState);
+    }
+
+    protected void initOnData(@Nullable Bundle savedInstanceState) {
+        initData(savedInstanceState);
     }
 
     /**
@@ -337,14 +346,21 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
     protected abstract IActivityInflateLayoutViewCreator generateInflateLayoutViewCreator();
 
     /**
-     * 释放资源
-     */
-    protected abstract void release();
-
-    /**
      * 由子类重写控件的初始化方法
      *
      * @param savedInstanceState 界面销毁时保存的状态数据实例
      */
     protected abstract void initView(@Nullable Bundle savedInstanceState);
+
+    /**
+     * 由子类重写初始化数据方法
+     *
+     * @param savedInstanceState 界面销毁时保存的状态数据实例
+     */
+    protected abstract void initData(@Nullable Bundle savedInstanceState);
+
+    /**
+     * 释放资源
+     */
+    protected abstract void release();
 }

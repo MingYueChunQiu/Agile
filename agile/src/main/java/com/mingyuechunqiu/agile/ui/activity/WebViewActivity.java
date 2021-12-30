@@ -1,5 +1,20 @@
 package com.mingyuechunqiu.agile.ui.activity;
 
+import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.BUNDLE_NAVIGATION_TITLE;
+import static com.mingyuechunqiu.agile.constants.AgileKeyPrefixConstants.KEY_BUNDLE;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_DESKTOP_MODE;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_IS_SET_LEFT_ICON_SIZE;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_LEFT_ICON_HEIGHT;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_LEFT_ICON_WIDTH;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_NAVIGATION_BG_COLOR;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_SHOW_BACK_DIALOG;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_COLOR;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_TEXT_SIZE;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_VISIBLE;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_WATCH_VIDEO;
+import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_WEB_URL;
+import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_WIFI;
+
 import android.annotation.SuppressLint;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -36,21 +51,6 @@ import com.mingyuechunqiu.agile.receiver.NetworkConnectedTypeReceiver;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
-
-import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.BUNDLE_NAVIGATION_TITLE;
-import static com.mingyuechunqiu.agile.constants.AgileKeyPrefixConstants.KEY_BUNDLE;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_DESKTOP_MODE;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_IS_SET_LEFT_ICON_SIZE;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_LEFT_ICON_HEIGHT;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_LEFT_ICON_WIDTH;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_NAVIGATION_BG_COLOR;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_SHOW_BACK_DIALOG;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_COLOR;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_TEXT_SIZE;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_VISIBLE;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_WATCH_VIDEO;
-import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_WEB_URL;
-import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_WIFI;
 
 /**
  * <pre>
@@ -167,6 +167,11 @@ public class WebViewActivity extends BaseToolbarPresenterActivity<IBaseDataView,
         } else {
             startLoadingWeb();
         }
+    }
+
+    @Override
+    protected void initData(@Nullable Bundle savedInstanceState) {
+
     }
 
     @Override

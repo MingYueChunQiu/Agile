@@ -13,7 +13,7 @@ package com.mingyuechunqiu.agileproject.feature.function;
  */
 public class FunctionModel extends FunctionContract.Model{
 
-    private FunctionContract.Repository<?> mDao = null;
+    private FunctionContract.Repository mRepository = null;
 
     @Override
     protected void release() {

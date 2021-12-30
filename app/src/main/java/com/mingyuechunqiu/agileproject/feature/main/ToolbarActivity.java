@@ -97,6 +97,11 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity<IBaseDataView,
     }
 
     @Override
+    protected void initData(@Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
     protected void onInitStatusViewManager(@NonNull IStatusViewManager manager) {
         super.onInitStatusViewManager(manager);
         StatusViewConfigure configure = new StatusViewConfigure.Builder().build();

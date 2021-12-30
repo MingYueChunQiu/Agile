@@ -1,5 +1,6 @@
-package com.mingyuechunqiu.agile.ui.activity;
+package com.mingyuechunqiu.agile.ui.dialog;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,25 +20,38 @@ import org.jetbrains.annotations.NotNull;
  *      Author:     xiyujie
  *      Github:     https://github.com/MingYueChunQiu
  *      Email:      xiyujieit@163.com
- *      Time:       2021/5/9 2:08 下午
- *      Desc:
+ *      Time:       2021/5/13 12:16 上午
+ *      Desc:       P层功能的Fragment的基类
+ *                  继承自BaseDialog
  *      Version:    1.0
  * </pre>
  */
-public abstract class BaseAbstractPresenterActivity<V extends IBaseView, P extends IBasePresenter<V, ? extends BaseAbstractModel>> extends BaseFullImmerseScreenActivity implements IViewAttachPresenter<P> {
+public abstract class BasePresenterDialog<V extends IBaseView, P extends IBasePresenter<V, ? extends BaseAbstractModel>> extends BaseDialog implements IViewAttachPresenter<P> {
 
     @Nullable
     private P mPresenter;
 
-    @Override
-    protected void initOnCreate(@Nullable Bundle savedInstanceState) {
-        attachPresenter();
-        super.initOnCreate(savedInstanceState);
+    public BasePresenterDialog(Context context) {
+        super(context);
+    }
+
+    public BasePresenterDialog(Context context, int theme) {
+        super(context, theme);
+    }
+
+    protected BasePresenterDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+        super(context, cancelable, cancelListener);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        attachPresenter();
+    }
+
+    @Override
+    protected void releaseOnDetach() {
+        super.releaseOnDetach();
         if (mPresenter != null) {
             getLifecycle().removeObserver(mPresenter);
             mPresenter = null;
@@ -66,7 +80,7 @@ public abstract class BaseAbstractPresenterActivity<V extends IBaseView, P exten
     public void bindPresenter(@NonNull P presenter) {
         setPresenter(presenter);
         if (!(this instanceof IBaseView)) {
-            throw new IllegalStateException("Current Activity must implements IBaseView or it subclass");
+            throw new IllegalStateException("Current Dialog must implements IBaseView or it subclass");
         }
         if (mPresenter != null) {
             mPresenter.attachView((V) this);

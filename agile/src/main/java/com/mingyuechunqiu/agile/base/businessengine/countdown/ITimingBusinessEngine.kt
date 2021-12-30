@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agile.base.businessengine.countdown
 
+import com.mingyuechunqiu.agile.base.businessengine.IBaseBusinessEngine
+
 /**
  * <pre>
  *      Project:    Demo
@@ -7,8 +9,8 @@ package com.mingyuechunqiu.agile.base.businessengine.countdown
  *      Author:     XiYuJie
  *      Email:      xiyujie@jinying.com
  *      Time:       2020/1/20 16:57
- *      Desc:       Present层计时引擎接口
- *                  继承自IBasePresenterEngine
+ *      Desc:       业务逻辑层计时引擎接口
+ *                  继承自IBaseBusinessEngine
  *      Version:    1.0
  * </pre>
  */

@@ -2,8 +2,6 @@ package com.mingyuechunqiu.agile.base.model.repository.remote;
 
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRetrofitCallback;
-
 import retrofit2.Response;
 
 /**
@@ -17,7 +15,7 @@ import retrofit2.Response;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractRetrofitRepository<C extends DaoRetrofitCallback> extends BaseAbstractNetworkRepository<C> {
+public abstract class BaseAbstractRetrofitRepository extends BaseAbstractNetworkRepository {
 
     /**
      * 检查响应对象是否为空

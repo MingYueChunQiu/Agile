@@ -20,7 +20,6 @@ class MainModel extends MainContract.Model {
     public void initRepositories() {
         super.initRepositories();
         mRepository = new FunctionRepository();
-        mRepository.attachModelCallback(this);
     }
 
     @Override

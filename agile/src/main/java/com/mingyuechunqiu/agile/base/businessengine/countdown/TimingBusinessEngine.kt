@@ -9,8 +9,8 @@ import java.util.*
  *      Author:     XiYuJie
  *      Email:      xiyujie@jinying.com
  *      Time:       2020/1/20 17:00
- *      Desc:       Presenter层计时引擎
- *                  实现ITimingPresenterEngine
+ *      Desc:       业务逻辑层计时引擎
+ *                  实现ITimingBusinessEngine
  *      Version:    1.0
  * </pre>
  */

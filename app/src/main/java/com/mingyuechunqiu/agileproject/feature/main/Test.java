@@ -56,4 +56,9 @@ public class Test extends BaseFragment {
     protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
     }
+
+    @Override
+    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+    }
 }

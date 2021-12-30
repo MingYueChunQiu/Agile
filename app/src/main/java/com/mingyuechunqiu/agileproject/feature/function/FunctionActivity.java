@@ -71,6 +71,11 @@ public class FunctionActivity extends BaseDataPresenterActivity<FunctionContract
     }
 
     @Override
+    protected void initData(@Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
     public void doSomeTest() {
 
     }

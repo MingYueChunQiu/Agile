@@ -1,6 +1,5 @@
-package com.mingyuechunqiu.agile.ui.dialog;
+package com.mingyuechunqiu.agile.ui.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,28 +19,16 @@ import org.jetbrains.annotations.NotNull;
  *      Author:     xiyujie
  *      Github:     https://github.com/MingYueChunQiu
  *      Email:      xiyujieit@163.com
- *      Time:       2021/5/13 12:16 上午
+ *      Time:       2021/5/9 7:10 下午
  *      Desc:       P层功能的Fragment的基类
- *                  继承自BaseDialog
+ *                  继承自BaseFragment
  *      Version:    1.0
  * </pre>
  */
-public abstract class BaseAbstractPresenterDialog<V extends IBaseView, P extends IBasePresenter<V, ? extends BaseAbstractModel>> extends BaseDialog implements IViewAttachPresenter<P> {
+public abstract class BasePresenterFragment<V extends IBaseView, P extends IBasePresenter<V, ? extends BaseAbstractModel>> extends BaseFragment implements IViewAttachPresenter<P> {
 
     @Nullable
     private P mPresenter;
-
-    public BaseAbstractPresenterDialog(Context context) {
-        super(context);
-    }
-
-    public BaseAbstractPresenterDialog(Context context, int theme) {
-        super(context, theme);
-    }
-
-    protected BaseAbstractPresenterDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
-        super(context, cancelable, cancelListener);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,10 +37,11 @@ public abstract class BaseAbstractPresenterDialog<V extends IBaseView, P extends
     }
 
     @Override
-    protected void releaseOnDetach() {
-        super.releaseOnDetach();
+    public void onDestroy() {
+        super.onDestroy();
         if (mPresenter != null) {
             getLifecycle().removeObserver(mPresenter);
+            //不能放在onDestroyView中执行，因为像输入框失去焦点这种事件会在onDestroyView之后才被调用
             mPresenter = null;
         }
     }
@@ -80,7 +68,7 @@ public abstract class BaseAbstractPresenterDialog<V extends IBaseView, P extends
     public void bindPresenter(@NonNull P presenter) {
         setPresenter(presenter);
         if (!(this instanceof IBaseView)) {
-            throw new IllegalStateException("Current Dialog must implements IBaseView or it subclass");
+            throw new IllegalStateException("Current Fragment must implements IBaseView or it subclass");
         }
         if (mPresenter != null) {
             mPresenter.attachView((V) this);

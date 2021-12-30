@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.bridge.Callback;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
-import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoNetworkCallback;
 import com.mingyuechunqiu.agile.constants.AgileURLConstants;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
@@ -26,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractNetworkRepository<C extends DaoNetworkCallback> extends BaseAbstractRemoteRepository<C> {
+public abstract class BaseAbstractNetworkRepository extends BaseAbstractRemoteRepository {
 
     /**
      * 根据网络响应返回码，进行不同处理

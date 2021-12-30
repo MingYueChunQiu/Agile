@@ -15,5 +15,5 @@ import com.mingyuechunqiu.agile.base.view.IBaseDataView;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseDataPresenterFragment<V extends IBaseDataView, P extends BaseAbstractDataPresenter<V, ? extends BaseAbstractDataModel>> extends BaseAbstractPresenterFragment<V, P> {
+public abstract class BaseDataPresenterFragment<V extends IBaseDataView, P extends BaseAbstractDataPresenter<V, ? extends BaseAbstractDataModel>> extends BasePresenterFragment<V, P> {
 }

@@ -54,6 +54,11 @@ public class ShowDialogFragment extends BaseDialogFragment {
     }
 
     @Override
+    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
     protected void releaseOnDestroyView() {
 
     }

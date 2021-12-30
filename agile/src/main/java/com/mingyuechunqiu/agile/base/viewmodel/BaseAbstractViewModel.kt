@@ -8,8 +8,8 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.mingyuechunqiu.agile.base.model.IBaseModel
 import com.mingyuechunqiu.agile.base.businessengine.IBaseBusinessEngine
+import com.mingyuechunqiu.agile.base.model.IBaseModel
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper
 import com.mingyuechunqiu.agile.frame.Agile
@@ -29,11 +29,10 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : IBaseViewModel {
     protected val model: M? = null
     private var mBusinessEngineList: MutableList<IBaseBusinessEngine>? = null
 
-    private val _popHintState: MutableLiveData<PopHintState> = MutableLiveData()
-    val popHintState: LiveData<PopHintState> = _popHintState
+    private val _popHintState: MutableLiveData<IBaseViewModel.PopHintState> = MutableLiveData()
 
-    private val _statusViewState: MutableLiveData<StatusViewState> = MutableLiveData()
-    val statusViewState: LiveData<StatusViewState> = _statusViewState
+    private val _statusViewState: MutableLiveData<IBaseViewModel.StatusViewState> =
+        MutableLiveData()
 
     override fun releaseOnDetach() {
         release()
@@ -50,32 +49,40 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : IBaseViewModel {
         return Agile.getAppContext()
     }
 
+    override fun getPopHintState(): LiveData<IBaseViewModel.PopHintState> {
+        return _popHintState
+    }
+
+    override fun getStatusViewState(): LiveData<IBaseViewModel.StatusViewState> {
+        return _statusViewState
+    }
+
     override fun showToast(@StringRes msgResId: Int) {
-        _popHintState.value = PopHintState.MsgResIdToast(msgResId)
+        _popHintState.value = IBaseViewModel.PopHintState.MsgResIdToast(msgResId)
     }
 
     override fun showToast(msg: String?) {
-        _popHintState.value = PopHintState.MsgToast(msg)
+        _popHintState.value = IBaseViewModel.PopHintState.MsgToast(msg)
     }
 
     override fun showToast(info: ErrorInfo) {
-        _popHintState.value = PopHintState.ErrorInfoToast(info)
+        _popHintState.value = IBaseViewModel.PopHintState.ErrorInfoToast(info)
     }
 
     override fun showToast(config: ToastHelper.ToastConfig) {
-        _popHintState.value = PopHintState.ConfigToast(config)
+        _popHintState.value = IBaseViewModel.PopHintState.ConfigToast(config)
     }
 
     override fun showLoadingStatusView(@LayoutRes containerId: Int) {
-        _statusViewState.value = StatusViewState.ShowContainerIdLoading(containerId)
+        _statusViewState.value = IBaseViewModel.StatusViewState.ShowContainerIdLoading(containerId)
     }
 
     override fun showLoadingStatusView(hint: String?, cancelable: Boolean) {
-        _statusViewState.value = StatusViewState.ShowHintLoading(hint, cancelable)
+        _statusViewState.value = IBaseViewModel.StatusViewState.ShowHintLoading(hint, cancelable)
     }
 
     override fun dismissStatusView() {
-        _statusViewState.value = StatusViewState.Dismiss
+        _statusViewState.value = IBaseViewModel.StatusViewState.Dismiss
     }
 
     fun getResources(): Resources {
@@ -97,24 +104,4 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : IBaseViewModel {
     }
 
     protected fun release() = Unit
-
-    sealed interface PopHintState {
-
-        data class MsgResIdToast(@StringRes val msgResId: Int) : PopHintState
-
-        data class MsgToast(val msg: String?) : PopHintState
-
-        data class ErrorInfoToast(val info: ErrorInfo) : PopHintState
-
-        data class ConfigToast(val config: ToastHelper.ToastConfig) : PopHintState
-    }
-
-    sealed interface StatusViewState {
-
-        data class ShowContainerIdLoading(@LayoutRes val containerId: Int) : StatusViewState
-
-        data class ShowHintLoading(val hint: String?, val cancelable: Boolean) : StatusViewState
-
-        object Dismiss : StatusViewState
-    }
 }

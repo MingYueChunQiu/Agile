@@ -183,6 +183,11 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
+    protected void initData(@Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
     protected void onInitInflateToolbar(@Nullable Toolbar toolbar) {
         super.onInitInflateToolbar(toolbar);
         if (toolbar == null) {

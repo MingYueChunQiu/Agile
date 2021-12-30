@@ -61,6 +61,11 @@ public class JumpContainerFragment extends BaseFragment implements ITransferPage
     }
 
     @Override
+    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
     public void onReceiveTransferPageData(@NotNull TransferPageDataOwner dataOwner, @org.jetbrains.annotations.Nullable TransferPageData data) {
         if (!popAddedPage()) {
             returnToPreviousPageWithActivity(null);

@@ -14,10 +14,10 @@ package com.mingyuechunqiu.agileproject.feature.main
  */
 internal class MainKotlinModel() : MainContract.Model() {
 
-    private val mDao: MainContract.Repository<*> by lazy {
-        val dao = MainRepository()
-        addRepository(dao)
-        dao
+    private val mDao: MainContract.Repository by lazy {
+        val repository = MainRepository()
+        addRepository(repository)
+        repository
     }
 
     override fun release() {}

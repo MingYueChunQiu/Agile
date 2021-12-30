@@ -39,7 +39,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
     private List<IBaseModelPart> mModelPartList;
     //Repository映射集合，一个Repository可以响应多个Request请求
     @Nullable
-    private Map<IBaseRepository<?>, Set<String>> mRepositoryMap;
+    private Map<IBaseRepository, Set<String>> mRepositoryMap;
 
     @Override
     public void callOnStart() {
@@ -102,7 +102,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
      * @return 如果添加成功返回true，否则返回false
      */
     @Override
-    public boolean addRepository(@NonNull IBaseRepository<?> repository) {
+    public boolean addRepository(@NonNull IBaseRepository repository) {
         List<String> requestTags = new ArrayList<>();
         requestTags.add(Request.DEFAULT_KEY_REQUEST_TAG);
         return addRepository(repository, requestTags);
@@ -115,7 +115,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
      * @return 如果添加成功返回true，否则返回false
      */
     @Override
-    public synchronized boolean addRepository(@NonNull IBaseRepository<?> repository, @NonNull List<String> requestTags) {
+    public synchronized boolean addRepository(@NonNull IBaseRepository repository, @NonNull List<String> requestTags) {
         Set<String> originalRequestTags = getRepositoryMap().get(repository);
         if (originalRequestTags == null) {
             originalRequestTags = new HashSet<>();
@@ -131,7 +131,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
      * @return 如果删除成功返回true，否则返回false
      */
     @Override
-    public boolean removeRepository(@Nullable IBaseRepository<?> repository) {
+    public boolean removeRepository(@Nullable IBaseRepository repository) {
         if (repository == null || mRepositoryMap == null) {
             return false;
         }
@@ -140,7 +140,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
 
     @NonNull
     @Override
-    public List<IBaseRepository<?>> getRepositoryList() {
+    public List<IBaseRepository> getRepositoryList() {
         return new ArrayList<>(getRepositoryMap().keySet());
     }
 
@@ -168,7 +168,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
             mModelPartList = null;
         }
         if (mRepositoryMap != null) {
-            for (IBaseRepository<?> repository : mRepositoryMap.keySet()) {
+            for (IBaseRepository repository : mRepositoryMap.keySet()) {
                 if (repository != null) {
                     repository.releaseOnDetach();
                 }
@@ -195,8 +195,8 @@ public abstract class BaseAbstractModel implements IBaseModel {
     protected void initRepositories() {
     }
 
-    private <T> boolean executeCallWithRepositoryMap(@NonNull Map<IBaseRepository<?>, Set<String>> map, @NonNull Call<T> call) {
-        for (Map.Entry<IBaseRepository<?>, Set<String>> entry : map.entrySet()) {
+    private <T> boolean executeCallWithRepositoryMap(@NonNull Map<IBaseRepository, Set<String>> map, @NonNull Call<T> call) {
+        for (Map.Entry<IBaseRepository, Set<String>> entry : map.entrySet()) {
             if (entry.getValue().contains(call.getRequest().getRequestTag())) {
                 entry.getKey().executeCall(call);
                 return true;
@@ -206,8 +206,8 @@ public abstract class BaseAbstractModel implements IBaseModel {
     }
 
     @NonNull
-    private Map<IBaseRepository<?>, Set<String>> getModelPartRepositoryMap() {
-        Map<IBaseRepository<?>, Set<String>> repositoryMap = new HashMap<>();
+    private Map<IBaseRepository, Set<String>> getModelPartRepositoryMap() {
+        Map<IBaseRepository, Set<String>> repositoryMap = new HashMap<>();
         if (mModelPartList == null) {
             return repositoryMap;
         }
@@ -218,7 +218,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
     }
 
     @NonNull
-    private Map<IBaseRepository<?>, Set<String>> getRepositoryMap() {
+    private Map<IBaseRepository, Set<String>> getRepositoryMap() {
         if (mRepositoryMap == null) {
             synchronized (this) {
                 if (mRepositoryMap == null) {

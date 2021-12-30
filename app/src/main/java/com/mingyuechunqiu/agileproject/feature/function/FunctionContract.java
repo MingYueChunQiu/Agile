@@ -2,7 +2,6 @@ package com.mingyuechunqiu.agileproject.feature.function;
 
 import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
 import com.mingyuechunqiu.agile.base.model.repository.remote.BaseAbstractRetrofitRepository;
-import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRetrofitCallback;
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 
@@ -24,7 +23,7 @@ interface FunctionContract {
         void doSomeTest();
     }
 
-    abstract class Repository<C extends DaoRetrofitCallback> extends BaseAbstractRetrofitRepository<C> {
+    abstract class Repository extends BaseAbstractRetrofitRepository {
     }
 
     abstract class Model extends BaseAbstractDataModel {

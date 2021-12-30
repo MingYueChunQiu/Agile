@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.model.repository.remote.BaseAbstractRetrofitRepository;
-import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRetrofitCallback;
 
 /**
  * <pre>
@@ -18,7 +17,7 @@ import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRetrofit
  *      Version:    1.0
  * </pre>
  */
-public class FunctionRepository extends BaseAbstractRetrofitRepository<DaoRetrofitCallback> {
+public class FunctionRepository extends BaseAbstractRetrofitRepository {
 
     @Override
     protected void release() {
@@ -26,7 +25,6 @@ public class FunctionRepository extends BaseAbstractRetrofitRepository<DaoRetrof
 
     @Override
     public <T> boolean executeCall(@NonNull Call<T> call) {
-        call.getCallback().
         return false;
     }
 }

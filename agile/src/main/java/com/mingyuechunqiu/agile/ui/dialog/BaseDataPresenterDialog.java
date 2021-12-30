@@ -19,7 +19,7 @@ import com.mingyuechunqiu.agile.base.view.IBaseDataView;
  *      Version:    1.0
  * </pre>
  */
-public abstract class BaseDataPresenterDialog<V extends IBaseDataView, P extends BaseAbstractDataPresenter<V, ? extends BaseAbstractDataModel>> extends BaseAbstractPresenterDialog<V, P> {
+public abstract class BaseDataPresenterDialog<V extends IBaseDataView, P extends BaseAbstractDataPresenter<V, ? extends BaseAbstractDataModel>> extends BasePresenterDialog<V, P> {
 
     public BaseDataPresenterDialog(Context context) {
         super(context);

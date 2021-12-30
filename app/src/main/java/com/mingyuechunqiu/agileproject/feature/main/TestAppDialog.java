@@ -67,6 +67,11 @@ public class TestAppDialog extends BaseDialog {
     }
 
     @Override
+    protected void initData(@Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
     protected void release() {
 
     }

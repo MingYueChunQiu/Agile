@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.ui.fragment;
+package com.mingyuechunqiu.agile.ui.diaglogfragment;
 
 import android.os.Bundle;
 
@@ -19,13 +19,13 @@ import org.jetbrains.annotations.NotNull;
  *      Author:     xiyujie
  *      Github:     https://github.com/MingYueChunQiu
  *      Email:      xiyujieit@163.com
- *      Time:       2021/5/9 7:10 下午
- *      Desc:       P层功能的Fragment的基类
- *                  继承自BaseFragment
+ *      Time:       2021/5/9 9:31 下午
+ *      Desc:       P层功能的DialogFragment的基类
+ *                  继承自BaseDialogFragment
  *      Version:    1.0
  * </pre>
  */
-public abstract class BaseAbstractPresenterFragment<V extends IBaseView, P extends IBasePresenter<V, ? extends BaseAbstractModel>> extends BaseFragment implements IViewAttachPresenter<P> {
+public abstract class BasePresenterDialogFragment<V extends IBaseView, P extends IBasePresenter<V, ? extends BaseAbstractModel>> extends BaseDialogFragment implements IViewAttachPresenter<P> {
 
     @Nullable
     private P mPresenter;
@@ -68,7 +68,7 @@ public abstract class BaseAbstractPresenterFragment<V extends IBaseView, P exten
     public void bindPresenter(@NonNull P presenter) {
         setPresenter(presenter);
         if (!(this instanceof IBaseView)) {
-            throw new IllegalStateException("Current Fragment must implements IBaseView or it subclass");
+            throw new IllegalStateException("Current DialogFragment must implements IBaseView or it subclass");
         }
         if (mPresenter != null) {
             mPresenter.attachView((V) this);

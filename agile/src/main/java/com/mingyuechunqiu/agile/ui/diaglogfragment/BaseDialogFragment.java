@@ -94,7 +94,7 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView(view, savedInstanceState);
+        initOnViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -519,6 +519,24 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
     }
 
     /**
+     * 在视图创建成功时执行初始化操作
+     *
+     * @param savedInstanceState 界面销毁时保存的状态数据实例
+     */
+    protected void initOnViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        initOnView(view, savedInstanceState);
+        initOnData(view, savedInstanceState);
+    }
+
+    protected void initOnView(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        initView(view, savedInstanceState);
+    }
+
+    protected void initOnData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        initData(view, savedInstanceState);
+    }
+
+    /**
      * 初始化填充布局视图
      *
      * @param inflater           布局填充器
@@ -606,6 +624,14 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
      * @param savedInstanceState 界面销毁时保存的状态数据实例
      */
     protected abstract void initView(@NonNull View view, @Nullable Bundle savedInstanceState);
+
+    /**
+     * 由子类重写初始化数据方法
+     *
+     * @param view               界面父容器View
+     * @param savedInstanceState 界面销毁时保存的状态数据实例
+     */
+    protected abstract void initData(@NonNull View view, @Nullable Bundle savedInstanceState);
 
     /**
      * 释放资源（在onDestroyView时调用）

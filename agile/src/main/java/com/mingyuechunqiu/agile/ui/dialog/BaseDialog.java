@@ -376,7 +376,16 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
     protected void initOnCreate(@Nullable Bundle savedInstanceState) {
         initDialogBackground();
         initInflateLayoutView(savedInstanceState);
+        initOnView(savedInstanceState);
+        initOnData(savedInstanceState);
+    }
+
+    protected void initOnView(@Nullable Bundle savedInstanceState) {
         initView(savedInstanceState);
+    }
+
+    protected void initOnData(@Nullable Bundle savedInstanceState) {
+        initData(savedInstanceState);
     }
 
     protected void releaseOnDetach() {
@@ -453,6 +462,13 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
      * @param savedInstanceState 界面销毁时保存的状态数据实例
      */
     protected abstract void initView(@Nullable Bundle savedInstanceState);
+
+    /**
+     * 由子类重写初始化数据方法
+     *
+     * @param savedInstanceState 界面销毁时保存的状态数据实例
+     */
+    protected abstract void initData(@Nullable Bundle savedInstanceState);
 
     /**
      * 释放资源

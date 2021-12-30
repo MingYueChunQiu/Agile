@@ -3,7 +3,6 @@ package com.mingyuechunqiu.agile.base.model.repository.local;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.model.framework.callback.local.DaoLocalCallback;
 import com.mingyuechunqiu.agile.base.model.repository.BaseAbstractRepository;
 import com.mingyuechunqiu.agile.base.model.repository.operation.local.IBaseLocalRepositoryOperation;
 
@@ -22,7 +21,7 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractLocalRepository<C extends DaoLocalCallback> extends BaseAbstractRepository<C> implements IBaseLocalRepositoryAbility {
+public abstract class BaseAbstractLocalRepository extends BaseAbstractRepository implements IBaseLocalRepositoryAbility {
 
     @NonNull
     protected final String TAG_FAILURE = getClass().getSimpleName() + "_failure";//打印错误日志标签

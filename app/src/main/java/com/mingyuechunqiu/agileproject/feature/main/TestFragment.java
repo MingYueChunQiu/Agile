@@ -19,7 +19,7 @@ import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
-import com.mingyuechunqiu.agile.ui.fragment.BaseAbstractPresenterFragment;
+import com.mingyuechunqiu.agile.ui.fragment.BasePresenterFragment;
 import com.mingyuechunqiu.agileproject.R;
 
 /**
@@ -32,7 +32,7 @@ import com.mingyuechunqiu.agileproject.R;
  *     version: 1.0
  * </pre>
  */
-public class TestFragment extends BaseAbstractPresenterFragment<MainContract.View, MainContract.Presenter<MainContract.View, ?>>
+public class TestFragment extends BasePresenterFragment<MainContract.View, MainContract.Presenter<MainContract.View, ?>>
         implements MainContract.View {
 
     @Override
@@ -61,6 +61,11 @@ public class TestFragment extends BaseAbstractPresenterFragment<MainContract.Vie
             }
         });
 //        showLoadingStatusView(R.id.fl_fragment_main_loading);
+    }
+
+    @Override
+    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
     }
 
     @Override

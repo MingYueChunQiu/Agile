@@ -29,11 +29,11 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
 
     //Repository映射集合，一个Repository可以响应多个Request请求
     @Nullable
-    private Map<IBaseRepository<?>, Set<String>> mRepositoryMap;
+    private Map<IBaseRepository, Set<String>> mRepositoryMap;
 
     @NonNull
     @Override
-    public Map<IBaseRepository<?>, Set<String>> getRepositoryMap() {
+    public Map<IBaseRepository, Set<String>> getRepositoryMap() {
         if (mRepositoryMap == null) {
             synchronized (this) {
                 if (mRepositoryMap == null) {
@@ -48,7 +48,7 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
     public void releaseOnDetach() {
         release();
         if (mRepositoryMap != null) {
-            for (IBaseRepository<?> repository : mRepositoryMap.keySet()) {
+            for (IBaseRepository repository : mRepositoryMap.keySet()) {
                 if (repository != null) {
                     repository.releaseOnDetach();
                 }
@@ -65,7 +65,7 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
      * @return 如果添加成功返回true，否则返回false
      */
     @Override
-    public boolean addRepository(@Nullable IBaseRepository<?> repository) {
+    public boolean addRepository(@Nullable IBaseRepository repository) {
         if (repository == null) {
             return false;
         }
@@ -81,7 +81,7 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
      * @return 如果添加成功返回true，否则返回false
      */
     @Override
-    public synchronized boolean addRepository(@NonNull IBaseRepository<?> repository, @NonNull List<String> requestTags) {
+    public synchronized boolean addRepository(@NonNull IBaseRepository repository, @NonNull List<String> requestTags) {
         Set<String> originalRequestTags = getRepositoryMap().get(repository);
         if (originalRequestTags == null) {
             originalRequestTags = new HashSet<>();
@@ -97,7 +97,7 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
      * @return 如果删除成功返回true，否则返回false
      */
     @Override
-    public boolean removeRepository(@Nullable IBaseRepository<?> repository) {
+    public boolean removeRepository(@Nullable IBaseRepository repository) {
         if (repository == null || mRepositoryMap == null) {
             return false;
         }

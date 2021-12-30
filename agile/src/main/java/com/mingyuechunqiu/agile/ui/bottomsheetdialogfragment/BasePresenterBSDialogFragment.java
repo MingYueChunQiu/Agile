@@ -18,5 +18,5 @@ import com.mingyuechunqiu.agile.base.view.IViewAttachPresenter;
  *      Version:    1.0
  * </pre>
  */
-public abstract class BaseAbstractPresenterBSDialogFragment<V extends IBaseView, P extends IBasePresenter<V, ? extends BaseAbstractModel>> extends BaseBSDialogFragment implements IViewAttachPresenter<P> {
+public abstract class BasePresenterBSDialogFragment<V extends IBaseView, P extends IBasePresenter<V, ? extends BaseAbstractModel>> extends BaseBSDialogFragment implements IViewAttachPresenter<P> {
 }

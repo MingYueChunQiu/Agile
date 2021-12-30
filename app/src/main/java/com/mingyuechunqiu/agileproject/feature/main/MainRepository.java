@@ -3,7 +3,6 @@ package com.mingyuechunqiu.agileproject.feature.main;
 import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
-import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRetrofitCallback;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  *      Version:    1.0
  * </pre>
  */
-public class MainRepository extends MainContract.Repository<DaoRetrofitCallback> {
+public class MainRepository extends MainContract.Repository {
 
     @Override
     protected void release() {

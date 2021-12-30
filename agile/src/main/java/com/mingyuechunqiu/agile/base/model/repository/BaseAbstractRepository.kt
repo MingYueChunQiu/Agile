@@ -1,7 +1,5 @@
 package com.mingyuechunqiu.agile.base.model.repository
 
-import com.mingyuechunqiu.agile.base.model.framework.callback.DaoCallback
-
 /**
  * <pre>
  *      Project:    Agile
@@ -15,32 +13,13 @@ import com.mingyuechunqiu.agile.base.model.framework.callback.DaoCallback
  *      Version:    1.0
  * </pre>
  */
-abstract class BaseAbstractRepository<C : DaoCallback> :
-    IBaseRepository<C> {
-
-    private var mModelCallback: C? = null
-
-    override fun attachModelCallback(callback: C) {
-        mModelCallback = callback
-        onAttachModelCallback(callback)
-    }
+abstract class BaseAbstractRepository : IBaseRepository {
 
     override fun releaseOnDetach() {
         preRelease()
         release()
         postRelease()
     }
-
-    override fun getModelCallback(): C? {
-        return mModelCallback
-    }
-
-    /**
-     * 当和Model层回调关联时调用
-     *
-     * @param callback 回调对象
-     */
-    protected open fun onAttachModelCallback(callback: C) {}
 
     protected open fun preRelease() {}
 

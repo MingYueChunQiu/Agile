@@ -1,10 +1,6 @@
 package com.mingyuechunqiu.agile.base.model.repository;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.mingyuechunqiu.agile.base.bridge.call.ICallExecutor;
-import com.mingyuechunqiu.agile.base.model.framework.callback.DaoCallback;
 
 /**
  * <pre>
@@ -17,17 +13,7 @@ import com.mingyuechunqiu.agile.base.model.framework.callback.DaoCallback;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseRepository<C extends DaoCallback> extends ICallExecutor {
-
-    /**
-     * 关联Model层回调
-     *
-     * @param callback Model层回调
-     */
-    void attachModelCallback(@NonNull C callback);
+public interface IBaseRepository extends ICallExecutor {
 
     void releaseOnDetach();
-
-    @Nullable
-    C getModelCallback();
 }

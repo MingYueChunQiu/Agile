@@ -20,7 +20,7 @@ interface IRepositoryOwner {
      * @param repository Repository单元
      * @return 如果添加成功返回true，否则返回false
      */
-    fun addRepository(repository: IBaseRepository<*>): Boolean
+    fun addRepository(repository: IBaseRepository): Boolean
 
     /**
      * 添加Repository层单元
@@ -28,7 +28,7 @@ interface IRepositoryOwner {
      * @param repository Repository单元
      * @return 如果添加成功返回true，否则返回false
      */
-    fun addRepository(repository: IBaseRepository<*>, requestTags: List<String>): Boolean
+    fun addRepository(repository: IBaseRepository, requestTags: List<String>): Boolean
 
     /**
      * 删除Repository单元
@@ -36,7 +36,7 @@ interface IRepositoryOwner {
      * @param repository Repository单元
      * @return 如果删除成功返回true，否则返回false
      */
-    fun removeRepository(repository: IBaseRepository<*>?): Boolean
+    fun removeRepository(repository: IBaseRepository?): Boolean
 
-    fun getRepositoryList(): List<IBaseRepository<*>>
+    fun getRepositoryList(): List<IBaseRepository>
 }

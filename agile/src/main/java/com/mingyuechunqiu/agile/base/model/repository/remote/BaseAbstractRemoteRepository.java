@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.model.repository.BaseAbstractRepository;
 import com.mingyuechunqiu.agile.base.model.repository.operation.remote.IBaseRemoteRepositoryOperation;
-import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRemoteCallback;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +21,7 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractRemoteRepository<C extends DaoRemoteCallback> extends BaseAbstractRepository<C> implements IBaseRemoteRepositoryAbility {
+public abstract class BaseAbstractRemoteRepository extends BaseAbstractRepository implements IBaseRemoteRepositoryAbility {
 
     @NonNull
     protected final String TAG_FAILURE = getClass().getSimpleName() + "_failure";//打印错误日志标签
