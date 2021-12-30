@@ -22,6 +22,10 @@ public class RetrofitCallRepositoryOperation<T> extends BaseAbstractNetworkRepos
     }
 
     @Override
+    protected void release() {
+    }
+
+    @Override
     public boolean isCanceled() {
         return getWork().isCanceled();
     }

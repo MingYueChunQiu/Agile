@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.base.presenter.engine;
+package com.mingyuechunqiu.agile.base.businessengine;
 
 /**
  * <pre>
@@ -10,7 +10,7 @@ package com.mingyuechunqiu.agile.base.presenter.engine;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseEngine {
+public interface IBaseBusinessEngine {
 
     /**
      * 释放资源

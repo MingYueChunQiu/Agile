@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.base.presenter.engine.countdown
+package com.mingyuechunqiu.agile.base.businessengine.countdown
 
 import java.util.*
 
@@ -14,7 +14,7 @@ import java.util.*
  *      Version:    1.0
  * </pre>
  */
-class TimingEngine : ITimingEngine {
+class TimingBusinessEngine : ITimingBusinessEngine {
 
     private var mTimer: Timer? = null
     private var mTimerTask: TimerTask? = null
@@ -37,7 +37,7 @@ class TimingEngine : ITimingEngine {
         mTimer?.schedule(mTimerTask, delay, period)
     }
 
-    override fun startCountDownTask(count: Int, callback: ITimingEngine.CountDownCallback) {
+    override fun startCountDownTask(count: Int, callback: ITimingBusinessEngine.CountDownCallback) {
         releaseTimingResource()
         mTotalCountDownCount = count
         mCountDownCount = 0

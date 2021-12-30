@@ -1,7 +1,7 @@
 
 package com.mingyuechunqiu.agile.ui.fragment;
 
-import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
+import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 
 import android.app.Activity;
 import android.content.Context;

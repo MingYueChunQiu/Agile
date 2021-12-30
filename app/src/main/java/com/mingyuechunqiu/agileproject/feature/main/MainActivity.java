@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
-import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_NAVIGATION_TITLE;
-import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
+import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.BUNDLE_NAVIGATION_TITLE;
+import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_NAVIGATION_BG_COLOR;
 import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_SHOW_BACK_DIALOG;
 import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_TITLE_COLOR;

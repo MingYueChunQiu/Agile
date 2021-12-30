@@ -12,7 +12,7 @@ import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
 
-import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
+import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.NO_RESOURCE_ID;
 
 /**
  * <pre>

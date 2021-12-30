@@ -2,8 +2,6 @@ package com.mingyuechunqiu.agile.base.model.repository.operation.remote;
 
 import androidx.annotation.NonNull;
 
-import com.mingyuechunqiu.agile.base.model.repository.operation.BaseAbstractRepositoryOperation;
-
 /**
  * <pre>
  *     author : xyj
@@ -15,9 +13,26 @@ import com.mingyuechunqiu.agile.base.model.repository.operation.BaseAbstractRepo
  *     version: 1.0
  * </pre>
  */
-public abstract class BaseAbstractRemoteRepositoryOperation<T> extends BaseAbstractRepositoryOperation<T> implements IBaseRemoteRepositoryOperationAbility {
+public abstract class BaseAbstractRemoteRepositoryOperation<T> implements IBaseRemoteRepositoryOperation<T> {
+
+    @NonNull
+    protected final T mWork;
 
     public BaseAbstractRemoteRepositoryOperation(@NonNull T work) {
-        super(work);
+        mWork = work;
     }
+
+    @Override
+    public void releaseOnDetach() {
+        cancel();
+        release();
+    }
+
+    @NonNull
+    @Override
+    public T getWork() {
+        return mWork;
+    }
+
+    protected abstract void release();
 }

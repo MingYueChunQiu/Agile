@@ -13,8 +13,8 @@ import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
 import com.mingyuechunqiu.agile.util.SharedPreferencesUtils;
 
-import static com.mingyuechunqiu.agile.constants.UserConstants.PREF_USER_INFO;
-import static com.mingyuechunqiu.agile.constants.UserConstants.TOKEN;
+import static com.mingyuechunqiu.agile.constants.AgileUserConstants.PREF_USER_INFO;
+import static com.mingyuechunqiu.agile.constants.AgileUserConstants.TOKEN;
 
 /**
  * <pre>

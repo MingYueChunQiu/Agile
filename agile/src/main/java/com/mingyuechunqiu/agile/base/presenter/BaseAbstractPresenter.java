@@ -12,7 +12,6 @@ import androidx.lifecycle.OnLifecycleEvent;
 
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.model.IBaseModel;
-import com.mingyuechunqiu.agile.base.presenter.engine.IBaseEngine;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
@@ -22,7 +21,6 @@ import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <pre>
@@ -40,7 +38,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     @Nullable
     private M mModel;
     @Nullable
-    private List<IBaseEngine> mPresenterEngineList;
+    private List<IBaseBusinessEngine> mPresenterEngineList;
 
     @Override
     public void attachView(@NonNull V view) {
@@ -309,7 +307,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     protected void releaseOnDetach() {
         release();
         if (mPresenterEngineList != null) {
-            for (IBaseEngine engine : mPresenterEngineList) {
+            for (IBaseBusinessEngine engine : mPresenterEngineList) {
                 if (engine != null) {
                     engine.release();
                 }
@@ -325,7 +323,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param engine engine单元模块
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addPresenterEngine(@Nullable IBaseEngine engine) {
+    protected boolean addPresenterEngine(@Nullable IBaseBusinessEngine engine) {
         if (engine == null) {
             return false;
         }
@@ -341,7 +339,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param engine engine单元模块
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removePresenterEngine(@Nullable IBaseEngine engine) {
+    protected boolean removePresenterEngine(@Nullable IBaseBusinessEngine engine) {
         if (engine == null || mPresenterEngineList == null) {
             return false;
         }

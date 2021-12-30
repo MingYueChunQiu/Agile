@@ -26,6 +26,7 @@ public class FunctionRepository extends BaseAbstractRetrofitRepository<DaoRetrof
 
     @Override
     public <T> boolean executeCall(@NonNull Call<T> call) {
+        call.getCallback().
         return false;
     }
 }

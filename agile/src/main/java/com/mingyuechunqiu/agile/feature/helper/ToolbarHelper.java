@@ -19,7 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.mingyuechunqiu.agile.util.ScreenUtils;
 
-import static com.mingyuechunqiu.agile.constants.CommonConstants.NO_RESOURCE_ID;
+import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.NO_RESOURCE_ID;
 
 /**
  * <pre>

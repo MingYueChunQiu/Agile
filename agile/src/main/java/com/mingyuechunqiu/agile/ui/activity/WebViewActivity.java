@@ -37,8 +37,8 @@ import com.mingyuechunqiu.agile.util.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
 
-import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_NAVIGATION_TITLE;
-import static com.mingyuechunqiu.agile.constants.KeyPrefixConstants.KEY_BUNDLE;
+import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.BUNDLE_NAVIGATION_TITLE;
+import static com.mingyuechunqiu.agile.constants.AgileKeyPrefixConstants.KEY_BUNDLE;
 import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_DESKTOP_MODE;
 import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_IS_SET_LEFT_ICON_SIZE;
 import static com.mingyuechunqiu.agile.ui.activity.WebViewActivity.Constants.BUNDLE_LEFT_ICON_HEIGHT;

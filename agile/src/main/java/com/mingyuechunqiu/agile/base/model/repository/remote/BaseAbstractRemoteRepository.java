@@ -1,9 +1,10 @@
 package com.mingyuechunqiu.agile.base.model.repository.remote;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.model.repository.BaseAbstractRepository;
-import com.mingyuechunqiu.agile.base.model.repository.operation.remote.IBaseRemoteRepositoryOperationAbility;
+import com.mingyuechunqiu.agile.base.model.repository.operation.remote.IBaseRemoteRepositoryOperation;
 import com.mingyuechunqiu.agile.base.model.framework.callback.remote.DaoRemoteCallback;
 
 import java.util.ArrayList;
@@ -23,34 +24,36 @@ import java.util.List;
  */
 public abstract class BaseAbstractRemoteRepository<C extends DaoRemoteCallback> extends BaseAbstractRepository<C> implements IBaseRemoteRepositoryAbility {
 
+    @NonNull
+    protected final String TAG_FAILURE = getClass().getSimpleName() + "_failure";//打印错误日志标签
     @Nullable
-    private List<IBaseRemoteRepositoryOperationAbility<?>> mRemoteDaoOperationList;
+    private List<IBaseRemoteRepositoryOperation<?>> mRemoteRepositoryOperationList;
 
     /**
      * 添加远程操作
      *
      * @param operation 远程操作
      */
-    protected <T> void addRemoteOperation(@Nullable IBaseRemoteRepositoryOperationAbility<T> operation) {
+    protected <T> void addRemoteOperation(@Nullable IBaseRemoteRepositoryOperation<T> operation) {
         if (operation == null || operation.isCanceled()) {
             return;
         }
-        if (mRemoteDaoOperationList == null) {
-            mRemoteDaoOperationList = new ArrayList<>();
+        if (mRemoteRepositoryOperationList == null) {
+            mRemoteRepositoryOperationList = new ArrayList<>();
         }
         //移除已经失效了的操作
-        if (mRemoteDaoOperationList.size() > 0) {
-            Iterator<IBaseRemoteRepositoryOperationAbility<?>> iterator = mRemoteDaoOperationList.iterator();
+        if (mRemoteRepositoryOperationList.size() > 0) {
+            Iterator<IBaseRemoteRepositoryOperation<?>> iterator = mRemoteRepositoryOperationList.iterator();
             while (iterator.hasNext()) {
-                IBaseRemoteRepositoryOperationAbility<?> o = iterator.next();
+                IBaseRemoteRepositoryOperation<?> o = iterator.next();
                 if (o != null && o.isCanceled()) {
                     o.releaseOnDetach();
                     iterator.remove();
                 }
             }
         }
-        if (!mRemoteDaoOperationList.contains(operation)) {
-            mRemoteDaoOperationList.add(operation);
+        if (!mRemoteRepositoryOperationList.contains(operation)) {
+            mRemoteRepositoryOperationList.add(operation);
         }
     }
 
@@ -59,24 +62,24 @@ public abstract class BaseAbstractRemoteRepository<C extends DaoRemoteCallback> 
      *
      * @param operation 远程操作
      */
-    protected <T> void removeRemoteOperation(@Nullable IBaseRemoteRepositoryOperationAbility<T> operation) {
-        if (operation == null || mRemoteDaoOperationList == null || mRemoteDaoOperationList.size() == 0) {
+    protected <T> void removeRemoteOperation(@Nullable IBaseRemoteRepositoryOperation<T> operation) {
+        if (operation == null || mRemoteRepositoryOperationList == null || mRemoteRepositoryOperationList.size() == 0) {
             return;
         }
         if (!operation.isCanceled()) {
             operation.cancel();
         }
         operation.releaseOnDetach();
-        mRemoteDaoOperationList.remove(operation);
+        mRemoteRepositoryOperationList.remove(operation);
     }
 
     @Override
     protected void preRelease() {
         super.preRelease();
-        if (mRemoteDaoOperationList == null) {
+        if (mRemoteRepositoryOperationList == null) {
             return;
         }
-        for (IBaseRemoteRepositoryOperationAbility<?> operation : mRemoteDaoOperationList) {
+        for (IBaseRemoteRepositoryOperation<?> operation : mRemoteRepositoryOperationList) {
             if (operation != null) {
                 if (!operation.isCanceled()) {
                     operation.cancel();
@@ -84,7 +87,7 @@ public abstract class BaseAbstractRemoteRepository<C extends DaoRemoteCallback> 
                 operation.releaseOnDetach();
             }
         }
-        mRemoteDaoOperationList.clear();
-        mRemoteDaoOperationList = null;
+        mRemoteRepositoryOperationList.clear();
+        mRemoteRepositoryOperationList = null;
     }
 }

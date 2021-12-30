@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agileproject.constants;
 
-import static com.mingyuechunqiu.agile.constants.KeyPrefixConstants.KEY_PREF;
+import static com.mingyuechunqiu.agile.constants.AgileKeyPrefixConstants.KEY_PREF;
 
 /**
  * <pre>

@@ -1,12 +1,15 @@
 package com.mingyuechunqiu.agile.base.viewmodel
 
 import android.content.Context
+import android.content.res.Resources
+import android.content.res.Resources.NotFoundException
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mingyuechunqiu.agile.base.model.IBaseModel
-import com.mingyuechunqiu.agile.base.presenter.engine.IBaseEngine
+import com.mingyuechunqiu.agile.base.businessengine.IBaseBusinessEngine
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper
 import com.mingyuechunqiu.agile.frame.Agile
@@ -24,7 +27,7 @@ import com.mingyuechunqiu.agile.frame.Agile
 abstract class BaseAbstractViewModel<M : IBaseModel> : IBaseViewModel {
 
     protected val model: M? = null
-    private var mEngineList: MutableList<IBaseEngine>? = null
+    private var mBusinessEngineList: MutableList<IBaseBusinessEngine>? = null
 
     private val _popHintState: MutableLiveData<PopHintState> = MutableLiveData()
     val popHintState: LiveData<PopHintState> = _popHintState
@@ -34,12 +37,12 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : IBaseViewModel {
 
     override fun releaseOnDetach() {
         release()
-        mEngineList?.let {
+        mBusinessEngineList?.let {
             for (engine in it) {
                 engine.release()
             }
             it.clear()
-            mEngineList = null
+            mBusinessEngineList = null
         }
     }
 
@@ -73,6 +76,24 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : IBaseViewModel {
 
     override fun dismissStatusView() {
         _statusViewState.value = StatusViewState.Dismiss
+    }
+
+    fun getResources(): Resources {
+        return getAppContext().resources
+    }
+
+    @Throws(NotFoundException::class)
+    fun getString(resId: Int): String {
+        return getResources().getString(resId)
+    }
+
+    @Throws(NotFoundException::class)
+    open fun getString(@StringRes resId: Int, vararg formatArgs: Any?): String {
+        return getResources().getString(resId, formatArgs)
+    }
+
+    fun getColor(resId: Int): Int {
+        return ContextCompat.getColor(getAppContext(), resId)
     }
 
     protected fun release() = Unit

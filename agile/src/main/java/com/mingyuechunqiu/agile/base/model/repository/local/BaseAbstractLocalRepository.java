@@ -1,11 +1,11 @@
 package com.mingyuechunqiu.agile.base.model.repository.local;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.model.repository.BaseAbstractRepository;
 import com.mingyuechunqiu.agile.base.model.framework.callback.local.DaoLocalCallback;
-import com.mingyuechunqiu.agile.base.model.repository.operation.local.BaseAbstractLocalRepositoryOperation;
-import com.mingyuechunqiu.agile.base.model.repository.operation.local.IBaseLocalRepositoryOperationAbility;
+import com.mingyuechunqiu.agile.base.model.repository.BaseAbstractRepository;
+import com.mingyuechunqiu.agile.base.model.repository.operation.local.IBaseLocalRepositoryOperation;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,34 +24,36 @@ import java.util.List;
  */
 public abstract class BaseAbstractLocalRepository<C extends DaoLocalCallback> extends BaseAbstractRepository<C> implements IBaseLocalRepositoryAbility {
 
+    @NonNull
+    protected final String TAG_FAILURE = getClass().getSimpleName() + "_failure";//打印错误日志标签
     @Nullable
-    private List<IBaseLocalRepositoryOperationAbility<?>> mLocalDaoOperationList;
+    private List<IBaseLocalRepositoryOperation<?>> mLocalRepositoryOperationList;
 
     /**
      * 添加本地数据操作
      *
      * @param operation 本地数据操作
      */
-    protected <T> void addLocalOperation(@Nullable IBaseLocalRepositoryOperationAbility<T> operation) {
+    protected <T> void addLocalOperation(@Nullable IBaseLocalRepositoryOperation<T> operation) {
         if (operation == null || operation.isCanceled()) {
             return;
         }
-        if (mLocalDaoOperationList == null) {
-            mLocalDaoOperationList = new ArrayList<>();
+        if (mLocalRepositoryOperationList == null) {
+            mLocalRepositoryOperationList = new ArrayList<>();
         }
         //移除已经失效了的操作
-        if (mLocalDaoOperationList.size() > 0) {
-            Iterator<IBaseLocalRepositoryOperationAbility<?>> iterator = mLocalDaoOperationList.iterator();
+        if (mLocalRepositoryOperationList.size() > 0) {
+            Iterator<IBaseLocalRepositoryOperation<?>> iterator = mLocalRepositoryOperationList.iterator();
             while (iterator.hasNext()) {
-                IBaseLocalRepositoryOperationAbility<?> o = iterator.next();
+                IBaseLocalRepositoryOperation<?> o = iterator.next();
                 if (o != null && o.isCanceled()) {
                     o.releaseOnDetach();
                     iterator.remove();
                 }
             }
         }
-        if (!mLocalDaoOperationList.contains(operation)) {
-            mLocalDaoOperationList.add(operation);
+        if (!mLocalRepositoryOperationList.contains(operation)) {
+            mLocalRepositoryOperationList.add(operation);
         }
     }
 
@@ -60,24 +62,24 @@ public abstract class BaseAbstractLocalRepository<C extends DaoLocalCallback> ex
      *
      * @param operation 本地数据操作
      */
-    protected <T> void removeLocalOperation(@Nullable IBaseLocalRepositoryOperationAbility<T> operation) {
-        if (operation == null || mLocalDaoOperationList == null || mLocalDaoOperationList.size() == 0) {
+    protected <T> void removeLocalOperation(@Nullable IBaseLocalRepositoryOperation<T> operation) {
+        if (operation == null || mLocalRepositoryOperationList == null || mLocalRepositoryOperationList.size() == 0) {
             return;
         }
         if (!operation.isCanceled()) {
             operation.cancel();
         }
         operation.releaseOnDetach();
-        mLocalDaoOperationList.remove(operation);
+        mLocalRepositoryOperationList.remove(operation);
     }
 
     @Override
     protected void preRelease() {
         super.preRelease();
-        if (mLocalDaoOperationList == null) {
+        if (mLocalRepositoryOperationList == null) {
             return;
         }
-        for (IBaseLocalRepositoryOperationAbility<?> operation : mLocalDaoOperationList) {
+        for (IBaseLocalRepositoryOperation<?> operation : mLocalRepositoryOperationList) {
             if (operation != null) {
                 if (!operation.isCanceled()) {
                     operation.cancel();
@@ -85,7 +87,7 @@ public abstract class BaseAbstractLocalRepository<C extends DaoLocalCallback> ex
                 operation.releaseOnDetach();
             }
         }
-        mLocalDaoOperationList.clear();
-        mLocalDaoOperationList = null;
+        mLocalRepositoryOperationList.clear();
+        mLocalRepositoryOperationList = null;
     }
 }

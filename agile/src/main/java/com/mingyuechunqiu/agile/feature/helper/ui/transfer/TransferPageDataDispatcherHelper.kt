@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.feature.helper.ui.transfer
 
 import android.os.Bundle
-import com.mingyuechunqiu.agile.constants.CommonConstants
+import com.mingyuechunqiu.agile.constants.AgileCommonConstants
 
 /**
  * <pre>
@@ -67,7 +67,7 @@ open class TransferPageDataDispatcherHelper(private val page: ITransferDataDispa
      */
     private fun createReturnPreviousPageData(interceptor: ITransferPageDataDispatcherHelper.TransferPageDataInterceptor?): ITransferPageDataDispatcherHelper.TransferPageData {
         return ITransferPageDataDispatcherHelper.TransferPageData(Bundle().apply {
-            putBoolean(CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE, true)
+            putBoolean(AgileCommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE, true)
         }.run {
             interceptor?.interceptTransferData(this) ?: this
         })

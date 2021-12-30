@@ -9,7 +9,7 @@ package com.mingyuechunqiu.agile.constants;
  *     version: 1.0
  * </pre>
  */
-public class KeyPrefixConstants {
+public class AgileKeyPrefixConstants {
 
     public static final String KEY_PREF = "PREF_";//SharedPreferences
 

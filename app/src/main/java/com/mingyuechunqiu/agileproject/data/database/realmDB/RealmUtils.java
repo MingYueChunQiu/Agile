@@ -18,9 +18,9 @@ import io.realm.Realm;
 import io.realm.RealmAsyncTask;
 import io.realm.RealmConfiguration;
 
-import static com.mingyuechunqiu.agile.constants.KeyPrefixConstants.KEY_PREF;
-import static com.mingyuechunqiu.agile.constants.UserConstants.PREF_USER_INFO;
-import static com.mingyuechunqiu.agile.constants.UserConstants.TOKEN;
+import static com.mingyuechunqiu.agile.constants.AgileKeyPrefixConstants.KEY_PREF;
+import static com.mingyuechunqiu.agile.constants.AgileUserConstants.PREF_USER_INFO;
+import static com.mingyuechunqiu.agile.constants.AgileUserConstants.TOKEN;
 import static com.mingyuechunqiu.agileproject.constants.UserConstants.LATEST_USERNAME;
 import static com.mingyuechunqiu.agileproject.constants.UserConstants.MEMBER_USERNAME;
 import static com.mingyuechunqiu.agileproject.constants.UserConstants.PARENT_USERNAME;

@@ -9,7 +9,7 @@ package com.mingyuechunqiu.agile.constants;
  *     version: 1.0
  * </pre>
  */
-public class URLConstants {
+public class AgileURLConstants {
 
     public static final int CODE_SUCCESS = 200;//请求成功
     public static final int CODE_ERROR = -1;//请求失败,参数错误

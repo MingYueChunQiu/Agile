@@ -4,7 +4,7 @@ import android.view.KeyEvent;
 
 import androidx.annotation.NonNull;
 
-import com.mingyuechunqiu.agile.constants.KeyPrefixConstants;
+import com.mingyuechunqiu.agile.constants.AgileKeyPrefixConstants;
 
 /**
  * <pre>
@@ -19,7 +19,7 @@ import com.mingyuechunqiu.agile.constants.KeyPrefixConstants;
  */
 public final class KeyInputUtils {
 
-    public static final String BUNDLE_KEY_INPUT = KeyPrefixConstants.KEY_BUNDLE +
+    public static final String BUNDLE_KEY_INPUT = AgileKeyPrefixConstants.KEY_BUNDLE +
             "key_input";
 
     private KeyInputUtils() {

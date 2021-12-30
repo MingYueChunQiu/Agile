@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.constants;
 
-import static com.mingyuechunqiu.agile.constants.KeyPrefixConstants.KEY_PREF;
+import static com.mingyuechunqiu.agile.constants.AgileKeyPrefixConstants.KEY_PREF;
 
 /**
  * <pre>
@@ -11,7 +11,7 @@ import static com.mingyuechunqiu.agile.constants.KeyPrefixConstants.KEY_PREF;
  *     version: 1.0
  * </pre>
  */
-public class UserConstants {
+public class AgileUserConstants {
 
     public static final String PREF_USER_INFO = "user_info";//记录用户成功登录后的相关信息
     public static final String TOKEN = KEY_PREF + "token";//token

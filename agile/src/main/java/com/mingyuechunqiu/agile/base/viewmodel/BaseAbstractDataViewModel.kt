@@ -5,7 +5,7 @@ import com.mingyuechunqiu.agile.R
 import com.mingyuechunqiu.agile.base.bridge.Request
 import com.mingyuechunqiu.agile.base.bridge.call.Call
 import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel
-import com.mingyuechunqiu.agile.constants.UserConstants
+import com.mingyuechunqiu.agile.constants.AgileUserConstants
 import com.mingyuechunqiu.agile.frame.Agile
 import com.mingyuechunqiu.agile.util.NetworkUtils
 import com.mingyuechunqiu.agile.util.SharedPreferencesUtils
@@ -58,7 +58,7 @@ abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstra
      */
     protected open fun getToken(): String? {
         val token = SharedPreferencesUtils.getString(
-            Agile.getAppContext(), UserConstants.PREF_USER_INFO, UserConstants.TOKEN, null
+            Agile.getAppContext(), AgileUserConstants.PREF_USER_INFO, AgileUserConstants.TOKEN, null
         )
         return if (TextUtils.isEmpty(token)) {
             showToast(R.string.agile_error_set_net_params)

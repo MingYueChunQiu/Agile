@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.ui.activity;
 
-import static com.mingyuechunqiu.agile.constants.CommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
+import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
