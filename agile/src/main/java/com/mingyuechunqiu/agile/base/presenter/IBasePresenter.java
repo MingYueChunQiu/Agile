@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleEventObserver;
 
 import com.mingyuechunqiu.agile.base.bridge.call.ICallExecutor;
+import com.mingyuechunqiu.agile.base.businessengine.IBusinessEngineOwner;
 import com.mingyuechunqiu.agile.base.model.IBaseModel;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
@@ -19,7 +20,7 @@ import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewProcesso
  *     version: 1.0
  * </pre>
  */
-public interface IBasePresenter<V extends IBaseView, M extends IBaseModel> extends LifecycleEventObserver, ICallExecutor, IPopHintOwner, IStatusViewProcessor {
+public interface IBasePresenter<V extends IBaseView, M extends IBaseModel> extends LifecycleEventObserver, ICallExecutor, IBusinessEngineOwner, IPopHintOwner, IStatusViewProcessor {
 
     void attachView(@NonNull V view);
 
@@ -34,10 +35,10 @@ public interface IBasePresenter<V extends IBaseView, M extends IBaseModel> exten
     void callOnStop();
 
     @Nullable
-    M initModel();
+    V getView();
 
     @Nullable
-    V getView();
+    M initModel();
 
     @Nullable
     M getModel();

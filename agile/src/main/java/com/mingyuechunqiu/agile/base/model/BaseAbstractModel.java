@@ -35,10 +35,10 @@ public abstract class BaseAbstractModel implements IBaseModel {
     }
 
     @NonNull
-    private List<IBaseModelPart> mModelPartList = new ArrayList<>();
+    private final List<IBaseModelPart> mModelPartList = new ArrayList<>();
     //Repository映射集合，一个Repository可以响应多个Request请求
     @NonNull
-    private Map<IBaseRepository, Set<String>> mRepositoryMap = new HashMap<>();
+    private final Map<IBaseRepository, Set<String>> mRepositoryMap = new HashMap<>();
 
     @Override
     public void callOnStart() {
@@ -183,6 +183,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
     }
 
     protected void initRepositories() {
+        mRepositoryMap.putAll();
     }
 
     private <T> boolean executeCallWithRepositoryMap(@NonNull Map<IBaseRepository, Set<String>> map, @NonNull Call<T> call) {

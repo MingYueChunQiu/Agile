@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.OnLifecycleEvent;
 
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.businessengine.IBaseBusinessEngine;
@@ -40,7 +39,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     @Nullable
     private M mModel;
     @Nullable
-    private List<IBaseBusinessEngine> mPresenterEngineList;
+    private List<IBaseBusinessEngine> mBusinessEngineList;
 
     @Override
     public void attachView(@NonNull V view) {
@@ -156,6 +155,9 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
                 break;
             case ON_STOP:
                 callOnStop();
+                break;
+            case ON_DESTROY:
+                detachView();
                 break;
         }
     }
@@ -289,11 +291,6 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
         return manager;
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    protected void onDestroy() {
-        detachView();
-    }
-
     protected void onStart() {
     }
 
@@ -308,14 +305,14 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     protected void releaseOnDetach() {
         release();
-        if (mPresenterEngineList != null) {
-            for (IBaseBusinessEngine engine : mPresenterEngineList) {
+        if (mBusinessEngineList != null) {
+            for (IBaseBusinessEngine engine : mBusinessEngineList) {
                 if (engine != null) {
                     engine.release();
                 }
             }
-            mPresenterEngineList.clear();
-            mPresenterEngineList = null;
+            mBusinessEngineList.clear();
+            mBusinessEngineList = null;
         }
     }
 
@@ -325,14 +322,11 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param engine engine单元模块
      * @return 如果添加成功返回true，否则返回false
      */
-    protected boolean addPresenterEngine(@Nullable IBaseBusinessEngine engine) {
-        if (engine == null) {
-            return false;
+    public boolean addBusinessEngine(@NonNull IBaseBusinessEngine engine) {
+        if (mBusinessEngineList == null) {
+            mBusinessEngineList = new ArrayList<>();
         }
-        if (mPresenterEngineList == null) {
-            mPresenterEngineList = new ArrayList<>();
-        }
-        return mPresenterEngineList.add(engine);
+        return mBusinessEngineList.add(engine);
     }
 
     /**
@@ -341,11 +335,17 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param engine engine单元模块
      * @return 如果删除成功返回true，否则返回false
      */
-    protected boolean removePresenterEngine(@Nullable IBaseBusinessEngine engine) {
-        if (engine == null || mPresenterEngineList == null) {
+    public boolean removeBusinessEngine(@Nullable IBaseBusinessEngine engine) {
+        if (engine == null || mBusinessEngineList == null) {
             return false;
         }
-        return mPresenterEngineList.remove(engine);
+        return mBusinessEngineList.remove(engine);
+    }
+
+    @NonNull
+    @Override
+    public List<IBaseBusinessEngine> getBusinessEngineList() {
+        return mBusinessEngineList != null ? mBusinessEngineList : new ArrayList<>();
     }
 
     /**

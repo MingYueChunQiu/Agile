@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agile.ui.fragment
 import android.os.Bundle
 import android.view.View
 import com.mingyuechunqiu.agile.base.viewmodel.IBaseViewModel
+import com.mingyuechunqiu.agile.base.viewmodel.IViewModelOwner
 
 /**
  * <pre>
@@ -14,13 +15,21 @@ import com.mingyuechunqiu.agile.base.viewmodel.IBaseViewModel
  *     version: 1.0
  * </pre>
  */
-abstract class BaseViewModelFragment : BaseFragment() {
+abstract class BaseViewModelFragment : BaseFragment(), IViewModelOwner {
 
-    private val mBusinessViewModelList: MutableList<IBaseViewModel> = ArrayList()
+    private val mBusinessViewModelList: MutableList<IBaseViewModel<*>> = ArrayList()
 
     override fun initOnData(view: View, savedInstanceState: Bundle?) {
         initBusinessViewModels()
         super.initOnData(view, savedInstanceState)
+    }
+
+    override fun addViewModel(viewModel: IBaseViewModel<*>) {
+        mBusinessViewModelList.add(viewModel)
+    }
+
+    override fun removeViewModel(viewModel: IBaseViewModel<*>) {
+        mBusinessViewModelList.remove(viewModel)
     }
 
     /**
@@ -38,7 +47,7 @@ abstract class BaseViewModelFragment : BaseFragment() {
     /**
      * 注册与Agile库资源相关的观察者
      */
-    private fun registerAgileResourceObserver(viewModel: IBaseViewModel) {
+    private fun registerAgileResourceObserver(viewModel: IBaseViewModel<*>) {
         viewModel.apply {
             getPopHintState().observe(viewLifecycleOwner) {
                 when (it) {
@@ -63,5 +72,5 @@ abstract class BaseViewModelFragment : BaseFragment() {
         }
     }
 
-    protected abstract fun initializeBusinessViewModels(): List<IBaseViewModel>
+    protected abstract fun initializeBusinessViewModels(): List<IBaseViewModel<*>>
 }

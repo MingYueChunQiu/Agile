@@ -13,6 +13,7 @@ import com.mingyuechunqiu.agile.base.model.IBaseModel
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper
 import com.mingyuechunqiu.agile.frame.Agile
+import java.util.*
 
 /**
  * <pre>
@@ -24,9 +25,9 @@ import com.mingyuechunqiu.agile.frame.Agile
  *     version: 1.0
  * </pre>
  */
-abstract class BaseAbstractViewModel<M : IBaseModel> : IBaseViewModel {
+abstract class BaseAbstractViewModel<M : IBaseModel> : IBaseViewModel<M> {
 
-    protected val model: M? = null
+    private val mModel: M? = null
     private var mBusinessEngineList: MutableList<IBaseBusinessEngine>? = null
 
     private val _popHintState: MutableLiveData<IBaseViewModel.PopHintState> = MutableLiveData()
@@ -47,6 +48,42 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : IBaseViewModel {
 
     override fun getAppContext(): Context {
         return Agile.getAppContext()
+    }
+
+    override fun getModel(): M? {
+        return mModel
+    }
+
+    /**
+     * 添加模型层engine单元
+     *
+     * @param engine engine单元模块
+     * @return 如果添加成功返回true，否则返回false
+     */
+    override fun addBusinessEngine(engine: IBaseBusinessEngine): Boolean {
+        return mBusinessEngineList?.add(engine) ?: kotlin.run {
+            val list = ArrayList<IBaseBusinessEngine>()
+            mBusinessEngineList = list
+            list.add(engine)
+        }
+    }
+
+    /**
+     * 删除指定的模型层engine单元
+     *
+     * @param engine engine单元模块
+     * @return 如果删除成功返回true，否则返回false
+     */
+    override fun removeBusinessEngine(engine: IBaseBusinessEngine?): Boolean {
+        return if (engine == null) {
+            false
+        } else {
+            mBusinessEngineList?.remove(engine) ?: false
+        }
+    }
+
+    override fun getBusinessEngineList(): List<IBaseBusinessEngine?> {
+        return mBusinessEngineList ?: ArrayList()
     }
 
     override fun getPopHintState(): LiveData<IBaseViewModel.PopHintState> {

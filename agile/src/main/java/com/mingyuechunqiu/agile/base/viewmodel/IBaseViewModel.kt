@@ -5,6 +5,8 @@ import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import com.mingyuechunqiu.agile.base.bridge.call.ICallExecutor
+import com.mingyuechunqiu.agile.base.businessengine.IBusinessEngineOwner
+import com.mingyuechunqiu.agile.base.model.IBaseModel
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper
@@ -20,7 +22,8 @@ import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewProcesso
  *     version: 1.0
  * </pre>
  */
-interface IBaseViewModel : ICallExecutor, IPopHintOwner, IStatusViewProcessor {
+interface IBaseViewModel<M : IBaseModel> : ICallExecutor, IBusinessEngineOwner, IPopHintOwner,
+    IStatusViewProcessor {
 
     fun releaseOnDetach()
 
@@ -29,6 +32,10 @@ interface IBaseViewModel : ICallExecutor, IPopHintOwner, IStatusViewProcessor {
     fun getPopHintState(): LiveData<PopHintState>
 
     fun getStatusViewState(): LiveData<StatusViewState>
+
+    fun initModel(): M?
+
+    fun getModel(): M?
 
     sealed interface PopHintState {
 
