@@ -15,7 +15,7 @@ abstract class BaseViewModelDialog : BaseDialog {
         cancelListener: DialogInterface.OnCancelListener?
     ) : super(context, cancelable, cancelListener)
 
-    private val mBusinessViewModelList: MutableList<IBaseViewModel> = ArrayList()
+    private val mBusinessViewModelList: MutableList<IBaseViewModel<*>> = ArrayList()
 
     override fun initOnData(savedInstanceState: Bundle?) {
         initBusinessViewModels()
@@ -37,7 +37,7 @@ abstract class BaseViewModelDialog : BaseDialog {
     /**
      * 注册与Agile库资源相关的观察者
      */
-    private fun registerAgileResourceObserver(viewModel: IBaseViewModel) {
+    private fun registerAgileResourceObserver(viewModel: IBaseViewModel<*>) {
         viewModel.apply {
             getPopHintState().observe(getDialogLifecycleOwner()) {
                 when (it) {
@@ -62,5 +62,5 @@ abstract class BaseViewModelDialog : BaseDialog {
         }
     }
 
-    protected abstract fun initializeBusinessViewModels(): List<IBaseViewModel>
+    protected abstract fun initializeBusinessViewModels(): List<IBaseViewModel<*>>
 }

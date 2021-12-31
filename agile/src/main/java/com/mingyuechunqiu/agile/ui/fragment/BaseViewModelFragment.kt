@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.mingyuechunqiu.agile.base.viewmodel.IBaseViewModel
 import com.mingyuechunqiu.agile.base.viewmodel.IViewModelOwner
+import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle
 
 /**
  * <pre>
@@ -49,7 +50,12 @@ abstract class BaseViewModelFragment : BaseFragment(), IViewModelOwner {
      */
     private fun registerAgileResourceObserver(viewModel: IBaseViewModel<*>) {
         viewModel.apply {
-            getPopHintState().observe(viewLifecycleOwner) {
+            val lifecycleOwner = when (getLifecycleType()) {
+                AgileLifecycle.LifecycleType.COMPONENT -> this@BaseViewModelFragment
+                AgileLifecycle.LifecycleType.VIEW -> viewLifecycleOwner
+            }
+            lifecycleOwner.lifecycle.addObserver(this)
+            getPopHintState().observe(lifecycleOwner) {
                 when (it) {
                     is IBaseViewModel.PopHintState.MsgResIdToast -> showToast(it.msgResId)
                     is IBaseViewModel.PopHintState.MsgToast -> showToast(it.msg)
@@ -57,7 +63,7 @@ abstract class BaseViewModelFragment : BaseFragment(), IViewModelOwner {
                     is IBaseViewModel.PopHintState.ConfigToast -> showToast(it.config)
                 }
             }
-            getStatusViewState().observe(viewLifecycleOwner) {
+            getStatusViewState().observe(lifecycleOwner) {
                 when (it) {
                     is IBaseViewModel.StatusViewState.ShowContainerIdLoading -> showLoadingStatusView(
                         it.containerId

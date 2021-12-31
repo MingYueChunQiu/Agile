@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.base.model.part;
+package com.mingyuechunqiu.agile.base.model.modelpart;
 
 
 import androidx.annotation.NonNull;
@@ -8,11 +8,11 @@ import com.mingyuechunqiu.agile.base.bridge.Request;
 import com.mingyuechunqiu.agile.base.model.repository.IBaseRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <pre>
@@ -29,7 +29,7 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
 
     //Repository映射集合，一个Repository可以响应多个Request请求
     @Nullable
-    private Map<IBaseRepository, Set<String>> mRepositoryMap;
+    private Map<IBaseRepository, Set<String>> mRepositoryMap = null;
 
     @NonNull
     @Override
@@ -37,7 +37,7 @@ public abstract class BaseAbstractModelPart implements IBaseModelPart {
         if (mRepositoryMap == null) {
             synchronized (this) {
                 if (mRepositoryMap == null) {
-                    mRepositoryMap = new ConcurrentHashMap<>();
+                    mRepositoryMap = new HashMap<>();
                 }
             }
         }

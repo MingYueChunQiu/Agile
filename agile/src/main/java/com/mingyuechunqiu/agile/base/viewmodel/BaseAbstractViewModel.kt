@@ -6,8 +6,7 @@ import android.content.res.Resources.NotFoundException
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.mingyuechunqiu.agile.base.businessengine.IBaseBusinessEngine
 import com.mingyuechunqiu.agile.base.model.IBaseModel
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo
@@ -25,7 +24,7 @@ import java.util.*
  *     version: 1.0
  * </pre>
  */
-abstract class BaseAbstractViewModel<M : IBaseModel> : IBaseViewModel<M> {
+abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewModel<M> {
 
     private val mModel: M? = null
     private var mBusinessEngineList: MutableList<IBaseBusinessEngine>? = null
@@ -34,6 +33,37 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : IBaseViewModel<M> {
 
     private val _statusViewState: MutableLiveData<IBaseViewModel.StatusViewState> =
         MutableLiveData()
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        when (event) {
+            Lifecycle.Event.ON_START -> callOnStart()
+            Lifecycle.Event.ON_RESUME -> callOnResume()
+            Lifecycle.Event.ON_PAUSE -> callOnPause()
+            Lifecycle.Event.ON_STOP -> callOnStop()
+            Lifecycle.Event.ON_DESTROY -> releaseOnDetach()
+            else -> Unit
+        }
+    }
+
+    override fun callOnStart() {
+        onStart()
+        mModel?.callOnStart()
+    }
+
+    override fun callOnResume() {
+        onResume()
+        mModel?.callOnResume()
+    }
+
+    override fun callOnPause() {
+        onPause()
+        mModel?.callOnPause()
+    }
+
+    override fun callOnStop() {
+        onStop()
+        mModel?.callOnStop()
+    }
 
     override fun releaseOnDetach() {
         release()
@@ -139,6 +169,14 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : IBaseViewModel<M> {
     fun getColor(resId: Int): Int {
         return ContextCompat.getColor(getAppContext(), resId)
     }
+
+    protected open fun onStart() {}
+
+    protected open fun onResume() {}
+
+    protected open fun onPause() {}
+
+    protected open fun onStop() {}
 
     protected fun release() = Unit
 }

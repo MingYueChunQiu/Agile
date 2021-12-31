@@ -23,7 +23,7 @@ import com.mingyuechunqiu.agile.util.SharedPreferencesUtils
 abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstractViewModel<M>() {
 
     override fun <T> executeCall(call: Call<T>): Boolean {
-        requireNotNull(model) { "Model has not been set!" }
+        requireNotNull(getModel()) { "Model has not been set!" }
         if (call.getRequest().requestCategory === Request.RequestCategory.CATEGORY_NETWORK) {
             //判断当前网络状况，是否继续进行网络业务操作
             if (!checkNetworkIsConnected()) {
@@ -35,7 +35,7 @@ abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstra
     }
 
     protected open fun <T> executeCallWithModel(call: Call<T>): Boolean {
-        return model?.executeCall(call) ?: false
+        return getModel()?.executeCall(call) ?: false
     }
 
     /**

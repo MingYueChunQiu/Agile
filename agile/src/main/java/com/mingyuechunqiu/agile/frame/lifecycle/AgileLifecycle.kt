@@ -56,4 +56,9 @@ object AgileLifecycle {
             CREATED, STARTED, STOPPED, DISMISSED
         }
     }
+
+    enum class LifecycleType {
+
+        COMPONENT, VIEW
+    }
 }

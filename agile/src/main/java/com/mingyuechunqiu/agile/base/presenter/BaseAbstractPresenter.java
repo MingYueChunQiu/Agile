@@ -62,6 +62,59 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     }
 
     @Override
+    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+        switch (event) {
+            case ON_START:
+                callOnStart();
+                break;
+            case ON_RESUME:
+                callOnResume();
+                break;
+            case ON_PAUSE:
+                callOnPause();
+                break;
+            case ON_STOP:
+                callOnStop();
+                break;
+            case ON_DESTROY:
+                detachView();
+                break;
+        }
+    }
+
+    @Override
+    public void callOnStart() {
+        onStart();
+        if (mModel != null) {
+            mModel.callOnStart();
+        }
+    }
+
+    @Override
+    public void callOnResume() {
+        onResume();
+        if (mModel != null) {
+            mModel.callOnResume();
+        }
+    }
+
+    @Override
+    public void callOnPause() {
+        onPause();
+        if (mModel != null) {
+            mModel.callOnPause();
+        }
+    }
+
+    @Override
+    public void callOnStop() {
+        onStop();
+        if (mModel != null) {
+            mModel.callOnStop();
+        }
+    }
+
+    @Override
     public <T> boolean executeCall(@NonNull Call<T> call) {
         if (mModel == null) {
             throw new IllegalArgumentException("Model has not been set!");
@@ -139,55 +192,6 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     @Override
     public M getModel() {
         return mModel;
-    }
-
-    @Override
-    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-        switch (event) {
-            case ON_START:
-                callOnStart();
-                break;
-            case ON_RESUME:
-                callOnResume();
-                break;
-            case ON_PAUSE:
-                callOnPause();
-                break;
-            case ON_STOP:
-                callOnStop();
-                break;
-            case ON_DESTROY:
-                detachView();
-                break;
-        }
-    }
-
-    public void callOnStart() {
-        onStart();
-        if (mModel != null) {
-            mModel.callOnStart();
-        }
-    }
-
-    public void callOnResume() {
-        onResume();
-        if (mModel != null) {
-            mModel.callOnResume();
-        }
-    }
-
-    public void callOnPause() {
-        onPause();
-        if (mModel != null) {
-            mModel.callOnPause();
-        }
-    }
-
-    public void callOnStop() {
-        onStop();
-        if (mModel != null) {
-            mModel.callOnStop();
-        }
     }
 
     @Override

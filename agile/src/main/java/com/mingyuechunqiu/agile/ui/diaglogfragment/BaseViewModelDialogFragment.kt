@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agile.ui.diaglogfragment
 import android.os.Bundle
 import android.view.View
 import com.mingyuechunqiu.agile.base.viewmodel.IBaseViewModel
+import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle
 
 /**
  * <pre>
@@ -16,7 +17,7 @@ import com.mingyuechunqiu.agile.base.viewmodel.IBaseViewModel
  */
 abstract class BaseViewModelDialogFragment : BaseDialogFragment() {
 
-    private val mBusinessViewModelList: MutableList<IBaseViewModel> = ArrayList()
+    private val mBusinessViewModelList: MutableList<IBaseViewModel<*>> = ArrayList()
 
     override fun initOnData(view: View, savedInstanceState: Bundle?) {
         initBusinessViewModels()
@@ -38,9 +39,14 @@ abstract class BaseViewModelDialogFragment : BaseDialogFragment() {
     /**
      * 注册与Agile库资源相关的观察者
      */
-    private fun registerAgileResourceObserver(viewModel: IBaseViewModel) {
+    private fun registerAgileResourceObserver(viewModel: IBaseViewModel<*>) {
         viewModel.apply {
-            getPopHintState().observe(viewLifecycleOwner) {
+            val lifecycleOwner = when (getLifecycleType()) {
+                AgileLifecycle.LifecycleType.COMPONENT -> this@BaseViewModelDialogFragment
+                AgileLifecycle.LifecycleType.VIEW -> viewLifecycleOwner
+            }
+            lifecycleOwner.lifecycle.addObserver(this)
+            getPopHintState().observe(lifecycleOwner) {
                 when (it) {
                     is IBaseViewModel.PopHintState.MsgResIdToast -> showToast(it.msgResId)
                     is IBaseViewModel.PopHintState.MsgToast -> showToast(it.msg)
@@ -48,7 +54,7 @@ abstract class BaseViewModelDialogFragment : BaseDialogFragment() {
                     is IBaseViewModel.PopHintState.ConfigToast -> showToast(it.config)
                 }
             }
-            getStatusViewState().observe(viewLifecycleOwner) {
+            getStatusViewState().observe(lifecycleOwner) {
                 when (it) {
                     is IBaseViewModel.StatusViewState.ShowContainerIdLoading -> showLoadingStatusView(
                         it.containerId
@@ -63,5 +69,5 @@ abstract class BaseViewModelDialogFragment : BaseDialogFragment() {
         }
     }
 
-    protected abstract fun initializeBusinessViewModels(): List<IBaseViewModel>
+    protected abstract fun initializeBusinessViewModels(): List<IBaseViewModel<*>>
 }

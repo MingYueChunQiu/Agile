@@ -16,14 +16,16 @@ class MainModel extends MainContract.Model {
 
     private FunctionRepository mRepository;
 
-    @Override
-    public void initRepositories() {
-        super.initRepositories();
-        mRepository = new FunctionRepository();
-    }
 
     @Override
     protected void release() {
 
+    }
+
+    @Override
+    public void initRepositories() {
+        super.initRepositories();
+        mRepository = new FunctionRepository();
+        addRepository(mRepository);
     }
 }

@@ -12,7 +12,8 @@ package com.mingyuechunqiu.agileproject.feature.main
  * Version:    1.0
 </pre> *
  */
-internal class MainKotlinModel() : MainContract.Model() {
+internal
+class MainKotlinModel() : MainContract.Model() {
 
     private val mDao: MainContract.Repository by lazy {
         val repository = MainRepository()

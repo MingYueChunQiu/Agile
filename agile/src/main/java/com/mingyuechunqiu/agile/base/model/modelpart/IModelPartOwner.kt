@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.base.model.part
+package com.mingyuechunqiu.agile.base.model.modelpart
 
 /**
  * <pre>

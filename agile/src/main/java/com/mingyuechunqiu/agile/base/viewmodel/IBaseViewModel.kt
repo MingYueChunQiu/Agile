@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agile.base.viewmodel
 import android.content.Context
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LiveData
 import com.mingyuechunqiu.agile.base.bridge.call.ICallExecutor
 import com.mingyuechunqiu.agile.base.businessengine.IBusinessEngineOwner
@@ -11,6 +12,7 @@ import com.mingyuechunqiu.agile.data.bean.ErrorInfo
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper
 import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewProcessor
+import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle
 
 /**
  * <pre>
@@ -22,8 +24,17 @@ import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewProcesso
  *     version: 1.0
  * </pre>
  */
-interface IBaseViewModel<M : IBaseModel> : ICallExecutor, IBusinessEngineOwner, IPopHintOwner,
+interface IBaseViewModel<M : IBaseModel> : LifecycleEventObserver, ICallExecutor,
+    IBusinessEngineOwner, IPopHintOwner,
     IStatusViewProcessor {
+
+    fun callOnStart()
+
+    fun callOnResume()
+
+    fun callOnPause()
+
+    fun callOnStop()
 
     fun releaseOnDetach()
 
@@ -36,6 +47,8 @@ interface IBaseViewModel<M : IBaseModel> : ICallExecutor, IBusinessEngineOwner, 
     fun initModel(): M?
 
     fun getModel(): M?
+
+    fun getLifecycleType(): AgileLifecycle.LifecycleType
 
     sealed interface PopHintState {
 
