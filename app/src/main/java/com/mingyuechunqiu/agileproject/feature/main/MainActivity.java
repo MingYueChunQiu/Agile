@@ -39,7 +39,7 @@ import com.mingyuechunqiu.agile.feature.statusview.ui.view.IStatusView;
 import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agile.ui.activity.WebViewActivity;
-import com.mingyuechunqiu.agile.util.ExitApplicationManager;
+import com.mingyuechunqiu.agile.frame.AgileExitAppManager;
 import com.mingyuechunqiu.agile.util.FragmentUtils;
 import com.mingyuechunqiu.agile.util.StringUtils;
 import com.mingyuechunqiu.agileproject.R;
@@ -107,7 +107,7 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     @Override
     protected void release() {
         Log.d("份", "销毁");
-        ExitApplicationManager.getInstance().exit();
+        AgileExitAppManager.getInstance().exit();
     }
 
     @Override

@@ -34,7 +34,7 @@ import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
 import com.mingyuechunqiu.agile.frame.ui.activity.IAgileActivityPage;
 import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
-import com.mingyuechunqiu.agile.util.ExitApplicationManager;
+import com.mingyuechunqiu.agile.frame.AgileExitAppManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -96,7 +96,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
         Agile.getLifecycleDispatcher().updateActivityLifecycleState(this, AgileLifecycle.State.ActivityState.DESTROYED);
         release();
         mStatusViewManager = null;
-        ExitApplicationManager.getInstance().removeActivity(this);
+        AgileExitAppManager.getInstance().removeActivity(this);
     }
 
     @NonNull
@@ -290,7 +290,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
         initInflateLayoutView(savedInstanceState);
         initOnView(savedInstanceState);
         initOnData(savedInstanceState);
-        ExitApplicationManager.getInstance().addActivity(this);
+        AgileExitAppManager.getInstance().addActivity(this);
     }
 
     protected void initOnView(@Nullable Bundle savedInstanceState) {

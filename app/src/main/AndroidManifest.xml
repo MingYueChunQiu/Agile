@@ -40,10 +40,12 @@
         <activity android:name="com.mingyuechunqiu.agileproject.feature.main.TestActivity">
 
         </activity>
-        <activity android:name=".feature.main.JumpActivity" >
+        <activity android:name=".feature.main.JumpActivity">
 
         </activity>
-        <activity android:name=".feature.main.ToolbarActivity">
+        <activity
+            android:name=".feature.main.ToolbarActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />

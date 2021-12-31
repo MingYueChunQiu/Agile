@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.util;
+package com.mingyuechunqiu.agile.frame;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.service.NetworkStateService;
 
 import java.lang.ref.WeakReference;
@@ -25,15 +24,15 @@ import java.util.Map;
  * </pre>
  */
 
-public final class ExitApplicationManager {
+public final class AgileExitAppManager {
 
     private Map<String, WeakReference<Activity>> mActivityMap;
     private List<ExitApplicationCallback> mCallbackList;
 
-    private ExitApplicationManager() {
+    private AgileExitAppManager() {
     }
 
-    public static ExitApplicationManager getInstance() {
+    public static AgileExitAppManager getInstance() {
         return ExitApplicationManagerHolder.INSTANCE;
     }
 
@@ -121,7 +120,7 @@ public final class ExitApplicationManager {
 
     private static class ExitApplicationManagerHolder {
 
-        private static final ExitApplicationManager INSTANCE = new ExitApplicationManager();
+        private static final AgileExitAppManager INSTANCE = new AgileExitAppManager();
     }
 
     public interface ExitApplicationCallback {
