@@ -5,9 +5,15 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.mingyuechunqiu.agile.BuildConfig;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.frame.engine.image.IAgileImageEngine;
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycleDispatcher;
+import com.mingyuechunqiu.agile.frame.observer.AgileLogObserver;
+import com.mingyuechunqiu.agile.frame.observer.IAgileFrameObserver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <pre>
@@ -20,13 +26,24 @@ import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycleDispatcher;
  */
 public final class Agile {
 
+    private volatile static Agile sInstance = null;
     private volatile Context mApplicationContext;//上下文对象
+    @NonNull
     private AgileFrameConfigure mConfigure;//配置信息对象
     private boolean debug;//标记是否处于debug模式
-    private AgileLifecycleDispatcher mLifecycleDispatcher;
+    @NonNull
+    private AgileLifecycleDispatcher mLifecycleDispatcher = AgileLifecycleDispatcher.INSTANCE;
+    @NonNull
+    private final List<IAgileFrameObserver> mAgileFrameObserverList = new ArrayList<>();
 
-    private Agile() {
-        mConfigure = new AgileFrameConfigure.Builder().build();
+    private Agile(@NonNull Context context, @Nullable AgileFrameConfigure configure) {
+        mApplicationContext = context.getApplicationContext();
+        if (configure == null) {
+            mConfigure = new AgileFrameConfigure.Builder().build();
+        } else {
+            mConfigure = configure;
+        }
+        mAgileFrameObserverList.add(new AgileLogObserver());
     }
 
     /**
@@ -35,8 +52,29 @@ public final class Agile {
      * @param context 传入上下文
      */
     public static void init(@NonNull Context context) {
-        AgileHolder.sInstance.mApplicationContext = context.getApplicationContext() != null ? context.getApplicationContext() : context;
-        debug(false);
+        init(context, null);
+    }
+
+    /**
+     * 进行框架初始化，需要在application中进行初始化，必须最先调用，否则可能会报错
+     *
+     * @param context   传入上下文
+     * @param configure 框架配置
+     */
+    public static void init(@NonNull Context context, @Nullable AgileFrameConfigure configure) {
+        if (sInstance == null) {
+            synchronized (Agile.class) {
+                if (sInstance == null) {
+                    sInstance = new Agile(context, configure);
+                }
+            }
+        }
+        sInstance.mApplicationContext = context.getApplicationContext() != null ? context.getApplicationContext() : context;
+        debug(BuildConfig.DEBUG);
+        setConfigure(configure);
+        for (IAgileFrameObserver observer : sInstance.mAgileFrameObserverList) {
+            observer.onFrameInit();
+        }
     }
 
     /**
@@ -45,10 +83,10 @@ public final class Agile {
      * @return 返回全局上下文
      */
     public static Context getAppContext() {
-        if (AgileHolder.sInstance.mApplicationContext == null) {
+        if (sInstance.mApplicationContext == null) {
             throw new IllegalArgumentException("Context has not been initialized!");
         }
-        return AgileHolder.sInstance.mApplicationContext;
+        return sInstance.mApplicationContext;
     }
 
     /**
@@ -60,7 +98,7 @@ public final class Agile {
         if (configure == null) {
             return;
         }
-        AgileHolder.sInstance.mConfigure = configure;
+        sInstance.mConfigure = configure;
     }
 
     /**
@@ -70,7 +108,7 @@ public final class Agile {
      */
     @NonNull
     public static AgileFrameConfigure getConfigure() {
-        return AgileHolder.sInstance.mConfigure;
+        return sInstance.mConfigure;
     }
 
     /**
@@ -80,10 +118,7 @@ public final class Agile {
      */
     @NonNull
     public static AgileLifecycleDispatcher getLifecycleDispatcher() {
-        if (AgileHolder.sInstance.mLifecycleDispatcher == null) {
-            AgileHolder.sInstance.mLifecycleDispatcher = AgileLifecycleDispatcher.INSTANCE;
-        }
-        return AgileHolder.sInstance.mLifecycleDispatcher;
+        return sInstance.mLifecycleDispatcher;
     }
 
     /**
@@ -106,19 +141,11 @@ public final class Agile {
      * @param debug 是否开启调试模式
      */
     public static void debug(boolean debug) {
-        AgileHolder.sInstance.debug = debug;
+        sInstance.debug = debug;
         LogManagerProvider.showLog(debug);
     }
 
     public static boolean isDebug() {
-        return AgileHolder.sInstance.debug;
-    }
-
-    /**
-     * 线程安全
-     */
-    private static class AgileHolder {
-
-        private static final Agile sInstance = new Agile();
+        return sInstance.debug;
     }
 }

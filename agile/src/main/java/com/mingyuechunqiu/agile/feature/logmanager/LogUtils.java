@@ -28,7 +28,7 @@ import java.io.File;
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/3/1
  *     desc   : 日志工具类
- *              实现Logable
+ *              实现ILog
  *     version: 1.0
  * </pre>
  */
