@@ -58,10 +58,12 @@ public abstract class BaseAbstractModel implements IBaseModel {
 
     @Override
     public void initModelParts() {
+        initializeModelParts();
     }
 
     @Override
     public void initRepositories() {
+        initializeRepositories();
     }
 
     /**
@@ -152,7 +154,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
     }
 
     @Override
-    public <T> boolean executeCall(@NonNull Call<T> call) {
+    public boolean executeCall(@NonNull Call call) {
         if (executeCallWithCustom(call)) {
             return true;
         }
@@ -189,14 +191,13 @@ public abstract class BaseAbstractModel implements IBaseModel {
      * 用户自定义执行调用逻辑
      *
      * @param call 调用对象
-     * @param <T>  响应对象类型
      * @return 请求已处理返回true，否则返回false
      */
-    protected <T> boolean executeCallWithCustom(@NonNull Call<T> call) {
+    protected boolean executeCallWithCustom(@NonNull Call call) {
         return false;
     }
 
-    private <T> boolean executeCallWithRepositoryMap(@NonNull Map<IBaseRepository, Set<String>> map, @NonNull Call<T> call) {
+    private boolean executeCallWithRepositoryMap(@NonNull Map<IBaseRepository, Set<String>> map, @NonNull Call call) {
         for (Map.Entry<IBaseRepository, Set<String>> entry : map.entrySet()) {
             if (entry.getValue().contains(call.getRequest().getRequestTag())) {
                 entry.getKey().executeCall(call);
@@ -233,15 +234,24 @@ public abstract class BaseAbstractModel implements IBaseModel {
      * 内部执行调用逻辑
      *
      * @param call 调用对象
-     * @param <T>  响应类型
      * @return 请求已处理返回true，否则返回false
      */
-    private <T> boolean executeCallInternal(@NonNull Call<T> call) {
+    private boolean executeCallInternal(@NonNull Call call) {
         if (executeCallWithRepositoryMap(getModelPartRepositoryMap(), call)) {
             return true;
         }
         return executeCallWithRepositoryMap(getRepositoryMap(), call);
     }
+
+    /**
+     * 供子类初始化ModelPart
+     */
+    protected abstract void initializeModelParts();
+
+    /**
+     * 供子类初始化Repository
+     */
+    protected abstract void initializeRepositories();
 
     /**
      * 销毁资源

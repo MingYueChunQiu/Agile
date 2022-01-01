@@ -11,9 +11,17 @@ package com.mingyuechunqiu.agileproject.feature.function;
  *      Version:    1.0
  * </pre>
  */
-public class FunctionModel extends FunctionContract.Model{
+public class FunctionModel extends FunctionContract.Model {
 
-    private FunctionContract.Repository mRepository = null;
+    @Override
+    protected void initializeModelParts() {
+
+    }
+
+    @Override
+    protected void initializeRepositories() {
+
+    }
 
     @Override
     protected void release() {

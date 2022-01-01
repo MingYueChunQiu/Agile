@@ -34,7 +34,7 @@ public abstract class BaseAbstractNetworkRepository extends BaseAbstractRemoteRe
      * @param errorMsg 网络请求错误信息
      * @return 返回true表示响应成功，否则返回false失败
      */
-    protected <T> boolean preHandleNetworkResponseFailureWithCode(@NonNull Call<T> call, int code, @Nullable String errorMsg) {
+    protected boolean preHandleNetworkResponseFailureWithCode(@NonNull Call call, int code, @Nullable String errorMsg) {
         if (code == getNetworkSuccessCode()) {
             return true;
         }
@@ -100,9 +100,8 @@ public abstract class BaseAbstractNetworkRepository extends BaseAbstractRemoteRe
      * 处理Token过期
      *
      * @param call 调用对象
-     * @param <T>  响应对象类型
      */
-    protected <T> void handleOnTokenOverdue(@NonNull Call<T> call) {
+    protected void handleOnTokenOverdue(@NonNull Call call) {
         callOnTokenOverdue(call);
     }
 
@@ -118,9 +117,8 @@ public abstract class BaseAbstractNetworkRepository extends BaseAbstractRemoteRe
      * 当token过期时进行回调
      *
      * @param call 调用对象
-     * @param <T>  响应对象类型
      */
-    protected <T> void callOnTokenOverdue(@NonNull Call<T> call) {
+    protected void callOnTokenOverdue(@NonNull Call call) {
     }
 
     /**

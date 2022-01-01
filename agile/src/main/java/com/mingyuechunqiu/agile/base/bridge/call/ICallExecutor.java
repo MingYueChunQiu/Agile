@@ -20,8 +20,7 @@ public interface ICallExecutor {
      * 执行一次调用
      *
      * @param call 调用对象
-     * @param <T>  响应数据类型
      * @return 执行请求返回true，否则返回false
      */
-    <T> boolean executeCall(@NonNull Call<T> call);
+    boolean executeCall(@NonNull Call call);
 }

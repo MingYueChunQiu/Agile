@@ -15,11 +15,11 @@ import com.mingyuechunqiu.agile.base.bridge.Request
  *      Version:    1.0
  * </pre>
  */
-interface Call<T> {
+interface Call {
 
-    fun getRequest(): Request
+    fun <I : Request.IParamsInfo> getRequest(): Request<I>
 
-    fun getCallback(): Callback<T>
+    fun <T> getCallback(): Callback<T>
 
     companion object {
 
@@ -30,7 +30,7 @@ interface Call<T> {
          * @param callback 请求回调
          * @param <T> 响应数据类型
          */
-        fun <T> newCall(request: Request, callback: Callback<T>): Call<T> {
+        fun <I : Request.IParamsInfo, T> newCall(request: Request<I>, callback: Callback<T>): Call {
             return RequestCall(request, callback)
         }
     }

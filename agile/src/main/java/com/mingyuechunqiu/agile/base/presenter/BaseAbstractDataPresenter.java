@@ -1,5 +1,8 @@
 package com.mingyuechunqiu.agile.base.presenter;
 
+import static com.mingyuechunqiu.agile.constants.AgileUserConstants.PREF_USER_INFO;
+import static com.mingyuechunqiu.agile.constants.AgileUserConstants.TOKEN;
+
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -12,9 +15,6 @@ import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
 import com.mingyuechunqiu.agile.util.SharedPreferencesUtils;
-
-import static com.mingyuechunqiu.agile.constants.AgileUserConstants.PREF_USER_INFO;
-import static com.mingyuechunqiu.agile.constants.AgileUserConstants.TOKEN;
 
 /**
  * <pre>
@@ -29,7 +29,7 @@ import static com.mingyuechunqiu.agile.constants.AgileUserConstants.TOKEN;
 public abstract class BaseAbstractDataPresenter<V extends IBaseDataView, M extends BaseAbstractDataModel> extends BaseAbstractPresenter<V, M> {
 
     @Override
-    public <T> boolean executeCall(@NonNull Call<T> call) {
+    public boolean executeCall(@NonNull Call call) {
         if (getModel() == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }
@@ -46,7 +46,7 @@ public abstract class BaseAbstractDataPresenter<V extends IBaseDataView, M exten
     }
 
     @Override
-    protected <T> boolean executeCallWithModel(@NonNull Call<T> call) {
+    protected boolean executeCallWithModel(@NonNull Call call) {
         M model = getModel();
         return model != null && model.executeCall(call);
     }

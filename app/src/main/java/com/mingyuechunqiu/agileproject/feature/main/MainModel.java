@@ -14,18 +14,17 @@ import com.mingyuechunqiu.agileproject.feature.function.FunctionRepository;
  */
 class MainModel extends MainContract.Model {
 
-    private FunctionRepository mRepository;
-
-
     @Override
     protected void release() {
 
     }
 
     @Override
-    public void initRepositories() {
-        super.initRepositories();
-        mRepository = new FunctionRepository();
-        addRepository(mRepository);
+    protected void initializeModelParts() {
+    }
+
+    @Override
+    protected void initializeRepositories() {
+        addRepository(new FunctionRepository());
     }
 }

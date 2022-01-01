@@ -115,7 +115,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     }
 
     @Override
-    public <T> boolean executeCall(@NonNull Call<T> call) {
+    public boolean executeCall(@NonNull Call call) {
         if (mModel == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }
@@ -374,10 +374,9 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * 由子类重写，调用model进行业务请求操作
      *
      * @param call 调用对象
-     * @param <T>  响应数据类型
      * @return 执行请求返回true，否则返回false
      */
-    protected abstract <T> boolean executeCallWithModel(@NonNull Call<T> call);
+    protected abstract boolean executeCallWithModel(@NonNull Call call);
 
     /**
      * 释放资源

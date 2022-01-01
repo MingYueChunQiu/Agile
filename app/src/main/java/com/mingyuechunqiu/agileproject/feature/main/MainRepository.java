@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * <pre>
  *      Project:    Agile
@@ -26,7 +24,7 @@ public class MainRepository extends MainContract.Repository {
     }
 
     @Override
-    public <T> boolean executeCall(@NonNull @NotNull Call<T> call) {
+    public boolean executeCall(@NonNull Call call) {
         return false;
     }
 }

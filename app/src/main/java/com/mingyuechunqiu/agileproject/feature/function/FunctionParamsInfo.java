@@ -1,8 +1,6 @@
 package com.mingyuechunqiu.agileproject.feature.function;
 
-import androidx.annotation.NonNull;
-
-import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
+import com.mingyuechunqiu.agile.base.bridge.Request;
 
 /**
  * <pre>
@@ -16,10 +14,9 @@ import com.mingyuechunqiu.agile.data.bean.ParamsInfo;
  *      Version:    1.0
  * </pre>
  */
-public class FunctionParamsInfo extends ParamsInfo {
+public class FunctionParamsInfo implements Request.IParamsInfo {
 
-    @Override
-    public void setRequestCategory(@NonNull RequestCategory mRequestCategory) {
-        super.setRequestCategory(mRequestCategory);
+    public String getTestText() {
+        return "test";
     }
 }
