@@ -28,11 +28,12 @@ public interface ICallExecutor {
      * @param <T>  响应泛型类型
      * @param <R>  用于转换的请求泛型类型
      * @param <C>  用户转换的响应泛型类型
+     * @param <O>  操作泛型类型
      */
-    <I extends Request.IParamsInfo, T, R extends Request.IParamsInfo, C> void executeCall(@NonNull Call<I, T> call, @NonNull ExecuteCallCallback<R, C> callback);
+    <I extends Request.IParamsInfo, T, R extends Request.IParamsInfo, C, O> void executeCall(@NonNull Call<I, T> call, @NonNull ExecuteCallCallback<R, C, O> callback);
 
-    interface ExecuteCallCallback<I extends Request.IParamsInfo, T> {
+    interface ExecuteCallCallback<I extends Request.IParamsInfo, T, O> {
 
-        IBaseRepositoryOperation<T> executeCall(@NonNull Request<I> request, @NonNull Callback<T> callback);
+        IBaseRepositoryOperation<O> executeCall(@NonNull Request<I> request, @NonNull Callback<T> callback);
     }
 }

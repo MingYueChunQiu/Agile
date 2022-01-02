@@ -34,12 +34,12 @@ public abstract class BaseAbstractRemoteRepository extends BaseAbstractRepositor
 
     @SuppressWarnings("unchecked")
     @Override
-    public <I extends Request.IParamsInfo, T, R extends Request.IParamsInfo, C> void executeCall(@NonNull Call<I, T> call, @NonNull ExecuteCallCallback<R, C> callback) {
-        IBaseRepositoryOperation<C> operation = callback.executeCall((Request<R>) call.getRequest(), (Callback<C>) call.getCallback());
+    public <I extends Request.IParamsInfo, T, R extends Request.IParamsInfo, C, O> void executeCall(@NonNull Call<I, T> call, @NonNull ExecuteCallCallback<R, C, O> callback) {
+        IBaseRepositoryOperation<O> operation = callback.executeCall((Request<R>) call.getRequest(), (Callback<C>) call.getCallback());
         if (!(operation instanceof IBaseRemoteRepositoryOperation)) {
             throw new IllegalArgumentException("Operation must be IBaseLocalRepositoryOperation");
         }
-        addRemoteOperation((IBaseRemoteRepositoryOperation<C>) operation);
+        addRemoteOperation((IBaseRemoteRepositoryOperation<O>) operation);
     }
 
     /**

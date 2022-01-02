@@ -2,8 +2,10 @@ package com.mingyuechunqiu.agileproject.feature.function;
 
 import androidx.annotation.NonNull;
 
+import com.mingyuechunqiu.agile.base.bridge.Callback;
 import com.mingyuechunqiu.agile.base.bridge.Request;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
+import com.mingyuechunqiu.agile.base.model.repository.operation.IBaseRepositoryOperation;
 import com.mingyuechunqiu.agile.base.model.repository.remote.BaseAbstractRetrofitRepository;
 
 /**
@@ -26,7 +28,12 @@ public class FunctionRepository extends BaseAbstractRetrofitRepository {
 
     @Override
     public <I extends Request.IParamsInfo, T> boolean dispatchCall(@NonNull Call<I, T> call) {
-        executeCall(call, (ExecuteCallCallback<FunctionParamsInfo, String>) (request, callback) -> null);
+        executeCall(call, new ExecuteCallCallback<FunctionParamsInfo, String, String>() {
+            @Override
+            public IBaseRepositoryOperation<String> executeCall(@NonNull Request<FunctionParamsInfo> request, @NonNull Callback<String> callback) {
+                return null;
+            }
+        });
         return true;
     }
 }
