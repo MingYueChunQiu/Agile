@@ -3,7 +3,11 @@ package com.mingyuechunqiu.agile.base.model.repository.remote;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.mingyuechunqiu.agile.base.bridge.Callback;
+import com.mingyuechunqiu.agile.base.bridge.Request;
+import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.model.repository.BaseAbstractRepository;
+import com.mingyuechunqiu.agile.base.model.repository.operation.IBaseRepositoryOperation;
 import com.mingyuechunqiu.agile.base.model.repository.operation.remote.IBaseRemoteRepositoryOperation;
 
 import java.util.ArrayList;
@@ -27,6 +31,16 @@ public abstract class BaseAbstractRemoteRepository extends BaseAbstractRepositor
     protected final String TAG_FAILURE = getClass().getSimpleName() + "_failure";//打印错误日志标签
     @Nullable
     private List<IBaseRemoteRepositoryOperation<?>> mRemoteRepositoryOperationList;
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <I extends Request.IParamsInfo, T, R extends Request.IParamsInfo, C> void executeCall(@NonNull Call<I, T> call, @NonNull ExecuteCallCallback<R, C> callback) {
+        IBaseRepositoryOperation<C> operation = callback.executeCall((Request<R>) call.getRequest(), (Callback<C>) call.getCallback());
+        if (!(operation instanceof IBaseRemoteRepositoryOperation)) {
+            throw new IllegalArgumentException("Operation must be IBaseLocalRepositoryOperation");
+        }
+        addRemoteOperation((IBaseRemoteRepositoryOperation<C>) operation);
+    }
 
     /**
      * 添加远程操作

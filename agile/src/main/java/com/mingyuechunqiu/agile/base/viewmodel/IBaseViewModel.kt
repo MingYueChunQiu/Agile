@@ -5,7 +5,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LiveData
-import com.mingyuechunqiu.agile.base.bridge.call.ICallExecutor
+import com.mingyuechunqiu.agile.base.bridge.call.ICallDispatcher
 import com.mingyuechunqiu.agile.base.businessengine.IBusinessEngineOwner
 import com.mingyuechunqiu.agile.base.model.IBaseModel
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo
@@ -24,7 +24,8 @@ import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle
  *     version: 1.0
  * </pre>
  */
-interface IBaseViewModel<M : IBaseModel> : LifecycleEventObserver, ICallExecutor,
+interface IBaseViewModel<M : IBaseModel> : LifecycleEventObserver,
+    ICallDispatcher,
     IBusinessEngineOwner, IPopHintOwner,
     IStatusViewProcessor {
 

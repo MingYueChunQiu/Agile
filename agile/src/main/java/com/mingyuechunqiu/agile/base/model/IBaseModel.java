@@ -1,6 +1,6 @@
 package com.mingyuechunqiu.agile.base.model;
 
-import com.mingyuechunqiu.agile.base.bridge.call.ICallExecutor;
+import com.mingyuechunqiu.agile.base.bridge.call.ICallDispatcher;
 import com.mingyuechunqiu.agile.base.model.repository.IRepositoryOwner;
 import com.mingyuechunqiu.agile.base.model.modelpart.IModelPartOwner;
 
@@ -13,7 +13,7 @@ import com.mingyuechunqiu.agile.base.model.modelpart.IModelPartOwner;
  *     version: 1.0
  * </pre>
  */
-public interface IBaseModel extends IModelPartOwner, IRepositoryOwner, ICallExecutor {
+public interface IBaseModel extends IModelPartOwner, IRepositoryOwner, ICallDispatcher {
 
     void callOnStart();
 

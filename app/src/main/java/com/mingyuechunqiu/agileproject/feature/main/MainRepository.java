@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agileproject.feature.main;
 
 import androidx.annotation.NonNull;
 
+import com.mingyuechunqiu.agile.base.bridge.Request;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 
 /**
@@ -24,7 +25,7 @@ public class MainRepository extends MainContract.Repository {
     }
 
     @Override
-    public boolean executeCall(@NonNull Call call) {
+    public <I extends Request.IParamsInfo, T> boolean dispatchCall(@NonNull Call<I, T> call) {
         return false;
     }
 }

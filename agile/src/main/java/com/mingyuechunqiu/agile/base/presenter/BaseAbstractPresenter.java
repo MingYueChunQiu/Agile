@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.mingyuechunqiu.agile.base.bridge.Request;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.businessengine.IBaseBusinessEngine;
 import com.mingyuechunqiu.agile.base.model.IBaseModel;
@@ -115,11 +116,11 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     }
 
     @Override
-    public boolean executeCall(@NonNull Call call) {
+    public <I extends Request.IParamsInfo, T> boolean dispatchCall(@NonNull Call<I, T> call) {
         if (mModel == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }
-        return executeCallWithModel(call);
+        return dispatchCallWithModel(call);
     }
 
     /**
@@ -371,12 +372,14 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     }
 
     /**
-     * 由子类重写，调用model进行业务请求操作
+     * 由子类重写，调用model进行分发调用操作
      *
      * @param call 调用对象
+     * @param <I>  请求泛型类型
+     * @param <T>  响应泛型类型
      * @return 执行请求返回true，否则返回false
      */
-    protected abstract boolean executeCallWithModel(@NonNull Call call);
+    protected abstract <I extends Request.IParamsInfo, T> boolean dispatchCallWithModel(@NonNull Call<I, T> call);
 
     /**
      * 释放资源

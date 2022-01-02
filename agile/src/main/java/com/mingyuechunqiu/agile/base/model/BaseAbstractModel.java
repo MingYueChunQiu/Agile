@@ -154,11 +154,11 @@ public abstract class BaseAbstractModel implements IBaseModel {
     }
 
     @Override
-    public boolean executeCall(@NonNull Call call) {
-        if (executeCallWithCustom(call)) {
+    public <I extends Request.IParamsInfo, T> boolean dispatchCall(@NonNull Call<I, T> call) {
+        if (dispatchCallWithCustom(call)) {
             return true;
         }
-        return executeCallInternal(call);
+        return dispatchCallInternal(call);
     }
 
     /**
@@ -191,16 +191,27 @@ public abstract class BaseAbstractModel implements IBaseModel {
      * 用户自定义执行调用逻辑
      *
      * @param call 调用对象
+     * @param <I>  请求泛型类型
+     * @param <T>  响应泛型类型
      * @return 请求已处理返回true，否则返回false
      */
-    protected boolean executeCallWithCustom(@NonNull Call call) {
+    protected <I extends Request.IParamsInfo, T> boolean dispatchCallWithCustom(@NonNull Call<I, T> call) {
         return false;
     }
 
-    private boolean executeCallWithRepositoryMap(@NonNull Map<IBaseRepository, Set<String>> map, @NonNull Call call) {
+    /**
+     * 根据仓库映射分发调用
+     *
+     * @param map  仓库映射
+     * @param call 调用对象
+     * @param <I>  请求泛型类型
+     * @param <T>  响应泛型类型
+     * @return 请求已处理返回true，否则返回false
+     */
+    private <I extends Request.IParamsInfo, T> boolean dispatchCallWithRepositoryMap(@NonNull Map<IBaseRepository, Set<String>> map, @NonNull Call<I, T> call) {
         for (Map.Entry<IBaseRepository, Set<String>> entry : map.entrySet()) {
             if (entry.getValue().contains(call.getRequest().getRequestTag())) {
-                entry.getKey().executeCall(call);
+                entry.getKey().dispatchCall(call);
                 return true;
             }
         }
@@ -231,16 +242,18 @@ public abstract class BaseAbstractModel implements IBaseModel {
     }
 
     /**
-     * 内部执行调用逻辑
+     * 内部分发调用逻辑
      *
      * @param call 调用对象
+     * @param <I>  请求泛型类型
+     * @param <T>  响应泛型类型
      * @return 请求已处理返回true，否则返回false
      */
-    private boolean executeCallInternal(@NonNull Call call) {
-        if (executeCallWithRepositoryMap(getModelPartRepositoryMap(), call)) {
+    private <I extends Request.IParamsInfo, T> boolean dispatchCallInternal(@NonNull Call<I, T> call) {
+        if (dispatchCallWithRepositoryMap(getModelPartRepositoryMap(), call)) {
             return true;
         }
-        return executeCallWithRepositoryMap(getRepositoryMap(), call);
+        return dispatchCallWithRepositoryMap(getRepositoryMap(), call);
     }
 
     /**

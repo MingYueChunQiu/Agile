@@ -29,7 +29,7 @@ import com.mingyuechunqiu.agile.util.SharedPreferencesUtils;
 public abstract class BaseAbstractDataPresenter<V extends IBaseDataView, M extends BaseAbstractDataModel> extends BaseAbstractPresenter<V, M> {
 
     @Override
-    public boolean executeCall(@NonNull Call call) {
+    public <I extends Request.IParamsInfo, T> boolean dispatchCall(@NonNull Call<I, T> call) {
         if (getModel() == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }
@@ -42,13 +42,13 @@ public abstract class BaseAbstractDataPresenter<V extends IBaseDataView, M exten
                 return false;
             }
         }
-        return executeCallWithModel(call);
+        return dispatchCallWithModel(call);
     }
 
     @Override
-    protected boolean executeCallWithModel(@NonNull Call call) {
+    protected <I extends Request.IParamsInfo, T> boolean dispatchCallWithModel(@NonNull Call<I, T> call) {
         M model = getModel();
-        return model != null && model.executeCall(call);
+        return model != null && model.dispatchCall(call);
     }
 
     /**

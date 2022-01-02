@@ -22,20 +22,20 @@ import com.mingyuechunqiu.agile.util.SharedPreferencesUtils
  */
 abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstractViewModel<M>() {
 
-    override fun executeCall(call: Call): Boolean {
+    override fun <I : Request.IParamsInfo, T : Any> dispatchCall(call: Call<I, T>): Boolean {
         requireNotNull(getModel()) { "Model has not been set!" }
-        if (call.getRequest<Request.IParamsInfo>().requestCategory === Request.RequestCategory.CATEGORY_NETWORK) {
+        if (call.getRequest().requestCategory === Request.RequestCategory.CATEGORY_NETWORK) {
             //判断当前网络状况，是否继续进行网络业务操作
             if (!checkNetworkIsConnected()) {
                 disconnectNetwork()
                 return false
             }
         }
-        return executeCallWithModel(call)
+        return dispatchCallWithModel(call)
     }
 
-    protected open fun executeCallWithModel(call: Call): Boolean {
-        return getModel()?.executeCall(call) ?: false
+    protected open fun <I : Request.IParamsInfo, T : Any> dispatchCallWithModel(call: Call<I, T>): Boolean {
+        return getModel()?.dispatchCall(call) ?: false
     }
 
     /**

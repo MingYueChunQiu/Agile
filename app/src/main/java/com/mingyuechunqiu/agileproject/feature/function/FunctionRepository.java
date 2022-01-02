@@ -2,7 +2,7 @@ package com.mingyuechunqiu.agileproject.feature.function;
 
 import androidx.annotation.NonNull;
 
-import com.mingyuechunqiu.agile.base.bridge.Response;
+import com.mingyuechunqiu.agile.base.bridge.Request;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.model.repository.remote.BaseAbstractRetrofitRepository;
 
@@ -25,8 +25,8 @@ public class FunctionRepository extends BaseAbstractRetrofitRepository {
     }
 
     @Override
-    public boolean executeCall(@NonNull Call call) {
-        call.<String>getCallback().onSuccess(new Response<>("ewfwe"));
-        return false;
+    public <I extends Request.IParamsInfo, T> boolean dispatchCall(@NonNull Call<I, T> call) {
+        executeCall(call, (ExecuteCallCallback<FunctionParamsInfo, String>) (request, callback) -> null);
+        return true;
     }
 }

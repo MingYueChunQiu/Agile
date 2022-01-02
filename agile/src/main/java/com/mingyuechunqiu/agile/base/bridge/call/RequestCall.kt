@@ -19,15 +19,13 @@ import com.mingyuechunqiu.agile.base.bridge.Request
 internal class RequestCall<I : Request.IParamsInfo, T> constructor(
     private val mRequest: Request<I>,
     private val mCallback: Callback<T>
-) : Call {
+) : Call<I, T> {
 
-    @Suppress("UNCHECKED_CAST")
-    override fun <I : Request.IParamsInfo> getRequest(): Request<I> {
-        return mRequest as Request<I>
+    override fun getRequest(): Request<I> {
+        return mRequest
     }
 
-    @Suppress("UNCHECKED_CAST")
-    override fun <T> getCallback(): Callback<T> {
-        return mCallback as Callback<T>
+    override fun getCallback(): Callback<T> {
+        return mCallback
     }
 }
