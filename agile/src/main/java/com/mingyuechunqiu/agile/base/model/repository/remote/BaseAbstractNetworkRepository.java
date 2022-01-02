@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.bridge.Callback;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
-import com.mingyuechunqiu.agile.constants.AgileURLConstants;
+import com.mingyuechunqiu.agile.constants.AgileCodeConstants;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
@@ -75,7 +75,7 @@ public abstract class BaseAbstractNetworkRepository extends BaseAbstractRemoteRe
      * @return 返回成功编码
      */
     protected int getNetworkSuccessCode() {
-        return AgileURLConstants.CODE_SUCCESS;
+        return AgileCodeConstants.CODE_SUCCESS;
     }
 
     /**
@@ -84,7 +84,7 @@ public abstract class BaseAbstractNetworkRepository extends BaseAbstractRemoteRe
      * @return 返回过期编码
      */
     protected int getTokenOverdueCode() {
-        return AgileURLConstants.CODE_TOKEN_OVERDUE;
+        return AgileCodeConstants.CODE_TOKEN_OVERDUE;
     }
 
     /**
@@ -93,7 +93,7 @@ public abstract class BaseAbstractNetworkRepository extends BaseAbstractRemoteRe
      * @return 返回无效编码
      */
     protected int getTokenInvalidCode() {
-        return AgileURLConstants.CODE_TOKEN_INVALID;
+        return AgileCodeConstants.CODE_TOKEN_INVALID;
     }
 
     /**
