@@ -29,6 +29,7 @@ public class FunctionRepository extends BaseAbstractRetrofitRepository {
     @Override
     public <I extends Request.IParamsInfo, T> boolean dispatchCall(@NonNull Call<I, T> call) {
         executeCall(call, new ExecuteCallCallback<FunctionParamsInfo, String, String>() {
+
             @Override
             public IBaseRepositoryOperation<String> executeCall(@NonNull Request<FunctionParamsInfo> request, @NonNull Callback<String> callback) {
                 return null;

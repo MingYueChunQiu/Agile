@@ -1,7 +1,6 @@
 package com.mingyuechunqiu.agile.base.bridge;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.constants.AgileCodeConstants;
 
@@ -20,10 +19,10 @@ import com.mingyuechunqiu.agile.constants.AgileCodeConstants;
 public final class Response<T> {
 
     private final int mCode;
-    @Nullable
+    @NonNull
     private final T mData;
 
-    private Response(int code, @Nullable T data) {
+    private Response(int code, @NonNull T data) {
         mCode = code;
         mData = data;
     }
@@ -32,28 +31,18 @@ public final class Response<T> {
         return mCode;
     }
 
-    @Nullable
+    @NonNull
     public T getData() {
         return mData;
     }
 
     @NonNull
-    public static <T> Response<T> success(@Nullable T data) {
+    public static <T> Response<T> success(@NonNull T data) {
         return new Response<>(AgileCodeConstants.CODE_SUCCESS, data);
     }
 
     @NonNull
-    public static <T> Response<T> success(int code, @Nullable T data) {
+    public static <T> Response<T> success(int code, @NonNull T data) {
         return new Response<>(code, data);
-    }
-
-    @NonNull
-    public static <T> Response<T> error() {
-        return new Response<>(AgileCodeConstants.CODE_ERROR, null);
-    }
-
-    @NonNull
-    public static <T> Response<T> error(int code) {
-        return new Response<>(code, null);
     }
 }

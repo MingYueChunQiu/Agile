@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.base.bridge.Callback;
+import com.mingyuechunqiu.agile.base.bridge.Request;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.constants.AgileCodeConstants;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
@@ -30,11 +30,14 @@ public abstract class BaseAbstractNetworkRepository extends BaseAbstractRemoteRe
     /**
      * 根据网络响应返回码，进行不同处理
      *
+     * @param call     调用对象
      * @param code     网络响应返回码
      * @param errorMsg 网络请求错误信息
+     * @param <I>      请求泛型类型
+     * @param <T>      响应泛型类型
      * @return 返回true表示响应成功，否则返回false失败
      */
-    protected boolean preHandleNetworkResponseFailureWithCode(@NonNull Call call, int code, @Nullable String errorMsg) {
+    protected <I extends Request.IParamsInfo, T> boolean preHandleNetworkResponseFailureWithCode(@NonNull Call<I, T> call, int code, @Nullable String errorMsg) {
         if (code == getNetworkSuccessCode()) {
             return true;
         }
@@ -43,7 +46,7 @@ public abstract class BaseAbstractNetworkRepository extends BaseAbstractRemoteRe
         } else if (code == getTokenInvalidCode()) {
             handleOnTokenInvalid(errorMsg);
         } else {
-            handleOnNetworkResponseError(call.getCallback(), errorMsg);
+            handleOnNetworkResponseError(call, errorMsg);
         }
         return false;
     }
@@ -51,22 +54,26 @@ public abstract class BaseAbstractNetworkRepository extends BaseAbstractRemoteRe
     /**
      * 处理网络响应失败事件
      *
-     * @param callback 请求回调
+     * @param call     调用
      * @param errorMsg 错误信息
+     * @param <I>      请求泛型类型
+     * @param <T>      响应泛型类型
      */
-    protected <T> void handleOnNetworkResponseError(@NonNull Callback<T> callback, @Nullable String errorMsg) {
-        handleOnNetworkResponseError(callback, new ErrorInfo(TextUtils.isEmpty(errorMsg) ? "信息异常" : errorMsg));
+    protected <I extends Request.IParamsInfo, T> void handleOnNetworkResponseError(@NonNull Call<I, T> call, @Nullable String errorMsg) {
+        handleOnNetworkResponseError(call, new ErrorInfo(TextUtils.isEmpty(errorMsg) ? "信息异常" : errorMsg));
     }
 
     /**
      * 处理网络响应失败事件
      *
-     * @param callback 请求回调
-     * @param info     错误对象
+     * @param call 调用
+     * @param info 错误对象
+     * @param <I>  请求泛型类型
+     * @param <T>  响应泛型类型
      */
-    protected <T> void handleOnNetworkResponseError(@NonNull @NotNull Callback<T> callback, @NonNull @NotNull ErrorInfo info) {
+    protected <I extends Request.IParamsInfo, T> void handleOnNetworkResponseError(@NonNull @NotNull Call<I, T> call, @NonNull @NotNull ErrorInfo info) {
         LogManagerProvider.d(TAG_FAILURE, "网络响应错误");
-        callback.onFailure(info);
+        call.getCallback().onFailure(info);
     }
 
     /**
@@ -100,8 +107,10 @@ public abstract class BaseAbstractNetworkRepository extends BaseAbstractRemoteRe
      * 处理Token过期
      *
      * @param call 调用对象
+     * @param <I>  请求泛型类型
+     * @param <T>  响应泛型类型
      */
-    protected void handleOnTokenOverdue(@NonNull Call call) {
+    protected <I extends Request.IParamsInfo, T> void handleOnTokenOverdue(@NonNull Call<I, T> call) {
         callOnTokenOverdue(call);
     }
 
@@ -117,8 +126,10 @@ public abstract class BaseAbstractNetworkRepository extends BaseAbstractRemoteRe
      * 当token过期时进行回调
      *
      * @param call 调用对象
+     * @param <I>  请求泛型类型
+     * @param <T>  响应泛型类型
      */
-    protected void callOnTokenOverdue(@NonNull Call call) {
+    protected <I extends Request.IParamsInfo, T> void callOnTokenOverdue(@NonNull Call<I, T> call) {
     }
 
     /**
