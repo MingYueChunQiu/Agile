@@ -15,12 +15,11 @@ import android.os.Bundle
  * </pre>
  */
 class Request<I : Request.IParamsInfo> @JvmOverloads constructor(
-    var requestCategory: RequestCategory = RequestCategory.CATEGORY_NOT_SET,
-    var requestTag: String = DEFAULT_KEY_REQUEST_TAG
+    val requestCategory: RequestCategory = RequestCategory.CATEGORY_OFFLINE,
+    val requestTag: String = DEFAULT_KEY_REQUEST_TAG,
+    val arguments: Bundle? = null,
+    val paramsInfo: I? = null
 ) {
-
-    var arguments: Bundle? = null
-    var paramsInfo: I? = null
 
     enum class RequestCategory {
 
