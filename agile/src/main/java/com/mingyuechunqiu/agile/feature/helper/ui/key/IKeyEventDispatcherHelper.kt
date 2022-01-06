@@ -19,10 +19,14 @@ interface IKeyEventDispatcherHelper {
     /**
      * 添加Tag的按键监听器
      *
+     * @param tag 标签
      * @param listener Tag按键监听器
      * @return 返回按键观察者Id
      */
-    fun addOnKeyEventListener(tag: String, listener: IKeyEventReceiverHelper.OnKeyEventListener): String
+    fun addOnKeyEventListener(
+        tag: String,
+        listener: IKeyEventReceiverHelper.OnKeyEventListener
+    ): String
 
     /**
      * 删除Tag的按键监听器

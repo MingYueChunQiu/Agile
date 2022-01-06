@@ -16,7 +16,7 @@ import android.os.Bundle
  */
 class Request<I : Request.IParamsInfo> @JvmOverloads constructor(
     val requestCategory: RequestCategory = RequestCategory.CATEGORY_OFFLINE,
-    val requestTag: String = DEFAULT_KEY_REQUEST_TAG,
+    val requestTag: String = Request.Tag.TAG_DEFAULT_REQUEST,
     val arguments: Bundle? = null,
     val paramsInfo: I? = null
 ) {
@@ -32,9 +32,12 @@ class Request<I : Request.IParamsInfo> @JvmOverloads constructor(
      */
     interface IParamsInfo
 
-    companion object {
+    object Tag {
+
+        //未设置标签
+        const val TAG_NOT_SET = "tag_not_set"
 
         //默认请求Tag
-        const val DEFAULT_KEY_REQUEST_TAG = "DEFAULT_KEY_REQUEST_TAG";
+        const val TAG_DEFAULT_REQUEST = "tag_default_request"
     }
 }

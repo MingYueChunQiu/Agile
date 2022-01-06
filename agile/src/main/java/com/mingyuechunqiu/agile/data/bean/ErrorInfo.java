@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
+import com.mingyuechunqiu.agile.base.bridge.Request;
+
 /**
  * <pre>
  *      Project:    Agile
@@ -18,7 +20,7 @@ import androidx.annotation.StringRes;
  */
 public class ErrorInfo {
 
-    private Builder mBuilder;
+    private final Builder mBuilder;
 
     public ErrorInfo(@Nullable String errorMsg) {
         this(new Builder().setErrorMsg(errorMsg));
@@ -32,12 +34,22 @@ public class ErrorInfo {
         mBuilder = builder;
     }
 
-    public int getRequestType() {
-        return mBuilder.requestType;
+    @NonNull
+    public Request.RequestCategory getRequestType() {
+        return mBuilder.requestCategory;
     }
 
-    public void setRequestType(int requestType) {
-        mBuilder.requestType = requestType;
+    public void setRequestType(@NonNull Request.RequestCategory requestType) {
+        mBuilder.requestCategory = requestType;
+    }
+
+    @NonNull
+    public String getRequestTag() {
+        return mBuilder.requestTag;
+    }
+
+    public void setRequestTag(@NonNull String requestTag) {
+        mBuilder.requestTag = requestTag;
     }
 
     public String getErrorMsg() {
@@ -61,7 +73,10 @@ public class ErrorInfo {
      */
     public static class Builder {
 
-        private int requestType;//请求类型（默认-1）
+        @NonNull
+        private Request.RequestCategory requestCategory = Request.RequestCategory.CATEGORY_NOT_SET;//请求类型（默认-1）
+        @NonNull
+        private String requestTag = Request.Tag.TAG_NOT_SET;//请求标记
         private String errorMsg;//错误信息
         private @StringRes
         int errorMsgResId;//错误信息资源ID
@@ -77,19 +92,29 @@ public class ErrorInfo {
         }
 
         private Builder() {
-            requestType = -1;
         }
 
         public ErrorInfo build() {
             return new ErrorInfo(this);
         }
 
-        public int getRequestType() {
-            return requestType;
+        @NonNull
+        public Request.RequestCategory getRequestCategory() {
+            return requestCategory;
         }
 
-        public Builder setRequestType(int requestType) {
-            this.requestType = requestType;
+        public Builder setRequestCategory(@NonNull Request.RequestCategory requestCategory) {
+            this.requestCategory = requestCategory;
+            return this;
+        }
+
+        @NonNull
+        public String getRequestTag() {
+            return requestTag;
+        }
+
+        public Builder setRequestTag(@NonNull String requestTag) {
+            this.requestTag = requestTag;
             return this;
         }
 

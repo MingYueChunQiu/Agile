@@ -113,7 +113,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
     @Override
     public boolean addRepository(@NonNull IBaseRepository repository) {
         List<String> requestTags = new ArrayList<>();
-        requestTags.add(Request.DEFAULT_KEY_REQUEST_TAG);
+        requestTags.add(Request.Tag.TAG_DEFAULT_REQUEST);
         return addRepository(repository, requestTags);
     }
 
