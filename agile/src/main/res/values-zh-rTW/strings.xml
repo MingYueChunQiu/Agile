@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="agile_app_name">AgileMVPFrame</string>
+    <string name="app_name">AgileMVPFrame</string>
 
     <string name="agile_error_set_params">業務請求參數設置異常，請重試</string>
     <string name="agile_error_set_net_params">網絡請求參數設置異常，請重試</string>

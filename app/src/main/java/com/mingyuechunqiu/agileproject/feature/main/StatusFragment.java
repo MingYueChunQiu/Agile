@@ -70,8 +70,8 @@ public class StatusFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
 //                setLightStatusBar();
-//                getWindowInsetsHelper().showLightStatusBars(true);
-                getWindowInsetsHelper().setLightNavigationBars();
+                getWindowInsetsHelper().setLightStatusBars();
+//                getWindowInsetsHelper().setLightNavigationBars();
             }
         });
     }
