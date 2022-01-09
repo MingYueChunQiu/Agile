@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="agile_app_name">AgileMVPFrame</string>
+
+    <string name="agile_error_set_params">業務請求參數設置異常，請重試</string>
+    <string name="agile_error_set_net_params">網絡請求參數設置異常，請重試</string>
+    <string name="agile_error_service_response">服務器響應異常，請重試</string>
+    <string name="agile_error_save_bitmap_to_album">保存圖片到相冊失敗，請重試</string>
+    <string name="agile_error_not_found_app_permissions_page">無法自動打開設置界面，請您手動嘗試</string>
+    <string name="agile_error_failed_to_delete_old_version_apk">刪除殘留舊版本apk失敗！ </string>
+
+    <string name="agile_prompt_exit">您確定要退出嗎？ </string>
+    <string name="agile_prompt_use_mobile_network">您正在使用移動網絡</string>
+    <string name="agile_prompt_query_mobile_network">您正在使用移動網絡，是否繼續觀看？ </string>
+    <string name="agile_prompt_loading">正在加載中&#8230;</string>
+
+    <string name="agile_network_disconnected">網絡連接異常，請檢查網絡設置</string>
+    <string name="agile_network_connected">網絡已連接！</string>
+    <string name="agile_update_application">應用更新</string>
+    <string name="agile_installation_package_is_downloading">安裝包正在下載中</string>
+
+    <string name="agile_hint">提示</string>
+    <string name="agile_confirm">確定</string>
+    <string name="agile_cancel">取消</string>
+    <string name="agile_set_permission">設置權限</string>
+    <string name="agile_set">設置</string>
+    <string name="agile_reload">重新加載</string>
+    <string name="agile_title">標題</string>
+
+</resources>

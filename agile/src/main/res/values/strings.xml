@@ -1,29 +1,29 @@
 <resources>
-    <string name="app_name">AgileMVPFrame</string>
+    <string name="agile_app_name">AgileMVPFrame</string>
 
-    <string name="agile_error_set_params">业务请求参数设置异常，请重试</string>
-    <string name="agile_error_set_net_params">网络请求参数设置异常，请重试</string>
-    <string name="agile_error_service_response">服务器响应异常，请重试</string>
-    <string name="agile_error_save_bitmap_to_album">保存图片到相册失败，请重试</string>
-    <string name="agile_error_not_found_app_permissions_page">无法自动打开设置界面，请您手动尝试</string>
-    <string name="agile_error_failed_to_delete_old_version_apk">删除残留旧版本apk失败！</string>
+    <string name="agile_error_set_params">The service request parameter setting is abnormal, please try again</string>
+    <string name="agile_error_set_net_params">The network request parameter setting is abnormal, please try again</string>
+    <string name="agile_error_service_response">The server responded abnormally, please try again</string>
+    <string name="agile_error_save_bitmap_to_album">Failed to save image to album, please try again</string>
+    <string name="agile_error_not_found_app_permissions_page">Cannot open the setting interface automatically, please try manually</string>
+    <string name="agile_error_failed_to_delete_old_version_apk">Failed to delete residual old version apk! </string>
 
-    <string name="agile_prompt_exit">您确定要退出吗？</string>
-    <string name="agile_prompt_use_mobile_network">您正在使用移动网络</string>
-    <string name="agile_prompt_query_mobile_network">您正在使用移动网络，是否继续观看？</string>
-    <string name="agile_prompt_loading">正在加载中&#8230;</string>
+    <string name="agile_prompt_exit">Are you sure to quit? </string>
+    <string name="agile_prompt_use_mobile_network">You are using a mobile network</string>
+    <string name="agile_prompt_query_mobile_network">You are using a mobile network. Continue watching? </string>
+    <string name="agile_prompt_loading">Loading&#8230;</string>
 
-    <string name="agile_network_disconnected">网络连接异常，请检查网络设置</string>
-    <string name="agile_network_connected">网络已连接！</string>
-    <string name="agile_update_application">应用更新</string>
-    <string name="agile_installation_package_is_downloading">安装包正在下载中</string>
+    <string name="agile_network_disconnected">The network connection is abnormal, please check the network settings</string>
+    <string name="agile_network_connected">Network connected!</string>
+    <string name="agile_update_application">App Update</string>
+    <string name="agile_installation_package_is_downloading">The installation package is downloading</string>
 
-    <string name="agile_hint">提示</string>
-    <string name="agile_confirm">确定</string>
-    <string name="agile_cancel">取消</string>
-    <string name="agile_set_permission">设置权限</string>
-    <string name="agile_set">设置</string>
-    <string name="agile_reload">重新加载</string>
-    <string name="agile_title">标题</string>
+    <string name="agile_hint">hint</string>
+    <string name="agile_confirm">OK</string>
+    <string name="agile_cancel">Cancel</string>
+    <string name="agile_set_permission">set permission</string>
+    <string name="agile_set">set</string>
+    <string name="agile_reload">Reload</string>
+    <string name="agile_title">Title</string>
 
 </resources>
