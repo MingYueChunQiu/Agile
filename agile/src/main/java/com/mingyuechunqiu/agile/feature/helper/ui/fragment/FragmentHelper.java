@@ -1,4 +1,10 @@
-package com.mingyuechunqiu.agile.util;
+package com.mingyuechunqiu.agile.feature.helper.ui.fragment;
+
+import static com.mingyuechunqiu.agile.feature.helper.ui.fragment.FragmentHelper.TransactionTypeConstants.TYPE_ADD;
+import static com.mingyuechunqiu.agile.feature.helper.ui.fragment.FragmentHelper.TransactionTypeConstants.TYPE_HIDE;
+import static com.mingyuechunqiu.agile.feature.helper.ui.fragment.FragmentHelper.TransactionTypeConstants.TYPE_REMOVE;
+import static com.mingyuechunqiu.agile.feature.helper.ui.fragment.FragmentHelper.TransactionTypeConstants.TYPE_REPLACE;
+import static com.mingyuechunqiu.agile.feature.helper.ui.fragment.FragmentHelper.TransactionTypeConstants.TYPE_SHOW;
 
 import androidx.annotation.AnimRes;
 import androidx.annotation.AnimatorRes;
@@ -13,12 +19,6 @@ import com.mingyuechunqiu.agile.R;
 
 import java.util.List;
 
-import static com.mingyuechunqiu.agile.util.FragmentUtils.TransactionTypeConstants.TYPE_ADD;
-import static com.mingyuechunqiu.agile.util.FragmentUtils.TransactionTypeConstants.TYPE_HIDE;
-import static com.mingyuechunqiu.agile.util.FragmentUtils.TransactionTypeConstants.TYPE_REMOVE;
-import static com.mingyuechunqiu.agile.util.FragmentUtils.TransactionTypeConstants.TYPE_REPLACE;
-import static com.mingyuechunqiu.agile.util.FragmentUtils.TransactionTypeConstants.TYPE_SHOW;
-
 /**
  * <pre>
  *     author : xyj
@@ -28,11 +28,11 @@ import static com.mingyuechunqiu.agile.util.FragmentUtils.TransactionTypeConstan
  *     version: 1.0
  * </pre>
  */
-public final class FragmentUtils {
+public final class FragmentHelper {
 
     public static final int NO_ID = 0;//无效资源ID(-1会导致资源崩溃Unable to find resource ID #0xffffffff)
 
-    private FragmentUtils() {
+    private FragmentHelper() {
     }
 
     /**
@@ -154,7 +154,7 @@ public final class FragmentUtils {
     public static void hideFragment(@Nullable FragmentManager fragmentManager, @Nullable Fragment fragment,
                                     @AnimatorRes @AnimRes int enterAnimationId, @AnimatorRes @AnimRes int exitAnimationId) {
         if (fragment != null && !fragment.isHidden()) {
-            FragmentUtils.updateFragment(fragmentManager, FragmentUtils.NO_ID, fragment, true,
+            FragmentHelper.updateFragment(fragmentManager, FragmentHelper.NO_ID, fragment, true,
                     TYPE_HIDE, enterAnimationId, exitAnimationId);
         }
     }
@@ -428,7 +428,10 @@ public final class FragmentUtils {
     /**
      * Fragment事务操作类型常量类
      */
-    public static class TransactionTypeConstants {
+    public static final class TransactionTypeConstants {
+
+        private TransactionTypeConstants() {
+        }
 
         public static final int TYPE_REPLACE = 0x00;//替换
         public static final int TYPE_ADD = 0x01;//添加

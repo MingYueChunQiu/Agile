@@ -1,6 +1,7 @@
-package com.mingyuechunqiu.agile.feature.helper.ui.transfer
+package com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher
 
 import android.os.Bundle
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.receiver.ITransferPageDataReceiverPage
 
 /**
  * <pre>
@@ -9,15 +10,15 @@ import android.os.Bundle
  *      Author:     xiyujie
  *      Github:     https://github.com/MingYueChunQiu
  *      Email:      xiyujieit@163.com
- *      Time:       4/10/21 1:17 PM
- *      Desc:       传递界面数据能力接口
+ *      Time:       2021/5/14 11:29 下午
+ *      Desc:       传递界面数据分发者
  *      Version:    1.0
  * </pre>
  */
-interface ITransferPageDataDispatcherHelper {
+interface ITransferPageDataDispatcher {
 
     fun transferDataToPage(
-        targetPage: TransferPageDataCallback,
+        targetPage: ITransferPageDataReceiverPage,
         data: TransferPageData?
     ): Boolean
 
@@ -32,11 +33,6 @@ interface ITransferPageDataDispatcherHelper {
     fun returnToPreviousPageWithParentFragment(interceptor: TransferPageDataInterceptor?): Boolean
 
     fun returnToPreviousPageWithTargetFragment(interceptor: TransferPageDataInterceptor?): Boolean
-
-    interface TransferPageDataCallback {
-
-        fun onReceiveTransferPageData(dataOwner: TransferPageDataOwner, data: TransferPageData?)
-    }
 
     /**
      * 跳转界面源头

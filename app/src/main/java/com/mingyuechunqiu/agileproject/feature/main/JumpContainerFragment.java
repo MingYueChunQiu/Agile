@@ -8,13 +8,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
 import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
-import com.mingyuechunqiu.agile.util.FragmentUtils;
+import com.mingyuechunqiu.agile.feature.helper.ui.fragment.FragmentHelper;
 import com.mingyuechunqiu.agileproject.R;
-
-import org.jetbrains.annotations.NotNull;
 
 /**
  * <pre>
@@ -26,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
  *     version: 1.0
  * </pre>
  */
-public class JumpContainerFragment extends BaseFragment implements ITransferPageDataDispatcherHelper.TransferPageDataCallback {
+public class JumpContainerFragment extends BaseFragment {
 
     @Nullable
     @Override
@@ -57,18 +54,15 @@ public class JumpContainerFragment extends BaseFragment implements ITransferPage
 
     @Override
     protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        FragmentUtils.replaceFragment(getChildFragmentManager(), R.id.fl_agile_frame_container, new JumpFragment1());
+        FragmentHelper.replaceFragment(getChildFragmentManager(), R.id.fl_agile_frame_container, new JumpFragment1());
     }
 
     @Override
     protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    public void onReceiveTransferPageData(@NotNull TransferPageDataOwner dataOwner, @org.jetbrains.annotations.Nullable TransferPageData data) {
-        if (!popAddedPage()) {
-            returnToPreviousPageWithActivity(null);
-        }
+        getTransferPageDataReceiverHelper().addTransferDataReceiverListener((dataOwner, data) -> {
+            if (!popAddedPage()) {
+                getTransferPageDataDispatcherHelper().returnToPreviousPageWithActivity(null);
+            }
+        });
     }
 }

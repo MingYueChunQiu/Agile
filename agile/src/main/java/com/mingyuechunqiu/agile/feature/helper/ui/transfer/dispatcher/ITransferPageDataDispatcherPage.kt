@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.feature.helper.ui.transfer
+package com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher
 
 import com.mingyuechunqiu.agile.frame.ui.fragment.IFragmentOwnerPage
 
@@ -15,4 +15,7 @@ import com.mingyuechunqiu.agile.frame.ui.fragment.IFragmentOwnerPage
  *      Version:    1.0
  * </pre>
  */
-interface ITransferDataDispatcherPage : IFragmentOwnerPage
+interface ITransferPageDataDispatcherPage : IFragmentOwnerPage {
+
+    fun getTransferPageDataDispatcherHelper(): ITransferPageDataDispatcherHelper
+}

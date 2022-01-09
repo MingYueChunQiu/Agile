@@ -29,18 +29,17 @@ import androidx.fragment.app.Fragment;
 
 import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.ui.view.IStatusView;
+import com.mingyuechunqiu.agile.frame.AgileExitAppManager;
 import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
 import com.mingyuechunqiu.agile.ui.activity.WebViewActivity;
-import com.mingyuechunqiu.agile.frame.AgileExitAppManager;
-import com.mingyuechunqiu.agile.util.FragmentUtils;
+import com.mingyuechunqiu.agile.feature.helper.ui.fragment.FragmentHelper;
 import com.mingyuechunqiu.agile.util.StringUtils;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -184,7 +183,15 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
 
     @Override
     protected void initData(@Nullable Bundle savedInstanceState) {
-
+        getTransferPageDataReceiverHelper().addTransferDataReceiverListener((dataOwner, data) -> {
+            if (data == null) {
+                return;
+            }
+            if (data.getBundle().getBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE)) {
+                FragmentHelper.removeFragments(getSupportFragmentManager(), true,
+                        R.anim.agile_alpha_slide_in_left, R.anim.agile_alpha_slide_out_right, mSelectedFg);
+            }
+        });
     }
 
     @Override
@@ -331,17 +338,6 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                 return R.layout.agile_layout_navigation;
             }
         };
-    }
-
-    @Override
-    public void onReceiveTransferPageData(@NonNull ITransferPageDataDispatcherHelper.TransferPageDataOwner dataOwner, @Nullable ITransferPageDataDispatcherHelper.TransferPageData data) {
-        if (data == null) {
-            return;
-        }
-        if (data.getBundle().getBoolean(BUNDLE_RETURN_TO_PREVIOUS_PAGE)) {
-            FragmentUtils.removeFragments(getSupportFragmentManager(), true,
-                    R.anim.agile_alpha_slide_in_left, R.anim.agile_alpha_slide_out_right, mSelectedFg);
-        }
     }
 
     @Nullable

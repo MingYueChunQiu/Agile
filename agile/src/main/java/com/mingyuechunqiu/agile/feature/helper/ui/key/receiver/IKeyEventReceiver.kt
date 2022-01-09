@@ -1,8 +1,9 @@
-package com.mingyuechunqiu.agile.feature.helper.ui.key
+package com.mingyuechunqiu.agile.feature.helper.ui.key.receiver
 
 import android.view.KeyEvent
 import androidx.activity.OnBackPressedCallback
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher.ITransferPageDataDispatcher
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher.ITransferPageDataDispatcherHelper
 
 /**
  * <pre>
@@ -11,12 +12,12 @@ import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDisp
  *      Author:     xiyujie
  *      Github:     https://github.com/MingYueChunQiu
  *      Email:      xiyujieit@163.com
- *      Time:       4/11/21 8:34 PM
- *      Desc:       按键事件接收者辅助类接口
+ *      Time:       4/10/21 1:13 PM
+ *      Desc:       按键事件接收者接口
  *      Version:    1.0
  * </pre>
  */
-interface IKeyEventReceiverHelper {
+interface IKeyEventReceiver {
 
     //禁止返回Activity
     var isForbidBackToActivity: Boolean
@@ -60,7 +61,10 @@ interface IKeyEventReceiverHelper {
      * @param interceptor 跳转参数拦截设置器
      * @return 添加监听成功返回true, 否则返回false
      */
-    fun listenBackKeyToPreviousPageWithActivity(helper: ITransferPageDataDispatcherHelper, interceptor: ITransferPageDataDispatcherHelper.TransferPageDataInterceptor?): Boolean
+    fun listenBackKeyToPreviousPageWithActivity(
+        helper: ITransferPageDataDispatcherHelper,
+        interceptor: ITransferPageDataDispatcher.TransferPageDataInterceptor?
+    ): Boolean
 
     /**
      * 添加按返回键通过父Fragment返回上一个界面
@@ -69,7 +73,10 @@ interface IKeyEventReceiverHelper {
      * @param interceptor 跳转参数拦截设置器
      * @return 添加监听成功返回true, 否则返回false
      */
-    fun listenBackKeyToPreviousPageWithParentFragment(helper: ITransferPageDataDispatcherHelper, interceptor: ITransferPageDataDispatcherHelper.TransferPageDataInterceptor?): Boolean
+    fun listenBackKeyToPreviousPageWithParentFragment(
+        helper: ITransferPageDataDispatcherHelper,
+        interceptor: ITransferPageDataDispatcher.TransferPageDataInterceptor?
+    ): Boolean
 
     /**
      * 添加按返回键通过父Fragment返回上一个界面
@@ -78,7 +85,10 @@ interface IKeyEventReceiverHelper {
      * @param interceptor 跳转参数拦截设置器
      * @return 添加监听成功返回true, 否则返回false
      */
-    fun listenBackKeyToPreviousPageWithTargetFragment(helper: ITransferPageDataDispatcherHelper, interceptor: ITransferPageDataDispatcherHelper.TransferPageDataInterceptor?): Boolean
+    fun listenBackKeyToPreviousPageWithTargetFragment(
+        helper: ITransferPageDataDispatcherHelper,
+        interceptor: ITransferPageDataDispatcher.TransferPageDataInterceptor?
+    ): Boolean
 
     data class KeyEventObserver(val id: String, val listener: OnKeyEventListener)
 

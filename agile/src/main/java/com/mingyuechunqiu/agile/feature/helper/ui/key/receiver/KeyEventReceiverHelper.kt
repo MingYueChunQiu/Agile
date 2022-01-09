@@ -1,10 +1,12 @@
-package com.mingyuechunqiu.agile.feature.helper.ui.key
+package com.mingyuechunqiu.agile.feature.helper.ui.key.receiver
 
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper
+import com.mingyuechunqiu.agile.feature.helper.ui.key.dispatcher.IKeyEventDispatcher
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher.ITransferPageDataDispatcher
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher.ITransferPageDataDispatcherHelper
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider
 
 /**
@@ -20,9 +22,10 @@ import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider
  *      Version:    1.0
  * </pre>
  */
-class KeyEventReceiverHelper(private val page: IKeyEventReceiverPage) : IKeyEventReceiverHelper, LifecycleEventObserver {
+class KeyEventReceiverHelper(private val page: IKeyEventReceiverPage) : IKeyEventReceiverHelper,
+    LifecycleEventObserver {
 
-    private var mBackPressedObserver: IKeyEventReceiverHelper.BackPressedObserver? = null
+    private var mBackPressedObserver: IKeyEventReceiver.BackPressedObserver? = null
 
     init {
         page.lifecycle.addObserver(this)
@@ -47,20 +50,25 @@ class KeyEventReceiverHelper(private val page: IKeyEventReceiverPage) : IKeyEven
         }
     }
 
-    override fun addOnKeyEventListener(listener: IKeyEventReceiverHelper.OnKeyEventListener): String? {
-        return (page.getOwnedActivity() as? IKeyEventDispatcher)?.addOnKeyEventListener(page.getPageTag(), listener)
+    override fun addOnKeyEventListener(listener: IKeyEventReceiver.OnKeyEventListener): String? {
+        return (page.getOwnedActivity() as? IKeyEventDispatcher)?.addOnKeyEventListener(
+            page.getPageTag(),
+            listener
+        )
     }
 
     override fun removeOnKeyEventListener(observerId: String): Boolean {
-        return (page.getOwnedActivity() as? IKeyEventDispatcher)?.removeOnKeyEventListener(observerId)
-                ?: false
+        return (page.getOwnedActivity() as? IKeyEventDispatcher)?.removeOnKeyEventListener(
+            observerId
+        )
+            ?: false
     }
 
     override fun clearAllOnKeyEventListeners() {
         (page.getOwnedActivity() as? IKeyEventDispatcher)?.removeOnKeyEventListenersWithTag(page.getPageTag())
     }
 
-    override fun getBackPressedObserver(): IKeyEventReceiverHelper.BackPressedObserver? {
+    override fun getBackPressedObserver(): IKeyEventReceiver.BackPressedObserver? {
         return mBackPressedObserver
     }
 
@@ -79,10 +87,16 @@ class KeyEventReceiverHelper(private val page: IKeyEventReceiverPage) : IKeyEven
      * @param interceptor 跳转参数拦截设置器
      * @return 添加监听成功返回true, 否则返回false
      */
-    override fun listenBackKeyToPreviousPageWithActivity(helper: ITransferPageDataDispatcherHelper, interceptor: ITransferPageDataDispatcherHelper.TransferPageDataInterceptor?): Boolean {
+    override fun listenBackKeyToPreviousPageWithActivity(
+        helper: ITransferPageDataDispatcherHelper,
+        interceptor: ITransferPageDataDispatcher.TransferPageDataInterceptor?
+    ): Boolean {
         return listenBackKeyToPreviousPage {
             if (isForbidBackToActivity) {
-                LogManagerProvider.d("KeyEventReceiverHelper", "listenBackKeyToPreviousPageWithTargetFragment: isForbidBackToActivity")
+                LogManagerProvider.d(
+                    "KeyEventReceiverHelper",
+                    "listenBackKeyToPreviousPageWithTargetFragment: isForbidBackToActivity"
+                )
                 return@listenBackKeyToPreviousPage
             }
             helper.returnToPreviousPageWithActivity(interceptor)
@@ -96,10 +110,16 @@ class KeyEventReceiverHelper(private val page: IKeyEventReceiverPage) : IKeyEven
      * @param interceptor 跳转参数拦截设置器
      * @return 添加监听成功返回true, 否则返回false
      */
-    override fun listenBackKeyToPreviousPageWithParentFragment(helper: ITransferPageDataDispatcherHelper, interceptor: ITransferPageDataDispatcherHelper.TransferPageDataInterceptor?): Boolean {
+    override fun listenBackKeyToPreviousPageWithParentFragment(
+        helper: ITransferPageDataDispatcherHelper,
+        interceptor: ITransferPageDataDispatcher.TransferPageDataInterceptor?
+    ): Boolean {
         return listenBackKeyToPreviousPage {
             if (isForbidBackToFragment) {
-                LogManagerProvider.d("KeyEventReceiverHelper", "listenBackKeyToPreviousPageWithTargetFragment: isForbidBackToFragment")
+                LogManagerProvider.d(
+                    "KeyEventReceiverHelper",
+                    "listenBackKeyToPreviousPageWithTargetFragment: isForbidBackToFragment"
+                )
                 return@listenBackKeyToPreviousPage
             }
             helper.returnToPreviousPageWithParentFragment(interceptor)
@@ -113,10 +133,16 @@ class KeyEventReceiverHelper(private val page: IKeyEventReceiverPage) : IKeyEven
      * @param interceptor 跳转参数拦截设置器
      * @return 添加监听成功返回true, 否则返回false
      */
-    override fun listenBackKeyToPreviousPageWithTargetFragment(helper: ITransferPageDataDispatcherHelper, interceptor: ITransferPageDataDispatcherHelper.TransferPageDataInterceptor?): Boolean {
+    override fun listenBackKeyToPreviousPageWithTargetFragment(
+        helper: ITransferPageDataDispatcherHelper,
+        interceptor: ITransferPageDataDispatcher.TransferPageDataInterceptor?
+    ): Boolean {
         return listenBackKeyToPreviousPage {
             if (isForbidBackToFragment) {
-                LogManagerProvider.d("KeyEventReceiverHelper", "listenBackKeyToPreviousPageWithTargetFragment: isForbidBackToFragment")
+                LogManagerProvider.d(
+                    "KeyEventReceiverHelper",
+                    "listenBackKeyToPreviousPageWithTargetFragment: isForbidBackToFragment"
+                )
                 return@listenBackKeyToPreviousPage
             }
             helper.returnToPreviousPageWithTargetFragment(interceptor)
@@ -131,13 +157,20 @@ class KeyEventReceiverHelper(private val page: IKeyEventReceiverPage) : IKeyEven
      */
     private fun listenBackKeyToPreviousPage(operation: (() -> Unit)): Boolean {
         return page.getOwnedActivity()?.onBackPressedDispatcher?.let {
-            val observer = IKeyEventReceiverHelper.BackPressedObserver(object : OnBackPressedCallback(isForbidBackToActivity) {
+            val observer = IKeyEventReceiver.BackPressedObserver(object :
+                OnBackPressedCallback(isForbidBackToActivity) {
                 override fun handleOnBackPressed() {
                     if (checkPageStateIsActive()) {
-                        LogManagerProvider.d("KeyEventReceiverHelper", "listenBackKeyToPreviousPage: page state is active")
+                        LogManagerProvider.d(
+                            "KeyEventReceiverHelper",
+                            "listenBackKeyToPreviousPage: page state is active"
+                        )
                         operation()
                     } else {
-                        LogManagerProvider.d("KeyEventReceiverHelper", "listenBackKeyToPreviousPage: page state is inactive")
+                        LogManagerProvider.d(
+                            "KeyEventReceiverHelper",
+                            "listenBackKeyToPreviousPage: page state is inactive"
+                        )
                     }
                 }
             })

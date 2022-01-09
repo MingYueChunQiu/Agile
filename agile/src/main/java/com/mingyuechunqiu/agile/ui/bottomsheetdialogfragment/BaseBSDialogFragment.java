@@ -25,10 +25,12 @@ import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.insets.IWindowInsetsHelperOwner;
 import com.mingyuechunqiu.agile.feature.helper.ui.insets.WindowInsetsHelper;
-import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventReceiverHelper;
-import com.mingyuechunqiu.agile.feature.helper.ui.key.KeyEventReceiverHelper;
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.TransferPageDataDispatcherHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.key.receiver.IKeyEventReceiverHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.key.receiver.KeyEventReceiverHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher.ITransferPageDataDispatcherHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher.TransferPageDataDispatcherHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.receiver.ITransferPageDataReceiverHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.receiver.TransferPageDataReceiverHelper;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
@@ -65,7 +67,9 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
     @NonNull
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
     @Nullable
-    private ITransferPageDataDispatcherHelper mTransferPageDataHelper;
+    private ITransferPageDataDispatcherHelper mTransferPageDataDispatcherHelper;
+    @Nullable
+    private ITransferPageDataReceiverHelper mTransferPageDataReceiverHelper;
     @Nullable
     private IKeyEventReceiverHelper mKeyEventReceiverHelper;
 
@@ -198,172 +202,30 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
         return mWindowInsetsHelper;
     }
 
-    /**
-     * 向Activity传递数据
-     *
-     * @param data 传递的数据
-     * @return 传递成功返回true，否则返回false
-     */
+    @NonNull
     @Override
-    public boolean transferDataToActivity(@Nullable TransferPageData data) {
-        return getTransferPageDataHelper().transferDataToActivity(data);
-    }
-
-    /**
-     * 向父Fragment传递数据
-     *
-     * @param data 传递的数据
-     * @return 传递成功返回true，否则返回false
-     */
-    @Override
-    public boolean transferDataToParentFragment(@Nullable TransferPageData data) {
-        return getTransferPageDataHelper().transferDataToParentFragment(data);
-    }
-
-    /**
-     * 向目标Fragment传递数据
-     *
-     * @param data 传递的数据
-     * @return 传递成功返回true，否则返回false
-     */
-    @Override
-    public boolean transferDataToTargetFragment(@Nullable TransferPageData data) {
-        return getTransferPageDataHelper().transferDataToTargetFragment(data);
-    }
-
-    /**
-     * 向指定界面传递数据
-     *
-     * @param targetPage 目标界面
-     * @param data       传递的数据
-     * @return 传递成功返回true，否则返回false
-     */
-    @Override
-    public boolean transferDataToPage(@NonNull TransferPageDataCallback targetPage, @Nullable TransferPageData data) {
-        return getTransferPageDataHelper().transferDataToPage(targetPage, data);
-    }
-
-    /**
-     * 返回上一个界面
-     *
-     * @param interceptor 跳转参数拦截设置器
-     * @return 如果进行调用则返回true，否则返回false
-     */
-    @Override
-    public boolean returnToPreviousPageWithActivity(@Nullable TransferPageDataInterceptor interceptor) {
-        return getTransferPageDataHelper().returnToPreviousPageWithActivity(interceptor);
-    }
-
-    /**
-     * 返回上一个界面
-     *
-     * @param interceptor 跳转参数拦截设置器
-     * @return 如果进行调用则返回true，否则返回false
-     */
-    @Override
-    public boolean returnToPreviousPageWithParentFragment(@Nullable TransferPageDataInterceptor interceptor) {
-        return getTransferPageDataHelper().returnToPreviousPageWithParentFragment(interceptor);
-    }
-
-    /**
-     * 返回上一个界面
-     *
-     * @param interceptor 跳转参数拦截设置器
-     * @return 如果进行调用则返回true，否则返回false
-     */
-    @Override
-    public boolean returnToPreviousPageWithTargetFragment(@Nullable TransferPageDataInterceptor interceptor) {
-        return getTransferPageDataHelper().returnToPreviousPageWithTargetFragment(interceptor);
-    }
-
-    @Override
-    public boolean isForbidBackToActivity() {
-        return getKeyEventReceiverHelper().isForbidBackToActivity();
-    }
-
-    @Override
-    public void setForbidBackToActivity(boolean isForbidBackToActivity) {
-        getKeyEventReceiverHelper().setForbidBackToActivity(isForbidBackToActivity);
-    }
-
-    @Override
-    public boolean isForbidBackToFragment() {
-        return getKeyEventReceiverHelper().isForbidBackToFragment();
-    }
-
-    @Override
-    public void setForbidBackToFragment(boolean isForbidBackToFragment) {
-        getKeyEventReceiverHelper().setForbidBackToFragment(isForbidBackToFragment);
+    public ITransferPageDataDispatcherHelper getTransferPageDataDispatcherHelper() {
+        if (mTransferPageDataDispatcherHelper == null) {
+            synchronized (this) {
+                if (mTransferPageDataDispatcherHelper == null) {
+                    mTransferPageDataDispatcherHelper = new TransferPageDataDispatcherHelper(this);
+                }
+            }
+        }
+        return mTransferPageDataDispatcherHelper;
     }
 
     @NonNull
     @Override
-    public ITransferPageDataDispatcherHelper getTransferPageDataHelper() {
-        if (mTransferPageDataHelper == null) {
+    public ITransferPageDataReceiverHelper getTransferPageDataReceiverHelper() {
+        if (mTransferPageDataReceiverHelper == null) {
             synchronized (this) {
-                if (mTransferPageDataHelper == null) {
-                    mTransferPageDataHelper = new TransferPageDataDispatcherHelper(this);
+                if (mTransferPageDataReceiverHelper == null) {
+                    mTransferPageDataReceiverHelper = new TransferPageDataReceiverHelper(this);
                 }
             }
         }
-        return mTransferPageDataHelper;
-    }
-
-    /**
-     * 添加按键监听器
-     *
-     * @param listener 按键监听器
-     * @return 返回按键观察者Id
-     */
-    @Nullable
-    @Override
-    public String addOnKeyEventListener(@NotNull OnKeyEventListener listener) {
-        return getKeyEventReceiverHelper().addOnKeyEventListener(listener);
-    }
-
-    /**
-     * 移除按键监听器
-     *
-     * @param observerId 按键观察者Id
-     * @return 移除成功返回true，否则返回false
-     */
-    @Override
-    public boolean removeOnKeyEventListener(@NonNull String observerId) {
-        return getKeyEventReceiverHelper().removeOnKeyEventListener(observerId);
-    }
-
-    /**
-     * 清除当前界面所有按键监听器
-     */
-    @Override
-    public void clearAllOnKeyEventListeners() {
-        getKeyEventReceiverHelper().clearAllOnKeyEventListeners();
-    }
-
-    @Nullable
-    @Override
-    public BackPressedObserver getBackPressedObserver() {
-        return getKeyEventReceiverHelper().getBackPressedObserver();
-    }
-
-    @Override
-    public void setEnableBackPressedCallback(boolean enabled) {
-        getKeyEventReceiverHelper().setEnableBackPressedCallback(enabled);
-    }
-
-    @Override
-    public boolean listenBackKeyToPreviousPageWithActivity(@NonNull ITransferPageDataDispatcherHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
-        return getKeyEventReceiverHelper().listenBackKeyToPreviousPageWithActivity(getTransferPageDataHelper(), interceptor);
-    }
-
-    @Override
-    public boolean listenBackKeyToPreviousPageWithParentFragment(@NonNull ITransferPageDataDispatcherHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
-        return getKeyEventReceiverHelper().listenBackKeyToPreviousPageWithParentFragment(getTransferPageDataHelper(), interceptor);
-    }
-
-    @Override
-    public boolean listenBackKeyToPreviousPageWithTargetFragment(@NonNull ITransferPageDataDispatcherHelper helper, @Nullable TransferPageDataInterceptor interceptor) {
-        return getKeyEventReceiverHelper().listenBackKeyToPreviousPageWithTargetFragment(getTransferPageDataHelper(), interceptor);
+        return mTransferPageDataReceiverHelper;
     }
 
     @NonNull

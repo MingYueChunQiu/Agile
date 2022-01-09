@@ -3,7 +3,6 @@ package com.mingyuechunqiu.agile.ui.activity;
 import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -20,10 +19,10 @@ import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.insets.IWindowInsetsHelperOwner;
 import com.mingyuechunqiu.agile.feature.helper.ui.insets.WindowInsetsHelper;
-import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventDispatcherHelper;
-import com.mingyuechunqiu.agile.feature.helper.ui.key.IKeyEventReceiver;
-import com.mingyuechunqiu.agile.feature.helper.ui.key.KeyEventDispatcherHelper;
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.key.dispatcher.IKeyEventDispatcherHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.key.dispatcher.KeyEventDispatcherHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.receiver.ITransferPageDataReceiverHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.receiver.TransferPageDataReceiverHelper;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
@@ -31,10 +30,10 @@ import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewOwner;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.frame.Agile;
+import com.mingyuechunqiu.agile.frame.AgileExitAppManager;
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
 import com.mingyuechunqiu.agile.frame.ui.activity.IAgileActivityPage;
 import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
-import com.mingyuechunqiu.agile.frame.AgileExitAppManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -56,6 +55,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
     private IStatusViewManager mStatusViewManager;
     @NonNull
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
+    @Nullable
+    private ITransferPageDataReceiverHelper mTransferPageDataReceiverHelper;
     @Nullable
     private IKeyEventDispatcherHelper mKeyEventDispatcher = null;
 
@@ -122,29 +123,17 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
         return mWindowInsetsHelper;
     }
 
-    @Override
-    public void onReceiveTransferPageData(@NonNull ITransferPageDataDispatcherHelper.TransferPageDataOwner dataOwner, @Nullable ITransferPageDataDispatcherHelper.TransferPageData data) {
-    }
-
     @NonNull
     @Override
-    public String addOnKeyEventListener(@NonNull String tag, @NonNull IKeyEventReceiver.OnKeyEventListener listener) {
-        return getKeyEventDispatcherHelper().addOnKeyEventListener(tag, listener);
-    }
-
-    @Override
-    public boolean removeOnKeyEventListener(@NonNull String observerId) {
-        return getKeyEventDispatcherHelper().removeOnKeyEventListener(observerId);
-    }
-
-    @Override
-    public boolean removeOnKeyEventListenersWithTag(@NonNull String tag) {
-        return getKeyEventDispatcherHelper().removeOnKeyEventListenersWithTag(tag);
-    }
-
-    @Override
-    public boolean dispatchOnKeyEventListener(int keyCode, @Nullable KeyEvent event) {
-        return getKeyEventDispatcherHelper().dispatchOnKeyEventListener(keyCode, event);
+    public ITransferPageDataReceiverHelper getTransferPageDataReceiverHelper() {
+        if (mTransferPageDataReceiverHelper == null) {
+            synchronized (this) {
+                if (mTransferPageDataReceiverHelper == null) {
+                    mTransferPageDataReceiverHelper = new TransferPageDataReceiverHelper(this);
+                }
+            }
+        }
+        return mTransferPageDataReceiverHelper;
     }
 
     @NonNull

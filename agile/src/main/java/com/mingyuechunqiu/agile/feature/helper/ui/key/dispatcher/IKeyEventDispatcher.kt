@@ -1,6 +1,7 @@
-package com.mingyuechunqiu.agile.feature.helper.ui.key
+package com.mingyuechunqiu.agile.feature.helper.ui.key.dispatcher
 
 import android.view.KeyEvent
+import com.mingyuechunqiu.agile.feature.helper.ui.key.receiver.IKeyEventReceiver
 
 /**
  * <pre>
@@ -9,12 +10,20 @@ import android.view.KeyEvent
  *      Author:     xiyujie
  *      Github:     https://github.com/MingYueChunQiu
  *      Email:      xiyujieit@163.com
- *      Time:       4/11/21 8:32 PM
- *      Desc:       按键事件分发者辅助类接口
+ *      Time:       4/10/21 1:14 PM
+ *      Desc:       按键事件分发者接口
  *      Version:    1.0
  * </pre>
  */
-interface IKeyEventDispatcherHelper {
+interface IKeyEventDispatcher {
+
+    /**
+     * 添加Tag的按键监听器
+     *
+     * @param listener Tag按键监听器
+     * @return 返回按键观察者Id
+     */
+    fun addOnKeyEventListener(listener: IKeyEventReceiver.OnKeyEventListener): String
 
     /**
      * 添加Tag的按键监听器
@@ -25,7 +34,7 @@ interface IKeyEventDispatcherHelper {
      */
     fun addOnKeyEventListener(
         tag: String,
-        listener: IKeyEventReceiverHelper.OnKeyEventListener
+        listener: IKeyEventReceiver.OnKeyEventListener
     ): String
 
     /**

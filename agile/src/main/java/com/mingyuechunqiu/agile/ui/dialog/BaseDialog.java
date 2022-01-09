@@ -24,8 +24,8 @@ import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.insets.IWindowInsetsHelperOwner;
 import com.mingyuechunqiu.agile.feature.helper.ui.insets.WindowInsetsHelper;
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.TransferPageDataDispatcherHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher.ITransferPageDataDispatcherHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher.TransferPageDataDispatcherHelper;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
@@ -63,7 +63,7 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
     private IStatusViewManager mStatusViewManager;
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
     @Nullable
-    private ITransferPageDataDispatcherHelper mTransferPageDataHelper;
+    private ITransferPageDataDispatcherHelper mTransferPageDataDispatcherHelper;
     @Nullable
     private final DialogLifecycleOwner mDialogLifecycleOwner;
 
@@ -160,95 +160,17 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
         return mWindowInsetsHelper;
     }
 
-    /**
-     * 向指定界面传递数据
-     *
-     * @param targetPage 目标界面
-     * @param data       传递的数据
-     * @return 传递成功返回true，否则返回false
-     */
-    @Override
-    public boolean transferDataToPage(@NonNull TransferPageDataCallback targetPage, @Nullable TransferPageData data) {
-        return getTransferPageDataHelper().transferDataToPage(targetPage, data);
-    }
-
-    /**
-     * 向Activity传递数据
-     *
-     * @param data 传递的数据
-     * @return 传递成功返回true，否则返回false
-     */
-    @Override
-    public boolean transferDataToActivity(@Nullable TransferPageData data) {
-        return getTransferPageDataHelper().transferDataToActivity(data);
-    }
-
-    /**
-     * 向父Fragment传递数据
-     *
-     * @param data 传递的数据
-     * @return 传递成功返回true，否则返回false
-     */
-    @Override
-    public boolean transferDataToParentFragment(@Nullable TransferPageData data) {
-        return getTransferPageDataHelper().transferDataToParentFragment(data);
-    }
-
-    /**
-     * 向目标Fragment传递数据
-     *
-     * @param data 传递的数据
-     * @return 传递成功返回true，否则返回false
-     */
-    @Override
-    public boolean transferDataToTargetFragment(@Nullable TransferPageData data) {
-        return getTransferPageDataHelper().transferDataToTargetFragment(data);
-    }
-
-    /**
-     * 返回上一个界面
-     *
-     * @param interceptor 跳转参数拦截设置器
-     * @return 如果进行调用则返回true，否则返回false
-     */
-    @Override
-    public boolean returnToPreviousPageWithActivity(@Nullable TransferPageDataInterceptor interceptor) {
-        return getTransferPageDataHelper().returnToPreviousPageWithActivity(interceptor);
-    }
-
-    /**
-     * 返回上一个界面
-     *
-     * @param interceptor 跳转参数拦截设置器
-     * @return 如果进行调用则返回true，否则返回false
-     */
-    @Override
-    public boolean returnToPreviousPageWithParentFragment(@Nullable TransferPageDataInterceptor interceptor) {
-        return getTransferPageDataHelper().returnToPreviousPageWithParentFragment(interceptor);
-    }
-
-    /**
-     * 返回上一个界面
-     *
-     * @param interceptor 跳转参数拦截设置器
-     * @return 如果进行调用则返回true，否则返回false
-     */
-    @Override
-    public boolean returnToPreviousPageWithTargetFragment(@Nullable TransferPageDataInterceptor interceptor) {
-        return getTransferPageDataHelper().returnToPreviousPageWithTargetFragment(interceptor);
-    }
-
     @NonNull
     @Override
-    public ITransferPageDataDispatcherHelper getTransferPageDataHelper() {
-        if (mTransferPageDataHelper == null) {
+    public ITransferPageDataDispatcherHelper getTransferPageDataDispatcherHelper() {
+        if (mTransferPageDataDispatcherHelper == null) {
             synchronized (this) {
-                if (mTransferPageDataHelper == null) {
-                    mTransferPageDataHelper = new TransferPageDataDispatcherHelper(this);
+                if (mTransferPageDataDispatcherHelper == null) {
+                    mTransferPageDataDispatcherHelper = new TransferPageDataDispatcherHelper(this);
                 }
             }
         }
-        return mTransferPageDataHelper;
+        return mTransferPageDataDispatcherHelper;
     }
 
     @MainThread
@@ -431,12 +353,9 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
      * 初始化对话框背景，去除默认背景
      */
     protected void initDialogBackground() {
-        setDialogWindow(new WindowHandler() {
-            @Override
-            public void onHandle(@NonNull Window window) {
-                //去掉对话框的背景，以便设置自已样式的背景
-                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            }
+        setDialogWindow(window -> {
+            //去掉对话框的背景，以便设置自已样式的背景
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         });
     }
 

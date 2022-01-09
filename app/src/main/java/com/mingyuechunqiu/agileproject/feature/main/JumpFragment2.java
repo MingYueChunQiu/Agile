@@ -10,10 +10,9 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
+import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
+import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agileproject.R;
 
 /**
@@ -26,7 +25,7 @@ import com.mingyuechunqiu.agileproject.R;
  *     version: 1.0
  * </pre>
  */
-public class JumpFragment2 extends Fragment {
+public class JumpFragment2 extends BaseFragment {
 
     @Nullable
     @Override
@@ -38,12 +37,41 @@ public class JumpFragment2 extends Fragment {
         btnJump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentActivity activity = getActivity();
-                if (activity instanceof ITransferPageDataDispatcherHelper.TransferPageDataCallback) {
-                    ((ITransferPageDataDispatcherHelper.TransferPageDataCallback) activity).onReceiveTransferPageData(new ITransferPageDataDispatcherHelper.TransferPageDataOwner(getClass().getSimpleName()), null);
-                }
+                getTransferPageDataDispatcherHelper().transferDataToActivity(null);
             }
         });
         return view;
+    }
+
+    @Nullable
+    @Override
+    protected IFragmentInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IFragmentInflateLayoutViewCreator.FragmentInflateLayoutViewCreatorAdapter() {
+
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.fragment_jump;
+            }
+        };
+    }
+
+    @Override
+    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void releaseOnDestroyView() {
+
+    }
+
+    @Override
+    protected void releaseOnDestroy() {
+
     }
 }

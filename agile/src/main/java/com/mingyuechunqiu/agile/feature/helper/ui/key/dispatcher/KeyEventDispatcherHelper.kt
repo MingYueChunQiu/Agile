@@ -1,9 +1,10 @@
-package com.mingyuechunqiu.agile.feature.helper.ui.key
+package com.mingyuechunqiu.agile.feature.helper.ui.key.dispatcher
 
 import android.view.KeyEvent
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import com.mingyuechunqiu.agile.feature.helper.ui.key.receiver.IKeyEventReceiver
 import com.mingyuechunqiu.agile.util.UUIDUtils
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -24,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap
 class KeyEventDispatcherHelper(page: IKeyEventDispatcherPage) : IKeyEventDispatcherHelper,
     LifecycleEventObserver {
 
-    private val mKeyEventListenerMap: MutableMap<String, MutableList<IKeyEventReceiverHelper.KeyEventObserver>> by lazy { ConcurrentHashMap() }
+    private val mKeyEventListenerMap: MutableMap<String, MutableList<IKeyEventReceiver.KeyEventObserver>> by lazy { ConcurrentHashMap() }
 
     init {
         page.lifecycle.addObserver(this)
@@ -36,17 +37,22 @@ class KeyEventDispatcherHelper(page: IKeyEventDispatcherPage) : IKeyEventDispatc
         }
     }
 
+    override fun addOnKeyEventListener(listener: IKeyEventReceiver.OnKeyEventListener): String {
+        return addOnKeyEventListener(createRealKey(TAG_DEFAULT), listener)
+    }
+
     /**
      * 添加Tag的按键监听器
      *
+     * @param tag 标签
      * @param listener Tag按键监听器
      * @return 返回按键观察者Id
      */
     override fun addOnKeyEventListener(
         tag: String,
-        listener: IKeyEventReceiverHelper.OnKeyEventListener
+        listener: IKeyEventReceiver.OnKeyEventListener
     ): String {
-        val observer = IKeyEventReceiverHelper.KeyEventObserver(UUIDUtils.getUUID(), listener)
+        val observer = IKeyEventReceiver.KeyEventObserver(UUIDUtils.getUUID(), listener)
         val key = createRealKey(tag)
         var list = mKeyEventListenerMap[key]
         if (list == null) {
@@ -128,5 +134,8 @@ class KeyEventDispatcherHelper(page: IKeyEventDispatcherPage) : IKeyEventDispatc
 
         //键前缀
         private const val KEY_PREFIX = "Key_Activity_Key_Event_"
+
+        //默认标签
+        private const val TAG_DEFAULT = "default"
     }
 }

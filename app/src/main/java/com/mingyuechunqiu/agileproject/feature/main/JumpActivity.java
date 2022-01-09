@@ -6,11 +6,11 @@ import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
-import com.mingyuechunqiu.agile.util.FragmentUtils;
+import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
+import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
+import com.mingyuechunqiu.agile.feature.helper.ui.fragment.FragmentHelper;
 import com.mingyuechunqiu.agileproject.R;
 
 /**
@@ -23,7 +23,7 @@ import com.mingyuechunqiu.agileproject.R;
  *     version: 1.0
  * </pre>
  */
-public class JumpActivity extends AppCompatActivity implements ITransferPageDataDispatcherHelper.TransferPageDataCallback {
+public class JumpActivity extends BaseActivity {
 
     private Fragment mSelectedFg;
     private Fragment mCurrentFg;
@@ -36,31 +36,48 @@ public class JumpActivity extends AppCompatActivity implements ITransferPageData
 //        getSupportFragmentManager().beginTransaction()
 //                .replace(R.id.fl_agile_frame_container, mSelectedFg)
 //                .commitAllowingStateLoss();
-        FragmentUtils.replaceFragment(getSupportFragmentManager(), R.id.fl_agile_frame_container, mSelectedFg);
+        FragmentHelper.replaceFragment(getSupportFragmentManager(), R.id.fl_agile_frame_container, mSelectedFg);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Fragment test = new JumpContainerFragment();
-                FragmentUtils.showAndHideFragment(getSupportFragmentManager(), R.id.fl_agile_frame_container,
+                FragmentHelper.showAndHideFragment(getSupportFragmentManager(), R.id.fl_agile_frame_container,
                         mSelectedFg, test);
                 mSelectedFg = test;
             }
         }, 2000);
     }
 
+    @NonNull
     @Override
-    public void onReceiveTransferPageData(@NonNull ITransferPageDataDispatcherHelper.TransferPageDataOwner dataOwner, @Nullable ITransferPageDataDispatcherHelper.TransferPageData data) {
-        if (dataOwner.getTag().equals(JumpFragment2.class.getSimpleName())) {
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                getSupportFragmentManager().popBackStack();
+    protected IActivityInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IActivityInflateLayoutViewCreator.ActivityInflateLayoutViewCreatorAdapter() {
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.agile_layout_frame;
             }
-            //            getSupportFragmentManager().beginTransaction()
+        };
+    }
+
+    @Override
+    protected void initView(@Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void initData(@Nullable Bundle savedInstanceState) {
+        getTransferPageDataReceiverHelper().addTransferDataReceiverListener((dataOwner, data) -> {
+            if (dataOwner.getTag().equals(JumpFragment2.class.getSimpleName())) {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportFragmentManager().popBackStack();
+                }
+                //            getSupportFragmentManager().beginTransaction()
 //                    .setCustomAnimations(R.anim.agile_slide_in_right, R.anim.agile_slide_out_left)
 //                    .show(mCurrentFg)
 //                    .commitAllowingStateLoss();
-            return;
-        }
-        //        getSupportFragmentManager().beginTransaction()
+                return;
+            }
+            //        getSupportFragmentManager().beginTransaction()
 //                .setCustomAnimations(R.anim.agile_slide_in_right, R.anim.agile_slide_out_left)
 //                .hide(mSelectedFg)
 //                .commitAllowingStateLoss();
@@ -80,6 +97,12 @@ public class JumpActivity extends AppCompatActivity implements ITransferPageData
 //        getSupportFragmentManager().beginTransaction()
 //                .add(R.id.fl_agile_frame_container, new MainFragment())
 //                .commitAllowingStateLoss();
-        startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(JumpActivity.this, MainActivity.class));
+        });
+    }
+
+    @Override
+    protected void release() {
+
     }
 }

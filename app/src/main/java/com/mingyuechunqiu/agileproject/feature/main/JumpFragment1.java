@@ -10,13 +10,12 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
-import com.mingyuechunqiu.agile.feature.helper.ui.transfer.ITransferPageDataDispatcherHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher.ITransferPageDataDispatcher;
+import com.mingyuechunqiu.agile.feature.helper.ui.transfer.receiver.ITransferPageDataReceiver;
+import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
+import com.mingyuechunqiu.agile.ui.fragment.BaseFragment;
 import com.mingyuechunqiu.agileproject.R;
-
-import org.jetbrains.annotations.NotNull;
 
 /**
  * <pre>
@@ -28,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
  *     version: 1.0
  * </pre>
  */
-public class JumpFragment1 extends Fragment implements ITransferPageDataDispatcherHelper.TransferPageDataCallback {
+public class JumpFragment1 extends BaseFragment {
 
     @Nullable
     @Override
@@ -37,22 +36,46 @@ public class JumpFragment1 extends Fragment implements ITransferPageDataDispatch
         LinearLayout llContainer = view.findViewById(R.id.ll_jump_container);
         llContainer.setBackgroundColor(Color.RED);
         Button btnJump = view.findViewById(R.id.btn_jump);
-        btnJump.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentActivity activity = getActivity();
-                if (activity instanceof ITransferPageDataDispatcherHelper.TransferPageDataCallback) {
-                    ((ITransferPageDataDispatcherHelper.TransferPageDataCallback) activity).onReceiveTransferPageData(new ITransferPageDataDispatcherHelper.TransferPageDataOwner(getClass().getSimpleName()), null);
-                }
-            }
-        });
+        btnJump.setOnClickListener(view1 -> getTransferPageDataDispatcherHelper().transferDataToActivity(null));
         return view;
     }
 
+    @Nullable
     @Override
-    public void onReceiveTransferPageData(@NotNull ITransferPageDataDispatcherHelper.TransferPageDataOwner dataOwner, @org.jetbrains.annotations.Nullable ITransferPageDataDispatcherHelper.TransferPageData data) {
-        if (getChildFragmentManager().getBackStackEntryCount() > 0) {
-            getChildFragmentManager().popBackStack();
-        }
+    protected IFragmentInflateLayoutViewCreator generateInflateLayoutViewCreator() {
+        return new IFragmentInflateLayoutViewCreator.FragmentInflateLayoutViewCreatorAdapter() {
+
+            @Override
+            public int getInflateLayoutId() {
+                return R.layout.fragment_jump;
+            }
+        };
+    }
+
+    @Override
+    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        getTransferPageDataReceiverHelper().addTransferDataReceiverListener(new ITransferPageDataReceiver.TransferPageDataReceiverListener() {
+            @Override
+            public void onReceiveTransferPageData(@NonNull ITransferPageDataDispatcher.TransferPageDataOwner dataOwner, @Nullable ITransferPageDataDispatcher.TransferPageData data) {
+                if (getChildFragmentManager().getBackStackEntryCount() > 0) {
+                    getChildFragmentManager().popBackStack();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void releaseOnDestroyView() {
+
+    }
+
+    @Override
+    protected void releaseOnDestroy() {
+
     }
 }
