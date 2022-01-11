@@ -99,11 +99,35 @@ public final class ToastHelper {
     }
 
     /**
+     * 使用应用的全局context居中显示toast
+     *
+     * @param msg 提示信息
+     */
+    public static void showCenterToast(@Nullable String msg) {
+        showToast(Agile.getAppContext(), new ToastConfig.Builder()
+                .setMsg(msg)
+                .setGravity(Gravity.CENTER)
+                .build());
+    }
+
+    /**
+     * 居中显示提示信息
+     *
+     * @param msgResId 提示信息资源id
+     */
+    public static void showCenterToast(@StringRes int msgResId) {
+        showToast(Agile.getAppContext(), new ToastConfig.Builder()
+                .setMsgResId(msgResId)
+                .setGravity(Gravity.CENTER)
+                .build());
+    }
+
+    /**
      * Toast配置信息类
      */
     public static class ToastConfig {
 
-        private Builder mBuilder;
+        private final Builder mBuilder;
 
         public ToastConfig() {
             this(new Builder());

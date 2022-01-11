@@ -42,4 +42,6 @@ public interface IBasePresenter<V extends IBaseView, M extends IBaseModel> exten
 
     @Nullable
     M getModel();
+
+    void initBusinessEngines();
 }

@@ -47,6 +47,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
         mViewRef = new WeakReference<>(view);
         mModel = initModel();
         onAttachView(view, mModel);
+        initBusinessEngines();
     }
 
     @Override
@@ -193,6 +194,11 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     @Override
     public M getModel() {
         return mModel;
+    }
+
+    @Override
+    public void initBusinessEngines() {
+        initializeBusinessEngines();
     }
 
     @Override
@@ -369,6 +375,12 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      */
     protected boolean checkViewRefIsNull() {
         return mViewRef == null || mViewRef.get() == null;
+    }
+
+    /**
+     * 供子类重写进行业务引擎初始化
+     */
+    protected void initializeBusinessEngines() {
     }
 
     /**
