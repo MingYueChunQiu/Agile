@@ -378,12 +378,6 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     }
 
     /**
-     * 供子类重写进行业务引擎初始化
-     */
-    protected void initializeBusinessEngines() {
-    }
-
-    /**
      * 由子类重写，调用model进行分发调用操作
      *
      * @param call 调用对象
@@ -392,6 +386,11 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @return 执行请求返回true，否则返回false
      */
     protected abstract <I extends Request.IParamsInfo, T> boolean dispatchCallWithModel(@NonNull Call<I, T> call);
+
+    /**
+     * 供子类重写进行业务引擎初始化
+     */
+    protected abstract void initializeBusinessEngines();
 
     /**
      * 释放资源

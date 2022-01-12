@@ -78,10 +78,10 @@ public abstract class BasePresenterDialog<V extends IBaseView, P extends IBasePr
     @SuppressWarnings("unchecked")
     @Override
     public void bindPresenter(@NonNull P presenter) {
-        setPresenter(presenter);
         if (!(this instanceof IBaseView)) {
             throw new IllegalStateException("Current Dialog must implements IBaseView or it subclass");
         }
+        setPresenter(presenter);
         if (mPresenter != null) {
             mPresenter.attachView((V) this);
             getLifecycle().addObserver(mPresenter);

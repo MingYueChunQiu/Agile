@@ -4,13 +4,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.mingyuechunqiu.agile.base.model.BaseAbstractModel;
+import com.mingyuechunqiu.agile.base.presenter.AgilePresenterViewModel;
 import com.mingyuechunqiu.agile.base.presenter.IBasePresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
 import com.mingyuechunqiu.agile.base.view.IViewAttachPresenter;
-
-import org.jetbrains.annotations.NotNull;
 
 /**
  * <pre>
@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class BasePresenterDialogFragment<V extends IBaseView, P extends IBasePresenter<V, ? extends BaseAbstractModel>> extends BaseDialogFragment implements IViewAttachPresenter<P> {
 
     @Nullable
-    private P mPresenter;
+    private AgilePresenterViewModel<P> mAgilePresenterViewModel = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,10 +39,11 @@ public abstract class BasePresenterDialogFragment<V extends IBaseView, P extends
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mPresenter != null) {
-            getLifecycle().removeObserver(mPresenter);
+        P presenter = getAgilePresenterViewModel().getPresenter();
+        if (presenter != null) {
+            getLifecycle().removeObserver(presenter);
             //不能放在onDestroyView中执行，因为像输入框失去焦点这种事件会在onDestroyView之后才被调用
-            mPresenter = null;
+            getAgilePresenterViewModel().setPresenter(null);
         }
     }
 
@@ -66,24 +67,33 @@ public abstract class BasePresenterDialogFragment<V extends IBaseView, P extends
     @SuppressWarnings("unchecked")
     @Override
     public void bindPresenter(@NonNull P presenter) {
-        setPresenter(presenter);
         if (!(this instanceof IBaseView)) {
             throw new IllegalStateException("Current DialogFragment must implements IBaseView or it subclass");
         }
-        if (mPresenter != null) {
-            mPresenter.attachView((V) this);
-            getLifecycle().addObserver(mPresenter);
+        setPresenter(presenter);
+        P finalPresenter = getAgilePresenterViewModel().getPresenter();
+        if (finalPresenter != null) {
+            finalPresenter.attachView((V) this);
+            getLifecycle().addObserver(finalPresenter);
         }
     }
 
     @Override
-    public void setPresenter(@NonNull @NotNull P presenter) {
-        mPresenter = presenter;
+    public void setPresenter(@NonNull P presenter) {
+        getAgilePresenterViewModel().setPresenter(presenter);
     }
 
     @Nullable
     @Override
     public P getPresenter() {
-        return mPresenter;
+        return getAgilePresenterViewModel().getPresenter();
+    }
+
+    @SuppressWarnings("unchecked")
+    private AgilePresenterViewModel<P> getAgilePresenterViewModel() {
+        if (mAgilePresenterViewModel == null) {
+            mAgilePresenterViewModel = new ViewModelProvider(this).get(AgilePresenterViewModel.class);
+        }
+        return mAgilePresenterViewModel;
     }
 }

@@ -49,6 +49,8 @@ interface IBaseViewModel<M : IBaseModel> : LifecycleEventObserver,
 
     fun getModel(): M?
 
+    fun initBusinessEngines()
+
     fun getLifecycleType(): AgileLifecycle.LifecycleType
 
     sealed interface PopHintState {

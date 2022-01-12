@@ -259,8 +259,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
     /**
      * 供子类初始化ModelPart
      */
-    protected void initializeModelParts() {
-    }
+    protected abstract void initializeModelParts();
 
     /**
      * 供子类初始化Repository

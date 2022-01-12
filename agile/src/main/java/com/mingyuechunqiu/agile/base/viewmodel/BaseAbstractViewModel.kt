@@ -84,6 +84,10 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
         return mModel
     }
 
+    override fun initBusinessEngines() {
+        initializeBusinessEngines()
+    }
+
     /**
      * 添加模型层engine单元
      *
@@ -178,5 +182,10 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
 
     protected open fun onStop() {}
 
-    protected fun release() = Unit
+    /**
+     * 供子类重写进行业务引擎初始化
+     */
+    protected abstract fun initializeBusinessEngines()
+
+    protected abstract fun release()
 }

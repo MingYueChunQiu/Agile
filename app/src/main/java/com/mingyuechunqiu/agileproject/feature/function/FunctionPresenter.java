@@ -20,6 +20,10 @@ public class FunctionPresenter extends FunctionContract.Presenter<FunctionContra
     }
 
     @Override
+    protected void initializeBusinessEngines() {
+    }
+
+    @Override
     protected void release() {
     }
 

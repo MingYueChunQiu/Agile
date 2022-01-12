@@ -4,8 +4,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.mingyuechunqiu.agile.base.model.BaseAbstractModel;
+import com.mingyuechunqiu.agile.base.presenter.AgilePresenterViewModel;
 import com.mingyuechunqiu.agile.base.presenter.IBasePresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseView;
 import com.mingyuechunqiu.agile.base.view.IViewAttachPresenter;
@@ -27,8 +29,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class BasePresenterActivity<V extends IBaseView, P extends IBasePresenter<V, ? extends BaseAbstractModel>> extends BaseFullImmerseScreenActivity implements IViewAttachPresenter<P> {
 
+    //要在Activity附加到Application后赋值
     @Nullable
-    private P mPresenter;
+    private AgilePresenterViewModel<P> mAgilePresenterViewModel = null;
 
     @Override
     protected void initOnCreate(@Nullable Bundle savedInstanceState) {
@@ -39,9 +42,10 @@ public abstract class BasePresenterActivity<V extends IBaseView, P extends IBase
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mPresenter != null) {
-            getLifecycle().removeObserver(mPresenter);
-            mPresenter = null;
+        P presenter = getAgilePresenterViewModel().getPresenter();
+        if (presenter != null) {
+            getLifecycle().removeObserver(presenter);
+            getAgilePresenterViewModel().setPresenter(null);
         }
     }
 
@@ -65,24 +69,33 @@ public abstract class BasePresenterActivity<V extends IBaseView, P extends IBase
     @SuppressWarnings("unchecked")
     @Override
     public void bindPresenter(@NonNull P presenter) {
-        setPresenter(presenter);
         if (!(this instanceof IBaseView)) {
             throw new IllegalStateException("Current Activity must implements IBaseView or it subclass");
         }
-        if (mPresenter != null) {
-            mPresenter.attachView((V) this);
-            getLifecycle().addObserver(mPresenter);
+        setPresenter(presenter);
+        P finalPresenter = getAgilePresenterViewModel().getPresenter();
+        if (finalPresenter != null) {
+            finalPresenter.attachView((V) this);
+            getLifecycle().addObserver(finalPresenter);
         }
     }
 
     @Override
     public void setPresenter(@NonNull @NotNull P presenter) {
-        mPresenter = presenter;
+        getAgilePresenterViewModel().setPresenter(presenter);
     }
 
     @Nullable
     @Override
     public P getPresenter() {
-        return mPresenter;
+        return getAgilePresenterViewModel().getPresenter();
+    }
+
+    @SuppressWarnings("unchecked")
+    private AgilePresenterViewModel<P> getAgilePresenterViewModel() {
+        if (mAgilePresenterViewModel == null) {
+            mAgilePresenterViewModel = new ViewModelProvider(this).get(AgilePresenterViewModel.class);
+        }
+        return mAgilePresenterViewModel;
     }
 }
