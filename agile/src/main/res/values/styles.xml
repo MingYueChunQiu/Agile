@@ -25,7 +25,7 @@
         <item name="android:windowExitAnimation">@anim/agile_pop_out_fade_scale</item>
     </style>
 
-    <!--动画-->
+    <!--从顶部开始缩放动画-->
     <style name="AnimationScaleTop">
         <item name="android:windowEnterAnimation">@anim/agile_scale_top_in</item>
         <item name="android:windowExitAnimation">@anim/agile_scale_top_out</item>
