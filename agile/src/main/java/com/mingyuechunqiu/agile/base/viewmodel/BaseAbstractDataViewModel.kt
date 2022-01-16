@@ -8,7 +8,7 @@ import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel
 import com.mingyuechunqiu.agile.constants.AgileUserConstants
 import com.mingyuechunqiu.agile.frame.Agile
 import com.mingyuechunqiu.agile.util.NetworkUtils
-import com.mingyuechunqiu.agile.util.SharedPreferencesUtils
+import com.mingyuechunqiu.agile.data.local.sp.SharedPreferencesHelper
 
 /**
  * <pre>
@@ -57,7 +57,7 @@ abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstra
      * @return 存储的token值
      */
     protected open fun getToken(): String? {
-        val token = SharedPreferencesUtils.getString(
+        val token = SharedPreferencesHelper.getString(
             Agile.getAppContext(), AgileUserConstants.PREF_USER_INFO, AgileUserConstants.TOKEN, null
         )
         return if (TextUtils.isEmpty(token)) {

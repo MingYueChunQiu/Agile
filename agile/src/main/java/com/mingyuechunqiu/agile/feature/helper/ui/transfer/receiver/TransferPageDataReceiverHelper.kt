@@ -4,7 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher.ITransferPageDataDispatcher
-import com.mingyuechunqiu.agile.util.UUIDUtils
+import com.mingyuechunqiu.agile.data.local.UUIDHelper
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -56,7 +56,7 @@ internal class TransferPageDataReceiverHelper(page: ITransferPageDataReceiverPag
         listener: ITransferPageDataReceiver.TransferPageDataReceiverListener
     ): String {
         val observer = ITransferPageDataReceiver.TransferPageDataReceiverObserver(
-            UUIDUtils.getUUID(),
+            UUIDHelper.getUUID(),
             listener
         )
         val key = createRealKey(tag)

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
-import com.mingyuechunqiu.agile.util.ScreenUtils;
+import com.mingyuechunqiu.agile.feature.helper.ScreenHelper;
 
 /**
  * <pre>
@@ -76,9 +76,9 @@ public class OnDragTouchListener implements View.OnTouchListener {
                 startAutoPull(v, lp);
                 //如果移动距离过小，则判定为点击
                 if (Math.abs(event.getRawX() - mOriginalX) <
-                        ScreenUtils.getPxFromDp(v.getResources(), 5) &&
+                        ScreenHelper.getPxFromDp(v.getResources(), 5) &&
                         Math.abs(event.getRawY() - mOriginalY) <
-                                ScreenUtils.getPxFromDp(v.getResources(), 5)) {
+                                ScreenHelper.getPxFromDp(v.getResources(), 5)) {
                     if (mListener != null) {
                         mListener.onClick(v);
                     }

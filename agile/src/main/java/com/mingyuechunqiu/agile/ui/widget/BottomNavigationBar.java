@@ -23,7 +23,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
 import com.mingyuechunqiu.agile.R;
-import com.mingyuechunqiu.agile.util.ScreenUtils;
+import com.mingyuechunqiu.agile.feature.helper.ScreenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,13 +68,13 @@ public class BottomNavigationBar extends LinearLayoutCompat {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomNavigationBar);
         mTextInactiveColor = a.getColor(R.styleable.BottomNavigationBar_bnb_text_inactive_color, Color.GRAY);
         mTextActiveColor = a.getColor(R.styleable.BottomNavigationBar_bnb_text_active_color, Color.BLACK);
-        mTextInactiveSize = a.getDimensionPixelSize(R.styleable.BottomNavigationBar_bnb_text_inactive_size, (int) ScreenUtils.getPxFromSp(getResources(), 12));
-        mTextActiveSize = a.getDimensionPixelSize(R.styleable.BottomNavigationBar_bnb_text_active_size, (int) ScreenUtils.getPxFromSp(getResources(), 14));
+        mTextInactiveSize = a.getDimensionPixelSize(R.styleable.BottomNavigationBar_bnb_text_inactive_size, (int) ScreenHelper.getPxFromSp(getResources(), 12));
+        mTextActiveSize = a.getDimensionPixelSize(R.styleable.BottomNavigationBar_bnb_text_active_size, (int) ScreenHelper.getPxFromSp(getResources(), 14));
         textInactiveBold = a.getBoolean(R.styleable.BottomNavigationBar_bnb_text_inactive_bold, false);
         textActiveBold = a.getBoolean(R.styleable.BottomNavigationBar_bnb_text_active_bold, false);
 
-        mIconInactiveSize = a.getDimensionPixelSize(R.styleable.BottomNavigationBar_bnb_icon_inactive_size, (int) ScreenUtils.getPxFromDp(getResources(), 20));
-        mIconActiveSize = a.getDimensionPixelSize(R.styleable.BottomNavigationBar_bnb_icon_active_size, (int) ScreenUtils.getPxFromDp(getResources(), 22));
+        mIconInactiveSize = a.getDimensionPixelSize(R.styleable.BottomNavigationBar_bnb_icon_inactive_size, (int) ScreenHelper.getPxFromDp(getResources(), 20));
+        mIconActiveSize = a.getDimensionPixelSize(R.styleable.BottomNavigationBar_bnb_icon_active_size, (int) ScreenHelper.getPxFromDp(getResources(), 22));
 
         a.recycle();
         mTabList = new ArrayList<>();
@@ -292,7 +292,7 @@ public class BottomNavigationBar extends LinearLayoutCompat {
         int size = MeasureSpec.getSize(heightMeasureSpec);
         if (mode == MeasureSpec.AT_MOST) {
             size = llTabContainer == null
-                    ? (int) ScreenUtils.getPxFromDp(getResources(), 56F)
+                    ? (int) ScreenHelper.getPxFromDp(getResources(), 56F)
                     : llTabContainer.getHeight();
         }
         return size;

@@ -42,6 +42,7 @@ internal class WidgetStatusView(private val mOption: StatusViewOption) : IStatus
         val id = mOption.statusViewContainer?.customLayoutId
         val layoutId = if (id == null || id == 0) R.layout.agile_dialog_fragment_status_view else id
         mView = FrameLayout(Agile.getAppContext()).apply {
+            isClickable = true
             isFocusable = true
             isFocusableInTouchMode = true
             requestFocus()

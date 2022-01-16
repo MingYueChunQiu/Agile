@@ -11,8 +11,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mingyuechunqiu.agile.util.ScreenUtils;
-
 import java.lang.ref.WeakReference;
 
 /**
@@ -125,7 +123,7 @@ public final class SoftInputKeyBoardHelper {
                     frameLayoutParams.height = usableHeightSansKeyboard
                             - heightDifference;
                     if (removeStatusHeight) {
-                        frameLayoutParams.height += ScreenUtils.getStatusBarHeight(mActivityRef.get());
+                        frameLayoutParams.height += ScreenHelper.getStatusBarHeight(mActivityRef.get());
                     }
                 }
                 if (mListener != null) {
@@ -135,9 +133,9 @@ public final class SoftInputKeyBoardHelper {
                 // keyboard probably just became hidden
                 if (changeContentHeight) {
                     frameLayoutParams.height = usableHeightSansKeyboard;
-                    if (ScreenUtils.judgeWindowHasNavigationBar(mActivityRef.get(), isScreenPortrait())) {
+                    if (ScreenHelper.judgeWindowHasNavigationBar(mActivityRef.get(), isScreenPortrait())) {
                         //要减去底部导航栏高度，否则在有导航栏情况下，会导致布局延伸到导航栏里面
-                        frameLayoutParams.height -= ScreenUtils.getNavigationBarHeight(mActivityRef.get());
+                        frameLayoutParams.height -= ScreenHelper.getNavigationBarHeight(mActivityRef.get());
                     }
                 }
                 if (mListener != null) {

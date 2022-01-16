@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.util;
+package com.mingyuechunqiu.agile.feature.helper;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -23,9 +23,9 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public final class AppUtils {
+public final class AppHelper {
 
-    private AppUtils() {
+    private AppHelper() {
     }
 
     /**

@@ -1,8 +1,10 @@
-package com.mingyuechunqiu.agile.util;
+package com.mingyuechunqiu.agile.data.local.sp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.Set;
@@ -16,9 +18,9 @@ import java.util.Set;
  *     version: 1.0
  * </pre>
  */
-public final class SharedPreferencesUtils {
+public final class SharedPreferencesHelper {
 
-    private SharedPreferencesUtils() {
+    private SharedPreferencesHelper() {
     }
 
     public static boolean putBoolean(@Nullable Context context, @Nullable String name, @Nullable String key, boolean value) {
@@ -77,32 +79,37 @@ public final class SharedPreferencesUtils {
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).getFloat(key, defValue);
     }
 
-    public static boolean putString(@Nullable Context context, @Nullable String name, @Nullable String key, String value) {
+    public static boolean putString(@Nullable Context context, @Nullable String name, @Nullable String key, @Nullable String value) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return false;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().putString(key, value).commit();
     }
 
-    public static String getString(@Nullable Context context, @Nullable String name, @Nullable String key, String defValue) {
+    public static String getString(@Nullable Context context, @Nullable String name, @Nullable String key, @Nullable String defValue) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return null;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).getString(key, defValue);
     }
 
-    public static boolean putStringSet(@Nullable Context context, @Nullable String name, @Nullable String key, Set<String> value) {
+    public static boolean putStringSet(@Nullable Context context, @Nullable String name, @Nullable String key, @Nullable Set<String> value) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return false;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().putStringSet(key, value).commit();
     }
 
-    public static Set<String> getStringSet(@Nullable Context context, @Nullable String name, @Nullable String key, Set<String> defValue) {
+    public static Set<String> getStringSet(@Nullable Context context, @Nullable String name, @Nullable String key, @Nullable Set<String> defValue) {
         if (context == null || TextUtils.isEmpty(name) || TextUtils.isEmpty(key)) {
             return null;
         }
         return context.getSharedPreferences(name, Context.MODE_PRIVATE).getStringSet(key, defValue);
+    }
+
+    @SuppressLint("ApplySharedPref")
+    public static void flush(@NonNull Context context, @Nullable String name) {
+        context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().commit();
     }
 
     /**
@@ -110,7 +117,7 @@ public final class SharedPreferencesUtils {
      *
      * @param context 上下文
      * @param name    配置名称
-     * @return 是否清楚成功
+     * @return 是否清除成功
      */
     public static boolean clearAll(@Nullable Context context, @Nullable String name) {
         if (context == null || TextUtils.isEmpty(name)) {

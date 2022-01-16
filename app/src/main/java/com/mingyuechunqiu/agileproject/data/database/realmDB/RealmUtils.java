@@ -6,7 +6,7 @@ import android.util.Base64;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
-import com.mingyuechunqiu.agile.util.SharedPreferencesUtils;
+import com.mingyuechunqiu.agile.data.local.sp.SharedPreferencesHelper;
 import com.mingyuechunqiu.agileproject.MyApplication;
 import com.mingyuechunqiu.agileproject.data.database.realmDB.bean.User;
 
@@ -78,7 +78,7 @@ public class RealmUtils {
         Map<String, String> map = new HashMap<>(1);
         map.put(PREF_REALM_ENCRYPTION_KEY, key);
         //用安全数据实例来存储
-        if (SharedPreferencesUtils.putString(MyApplication.getAppContext(),
+        if (SharedPreferencesHelper.putString(MyApplication.getAppContext(),
                 SECURE_DATA, PREF_REALM_ENCRYPTION_KEY, key)) {
             return new RealmConfiguration.Builder()
                     .encryptionKey(bytes)
@@ -94,7 +94,7 @@ public class RealmUtils {
      */
     @Nullable
     public static byte[] getEncryptionKey() {
-        String encryptionKey = SharedPreferencesUtils.getString(MyApplication.getAppContext(),
+        String encryptionKey = SharedPreferencesHelper.getString(MyApplication.getAppContext(),
                 SECURE_DATA, PREF_REALM_ENCRYPTION_KEY, null);
         if (TextUtils.isEmpty(encryptionKey)) {
             return null;
@@ -112,7 +112,7 @@ public class RealmUtils {
      * @return 返回Realm异步数据库操作对象
      */
     public static RealmAsyncTask saveUserInfo(String username, String password, String token, int roleType) {
-        SharedPreferencesUtils.putString(MyApplication.getAppContext(),
+        SharedPreferencesHelper.putString(MyApplication.getAppContext(),
                 PREF_USER_INFO, LATEST_USERNAME, username);
         String key;
         switch (roleType) {
@@ -129,11 +129,11 @@ public class RealmUtils {
                 key = MEMBER_USERNAME;
                 break;
         }
-        SharedPreferencesUtils.putString(MyApplication.getAppContext(), PREF_USER_INFO,
+        SharedPreferencesHelper.putString(MyApplication.getAppContext(), PREF_USER_INFO,
                 key, username);
-        SharedPreferencesUtils.putString(MyApplication.getAppContext(), PREF_USER_INFO,
+        SharedPreferencesHelper.putString(MyApplication.getAppContext(), PREF_USER_INFO,
                 PASSWORD, password);
-        SharedPreferencesUtils.putString(MyApplication.getAppContext(), PREF_USER_INFO,
+        SharedPreferencesHelper.putString(MyApplication.getAppContext(), PREF_USER_INFO,
                 TOKEN, token);
         return saveUserInfoToDB(username, password, roleType);
     }

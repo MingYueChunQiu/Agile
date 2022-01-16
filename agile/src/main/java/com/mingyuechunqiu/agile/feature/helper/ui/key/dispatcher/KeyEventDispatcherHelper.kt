@@ -5,7 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.mingyuechunqiu.agile.feature.helper.ui.key.receiver.IKeyEventReceiver
-import com.mingyuechunqiu.agile.util.UUIDUtils
+import com.mingyuechunqiu.agile.data.local.UUIDHelper
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -52,7 +52,7 @@ class KeyEventDispatcherHelper(page: IKeyEventDispatcherPage) : IKeyEventDispatc
         tag: String,
         listener: IKeyEventReceiver.OnKeyEventListener
     ): String {
-        val observer = IKeyEventReceiver.KeyEventObserver(UUIDUtils.getUUID(), listener)
+        val observer = IKeyEventReceiver.KeyEventObserver(UUIDHelper.getUUID(), listener)
         val key = createRealKey(tag)
         var list = mKeyEventListenerMap[key]
         if (list == null) {

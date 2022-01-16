@@ -14,7 +14,7 @@ import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
-import com.mingyuechunqiu.agile.util.SharedPreferencesUtils;
+import com.mingyuechunqiu.agile.data.local.sp.SharedPreferencesHelper;
 
 /**
  * <pre>
@@ -70,7 +70,7 @@ public abstract class BaseAbstractDataPresenter<V extends IBaseDataView, M exten
      * @return 存储的token值
      */
     protected String getToken() {
-        String token = SharedPreferencesUtils.getString(
+        String token = SharedPreferencesHelper.getString(
                 Agile.getAppContext(), PREF_USER_INFO, TOKEN, null);
         if (TextUtils.isEmpty(token)) {
             showToast(R.string.agile_error_set_net_params);

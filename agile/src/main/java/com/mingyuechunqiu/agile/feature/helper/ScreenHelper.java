@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.util;
+package com.mingyuechunqiu.agile.feature.helper;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -29,9 +29,9 @@ import androidx.fragment.app.DialogFragment;
  * </pre>
  */
 
-public final class ScreenUtils {
+public final class ScreenHelper {
 
-    private ScreenUtils() {
+    private ScreenHelper() {
     }
 
     /**
@@ -93,10 +93,10 @@ public final class ScreenUtils {
         if (layoutParams == null || resources == null) {
             return;
         }
-        layoutParams.setMargins((int) ScreenUtils.getPxFromDp(resources, left),
-                (int) ScreenUtils.getPxFromDp(resources, top),
-                (int) ScreenUtils.getPxFromDp(resources, right),
-                (int) ScreenUtils.getPxFromDp(resources, bottom));
+        layoutParams.setMargins((int) ScreenHelper.getPxFromDp(resources, left),
+                (int) ScreenHelper.getPxFromDp(resources, top),
+                (int) ScreenHelper.getPxFromDp(resources, right),
+                (int) ScreenHelper.getPxFromDp(resources, bottom));
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.util;
+package com.mingyuechunqiu.agile.feature.helper.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -27,9 +27,9 @@ import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
  *     version: 1.0
  * </pre>
  */
-public final class DialogUtils {
+public final class DialogHelper {
 
-    private DialogUtils() {
+    private DialogHelper() {
     }
 
     /**
@@ -68,7 +68,7 @@ public final class DialogUtils {
         View view = View.inflate(context, R.layout.agile_dialog_fragment_status_view, null);
         AppCompatTextView tvMsg = view.findViewById(R.id.tv_agile_dfg_status_view_content);
         tvMsg.setText(hint);
-        return new AlertDialog.Builder(context, R.style.Dialog_Loading)
+        return new AlertDialog.Builder(context, R.style.DialogLoading)
                 .setView(view)
                 .setCancelable(cancelable)
                 .create();

@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.R;
-import com.mingyuechunqiu.agile.util.ScreenUtils;
+import com.mingyuechunqiu.agile.feature.helper.ScreenHelper;
 
 /**
  * <pre>
@@ -42,7 +42,7 @@ public class CircleProgressButton extends View {
     private final int DEFAULT_PROGRESS_DURATION = 400;
     private final int DEFAULT_INNER_PADDING = 0;//默认圆环距离内圆距离
 
-    private final int DEFAULT_IDLE_RING_WIDTH = (int) ScreenUtils.getPxFromDp(getResources(), 6);
+    private final int DEFAULT_IDLE_RING_WIDTH = (int) ScreenHelper.getPxFromDp(getResources(), 6);
     private final int DEFAULT_PRESSED_RING_WIDTH = DEFAULT_IDLE_RING_WIDTH;
     private final int DEFAULT_RELEASED_RING_WIDTH = DEFAULT_IDLE_RING_WIDTH;
 

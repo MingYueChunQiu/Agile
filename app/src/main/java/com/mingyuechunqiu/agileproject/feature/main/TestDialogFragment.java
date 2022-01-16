@@ -84,7 +84,7 @@ public class TestDialogFragment extends BasePresenterDialogFragment<MainContract
     @Override
     protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (getDialog() != null && getDialog().getWindow() != null) {
-            getDialog().getWindow().setWindowAnimations(R.style.PopupAnimation);
+            getDialog().getWindow().setWindowAnimations(R.style.AnimationPop);
         }
     }
 

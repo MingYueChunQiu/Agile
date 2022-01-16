@@ -14,7 +14,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.R;
-import com.mingyuechunqiu.agile.util.ScreenUtils;
+import com.mingyuechunqiu.agile.feature.helper.ScreenHelper;
 
 /**
  * <pre>
@@ -60,7 +60,7 @@ public class DaisyLoadingView extends View {
     public DaisyLoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.DaisyLoadingView, defStyleAttr, 0);
-        mSize = array.getDimension(R.styleable.DaisyLoadingView_dlv_size, ScreenUtils.getPxFromDp(getResources(), 32));
+        mSize = array.getDimension(R.styleable.DaisyLoadingView_dlv_size, ScreenHelper.getPxFromDp(getResources(), 32));
         mColor = array.getInt(R.styleable.DaisyLoadingView_dlv_color, Color.BLACK);
         array.recycle();
         initPaint();

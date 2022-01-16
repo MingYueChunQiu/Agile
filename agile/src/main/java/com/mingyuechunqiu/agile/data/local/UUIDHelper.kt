@@ -1,4 +1,4 @@
-package com.mingyuechunqiu.agile.util
+package com.mingyuechunqiu.agile.data.local
 
 import java.util.*
 
@@ -14,7 +14,7 @@ import java.util.*
  *      Version:    1.0
  * </pre>
  */
-object UUIDUtils {
+object UUIDHelper {
 
     fun getUUID(): String {
         return UUID.randomUUID().toString().replace("-", "")

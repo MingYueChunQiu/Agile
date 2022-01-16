@@ -17,8 +17,6 @@ import androidx.annotation.StyleRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
-import com.mingyuechunqiu.agile.util.ScreenUtils;
-
 import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.NO_RESOURCE_ID;
 
 /**
@@ -103,7 +101,7 @@ public final class ToolbarHelper {
         if (configure.isImmerse()) {
             //因为沉侵式布局会让活动条侵入到状态栏中，为了不影响活动条显示内容，
             //让活动条高度增加并且内容下移
-            int statusBarHeight = ScreenUtils.getStatusBarHeight(toolbar.getContext());
+            int statusBarHeight = ScreenHelper.getStatusBarHeight(toolbar.getContext());
             toolbar.getLayoutParams().height = toolbar.getLayoutParams().height + statusBarHeight;
             toolbar.setPadding(0, statusBarHeight, 0, 0);
         }

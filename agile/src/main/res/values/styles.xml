@@ -2,7 +2,7 @@
 <resources>
 
     <!--加载对话框显示样式-->
-    <style name="Dialog_Loading" parent="Theme.AppCompat.Dialog">
+    <style name="DialogLoading" parent="Theme.AppCompat.Dialog">
         <item name="android:windowBackground">@drawable/agile_shape_round_corners_10_white</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">true</item>
@@ -10,19 +10,25 @@
     </style>
 
     <!--透明背景加载对话框显示样式-->
-    <style name="Dialog_Loading.Transparent" parent="Dialog_Loading">
+    <style name="DialogLoading.Transparent" parent="DialogLoading">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <!--带动画弹出的透明背景加载对话框显示样式-->
-    <style name="Dialog_Loading.Transparent.Animation" parent="Dialog_Loading.Transparent">
-        <item name="android:windowAnimationStyle">@style/PopupAnimation</item>
+    <style name="DialogLoading.Transparent.Animation" parent="DialogLoading.Transparent">
+        <item name="android:windowAnimationStyle">@style/AnimationPop</item>
     </style>
 
     <!--弹出动画-->
-    <style name="PopupAnimation">
+    <style name="AnimationPop">
         <item name="android:windowEnterAnimation">@anim/agile_pop_in_fade_scale</item>
         <item name="android:windowExitAnimation">@anim/agile_pop_out_fade_scale</item>
+    </style>
+
+    <!--动画-->
+    <style name="AnimationScaleTop">
+        <item name="android:windowEnterAnimation">@anim/agile_scale_top_in</item>
+        <item name="android:windowExitAnimation">@anim/agile_scale_top_out</item>
     </style>
 
 </resources>

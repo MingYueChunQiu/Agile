@@ -61,7 +61,7 @@ public class TestAppDialog extends BaseDialog {
         setDialogWindow(new WindowHandler() {
             @Override
             public void onHandle(@NonNull Window window) {
-                window.setWindowAnimations(R.style.PopupAnimation);
+                window.setWindowAnimations(R.style.AnimationPop);
             }
         });
     }
