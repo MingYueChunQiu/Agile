@@ -4,8 +4,9 @@ buildscript {
     ext.kotlin_version = '1.6.10'
 
     repositories {
+        jcenter()
 //        maven { url 'https://maven.google.com' }
-        maven { url "https://jcenter.bintray.com" }
+//        maven { url "https://jcenter.bintray.com" }
         maven { url 'https://maven.aliyun.com/repository/central' }//central
         maven { url 'https://maven.aliyun.com/repository/public' }//jcenter、public
         maven { url 'https://maven.aliyun.com/repository/google' }//google
@@ -27,7 +28,7 @@ buildscript {
 allprojects {
     repositories {
 //        maven { url 'https://maven.google.com' }
-        maven { url "https://jcenter.bintray.com" }
+//        maven { url "https://jcenter.bintray.com" }
         maven { url 'https://maven.aliyun.com/repository/central' }//central
         maven { url 'https://maven.aliyun.com/repository/public' }//jcenter、public
         maven { url 'https://maven.aliyun.com/repository/google' }//google
