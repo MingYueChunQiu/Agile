@@ -9,6 +9,7 @@ import androidx.multidex.MultiDex;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.frame.AgileFrameConfigure;
 import com.mingyuechunqiu.agile.frame.data.remote.AgileNetworkConfig;
+import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
 import com.mingyuechunqiu.agile.frame.lifecycle.activity.ActivityLifecycleAdapter;
 import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
 
@@ -43,6 +44,7 @@ public class MyApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+        AgileLifecycle.LifecycleType dd = AgileLifecycle.LifecycleType.VIEW;
     }
 
     @Override
