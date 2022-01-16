@@ -23,7 +23,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
 import com.mingyuechunqiu.agile.R;
-import com.mingyuechunqiu.agile.feature.helper.ScreenHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.common.ScreenHelper;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -45,7 +45,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
-import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.widget.ToolbarHelper;
 import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.receiver.NetworkConnectedTypeReceiver;
 import com.mingyuechunqiu.agile.util.NetworkUtils;

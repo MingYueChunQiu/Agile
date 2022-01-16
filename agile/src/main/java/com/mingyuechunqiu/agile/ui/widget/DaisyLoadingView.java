@@ -14,7 +14,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
 import com.mingyuechunqiu.agile.R;
-import com.mingyuechunqiu.agile.feature.helper.ScreenHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.common.ScreenHelper;
 
 /**
  * <pre>

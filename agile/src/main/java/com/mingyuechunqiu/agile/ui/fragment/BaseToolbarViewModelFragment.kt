@@ -9,8 +9,8 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.mingyuechunqiu.agile.constants.AgileCommonConstants
-import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper
-import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper.ToolbarConfigure
+import com.mingyuechunqiu.agile.feature.helper.ui.widget.ToolbarHelper
+import com.mingyuechunqiu.agile.feature.helper.ui.widget.ToolbarHelper.ToolbarConfigure
 
 /**
  * <pre>

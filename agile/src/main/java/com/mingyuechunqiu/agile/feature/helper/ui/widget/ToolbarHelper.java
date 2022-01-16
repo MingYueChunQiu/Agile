@@ -1,4 +1,6 @@
-package com.mingyuechunqiu.agile.feature.helper;
+package com.mingyuechunqiu.agile.feature.helper.ui.widget;
+
+import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.NO_RESOURCE_ID;
 
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -17,7 +19,7 @@ import androidx.annotation.StyleRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
-import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.NO_RESOURCE_ID;
+import com.mingyuechunqiu.agile.feature.helper.ui.common.ScreenHelper;
 
 /**
  * <pre>

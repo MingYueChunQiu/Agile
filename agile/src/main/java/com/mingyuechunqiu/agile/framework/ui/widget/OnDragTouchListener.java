@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
-import com.mingyuechunqiu.agile.feature.helper.ScreenHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.common.ScreenHelper;
 
 /**
  * <pre>

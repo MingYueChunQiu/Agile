@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.R;
-import com.mingyuechunqiu.agile.feature.helper.ScreenHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.common.ScreenHelper;
 
 /**
  * <pre>

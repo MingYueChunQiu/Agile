@@ -19,7 +19,7 @@ import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
-import com.mingyuechunqiu.agile.feature.helper.ToolbarHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.widget.ToolbarHelper;
 import com.mingyuechunqiu.agileproject.R;
 
 /**
