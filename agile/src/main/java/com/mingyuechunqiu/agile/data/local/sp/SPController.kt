@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.data.local.sp
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import com.mingyuechunqiu.agile.frame.Agile
 
@@ -16,9 +17,11 @@ import com.mingyuechunqiu.agile.frame.Agile
  *      Version:    1.0
  * </pre>
  */
-class SPController(private val configName: String) {
+class SPController(private val mContext: Context, private val mConfigName: String) {
 
-    private val mSp = Agile.getAppContext().getSharedPreferences(configName, MODE_PRIVATE)
+    constructor(configName: String) : this(Agile.getAppContext(), configName)
+
+    private val mSp = mContext.getSharedPreferences(mConfigName, MODE_PRIVATE)
 
     fun putBoolean(key: String, value: Boolean) {
         mSp.edit().putBoolean(key, value).apply()
@@ -82,6 +85,6 @@ class SPController(private val configName: String) {
      * @return 是否清除成功
      */
     fun clearAll(): Boolean {
-        return SharedPreferencesHelper.clearAll(Agile.getAppContext(), configName)
+        return SharedPreferencesHelper.clearAll(mContext, mConfigName)
     }
 }

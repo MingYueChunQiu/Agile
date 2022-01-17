@@ -8,9 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.mingyuechunqiu.agile.feature.helper.ui.fragment.FragmentHelper;
 import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.activity.BaseActivity;
-import com.mingyuechunqiu.agile.feature.helper.ui.fragment.FragmentHelper;
 import com.mingyuechunqiu.agileproject.R;
 
 /**
