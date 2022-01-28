@@ -45,6 +45,8 @@ interface IBaseViewModel<M : IBaseModel> : LifecycleEventObserver,
 
     fun getStatusViewState(): LiveData<StatusViewState>
 
+    fun <T> getObservableData(): LiveData<ObservableData<T>>
+
     fun initModel(): M?
 
     fun getModel(): M?
@@ -72,4 +74,6 @@ interface IBaseViewModel<M : IBaseModel> : LifecycleEventObserver,
 
         object Dismiss : StatusViewState
     }
+
+    data class ObservableData<T>(val data: T)
 }

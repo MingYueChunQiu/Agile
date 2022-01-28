@@ -35,6 +35,9 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
     private val _statusViewState: MutableLiveData<IBaseViewModel.StatusViewState> =
         MutableLiveData()
 
+    private val _observableData: MutableLiveData<IBaseViewModel.ObservableData<*>> =
+        MutableLiveData()
+
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         when (event) {
             Lifecycle.Event.ON_START -> callOnStart()
@@ -127,6 +130,11 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
 
     override fun getStatusViewState(): LiveData<IBaseViewModel.StatusViewState> {
         return _statusViewState
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> getObservableData(): LiveData<IBaseViewModel.ObservableData<T>> {
+        return _observableData as LiveData<IBaseViewModel.ObservableData<T>>
     }
 
     override fun showToast(@StringRes msgResId: Int) {
