@@ -274,13 +274,8 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @param config 配置信息对象
      */
     protected void showToastAndDismissStatusView(@NonNull ToastHelper.ToastConfig config) {
-        V v = getView();
-        if (v instanceof IPopHintOwner) {
-            ((IPopHintOwner) v).showToast(config);
-        }
-        if (v instanceof IStatusViewOwner) {
-            ((IStatusViewOwner) v).dismissStatusView();
-        }
+        showToast(config);
+        dismissStatusView();
     }
 
     /**
@@ -297,7 +292,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
         if (mViewRef.get() instanceof FragmentActivity) {
             manager = ((FragmentActivity) mViewRef.get()).getSupportFragmentManager();
         } else if (mViewRef.get() instanceof Fragment) {
-            manager = ((Fragment) mViewRef.get()).getFragmentManager();
+            manager = ((Fragment) mViewRef.get()).getParentFragmentManager();
         }
         return manager;
     }

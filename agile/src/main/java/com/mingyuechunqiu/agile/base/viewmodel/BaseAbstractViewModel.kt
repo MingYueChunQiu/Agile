@@ -11,6 +11,7 @@ import com.mingyuechunqiu.agile.base.businessengine.IBaseBusinessEngine
 import com.mingyuechunqiu.agile.base.model.IBaseModel
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper
+import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper.ToastConfig
 import com.mingyuechunqiu.agile.frame.Agile
 import java.util.*
 
@@ -172,6 +173,56 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
 
     fun getColor(resId: Int): Int {
         return ContextCompat.getColor(getAppContext(), resId)
+    }
+
+    /**
+     * 显示信息并关闭加载对话框
+     *
+     * @param msg 文本
+     */
+    protected fun showToastAndDismissStatusView(msg: String?) {
+        showToastAndDismissStatusView(
+            ToastConfig.Builder()
+                .setMsg(msg)
+                .build()
+        )
+    }
+
+    /**
+     * 显示信息并关闭加载对话框
+     *
+     * @param msgResId 文本资源ID
+     */
+    protected fun showToastAndDismissStatusView(@StringRes msgResId: Int) {
+        showToastAndDismissStatusView(
+            ToastConfig.Builder()
+                .setMsgResId(msgResId)
+                .build()
+        )
+    }
+
+    /**
+     * 显示信息并关闭加载对话框
+     *
+     * @param info 错误信息对象
+     */
+    protected fun showToastAndDismissStatusView(info: ErrorInfo) {
+        showToastAndDismissStatusView(
+            ToastConfig.Builder()
+                .setMsg(info.errorMsg)
+                .setMsgResId(info.errorMsgResId)
+                .build()
+        )
+    }
+
+    /**
+     * 显示信息并关闭加载对话框
+     *
+     * @param config 配置信息对象
+     */
+    protected fun showToastAndDismissStatusView(config: ToastConfig) {
+        showToast(config)
+        dismissStatusView()
     }
 
     protected open fun onStart() {}
