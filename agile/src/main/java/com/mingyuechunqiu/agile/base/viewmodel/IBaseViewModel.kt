@@ -13,6 +13,7 @@ import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper
 import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewProcessor
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle
+import com.mingyuechunqiu.agile.frame.ui.IAgilePage
 
 /**
  * <pre>
@@ -28,6 +29,10 @@ interface IBaseViewModel<M : IBaseModel> : LifecycleEventObserver,
     ICallDispatcher,
     IBusinessEngineOwner, IPopHintOwner,
     IStatusViewProcessor {
+
+    fun attachView(page: IAgilePage)
+
+    fun detachView()
 
     fun callOnStart()
 

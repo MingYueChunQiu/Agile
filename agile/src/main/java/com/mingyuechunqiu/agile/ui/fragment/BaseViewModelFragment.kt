@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agile.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import com.mingyuechunqiu.agile.base.viewmodel.IBaseViewModel
 import com.mingyuechunqiu.agile.base.viewmodel.IViewModelOwner
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle
@@ -40,20 +41,39 @@ abstract class BaseViewModelFragment : BaseFragment(), IViewModelOwner {
         mBusinessViewModelList.apply {
             addAll(initializeBusinessViewModels())
             forEach {
-                registerAgileResourceObserver(it)
+                initBusinessViewModelConfiguration(it)
             }
         }
     }
 
     /**
-     * 注册与Agile库资源相关的观察者
+     * 初始化Agile库业务ViewModel相关配置
+     *
+     * @param viewModel 业务模型
      */
-    private fun registerAgileResourceObserver(viewModel: IBaseViewModel<*>) {
+    private fun initBusinessViewModelConfiguration(viewModel: IBaseViewModel<*>) {
         viewModel.apply {
+            attachView(this@BaseViewModelFragment)
             val lifecycleOwner = when (getLifecycleType()) {
                 AgileLifecycle.LifecycleType.COMPONENT -> this@BaseViewModelFragment
                 AgileLifecycle.LifecycleType.VIEW -> viewLifecycleOwner
             }
+            lifecycleOwner.lifecycle.addObserver(this)
+            registerAgileResourceObserver(lifecycleOwner, this)
+        }
+    }
+
+    /**
+     * 注册与Agile库资源相关的观察者
+     *
+     * @param lifecycleOwner 生命周期拥有者
+     * @param viewModel 业务模型
+     */
+    private fun registerAgileResourceObserver(
+        lifecycleOwner: LifecycleOwner,
+        viewModel: IBaseViewModel<*>
+    ) {
+        viewModel.apply {
             lifecycleOwner.lifecycle.addObserver(this)
             getPopHintState().observe(lifecycleOwner) {
                 when (it) {

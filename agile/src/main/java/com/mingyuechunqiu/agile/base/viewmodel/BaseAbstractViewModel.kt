@@ -10,10 +10,9 @@ import androidx.lifecycle.*
 import com.mingyuechunqiu.agile.base.businessengine.IBaseBusinessEngine
 import com.mingyuechunqiu.agile.base.model.IBaseModel
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo
-import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper.ToastConfig
 import com.mingyuechunqiu.agile.frame.Agile
-import java.util.*
+import com.mingyuechunqiu.agile.frame.ui.IAgilePage
 
 /**
  * <pre>
@@ -27,7 +26,7 @@ import java.util.*
  */
 abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewModel<M> {
 
-    private val mModel: M? = null
+    private var mModel: M? = null
     private var mBusinessEngineList: MutableList<IBaseBusinessEngine>? = null
 
     private val _popHintState: MutableLiveData<IBaseViewModel.PopHintState> = MutableLiveData()
@@ -38,15 +37,29 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
     private val _observableData: MutableLiveData<IBaseViewModel.ObservableData<*>> =
         MutableLiveData()
 
+    override fun onCleared() {
+        super.onCleared()
+        detachView()
+    }
+
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         when (event) {
             Lifecycle.Event.ON_START -> callOnStart()
             Lifecycle.Event.ON_RESUME -> callOnResume()
             Lifecycle.Event.ON_PAUSE -> callOnPause()
             Lifecycle.Event.ON_STOP -> callOnStop()
-            Lifecycle.Event.ON_DESTROY -> releaseOnDetach()
             else -> Unit
         }
+    }
+
+    override fun attachView(page: IAgilePage) {
+        mModel = initModel()
+        onAttachView(page, mModel)
+        initializeBusinessEngines()
+    }
+
+    override fun detachView() {
+        releaseOnDetach()
     }
 
     override fun callOnStart() {
@@ -149,7 +162,7 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
         _popHintState.value = IBaseViewModel.PopHintState.ErrorInfoToast(info)
     }
 
-    override fun showToast(config: ToastHelper.ToastConfig) {
+    override fun showToast(config: ToastConfig) {
         _popHintState.value = IBaseViewModel.PopHintState.ConfigToast(config)
     }
 
@@ -232,6 +245,8 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
         showToast(config)
         dismissStatusView()
     }
+
+    protected open fun onAttachView(page: IAgilePage, model: M?) {}
 
     protected open fun onStart() {}
 

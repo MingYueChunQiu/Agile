@@ -29,17 +29,31 @@ abstract class BaseViewModelActivity : BaseFullImmerseScreenActivity() {
         mBusinessViewModelList.apply {
             addAll(initializeBusinessViewModels())
             forEach {
-                registerAgileResourceObserver(it)
+                initBusinessViewModelConfiguration(it)
             }
         }
     }
 
     /**
+     * 初始化Agile库业务ViewModel相关配置
+     *
+     * @param viewModel 业务模型
+     */
+    private fun initBusinessViewModelConfiguration(viewModel: IBaseViewModel<*>) {
+        viewModel.apply {
+            attachView(this@BaseViewModelActivity)
+            lifecycle.addObserver(this)
+            registerAgileResourceObserver(this)
+        }
+    }
+
+    /**
      * 注册与Agile库资源相关的观察者
+     *
+     * @param viewModel 业务模型
      */
     private fun registerAgileResourceObserver(viewModel: IBaseViewModel<*>) {
         viewModel.apply {
-            lifecycle.addObserver(this)
             getPopHintState().observe(this@BaseViewModelActivity) {
                 when (it) {
                     is IBaseViewModel.PopHintState.MsgResIdToast -> showToast(it.msgResId)

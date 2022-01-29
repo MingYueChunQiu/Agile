@@ -11,7 +11,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.MingYueChunQiu'
                 artifactId = 'Agile'
-                version = '0.6.23'
+                version = '0.6.24'
             }
         }
     }
@@ -50,7 +50,6 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.8.0-alpha02'
 
     implementation 'com.google.android.material:material:1.4.0'

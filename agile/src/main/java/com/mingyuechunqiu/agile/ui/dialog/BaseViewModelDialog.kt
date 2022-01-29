@@ -29,13 +29,26 @@ abstract class BaseViewModelDialog : BaseDialog {
         mBusinessViewModelList.apply {
             addAll(initializeBusinessViewModels())
             forEach {
-                registerAgileResourceObserver(it)
+                initBusinessViewModelConfiguration(it)
             }
         }
     }
 
     /**
      * 注册与Agile库资源相关的观察者
+     */
+    private fun initBusinessViewModelConfiguration(viewModel: IBaseViewModel<*>) {
+        viewModel.apply {
+            attachView(this@BaseViewModelDialog)
+            lifecycle.addObserver(this)
+            registerAgileResourceObserver(this)
+        }
+    }
+
+    /**
+     * 注册与Agile库资源相关的观察者
+     *
+     * @param viewModel 业务模型
      */
     private fun registerAgileResourceObserver(viewModel: IBaseViewModel<*>) {
         viewModel.apply {
