@@ -29,7 +29,7 @@ import com.mingyuechunqiu.agile.util.NetworkUtils;
  */
 public abstract class BaseAbstractDataPresenter<V extends IBaseDataView, M extends BaseAbstractDataModel> extends BaseAbstractPresenter<V, M> {
 
-    private static final String TAG = "BaseAbstractDataPresenter";
+    private final String TAG = getClass().getSimpleName();
 
     @Override
     public <I extends Request.IParamsInfo, T> boolean dispatchCall(@NonNull Call<I, T> call) {

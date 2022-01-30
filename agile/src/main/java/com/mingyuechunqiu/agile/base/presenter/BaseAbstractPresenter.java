@@ -37,7 +37,7 @@ import java.util.List;
  */
 public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBaseModel> implements IBasePresenter<V, M> {
 
-    private static final String TAG = "BaseAbstractPresenter";
+    private final String TAG = getClass().getSimpleName();
     private WeakReference<V> mViewRef;
     @Nullable
     private M mModel;

@@ -27,6 +27,7 @@ import com.mingyuechunqiu.agile.frame.ui.IAgilePage
  */
 abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewModel<M> {
 
+    private val mTag  = javaClass.simpleName
     private var mModel: M? = null
     private var mBusinessEngineList: MutableList<IBaseBusinessEngine>? = null
 
@@ -39,7 +40,7 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
         MutableLiveData()
 
     override fun onCleared() {
-        LogManagerProvider.i(TAG, "onCleared")
+        LogManagerProvider.i(mTag, "onCleared")
         super.onCleared()
         detachView()
     }
@@ -55,43 +56,43 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
     }
 
     override fun attachView(page: IAgilePage) {
-        LogManagerProvider.i(TAG, "attachView")
+        LogManagerProvider.i(mTag, "attachView")
         mModel = initModel()
         onAttachView(page, mModel)
         initializeBusinessEngines()
     }
 
     override fun detachView() {
-        LogManagerProvider.i(TAG, "detachView")
+        LogManagerProvider.i(mTag, "detachView")
         releaseOnDetach()
     }
 
     override fun callOnStart() {
-        LogManagerProvider.i(TAG, "callOnStart")
+        LogManagerProvider.i(mTag, "callOnStart")
         onStart()
         mModel?.callOnStart()
     }
 
     override fun callOnResume() {
-        LogManagerProvider.i(TAG, "callOnResume")
+        LogManagerProvider.i(mTag, "callOnResume")
         onResume()
         mModel?.callOnResume()
     }
 
     override fun callOnPause() {
-        LogManagerProvider.i(TAG, "callOnPause")
+        LogManagerProvider.i(mTag, "callOnPause")
         onPause()
         mModel?.callOnPause()
     }
 
     override fun callOnStop() {
-        LogManagerProvider.i(TAG, "callOnStop")
+        LogManagerProvider.i(mTag, "callOnStop")
         onStop()
         mModel?.callOnStop()
     }
 
     override fun releaseOnDetach() {
-        LogManagerProvider.i(TAG, "releaseOnDetach")
+        LogManagerProvider.i(mTag, "releaseOnDetach")
         release()
         mBusinessEngineList?.let {
             for (engine in it) {
@@ -111,7 +112,7 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
     }
 
     override fun initBusinessEngines() {
-        LogManagerProvider.i(TAG, "initBusinessEngines")
+        LogManagerProvider.i(mTag, "initBusinessEngines")
         initializeBusinessEngines()
     }
 
@@ -122,7 +123,7 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
      * @return 如果添加成功返回true，否则返回false
      */
     override fun addBusinessEngine(engine: IBaseBusinessEngine): Boolean {
-        LogManagerProvider.i(TAG, "addBusinessEngine")
+        LogManagerProvider.i(mTag, "addBusinessEngine")
         return mBusinessEngineList?.add(engine) ?: kotlin.run {
             val list = ArrayList<IBaseBusinessEngine>()
             mBusinessEngineList = list
@@ -137,7 +138,7 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
      * @return 如果删除成功返回true，否则返回false
      */
     override fun removeBusinessEngine(engine: IBaseBusinessEngine?): Boolean {
-        LogManagerProvider.i(TAG, "removeBusinessEngine")
+        LogManagerProvider.i(mTag, "removeBusinessEngine")
         return if (engine == null) {
             false
         } else {
@@ -274,9 +275,4 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
     protected abstract fun initializeBusinessEngines()
 
     protected abstract fun release()
-
-    companion object {
-
-        private const val TAG = "BaseAbstractViewModel"
-    }
 }

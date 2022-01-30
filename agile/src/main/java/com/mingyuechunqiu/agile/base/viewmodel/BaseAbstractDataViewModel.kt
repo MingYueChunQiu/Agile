@@ -23,8 +23,10 @@ import com.mingyuechunqiu.agile.util.NetworkUtils
  */
 abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstractViewModel<M>() {
 
+    private val mTag = javaClass.simpleName
+
     override fun <I : Request.IParamsInfo, T : Any> dispatchCall(call: Call<I, T>): Boolean {
-        LogManagerProvider.i(TAG, "dispatchCall")
+        LogManagerProvider.i(mTag, "dispatchCall")
         requireNotNull(getModel()) { "Model has not been set!" }
         if (call.getRequest().requestCategory === Request.RequestCategory.CATEGORY_NETWORK) {
             //判断当前网络状况，是否继续进行网络业务操作
@@ -37,7 +39,7 @@ abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstra
     }
 
     protected open fun <I : Request.IParamsInfo, T : Any> dispatchCallWithModel(call: Call<I, T>): Boolean {
-        LogManagerProvider.i(TAG, "dispatchCallWithModel")
+        LogManagerProvider.i(mTag, "dispatchCallWithModel")
         return getModel()?.dispatchCall(call) ?: false
     }
 
@@ -75,9 +77,4 @@ abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstra
      * 当网络连接断开时回调
      */
     protected abstract fun disconnectNetwork()
-
-    companion object {
-
-        private const val TAG = "BaseAbstractDataViewModel"
-    }
 }
