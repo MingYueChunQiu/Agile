@@ -27,12 +27,13 @@ import java.util.List;
 public final class Agile {
 
     private volatile static Agile sInstance = null;
-    private volatile Context mApplicationContext;//上下文对象
+    @NonNull
+    private final Context mApplicationContext;//上下文对象
     @NonNull
     private AgileFrameConfigure mConfigure;//配置信息对象
     private boolean debug;//标记是否处于debug模式
     @NonNull
-    private AgileLifecycleDispatcher mLifecycleDispatcher = AgileLifecycleDispatcher.INSTANCE;
+    private final AgileLifecycleDispatcher mLifecycleDispatcher = AgileLifecycleDispatcher.INSTANCE;
     @NonNull
     private final List<IAgileFrameObserver> mAgileFrameObserverList = new ArrayList<>();
 
@@ -62,6 +63,17 @@ public final class Agile {
      * @param configure 框架配置
      */
     public static void init(@NonNull Context context, @Nullable AgileFrameConfigure configure) {
+        init(context, configure, BuildConfig.DEBUG);
+    }
+
+    /**
+     * 进行框架初始化，需要在application中进行初始化，必须最先调用，否则可能会报错
+     *
+     * @param context   传入上下文
+     * @param configure 框架配置
+     * @param isDebug   是否处于调试模式
+     */
+    public static void init(@NonNull Context context, @Nullable AgileFrameConfigure configure, boolean isDebug) {
         if (sInstance == null) {
             synchronized (Agile.class) {
                 if (sInstance == null) {
@@ -69,8 +81,7 @@ public final class Agile {
                 }
             }
         }
-        sInstance.mApplicationContext = context.getApplicationContext() != null ? context.getApplicationContext() : context;
-        debug(BuildConfig.DEBUG);
+        debug(isDebug);
         setConfigure(configure);
         for (IAgileFrameObserver observer : sInstance.mAgileFrameObserverList) {
             observer.onFrameInit();
@@ -82,10 +93,8 @@ public final class Agile {
      *
      * @return 返回全局上下文
      */
+    @NonNull
     public static Context getAppContext() {
-        if (sInstance.mApplicationContext == null) {
-            throw new IllegalArgumentException("Context has not been initialized!");
-        }
         return sInstance.mApplicationContext;
     }
 
@@ -94,11 +103,12 @@ public final class Agile {
      *
      * @param configure 配置对象
      */
-    public static void setConfigure(@Nullable AgileFrameConfigure configure) {
-        if (configure == null) {
-            return;
+    @NonNull
+    public static Agile setConfigure(@Nullable AgileFrameConfigure configure) {
+        if (configure != null) {
+            sInstance.mConfigure = configure;
         }
-        sInstance.mConfigure = configure;
+        return Agile.sInstance;
     }
 
     /**
@@ -140,9 +150,11 @@ public final class Agile {
      *
      * @param debug 是否开启调试模式
      */
-    public static void debug(boolean debug) {
+    @NonNull
+    public static Agile debug(boolean debug) {
         sInstance.debug = debug;
         LogManagerProvider.showLog(debug);
+        return Agile.sInstance;
     }
 
     public static boolean isDebug() {

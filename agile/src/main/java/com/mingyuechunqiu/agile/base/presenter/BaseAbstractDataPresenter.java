@@ -12,9 +12,10 @@ import com.mingyuechunqiu.agile.base.bridge.Request;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
+import com.mingyuechunqiu.agile.data.local.sp.SharedPreferencesHelper;
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
-import com.mingyuechunqiu.agile.data.local.sp.SharedPreferencesHelper;
 
 /**
  * <pre>
@@ -28,8 +29,11 @@ import com.mingyuechunqiu.agile.data.local.sp.SharedPreferencesHelper;
  */
 public abstract class BaseAbstractDataPresenter<V extends IBaseDataView, M extends BaseAbstractDataModel> extends BaseAbstractPresenter<V, M> {
 
+    private static final String TAG = "BaseAbstractDataPresenter";
+
     @Override
     public <I extends Request.IParamsInfo, T> boolean dispatchCall(@NonNull Call<I, T> call) {
+        LogManagerProvider.i(TAG, "dispatchCall");
         if (getModel() == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }
@@ -47,6 +51,7 @@ public abstract class BaseAbstractDataPresenter<V extends IBaseDataView, M exten
 
     @Override
     protected <I extends Request.IParamsInfo, T> boolean dispatchCallWithModel(@NonNull Call<I, T> call) {
+        LogManagerProvider.i(TAG, "dispatchCallWithModel");
         M model = getModel();
         return model != null && model.dispatchCall(call);
     }

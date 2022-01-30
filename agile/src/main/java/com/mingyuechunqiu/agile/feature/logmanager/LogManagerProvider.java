@@ -33,11 +33,13 @@ public final class LogManagerProvider {
     private LogManagerProvider() {
     }
 
-    public static void setLogManagerable(ILogManager logManager) {
+    public static void setLogManager(@NonNull ILogManager logManager) {
         sInstance = logManager;
     }
 
-    public static ILogManager getLogManagerable() {
+    @NonNull
+    public static ILogManager getLogManager() {
+        checkOrCreateLogManager();
         return sInstance;
     }
 

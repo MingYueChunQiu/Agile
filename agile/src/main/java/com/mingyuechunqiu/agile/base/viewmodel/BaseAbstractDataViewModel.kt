@@ -6,9 +6,10 @@ import com.mingyuechunqiu.agile.base.bridge.Request
 import com.mingyuechunqiu.agile.base.bridge.call.Call
 import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel
 import com.mingyuechunqiu.agile.constants.AgileUserConstants
+import com.mingyuechunqiu.agile.data.local.sp.SharedPreferencesHelper
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider
 import com.mingyuechunqiu.agile.frame.Agile
 import com.mingyuechunqiu.agile.util.NetworkUtils
-import com.mingyuechunqiu.agile.data.local.sp.SharedPreferencesHelper
 
 /**
  * <pre>
@@ -23,6 +24,7 @@ import com.mingyuechunqiu.agile.data.local.sp.SharedPreferencesHelper
 abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstractViewModel<M>() {
 
     override fun <I : Request.IParamsInfo, T : Any> dispatchCall(call: Call<I, T>): Boolean {
+        LogManagerProvider.i(TAG, "dispatchCall")
         requireNotNull(getModel()) { "Model has not been set!" }
         if (call.getRequest().requestCategory === Request.RequestCategory.CATEGORY_NETWORK) {
             //判断当前网络状况，是否继续进行网络业务操作
@@ -35,6 +37,7 @@ abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstra
     }
 
     protected open fun <I : Request.IParamsInfo, T : Any> dispatchCallWithModel(call: Call<I, T>): Boolean {
+        LogManagerProvider.i(TAG, "dispatchCallWithModel")
         return getModel()?.dispatchCall(call) ?: false
     }
 
@@ -72,4 +75,9 @@ abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstra
      * 当网络连接断开时回调
      */
     protected abstract fun disconnectNetwork()
+
+    companion object {
+
+        private const val TAG = "BaseAbstractDataViewModel"
+    }
 }

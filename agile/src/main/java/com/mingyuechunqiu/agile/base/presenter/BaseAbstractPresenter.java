@@ -17,6 +17,7 @@ import com.mingyuechunqiu.agile.base.view.IBaseView;
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.framework.IStatusViewOwner;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 
@@ -36,6 +37,7 @@ import java.util.List;
  */
 public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBaseModel> implements IBasePresenter<V, M> {
 
+    private static final String TAG = "BaseAbstractPresenter";
     private WeakReference<V> mViewRef;
     @Nullable
     private M mModel;
@@ -44,6 +46,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     @Override
     public void attachView(@NonNull V view) {
+        LogManagerProvider.i(TAG, "attachView");
         mViewRef = new WeakReference<>(view);
         mModel = initModel();
         onAttachView(view, mModel);
@@ -52,6 +55,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     @Override
     public void detachView() {
+        LogManagerProvider.i(TAG, "detachView");
         releaseOnDetach();
         if (mModel != null) {
             mModel.releaseOnDetach();
@@ -86,6 +90,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     @Override
     public void callOnStart() {
+        LogManagerProvider.i(TAG, "callOnStart");
         onStart();
         if (mModel != null) {
             mModel.callOnStart();
@@ -94,6 +99,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     @Override
     public void callOnResume() {
+        LogManagerProvider.i(TAG, "callOnResume");
         onResume();
         if (mModel != null) {
             mModel.callOnResume();
@@ -102,6 +108,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     @Override
     public void callOnPause() {
+        LogManagerProvider.i(TAG, "callOnPause");
         onPause();
         if (mModel != null) {
             mModel.callOnPause();
@@ -110,6 +117,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     @Override
     public void callOnStop() {
+        LogManagerProvider.i(TAG, "callOnStop");
         onStop();
         if (mModel != null) {
             mModel.callOnStop();
@@ -118,6 +126,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
 
     @Override
     public <I extends Request.IParamsInfo, T> boolean dispatchCall(@NonNull Call<I, T> call) {
+        LogManagerProvider.i(TAG, "dispatchCall");
         if (mModel == null) {
             throw new IllegalArgumentException("Model has not been set!");
         }
@@ -310,6 +319,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     }
 
     protected void releaseOnDetach() {
+        LogManagerProvider.i(TAG, "releaseOnDetach");
         release();
         if (mBusinessEngineList != null) {
             for (IBaseBusinessEngine engine : mBusinessEngineList) {
@@ -329,6 +339,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @return 如果添加成功返回true，否则返回false
      */
     public boolean addBusinessEngine(@NonNull IBaseBusinessEngine engine) {
+        LogManagerProvider.i(TAG, "addBusinessEngine");
         if (mBusinessEngineList == null) {
             mBusinessEngineList = new ArrayList<>();
         }
@@ -342,6 +353,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @return 如果删除成功返回true，否则返回false
      */
     public boolean removeBusinessEngine(@Nullable IBaseBusinessEngine engine) {
+        LogManagerProvider.i(TAG, "removeBusinessEngine");
         if (engine == null || mBusinessEngineList == null) {
             return false;
         }
