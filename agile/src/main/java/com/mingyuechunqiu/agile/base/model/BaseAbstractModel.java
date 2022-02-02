@@ -7,6 +7,7 @@ import com.mingyuechunqiu.agile.base.bridge.Request;
 import com.mingyuechunqiu.agile.base.bridge.call.Call;
 import com.mingyuechunqiu.agile.base.model.modelpart.IBaseModelPart;
 import com.mingyuechunqiu.agile.base.model.repository.IBaseRepository;
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ import java.util.Set;
  */
 public abstract class BaseAbstractModel implements IBaseModel {
 
-    protected final String TAG_FAILURE = getClass().getSimpleName() + " failure";//打印错误日志标签
+    private final String TAG = getClass().getSimpleName();//打印日志标签
 
     @Nullable
     private List<IBaseModelPart> mModelPartList = null;
@@ -36,34 +37,32 @@ public abstract class BaseAbstractModel implements IBaseModel {
     private Map<IBaseRepository, Set<String>> mRepositoryMap = null;
 
     public BaseAbstractModel() {
-        initModelParts();
-        initRepositories();
+        initOnModelParts();
+        initOnRepositories();
     }
 
     @Override
     public void callOnStart() {
+        LogManagerProvider.i(TAG, "callOnStart");
+        onStart();
     }
 
     @Override
     public void callOnPause() {
+        LogManagerProvider.i(TAG, "callOnPause");
+        onPause();
     }
 
     @Override
     public void callOnResume() {
+        LogManagerProvider.i(TAG, "callOnResume");
+        onResume();
     }
 
     @Override
     public void callOnStop() {
-    }
-
-    @Override
-    public void initModelParts() {
-        initializeModelParts();
-    }
-
-    @Override
-    public void initRepositories() {
-        initializeRepositories();
+        LogManagerProvider.i(TAG, "callOnStop");
+        onStop();
     }
 
     /**
@@ -74,6 +73,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
      */
     @Override
     public synchronized boolean addModelPart(@NonNull IBaseModelPart part) {
+        LogManagerProvider.i(TAG, "addModelPart");
         return getModelPartList().add(part);
     }
 
@@ -85,6 +85,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
      */
     @Override
     public boolean removeModelPart(@Nullable IBaseModelPart part) {
+        LogManagerProvider.i(TAG, "removeModelPart");
         if (part == null) {
             return false;
         }
@@ -112,6 +113,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
      */
     @Override
     public boolean addRepository(@NonNull IBaseRepository repository) {
+        LogManagerProvider.i(TAG, "addRepository");
         List<String> requestTags = new ArrayList<>();
         requestTags.add(Request.Tag.TAG_DEFAULT_REQUEST);
         return addRepository(repository, requestTags);
@@ -125,6 +127,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
      */
     @Override
     public synchronized boolean addRepository(@NonNull IBaseRepository repository, @NonNull List<String> requestTags) {
+        LogManagerProvider.i(TAG, "addRepository requestTags");
         Set<String> originalRequestTags = getRepositoryMap().get(repository);
         if (originalRequestTags == null) {
             originalRequestTags = new HashSet<>();
@@ -141,6 +144,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
      */
     @Override
     public boolean removeRepository(@Nullable IBaseRepository repository) {
+        LogManagerProvider.i(TAG, "removeRepository");
         if (repository == null) {
             return false;
         }
@@ -155,6 +159,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
 
     @Override
     public <I extends Request.IParamsInfo, T> boolean dispatchCall(@NonNull Call<I, T> call) {
+        LogManagerProvider.i(TAG, "dispatchCall");
         if (dispatchCallWithCustom(call)) {
             return true;
         }
@@ -166,6 +171,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
      */
     @Override
     public void releaseOnDetach() {
+        LogManagerProvider.i(TAG, "releaseOnDetach");
         release();
         if (mModelPartList != null) {
             for (IBaseModelPart part : mModelPartList) {
@@ -187,6 +193,16 @@ public abstract class BaseAbstractModel implements IBaseModel {
         }
     }
 
+    protected void initOnModelParts() {
+        LogManagerProvider.i(TAG, "initOnModelParts");
+        initModelParts();
+    }
+
+    protected void initOnRepositories() {
+        LogManagerProvider.i(TAG, "initOnRepositories");
+        initRepositories();
+    }
+
     /**
      * 用户自定义执行调用逻辑
      *
@@ -196,6 +212,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
      * @return 请求已处理返回true，否则返回false
      */
     protected <I extends Request.IParamsInfo, T> boolean dispatchCallWithCustom(@NonNull Call<I, T> call) {
+        LogManagerProvider.i(TAG, "dispatchCallWithCustom");
         return false;
     }
 
@@ -209,6 +226,7 @@ public abstract class BaseAbstractModel implements IBaseModel {
      * @return 请求已处理返回true，否则返回false
      */
     private <I extends Request.IParamsInfo, T> boolean dispatchCallWithRepositoryMap(@NonNull Map<IBaseRepository, Set<String>> map, @NonNull Call<I, T> call) {
+        LogManagerProvider.i(TAG, "dispatchCallWithRepositoryMap");
         for (Map.Entry<IBaseRepository, Set<String>> entry : map.entrySet()) {
             if (entry.getValue().contains(call.getRequest().getRequestTag())) {
                 entry.getKey().dispatchCall(call);
@@ -250,21 +268,24 @@ public abstract class BaseAbstractModel implements IBaseModel {
      * @return 请求已处理返回true，否则返回false
      */
     private <I extends Request.IParamsInfo, T> boolean dispatchCallInternal(@NonNull Call<I, T> call) {
+        LogManagerProvider.i(TAG, "dispatchCallInternal");
         if (dispatchCallWithRepositoryMap(getModelPartRepositoryMap(), call)) {
             return true;
         }
         return dispatchCallWithRepositoryMap(getRepositoryMap(), call);
     }
 
-    /**
-     * 供子类初始化ModelPart
-     */
-    protected abstract void initializeModelParts();
+    protected void onStart() {
+    }
 
-    /**
-     * 供子类初始化Repository
-     */
-    protected abstract void initializeRepositories();
+    protected void onResume() {
+    }
+
+    protected void onPause() {
+    }
+
+    protected void onStop() {
+    }
 
     /**
      * 销毁资源

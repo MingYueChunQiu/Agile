@@ -20,11 +20,12 @@ class MainModel extends MainContract.Model {
     }
 
     @Override
-    protected void initializeModelParts() {
+    public void initModelParts() {
+
     }
 
     @Override
-    protected void initializeRepositories() {
+    public void initRepositories() {
         addRepository(new FunctionRepository());
     }
 }

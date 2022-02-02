@@ -20,9 +20,9 @@ interface IViewModelOwner {
      * @param viewModel ViewModel单元模块
      * @return 如果添加成功返回true，否则返回false
      */
-    fun addViewModel(viewModel: IBaseViewModel<*>)
+    fun addBusinessViewModel(viewModel: IBaseViewModel<*>)
 
-    fun removeViewModel(viewModel: IBaseViewModel<*>)
+    fun removeBusinessViewModel(viewModel: IBaseViewModel<*>)
 
-    fun getViewModelList(): List<IBaseViewModel<*>>
+    fun getBusinessViewModelList(): List<IBaseViewModel<*>>
 }

@@ -12,13 +12,12 @@ package com.mingyuechunqiu.agileproject.feature.main
  * Version:    1.0
 </pre> *
  */
-internal
-class MainKotlinModel() : MainContract.Model() {
+internal class MainKotlinModel() : MainContract.Model() {
 
-    override fun initializeModelParts() {
+    override fun initModelParts() {
     }
 
-    override fun initializeRepositories() {
+    override fun initRepositories() {
         addRepository(MainRepository())
     }
 

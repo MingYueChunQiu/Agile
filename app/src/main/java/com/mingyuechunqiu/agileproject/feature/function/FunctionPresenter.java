@@ -20,10 +20,6 @@ public class FunctionPresenter extends FunctionContract.Presenter<FunctionContra
     }
 
     @Override
-    protected void initializeBusinessEngines() {
-    }
-
-    @Override
     protected void release() {
     }
 
@@ -35,5 +31,9 @@ public class FunctionPresenter extends FunctionContract.Presenter<FunctionContra
             view.doSomeTest();
         }
         return null;
+    }
+
+    @Override
+    public void initBusinessEngines() {
     }
 }

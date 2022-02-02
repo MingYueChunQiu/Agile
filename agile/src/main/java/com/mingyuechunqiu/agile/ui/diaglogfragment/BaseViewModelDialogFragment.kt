@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.mingyuechunqiu.agile.base.viewmodel.IBaseViewModel
+import com.mingyuechunqiu.agile.base.viewmodel.IViewModelOwner
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle
 
 /**
@@ -16,21 +18,37 @@ import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle
  *     version: 1.0
  * </pre>
  */
-abstract class BaseViewModelDialogFragment : BaseDialogFragment() {
+abstract class BaseViewModelDialogFragment : BaseDialogFragment(), IViewModelOwner {
 
+    private val mTag = javaClass.simpleName
     private val mBusinessViewModelList: MutableList<IBaseViewModel<*>> = ArrayList()
 
     override fun initOnData(view: View, savedInstanceState: Bundle?) {
-        initBusinessViewModels()
+        initOnBusinessViewModels()
         super.initOnData(view, savedInstanceState)
+    }
+
+    override fun addBusinessViewModel(viewModel: IBaseViewModel<*>) {
+        LogManagerProvider.i(mTag, "addViewModel")
+        mBusinessViewModelList.add(viewModel)
+    }
+
+    override fun removeBusinessViewModel(viewModel: IBaseViewModel<*>) {
+        LogManagerProvider.i(mTag, "removeViewModel")
+        mBusinessViewModelList.remove(viewModel)
+    }
+
+    override fun getBusinessViewModelList(): List<IBaseViewModel<*>> {
+        return mBusinessViewModelList
     }
 
     /**
      * 初始化业务逻辑模型
      */
-    protected fun initBusinessViewModels() {
+    protected fun initOnBusinessViewModels() {
+        LogManagerProvider.i(mTag, "initOnBusinessViewModels")
         mBusinessViewModelList.apply {
-            addAll(initializeBusinessViewModels())
+            addAll(initBusinessViewModels())
             forEach {
                 initBusinessViewModelConfiguration(it)
             }
@@ -43,6 +61,7 @@ abstract class BaseViewModelDialogFragment : BaseDialogFragment() {
      * @param viewModel 业务模型
      */
     private fun initBusinessViewModelConfiguration(viewModel: IBaseViewModel<*>) {
+        LogManagerProvider.i(mTag, "initBusinessViewModelConfiguration")
         viewModel.apply {
             attachView(this@BaseViewModelDialogFragment)
             val lifecycleOwner = when (getLifecycleType()) {
@@ -64,6 +83,7 @@ abstract class BaseViewModelDialogFragment : BaseDialogFragment() {
         lifecycleOwner: LifecycleOwner,
         viewModel: IBaseViewModel<*>
     ) {
+        LogManagerProvider.i(mTag, "registerAgileResourceObserver")
         viewModel.apply {
             lifecycleOwner.lifecycle.addObserver(this)
             getPopHintState().observe(lifecycleOwner) {
@@ -89,5 +109,10 @@ abstract class BaseViewModelDialogFragment : BaseDialogFragment() {
         }
     }
 
-    protected abstract fun initializeBusinessViewModels(): List<IBaseViewModel<*>>
+    /**
+     * 供子类重写，初始化业务模型列表
+     *
+     * @return 返回业务模型列表
+     */
+    protected abstract fun initBusinessViewModels(): List<IBaseViewModel<*>>
 }

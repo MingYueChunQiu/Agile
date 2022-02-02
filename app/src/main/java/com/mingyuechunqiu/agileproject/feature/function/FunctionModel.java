@@ -14,17 +14,17 @@ package com.mingyuechunqiu.agileproject.feature.function;
 public class FunctionModel extends FunctionContract.Model {
 
     @Override
-    protected void initializeModelParts() {
-
-    }
-
-    @Override
-    protected void initializeRepositories() {
-
-    }
-
-    @Override
     protected void release() {
+
+    }
+
+    @Override
+    public void initModelParts() {
+
+    }
+
+    @Override
+    public void initRepositories() {
 
     }
 }

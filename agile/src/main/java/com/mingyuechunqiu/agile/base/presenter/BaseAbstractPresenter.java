@@ -50,7 +50,7 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
         mViewRef = new WeakReference<>(view);
         mModel = initModel();
         onAttachView(view, mModel);
-        initBusinessEngines();
+        initOnBusinessEngines();
     }
 
     @Override
@@ -206,11 +206,6 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
     }
 
     @Override
-    public void initBusinessEngines() {
-        initializeBusinessEngines();
-    }
-
-    @Override
     public void showLoadingStatusView(@Nullable String hint, boolean cancelable) {
         V v = getView();
         if (v instanceof IStatusViewOwner) {
@@ -241,6 +236,11 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
             return ((IStatusViewOwner) v).getStatusViewManager();
         }
         return null;
+    }
+
+    protected void initOnBusinessEngines() {
+        LogManagerProvider.i(TAG, "initOnBusinessEngines");
+        initBusinessEngines();
     }
 
     /**
@@ -393,11 +393,6 @@ public abstract class BaseAbstractPresenter<V extends IBaseView, M extends IBase
      * @return 执行请求返回true，否则返回false
      */
     protected abstract <I extends Request.IParamsInfo, T> boolean dispatchCallWithModel(@NonNull Call<I, T> call);
-
-    /**
-     * 供子类重写进行业务引擎初始化
-     */
-    protected abstract void initializeBusinessEngines();
 
     /**
      * 释放资源

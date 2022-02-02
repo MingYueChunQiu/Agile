@@ -46,6 +46,14 @@ interface IKeyEventReceiver {
      */
     fun clearAllOnKeyEventListeners()
 
+    /**
+     * 添加按返回键通过Activity返回上一个界面
+     *
+     * @param operation 返回操作
+     * @return 添加监听成功返回true, 否则返回false
+     */
+    fun addBackPressedObserver(operation: (() -> Unit)): Boolean
+
     fun getBackPressedObserver(): BackPressedObserver?
 
     /**

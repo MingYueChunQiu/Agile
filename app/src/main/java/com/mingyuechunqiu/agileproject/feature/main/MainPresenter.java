@@ -20,10 +20,6 @@ class MainPresenter extends MainContract.Presenter<MainContract.View, MainContra
     }
 
     @Override
-    protected void initializeBusinessEngines() {
-    }
-
-    @Override
     protected void release() {
 
     }
@@ -32,5 +28,10 @@ class MainPresenter extends MainContract.Presenter<MainContract.View, MainContra
     @Override
     public MainContract.Model initModel() {
         return new MainModel();
+    }
+
+    @Override
+    public void initBusinessEngines() {
+
     }
 }

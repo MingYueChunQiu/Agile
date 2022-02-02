@@ -2,6 +2,8 @@ package com.mingyuechunqiu.agile.ui.activity
 
 import android.os.Bundle
 import com.mingyuechunqiu.agile.base.viewmodel.IBaseViewModel
+import com.mingyuechunqiu.agile.base.viewmodel.IViewModelOwner
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider
 
 /**
  * <pre>
@@ -13,21 +15,37 @@ import com.mingyuechunqiu.agile.base.viewmodel.IBaseViewModel
  *     version: 1.0
  * </pre>
  */
-abstract class BaseViewModelActivity : BaseFullImmerseScreenActivity() {
+abstract class BaseViewModelActivity : BaseFullImmerseScreenActivity(), IViewModelOwner {
 
+    private val mTag = javaClass.simpleName
     private val mBusinessViewModelList: MutableList<IBaseViewModel<*>> = ArrayList()
 
     override fun initOnData(savedInstanceState: Bundle?) {
-        initBusinessViewModels()
+        initOnBusinessViewModels()
         super.initOnData(savedInstanceState)
+    }
+
+    override fun addBusinessViewModel(viewModel: IBaseViewModel<*>) {
+        LogManagerProvider.i(mTag, "addViewModel")
+        mBusinessViewModelList.add(viewModel)
+    }
+
+    override fun removeBusinessViewModel(viewModel: IBaseViewModel<*>) {
+        LogManagerProvider.i(mTag, "removeViewModel")
+        mBusinessViewModelList.remove(viewModel)
+    }
+
+    override fun getBusinessViewModelList(): List<IBaseViewModel<*>> {
+        return mBusinessViewModelList
     }
 
     /**
      * 初始化业务逻辑模型（允许子类重写做额外操作，但重写时，必须调用super.initBusinessViewModels()。否则可能影响框架其他功能正常使用）
      */
-    protected fun initBusinessViewModels() {
+    protected fun initOnBusinessViewModels() {
+        LogManagerProvider.i(mTag, "initOnBusinessViewModels")
         mBusinessViewModelList.apply {
-            addAll(initializeBusinessViewModels())
+            addAll(initBusinessViewModels())
             forEach {
                 initBusinessViewModelConfiguration(it)
             }
@@ -40,6 +58,7 @@ abstract class BaseViewModelActivity : BaseFullImmerseScreenActivity() {
      * @param viewModel 业务模型
      */
     private fun initBusinessViewModelConfiguration(viewModel: IBaseViewModel<*>) {
+        LogManagerProvider.i(mTag, "initBusinessViewModels")
         viewModel.apply {
             attachView(this@BaseViewModelActivity)
             lifecycle.addObserver(this)
@@ -53,6 +72,7 @@ abstract class BaseViewModelActivity : BaseFullImmerseScreenActivity() {
      * @param viewModel 业务模型
      */
     private fun registerAgileResourceObserver(viewModel: IBaseViewModel<*>) {
+        LogManagerProvider.i(mTag, "initBusinessViewModels")
         viewModel.apply {
             getPopHintState().observe(this@BaseViewModelActivity) {
                 when (it) {
@@ -77,5 +97,10 @@ abstract class BaseViewModelActivity : BaseFullImmerseScreenActivity() {
         }
     }
 
-    protected abstract fun initializeBusinessViewModels(): List<IBaseViewModel<*>>
+    /**
+     * 供子类重写，初始化业务模型列表
+     *
+     * @return 返回业务模型列表
+     */
+    protected abstract fun initBusinessViewModels(): List<IBaseViewModel<*>>
 }

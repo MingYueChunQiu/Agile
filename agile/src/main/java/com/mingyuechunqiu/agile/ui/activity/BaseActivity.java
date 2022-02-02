@@ -3,6 +3,7 @@ package com.mingyuechunqiu.agile.ui.activity;
 import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -98,6 +99,14 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
         release();
         mStatusViewManager = null;
         AgileExitAppManager.getInstance().removeActivity(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (getKeyEventDispatcherHelper().dispatchOnKeyEventListener(keyCode, event)) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @NonNull

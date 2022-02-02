@@ -27,7 +27,7 @@ import com.mingyuechunqiu.agile.frame.ui.IAgilePage
  */
 abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewModel<M> {
 
-    private val mTag  = javaClass.simpleName
+    private val mTag = javaClass.simpleName
     private var mModel: M? = null
     private var mBusinessEngineList: MutableList<IBaseBusinessEngine>? = null
 
@@ -59,7 +59,7 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
         LogManagerProvider.i(mTag, "attachView")
         mModel = initModel()
         onAttachView(page, mModel)
-        initializeBusinessEngines()
+        initOnBusinessEngines()
     }
 
     override fun detachView() {
@@ -109,11 +109,6 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
 
     override fun getModel(): M? {
         return mModel
-    }
-
-    override fun initBusinessEngines() {
-        LogManagerProvider.i(mTag, "initBusinessEngines")
-        initializeBusinessEngines()
     }
 
     /**
@@ -209,6 +204,11 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
         return ContextCompat.getColor(getAppContext(), resId)
     }
 
+    protected open fun initOnBusinessEngines() {
+        LogManagerProvider.i(mTag, "initOnBusinessEngines")
+        initBusinessEngines()
+    }
+
     /**
      * 显示信息并关闭加载对话框
      *
@@ -268,11 +268,6 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
     protected open fun onPause() {}
 
     protected open fun onStop() {}
-
-    /**
-     * 供子类重写进行业务引擎初始化
-     */
-    protected abstract fun initializeBusinessEngines()
 
     protected abstract fun release()
 }
