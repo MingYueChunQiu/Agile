@@ -77,10 +77,14 @@ class KeyEventReceiverHelper(private val page: IKeyEventReceiverPage) : IKeyEven
      * @param operation 返回操作
      * @return 添加监听成功返回true, 否则返回false
      */
-    override fun addBackPressedObserver(operation: () -> Unit): Boolean {
+    override fun addBackPressedObserver(isEnabled: Boolean, operation: () -> Unit): Boolean {
+        LogManagerProvider.d(
+            "KeyEventReceiverHelper",
+            "addBackPressedObserver: $isEnabled"
+        )
         return page.getOwnedActivity()?.onBackPressedDispatcher?.let {
             val observer = IKeyEventReceiver.BackPressedObserver(object :
-                OnBackPressedCallback(isForbidBackToActivity) {
+                OnBackPressedCallback(isEnabled) {
                 override fun handleOnBackPressed() {
                     if (checkPageStateIsActive()) {
                         LogManagerProvider.d(
@@ -125,7 +129,7 @@ class KeyEventReceiverHelper(private val page: IKeyEventReceiverPage) : IKeyEven
         helper: ITransferPageDataDispatcherHelper,
         interceptor: ITransferPageDataDispatcher.TransferPageDataInterceptor?
     ): Boolean {
-        return addBackPressedObserver {
+        return addBackPressedObserver(!isForbidBackToActivity) {
             if (isForbidBackToActivity) {
                 LogManagerProvider.d(
                     "KeyEventReceiverHelper",
@@ -148,7 +152,7 @@ class KeyEventReceiverHelper(private val page: IKeyEventReceiverPage) : IKeyEven
         helper: ITransferPageDataDispatcherHelper,
         interceptor: ITransferPageDataDispatcher.TransferPageDataInterceptor?
     ): Boolean {
-        return addBackPressedObserver {
+        return addBackPressedObserver(!isForbidBackToFragment) {
             if (isForbidBackToFragment) {
                 LogManagerProvider.d(
                     "KeyEventReceiverHelper",
@@ -171,7 +175,7 @@ class KeyEventReceiverHelper(private val page: IKeyEventReceiverPage) : IKeyEven
         helper: ITransferPageDataDispatcherHelper,
         interceptor: ITransferPageDataDispatcher.TransferPageDataInterceptor?
     ): Boolean {
-        return addBackPressedObserver {
+        return addBackPressedObserver(!isForbidBackToFragment) {
             if (isForbidBackToFragment) {
                 LogManagerProvider.d(
                     "KeyEventReceiverHelper",
