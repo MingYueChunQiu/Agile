@@ -1,9 +1,11 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -70,6 +72,7 @@ public class StatusFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
 //                setLightStatusBar();
+                Log.e("dfefjwieo", "onClick: " + (getActivity().getWindow().getDecorView().getLayoutParams() instanceof WindowManager.LayoutParams));
                 getWindowInsetsHelper().setLightStatusBars();
 //                getWindowInsetsHelper().setLightNavigationBars();
             }

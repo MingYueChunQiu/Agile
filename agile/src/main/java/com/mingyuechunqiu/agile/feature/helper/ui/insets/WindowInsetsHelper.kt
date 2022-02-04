@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.feature.helper.ui.insets
 
 import android.view.Window
-import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.InsetsType
 import androidx.core.view.WindowInsetsControllerCompat
@@ -20,7 +20,13 @@ import androidx.core.view.WindowInsetsControllerCompat
  */
 class WindowInsetsHelper(window: Window) {
 
-    private val mWindowInsetsController by lazy { ViewCompat.getWindowInsetsController(window.decorView) }
+    //ViewCompat.getWindowInsetsController(window.decorView)在androidx.core:core-ktx:1.8.0-alpha03上有bug，rootView的LayoutParams为null无效
+    private val mWindowInsetsController by lazy {
+        WindowCompat.getInsetsController(
+            window,
+            window.decorView
+        )
+    }
     private val mWindowInsets by lazy { WindowInsetsCompat.Builder().build() }
 
     /**
