@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.feature.helper.ui.insets
 
 import android.view.Window
-import androidx.core.view.WindowCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.InsetsType
 import androidx.core.view.WindowInsetsControllerCompat
@@ -20,7 +20,7 @@ import androidx.core.view.WindowInsetsControllerCompat
  */
 class WindowInsetsHelper(window: Window) {
 
-    private var mWindowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+    private val mWindowInsetsController by lazy { ViewCompat.getWindowInsetsController(window.decorView) }
     private val mWindowInsets by lazy { WindowInsetsCompat.Builder().build() }
 
     /**
@@ -31,7 +31,7 @@ class WindowInsetsHelper(window: Window) {
     }
 
     /**
-     * 设置状态栏为轻色调，避免白色字体被白色活动条遮挡
+     * 设置状态栏为深色调，显示为白色字体
      */
     fun setDarkStatusBars() {
         mWindowInsetsController?.isAppearanceLightStatusBars = false
