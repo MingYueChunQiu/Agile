@@ -10,7 +10,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mingyuechunqiu.agile.io.IOUtils;
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
+import com.mingyuechunqiu.agile.io.FileHelper;
+import com.mingyuechunqiu.agile.io.IOHelper;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -37,6 +39,7 @@ import java.util.Set;
  */
 final class GsonHelper implements IJsonHelper {
 
+    private static final String TAG = "GsonHelper";
     private volatile Gson mGson;
 
     @Nullable
@@ -61,7 +64,7 @@ final class GsonHelper implements IJsonHelper {
 
     @Override
     public void writeJsonStringToFile(@Nullable String json, @Nullable String filePath) {
-        if (TextUtils.isEmpty(json) || TextUtils.isEmpty(filePath) || !IOUtils.checkIsFileOrCreate(filePath)) {
+        if (TextUtils.isEmpty(json) || TextUtils.isEmpty(filePath) || !FileHelper.INSTANCE.checkIsFileOrCreate(filePath)) {
             return;
         }
         BufferedWriter writer = null;
@@ -71,7 +74,7 @@ final class GsonHelper implements IJsonHelper {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            IOUtils.closeStream(writer);
+            IOHelper.closeStreams(writer);
         }
     }
 
@@ -95,20 +98,21 @@ final class GsonHelper implements IJsonHelper {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            IOUtils.closeStream(reader);
+            IOHelper.closeStreams(reader);
         }
         return null;
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public <T> List<T> readListFromFile(@Nullable String fileName, @NonNull Class<T> c) {
-        if (TextUtils.isEmpty(fileName)) {
-            return null;
+    public <T> List<T> readListFromFile(@Nullable String filePath, @NonNull Class<T> c) {
+        List<T> list = new ArrayList<>();
+        if (TextUtils.isEmpty(filePath)) {
+            return list;
         }
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(fileName));
+            reader = new BufferedReader(new FileReader(filePath));
             StringBuilder sbJson = new StringBuilder();
             String text;
             while ((text = reader.readLine()) != null) {
@@ -116,30 +120,31 @@ final class GsonHelper implements IJsonHelper {
             }
             JsonArray jsonArray = new JsonParser().parse(sbJson.toString()).getAsJsonArray();
             if (jsonArray == null) {
-                return null;
+                return list;
             }
             return getListFromJson(jsonArray, c);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LogManagerProvider.e(TAG, "readListFromFile: " + e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            LogManagerProvider.e(TAG, "readListFromFile: " + e.getMessage());
         } finally {
-            IOUtils.closeStream(reader);
+            IOHelper.closeStreams(reader);
         }
-        return null;
+        return list;
     }
 
-    @Nullable
+    @NonNull
     @Override
     public <T> List<T> getListFromJson(@Nullable String json, @NonNull Class<T> c) {
-        if (TextUtils.isEmpty(json)) {
-            return null;
+        List<T> list = new ArrayList<>();
+        if (json == null || json.isEmpty()) {
+            return list;
         }
         JsonElement jsonElement = new JsonParser().parse(json);
         if (jsonElement instanceof JsonArray) {
             return getListFromJson(jsonElement.getAsJsonArray(), c);
         }
-        return null;
+        return list;
     }
 
     @NonNull
@@ -153,30 +158,28 @@ final class GsonHelper implements IJsonHelper {
         return list;
     }
 
-    @Nullable
+    @NonNull
     @Override
     public <T> Map<String, Object> getMapFromJson(@Nullable String json, @NonNull Class<T> c) {
-        if (TextUtils.isEmpty(json)) {
-            return null;
+        Map<String, Object> map = new HashMap<>();
+        if (json == null || json.isEmpty()) {
+            return map;
         }
         JsonElement element = new JsonParser().parse(json);
         JsonObject jsonObject;
         if (element.isJsonObject()) {
             jsonObject = element.getAsJsonObject();
         } else {
-            return null;
+            return map;
         }
         checkOrCreateGson();
-        Map<String, Object> map = new HashMap<>();
         Set<Map.Entry<String, JsonElement>> entries = jsonObject.entrySet();
         for (Map.Entry<String, JsonElement> entry : entries) {
             String key = entry.getKey();
             JsonElement jsonElement = entry.getValue();
             if (jsonElement instanceof JsonArray) {
                 List<T> list = getListFromJson(jsonElement.getAsJsonArray(), c);
-                if (list != null) {
-                    map.put(key, list);
-                }
+                map.put(key, list);
             } else if (jsonElement instanceof JsonObject) {
                 map.put(key, mGson.fromJson(jsonElement, c));
             }

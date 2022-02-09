@@ -62,13 +62,13 @@ public interface IJsonHelper {
     /**
      * 从文件中读取json字符串
      *
-     * @param fileName 文件路径
+     * @param filePath 文件路径
      * @param c        json对象类字节码类
      * @param <T>      json对象类型
      * @return 转换成功返回json对象，否则返回null
      */
-    @Nullable
-    <T> List<T> readListFromFile(@Nullable String fileName, @NonNull Class<T> c);
+    @NonNull
+    <T> List<T> readListFromFile(@Nullable String filePath, @NonNull Class<T> c);
 
     /**
      * 根据Json字符串获取列表
@@ -78,7 +78,7 @@ public interface IJsonHelper {
      * @param <T>  列表元素泛型类型
      * @return 如果转换成功返回List对象，否则返回null
      */
-    @Nullable
+    @NonNull
     <T> List<T> getListFromJson(@Nullable String json, @NonNull Class<T> c);
 
     /**
@@ -100,6 +100,6 @@ public interface IJsonHelper {
      * @param <T>  值的泛型类型
      * @return 返回map集合
      */
-    @Nullable
+    @NonNull
     <T> Map<String, Object> getMapFromJson(@Nullable String json, @NonNull Class<T> c);
 }

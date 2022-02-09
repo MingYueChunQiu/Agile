@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.frame.Agile;
-import com.mingyuechunqiu.agile.io.IOUtils;
+import com.mingyuechunqiu.agile.io.FileHelper;
 
 import java.io.File;
 
@@ -221,6 +221,6 @@ class LogUtils implements ILog {
         if (destPath == null || destPath.isEmpty()) {
             return;
         }
-        IOUtils.writeStringToLocalFile(title, msg, destPath);
+        FileHelper.INSTANCE.writeStringToLocalFile(title, msg, destPath);
     }
 }

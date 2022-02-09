@@ -23,7 +23,7 @@ import androidx.exifinterface.media.ExifInterface;
 
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.frame.Agile;
-import com.mingyuechunqiu.agile.io.IOUtils;
+import com.mingyuechunqiu.agile.io.IOHelper;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -51,6 +51,8 @@ import java.nio.ByteBuffer;
  */
 public final class BitmapUtils {
 
+    private static final String TAG = "BitmapUtils";
+
     private BitmapUtils() {
     }
 
@@ -72,9 +74,9 @@ public final class BitmapUtils {
             fos.close();
             return true;
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LogManagerProvider.e(TAG, "saveBitmapToFile: " + e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            LogManagerProvider.e(TAG, "saveBitmapToFile: " + e.getMessage());
         }
         return false;
     }
@@ -163,18 +165,18 @@ public final class BitmapUtils {
             listener.onDownloadBitmapSuccess(file);
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            LogManagerProvider.d("downloadBitmap", e.getMessage());
+            LogManagerProvider.d(TAG, "downloadBitmap: " + e.getMessage());
             listener.onDownloadBitmapFailed(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            LogManagerProvider.d("downloadBitmap", e.getMessage());
+            LogManagerProvider.d(TAG, "downloadBitmap: " + e.getMessage());
             listener.onDownloadBitmapFailed(e.getMessage());
         } finally {
             if (connection != null) {
                 connection.disconnect();
             }
-            IOUtils.closeStream(bis);
-            IOUtils.closeStream(bos);
+            IOHelper.closeStreams(bis);
+            IOHelper.closeStreams(bos);
         }
     }
 
@@ -243,10 +245,10 @@ public final class BitmapUtils {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.flush();
         } catch (IOException e) {
-            LogManagerProvider.e("saveBitmapToFile", e.getMessage());
+            LogManagerProvider.e(TAG, "saveBitmapToFile: " + e.getMessage());
             return false;
         } finally {
-            IOUtils.closeStream(fos);
+            IOHelper.closeStreams(fos);
         }
         return true;
     }
@@ -274,7 +276,7 @@ public final class BitmapUtils {
             parcelFileDescriptor.close();
             return bitmap;
         } catch (Exception e) {
-            LogManagerProvider.e("getBitmapFromUri", e.getMessage());
+            LogManagerProvider.e(TAG, "getBitmapFromUri: " + e.getMessage());
         }
         return null;
     }
@@ -287,14 +289,14 @@ public final class BitmapUtils {
      */
     public static int getBitmapRotatedAngle(@Nullable InputStream inputStream) {
         if (inputStream == null) {
-            LogManagerProvider.i("getAdjustedRotationAngle", "inputStream == null");
+            LogManagerProvider.i(TAG, "getAdjustedRotationAngle: inputStream == null");
             return 0;
         }
         ExifInterface exif = null;
         try {
             exif = new ExifInterface(inputStream);
         } catch (IOException e) {
-            LogManagerProvider.e("getAdjustedRotationAngle", e.getMessage());
+            LogManagerProvider.e(TAG, "getAdjustedRotationAngle: " + e.getMessage());
         }
         return getBitmapRotatedAngle(exif);
     }
@@ -307,14 +309,14 @@ public final class BitmapUtils {
      */
     public static int getBitmapRotatedAngle(@Nullable String filePath) {
         if (filePath == null) {
-            LogManagerProvider.i("getAdjustedRotationAngle", "filePath == null");
+            LogManagerProvider.i(TAG, "getAdjustedRotationAngle: filePath == null");
             return 0;
         }
         ExifInterface exif = null;
         try {
             exif = new ExifInterface(filePath);
         } catch (IOException e) {
-            LogManagerProvider.e("getAdjustedRotationAngle", e.getMessage());
+            LogManagerProvider.e(TAG, "getAdjustedRotationAngle: " + e.getMessage());
         }
         return getBitmapRotatedAngle(exif);
     }
@@ -415,15 +417,40 @@ public final class BitmapUtils {
             //用默认的编码格式进行编码
             result = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
         } catch (Exception e) {
-            LogManagerProvider.e("imageToBase64", e.getMessage());
+            LogManagerProvider.e(TAG, "imageToBase64: " + e.getMessage());
         } finally {
-            IOUtils.closeStream(fis, baos);
+            IOHelper.closeStreams(fis, baos);
         }
         return result;
     }
 
     /**
-     * 将Base64编码转换为图片
+     * 将图片转换成Base64编码的字符串
+     *
+     * @param bitmap 要转换的图片
+     */
+    @Nullable
+    public static String imageToBase64(@Nullable Bitmap bitmap) {
+        if (bitmap == null) {
+            return null;
+        }
+        ByteArrayOutputStream baos = null;
+        String result = null;
+        try {
+            baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            //用默认的编码格式进行编码
+            result = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+        } catch (Exception e) {
+            LogManagerProvider.e(TAG, "imageToBase64: " + e.getMessage());
+        } finally {
+            IOHelper.closeStreams(baos);
+        }
+        return result;
+    }
+
+    /**
+     * 将Base64编码转换为图片文件
      *
      * @param base64Str 图片Base64字符串
      * @param filePath  保存路径
@@ -448,19 +475,19 @@ public final class BitmapUtils {
             fos.close();
             return true;
         } catch (FileNotFoundException e) {
-            LogManagerProvider.e("base64ToFile", e.getMessage());
+            LogManagerProvider.e(TAG, "base64ToFile: " + e.getMessage());
             return false;
         } catch (IOException e) {
-            LogManagerProvider.e("base64ToFile", e.getMessage());
+            LogManagerProvider.e(TAG, "base64ToFile: " + e.getMessage());
             return false;
         } finally {
-            IOUtils.closeStream(fos);
+            IOHelper.closeStreams(fos);
         }
     }
 
     private static int getBitmapRotatedAngle(@Nullable ExifInterface exif) {
         if (exif == null) {
-            LogManagerProvider.i("getBitmapRotatedAngle", "ExifInterface == null");
+            LogManagerProvider.i(TAG, "getBitmapRotatedAngle: ExifInterface == null");
             return 0;
         }
         // 读取图片中相机方向信息

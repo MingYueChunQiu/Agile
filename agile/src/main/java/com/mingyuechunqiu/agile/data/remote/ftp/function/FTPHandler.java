@@ -1,5 +1,8 @@
 package com.mingyuechunqiu.agile.data.remote.ftp.function;
 
+import static com.mingyuechunqiu.agile.data.remote.ftp.constants.FTPConstants.PATH_CURRENT_DIRECTORY;
+import static com.mingyuechunqiu.agile.data.remote.ftp.constants.FTPConstants.PATH_PREVIOUS_DIRECTORY;
+
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -11,7 +14,8 @@ import com.mingyuechunqiu.agile.data.remote.ftp.exception.FTPException;
 import com.mingyuechunqiu.agile.data.remote.ftp.framework.FTPConnectListener;
 import com.mingyuechunqiu.agile.data.remote.ftp.framework.FTPResponseCallback;
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
-import com.mingyuechunqiu.agile.io.IOUtils;
+import com.mingyuechunqiu.agile.io.FileHelper;
+import com.mingyuechunqiu.agile.io.IOHelper;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -28,9 +32,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.mingyuechunqiu.agile.data.remote.ftp.constants.FTPConstants.PATH_CURRENT_DIRECTORY;
-import static com.mingyuechunqiu.agile.data.remote.ftp.constants.FTPConstants.PATH_PREVIOUS_DIRECTORY;
 
 /**
  * <pre>
@@ -209,7 +210,7 @@ class FTPHandler implements IFTPHandler {
         } catch (IOException e) {
             LogManagerProvider.e("FTPHandler：downloadWithSingleFile", "下载单个文件失败 " + e.getMessage());
         } finally {
-            IOUtils.closeStream(os);
+            IOHelper.closeStreams(os);
         }
         return false;
     }
@@ -286,7 +287,7 @@ class FTPHandler implements IFTPHandler {
         } catch (IOException e) {
             LogManagerProvider.e("FTPHandler：uploadWithSingleFile", "上传单个文件失败 " + e.getMessage());
         } finally {
-            IOUtils.closeStream(is);
+            IOHelper.closeStreams(is);
         }
         return false;
     }
@@ -308,7 +309,7 @@ class FTPHandler implements IFTPHandler {
         }
         File localFile = new File(savePath + File.separator + downloadFileName);
         if (localFile.exists()) {
-            if (handleFileResultIsError(IOUtils.deleteDirectory(localFile), "删除已有文件失败")) {
+            if (handleFileResultIsError(FileHelper.INSTANCE.deleteDirectory(localFile), "删除已有文件失败")) {
                 return null;
             }
         }

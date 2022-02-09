@@ -10,7 +10,7 @@ package com.mingyuechunqiu.agile.io;
  *     version: 1.0
  * </pre>
  */
-public interface Constants {
+public interface AgileFileConstants {
 
     /**
      * 文件后缀格式常量

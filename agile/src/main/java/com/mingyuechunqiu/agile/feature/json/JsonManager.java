@@ -60,13 +60,13 @@ final class JsonManager implements IJsonManager {
         return mHelper.readJsonFromFile(filePath, c);
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public <T> List<T> readListFromFile(@Nullable String fileName, @NonNull Class<T> c) {
-        return mHelper.readListFromFile(fileName, c);
+    public <T> List<T> readListFromFile(@Nullable String filePath, @NonNull Class<T> c) {
+        return mHelper.readListFromFile(filePath, c);
     }
 
-    @Nullable
+    @NonNull
     @Override
     public <T> List<T> getListFromJson(@Nullable String json, @NonNull Class<T> c) {
         return mHelper.getListFromJson(json, c);
@@ -78,7 +78,7 @@ final class JsonManager implements IJsonManager {
         return mHelper.getListFromJson(jsonArray, c);
     }
 
-    @Nullable
+    @NonNull
     @Override
     public <T> Map<String, Object> getMapFromJson(@Nullable String json, @NonNull Class<T> c) {
         return mHelper.getMapFromJson(json, c);
