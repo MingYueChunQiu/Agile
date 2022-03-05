@@ -4,9 +4,8 @@ import android.view.KeyEvent
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.mingyuechunqiu.agile.feature.helper.ui.key.receiver.IKeyEventReceiver
 import com.mingyuechunqiu.agile.data.local.UUIDHelper
-import java.util.*
+import com.mingyuechunqiu.agile.feature.helper.ui.key.receiver.IKeyEventReceiver
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -34,6 +33,7 @@ class KeyEventDispatcherHelper(page: IKeyEventDispatcherPage) : IKeyEventDispatc
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         if (event == Lifecycle.Event.ON_DESTROY) {
             mKeyEventListenerMap.clear()
+
         }
     }
 
@@ -106,7 +106,7 @@ class KeyEventDispatcherHelper(page: IKeyEventDispatcherPage) : IKeyEventDispatc
      *
      * @param keyCode 键值
      * @param event 按键事件
-     * @return 如果删除成功返回true，否则返回false
+     * @return 如果成功处理返回true，否则返回false
      */
     override fun dispatchOnKeyEventListener(keyCode: Int, event: KeyEvent?): Boolean {
         return event?.let {

@@ -1,9 +1,12 @@
 package com.mingyuechunqiu.agile.util;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * <pre>
@@ -36,6 +39,21 @@ public final class ThreadPoolUtils {
         }
         checkOrCreateCacheThreadPool();
         sExecutorService.submit(runnable);
+    }
+
+    /**
+     * 提交一个可控任务
+     *
+     * @param task 任务
+     * @param <T>  任务参数类型
+     * @return 返回任务对象
+     */
+    public static <T> Future<T> submitTask(@NonNull Callable<T> task) {
+        if (sExecutorService != null && sExecutorService.isShutdown()) {
+            sExecutorService = null;
+        }
+        checkOrCreateCacheThreadPool();
+        return sExecutorService.submit(task);
     }
 
     /**

@@ -5,8 +5,12 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.20729166666666668" />
         <entry key="agile/src/main/res/layout/agile_layout_bnb_tab_item.xml" value="0.18020833333333333" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1625" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.10507246376811594" />
         <entry key="app/src/main/res/layout/fragment_status.xml" value="0.375" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1625" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1625" />
       </map>
     </option>
   </component>

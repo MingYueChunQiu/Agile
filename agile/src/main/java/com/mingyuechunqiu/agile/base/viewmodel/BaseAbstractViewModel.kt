@@ -10,6 +10,7 @@ import androidx.lifecycle.*
 import com.mingyuechunqiu.agile.base.businessengine.IBaseBusinessEngine
 import com.mingyuechunqiu.agile.base.model.IBaseModel
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo
+import com.mingyuechunqiu.agile.feature.helper.AppHelper
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper.ToastConfig
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider
 import com.mingyuechunqiu.agile.frame.Agile
@@ -159,31 +160,70 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
     }
 
     override fun showToast(@StringRes msgResId: Int) {
-        _popHintState.value = IBaseViewModel.PopHintState.MsgResIdToast(msgResId)
+        if (AppHelper.checkIsInMainThread()) {
+            _popHintState.value = IBaseViewModel.PopHintState.MsgResIdToast(msgResId)
+        } else {
+            _popHintState.postValue(IBaseViewModel.PopHintState.MsgResIdToast(msgResId))
+        }
     }
 
     override fun showToast(msg: String?) {
-        _popHintState.value = IBaseViewModel.PopHintState.MsgToast(msg)
+        if (AppHelper.checkIsInMainThread()) {
+            _popHintState.value = IBaseViewModel.PopHintState.MsgToast(msg)
+        } else {
+            _popHintState.postValue(IBaseViewModel.PopHintState.MsgToast(msg))
+        }
     }
 
     override fun showToast(info: ErrorInfo) {
-        _popHintState.value = IBaseViewModel.PopHintState.ErrorInfoToast(info)
+        if (AppHelper.checkIsInMainThread()) {
+            _popHintState.value = IBaseViewModel.PopHintState.ErrorInfoToast(info)
+        } else {
+            _popHintState.postValue(IBaseViewModel.PopHintState.ErrorInfoToast(info))
+        }
     }
 
     override fun showToast(config: ToastConfig) {
-        _popHintState.value = IBaseViewModel.PopHintState.ConfigToast(config)
+        if (AppHelper.checkIsInMainThread()) {
+            _popHintState.value = IBaseViewModel.PopHintState.ConfigToast(config)
+        } else {
+            _popHintState.postValue(IBaseViewModel.PopHintState.ConfigToast(config))
+        }
     }
 
     override fun showLoadingStatusView(@LayoutRes containerId: Int) {
-        _statusViewState.value = IBaseViewModel.StatusViewState.ShowContainerIdLoading(containerId)
+        if (AppHelper.checkIsInMainThread()) {
+            _statusViewState.value =
+                IBaseViewModel.StatusViewState.ShowContainerIdLoading(containerId)
+        } else {
+            _statusViewState.postValue(
+                IBaseViewModel.StatusViewState.ShowContainerIdLoading(
+                    containerId
+                )
+            )
+        }
     }
 
     override fun showLoadingStatusView(hint: String?, cancelable: Boolean) {
-        _statusViewState.value = IBaseViewModel.StatusViewState.ShowHintLoading(hint, cancelable)
+        if (AppHelper.checkIsInMainThread()) {
+            _statusViewState.value =
+                IBaseViewModel.StatusViewState.ShowHintLoading(hint, cancelable)
+        } else {
+            _statusViewState.postValue(
+                IBaseViewModel.StatusViewState.ShowHintLoading(
+                    hint,
+                    cancelable
+                )
+            )
+        }
     }
 
     override fun dismissStatusView() {
-        _statusViewState.value = IBaseViewModel.StatusViewState.Dismiss
+        if (AppHelper.checkIsInMainThread()) {
+            _statusViewState.value = IBaseViewModel.StatusViewState.Dismiss
+        } else {
+            _statusViewState.postValue(IBaseViewModel.StatusViewState.Dismiss)
+        }
     }
 
     fun getResources(): Resources {

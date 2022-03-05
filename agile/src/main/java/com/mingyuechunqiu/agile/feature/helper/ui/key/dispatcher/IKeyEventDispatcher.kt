@@ -58,7 +58,7 @@ interface IKeyEventDispatcher {
      *
      * @param keyCode 键值
      * @param event 按键事件
-     * @return 如果删除成功返回true，否则返回false
+     * @return 如果成功处理返回true，否则返回false
      */
     fun dispatchOnKeyEventListener(keyCode: Int, event: KeyEvent?): Boolean
 }

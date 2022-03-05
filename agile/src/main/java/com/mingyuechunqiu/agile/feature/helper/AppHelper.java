@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -116,5 +117,14 @@ public final class AppHelper {
      */
     public static boolean checkIsNeedUpdateApp(int versionCode) {
         return versionCode > getAppVersionCode();
+    }
+
+    /**
+     * 检查当前是否在主线程
+     *
+     * @return 如果在主线程返回true，否则返回false
+     */
+    public static boolean checkIsInMainThread() {
+        return Looper.getMainLooper() == Looper.myLooper();
     }
 }
