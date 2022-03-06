@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agileproject.feature.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -73,8 +74,9 @@ public class StatusFragment extends BaseFragment {
             public void onClick(View view) {
 //                setLightStatusBar();
                 Log.e("dfefjwieo", "onClick: " + (getActivity().getWindow().getDecorView().getLayoutParams() instanceof WindowManager.LayoutParams));
-                getWindowInsetsHelper().setLightStatusBars();
+//                getWindowInsetsHelper().setLightStatusBars();
 //                getWindowInsetsHelper().setLightNavigationBars();
+                startActivity(new Intent(getActivity(), TestViewModelActivity.class));
             }
         });
     }

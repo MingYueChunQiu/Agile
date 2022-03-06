@@ -74,22 +74,28 @@ abstract class BaseViewModelDialog : BaseDialog, IViewModelOwner {
         viewModel.apply {
             getPopHintState().observe(getDialogLifecycleOwner()) {
                 when (it) {
-                    is IBaseViewModel.PopHintState.MsgResIdToast -> showToast(it.msgResId)
-                    is IBaseViewModel.PopHintState.MsgToast -> showToast(it.msg)
-                    is IBaseViewModel.PopHintState.ErrorInfoToast -> showToast(it.info)
-                    is IBaseViewModel.PopHintState.ConfigToast -> showToast(it.config)
+                    is IBaseViewModel.PopHintState.MsgResIdToast -> this@BaseViewModelDialog.showToast(
+                        it.msgResId
+                    )
+                    is IBaseViewModel.PopHintState.MsgToast -> this@BaseViewModelDialog.showToast(it.msg)
+                    is IBaseViewModel.PopHintState.ErrorInfoToast -> this@BaseViewModelDialog.showToast(
+                        it.info
+                    )
+                    is IBaseViewModel.PopHintState.ConfigToast -> this@BaseViewModelDialog.showToast(
+                        it.config
+                    )
                 }
             }
             getStatusViewState().observe(getDialogLifecycleOwner()) {
                 when (it) {
-                    is IBaseViewModel.StatusViewState.ShowContainerIdLoading -> showLoadingStatusView(
+                    is IBaseViewModel.StatusViewState.ShowContainerIdLoading -> this@BaseViewModelDialog.showLoadingStatusView(
                         it.containerId
                     )
-                    is IBaseViewModel.StatusViewState.ShowHintLoading -> showLoadingStatusView(
+                    is IBaseViewModel.StatusViewState.ShowHintLoading -> this@BaseViewModelDialog.showLoadingStatusView(
                         it.hint,
                         it.cancelable
                     )
-                    is IBaseViewModel.StatusViewState.Dismiss -> dismissStatusView()
+                    is IBaseViewModel.StatusViewState.Dismiss -> this@BaseViewModelDialog.dismissStatusView()
                 }
             }
         }

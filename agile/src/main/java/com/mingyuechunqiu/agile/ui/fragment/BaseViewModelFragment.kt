@@ -88,22 +88,30 @@ abstract class BaseViewModelFragment : BaseFragment(), IViewModelOwner {
             lifecycleOwner.lifecycle.addObserver(this)
             getPopHintState().observe(lifecycleOwner) {
                 when (it) {
-                    is IBaseViewModel.PopHintState.MsgResIdToast -> showToast(it.msgResId)
-                    is IBaseViewModel.PopHintState.MsgToast -> showToast(it.msg)
-                    is IBaseViewModel.PopHintState.ErrorInfoToast -> showToast(it.info)
-                    is IBaseViewModel.PopHintState.ConfigToast -> showToast(it.config)
+                    is IBaseViewModel.PopHintState.MsgResIdToast -> this@BaseViewModelFragment.showToast(
+                        it.msgResId
+                    )
+                    is IBaseViewModel.PopHintState.MsgToast -> this@BaseViewModelFragment.showToast(
+                        it.msg
+                    )
+                    is IBaseViewModel.PopHintState.ErrorInfoToast -> this@BaseViewModelFragment.showToast(
+                        it.info
+                    )
+                    is IBaseViewModel.PopHintState.ConfigToast -> this@BaseViewModelFragment.showToast(
+                        it.config
+                    )
                 }
             }
             getStatusViewState().observe(lifecycleOwner) {
                 when (it) {
-                    is IBaseViewModel.StatusViewState.ShowContainerIdLoading -> showLoadingStatusView(
+                    is IBaseViewModel.StatusViewState.ShowContainerIdLoading -> this@BaseViewModelFragment.showLoadingStatusView(
                         it.containerId
                     )
-                    is IBaseViewModel.StatusViewState.ShowHintLoading -> showLoadingStatusView(
+                    is IBaseViewModel.StatusViewState.ShowHintLoading -> this@BaseViewModelFragment.showLoadingStatusView(
                         it.hint,
                         it.cancelable
                     )
-                    is IBaseViewModel.StatusViewState.Dismiss -> dismissStatusView()
+                    is IBaseViewModel.StatusViewState.Dismiss -> this@BaseViewModelFragment.dismissStatusView()
                 }
             }
         }

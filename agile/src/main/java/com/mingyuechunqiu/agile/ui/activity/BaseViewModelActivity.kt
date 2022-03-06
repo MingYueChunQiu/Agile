@@ -76,22 +76,30 @@ abstract class BaseViewModelActivity : BaseFullImmerseScreenActivity(), IViewMod
         viewModel.apply {
             getPopHintState().observe(this@BaseViewModelActivity) {
                 when (it) {
-                    is IBaseViewModel.PopHintState.MsgResIdToast -> showToast(it.msgResId)
-                    is IBaseViewModel.PopHintState.MsgToast -> showToast(it.msg)
-                    is IBaseViewModel.PopHintState.ErrorInfoToast -> showToast(it.info)
-                    is IBaseViewModel.PopHintState.ConfigToast -> showToast(it.config)
+                    is IBaseViewModel.PopHintState.MsgResIdToast -> this@BaseViewModelActivity.showToast(
+                        it.msgResId
+                    )
+                    is IBaseViewModel.PopHintState.MsgToast -> this@BaseViewModelActivity.showToast(
+                        it.msg
+                    )
+                    is IBaseViewModel.PopHintState.ErrorInfoToast -> this@BaseViewModelActivity.showToast(
+                        it.info
+                    )
+                    is IBaseViewModel.PopHintState.ConfigToast -> this@BaseViewModelActivity.showToast(
+                        it.config
+                    )
                 }
             }
             getStatusViewState().observe(this@BaseViewModelActivity) {
                 when (it) {
-                    is IBaseViewModel.StatusViewState.ShowContainerIdLoading -> showLoadingStatusView(
+                    is IBaseViewModel.StatusViewState.ShowContainerIdLoading -> this@BaseViewModelActivity.showLoadingStatusView(
                         it.containerId
                     )
-                    is IBaseViewModel.StatusViewState.ShowHintLoading -> showLoadingStatusView(
+                    is IBaseViewModel.StatusViewState.ShowHintLoading -> this@BaseViewModelActivity.showLoadingStatusView(
                         it.hint,
                         it.cancelable
                     )
-                    is IBaseViewModel.StatusViewState.Dismiss -> dismissStatusView()
+                    is IBaseViewModel.StatusViewState.Dismiss -> this@BaseViewModelActivity.dismissStatusView()
                 }
             }
         }
