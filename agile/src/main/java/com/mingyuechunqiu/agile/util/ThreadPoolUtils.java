@@ -29,16 +29,18 @@ public final class ThreadPoolUtils {
      * 执行一个任务
      *
      * @param runnable 任务执行体
+     * @return 返回任务对象
      */
-    public static void executeAction(@Nullable Runnable runnable) {
+    @Nullable
+    public static Future<?> executeAction(@Nullable Runnable runnable) {
         if (runnable == null) {
-            return;
+            return null;
         }
         if (sExecutorService != null && sExecutorService.isShutdown()) {
             sExecutorService = null;
         }
         checkOrCreateCacheThreadPool();
-        sExecutorService.submit(runnable);
+        return sExecutorService.submit(runnable);
     }
 
     /**
