@@ -37,30 +37,6 @@ import com.mingyuechunqiu.agileproject.R;
 public class ToolbarActivity extends BaseToolbarPresenterActivity<IBaseDataView, BaseAbstractDataPresenter<IBaseDataView, ?>> {
 
     @Override
-    protected int getInflateToolbarResId() {
-        return R.id.tb_toolbar_test;
-    }
-
-    @Override
-    protected ToolbarHelper.ToolbarConfigure initToolbarConfigure() {
-        return new ToolbarHelper.ToolbarConfigure.Builder()
-                .setImmerse(true)
-                .setNavigationIconResId(R.drawable.agile_arrow_back_press)
-                .setTitle("分为非")
-//                .setEnableDisplayHomeAsUp(true)
-                .setHideDisplayTitle(false)
-                .setOnNavigationIconClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(ToolbarActivity.this, MainActivity.class));
-                    }
-                })
-                .setLogoResId(R.drawable.agile_arrow_back_pressed)
-                .build();
-
-    }
-
-    @Override
     protected void release() {
 
     }
@@ -141,5 +117,36 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity<IBaseDataView,
     @Override
     public BaseAbstractDataPresenter<IBaseDataView, ?> initPresenter() {
         return null;
+    }
+
+    @NonNull
+    @Override
+    protected ToolbarHelper.IToolbarInflateCreator generateToolbarInflateCreator() {
+        return new ToolbarHelper.IToolbarInflateCreator.ToolbarInflateCreatorAdapter() {
+
+            @Override
+            public int getInflateToolbarResId() {
+                return R.id.tb_toolbar_test;
+            }
+
+            @NonNull
+            @Override
+            public ToolbarHelper.ToolbarConfig initToolbarConfig() {
+                return new ToolbarHelper.ToolbarConfig.Builder()
+                        .setImmerse(true)
+                        .setNavigationIconResId(R.drawable.agile_arrow_back_press)
+                        .setTitle("分为非")
+//                .setEnableDisplayHomeAsUp(true)
+                        .setHideDisplayTitle(false)
+                        .setOnNavigationIconClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(ToolbarActivity.this, MainActivity.class));
+                            }
+                        })
+                        .setLogoResId(R.drawable.agile_arrow_back_pressed)
+                        .build();
+            }
+        };
     }
 }

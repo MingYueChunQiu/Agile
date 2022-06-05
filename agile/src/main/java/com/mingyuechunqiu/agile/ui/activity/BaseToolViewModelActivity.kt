@@ -2,29 +2,31 @@ package com.mingyuechunqiu.agile.ui.activity
 
 import android.os.Bundle
 import android.view.Menu
-import androidx.annotation.IdRes
 import androidx.appcompat.widget.Toolbar
 import com.mingyuechunqiu.agile.constants.AgileCommonConstants
 import com.mingyuechunqiu.agile.feature.helper.ui.widget.ToolbarHelper
-import com.mingyuechunqiu.agile.feature.helper.ui.widget.ToolbarHelper.ToolbarConfigure
+import com.mingyuechunqiu.agile.feature.helper.ui.widget.ToolbarHelper.ToolbarConfig
 
 abstract class BaseToolViewModelActivity : BaseDataViewModelActivity() {
 
     private var tbBar: Toolbar? = null
-    private var mToolbarConfigure: ToolbarConfigure? = null
+    private var mToolbarInflateCreator: ToolbarHelper.IToolbarInflateCreator? = null
+    private var mToolbarConfig: ToolbarConfig? = null
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         initOnInflateToolbar()
         setSupportActionBar(tbBar)
-        mToolbarConfigure = initToolbarConfigure()
-        ToolbarHelper.initToolbar(tbBar, supportActionBar, mToolbarConfigure)
+        mToolbarInflateCreator?.let {
+            mToolbarConfig = it.initToolbarConfig()
+            ToolbarHelper.initToolbar(tbBar, supportActionBar, mToolbarConfig)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if (mToolbarConfigure != null && mToolbarConfigure!!.menuResId != AgileCommonConstants.NO_RESOURCE_ID) {
-            menuInflater.inflate(mToolbarConfigure!!.menuResId, menu)
-            ToolbarHelper.applyMenuColorFilter(menu, mToolbarConfigure!!.menuColorFilterColor)
+        if (mToolbarConfig != null && mToolbarConfig!!.menuResId != AgileCommonConstants.NO_RESOURCE_ID) {
+            menuInflater.inflate(mToolbarConfig!!.menuResId, menu)
+            ToolbarHelper.applyMenuColorFilter(menu, mToolbarConfig!!.menuColorFilterColor)
         }
         return super.onCreateOptionsMenu(menu)
     }
@@ -33,13 +35,16 @@ abstract class BaseToolViewModelActivity : BaseDataViewModelActivity() {
      * 初始化Toolbar控件
      */
     private fun initOnInflateToolbar() {
-        val resId = getInflateToolbarResId()
+        mToolbarInflateCreator = generateToolbarInflateCreator()
+        val creator = mToolbarInflateCreator ?: return
+        val resId = creator.inflateToolbarResId
         if (resId != 0) {
             tbBar = findViewById(resId)
         }
         if (tbBar == null) {
-            tbBar = getInflateToolbar()
+            tbBar = creator.inflateToolbar
         }
+        mToolbarConfig = creator.initToolbarConfig()
         initInflateToolbar(tbBar)
     }
 
@@ -60,26 +65,9 @@ abstract class BaseToolViewModelActivity : BaseDataViewModelActivity() {
     }
 
     /**
-     * 获取填充的Toolbar（在getInflateToolbarResId返回为0时，会被调用）
+     * 获取Toolbar填充创建者
      *
-     * @return 返回Toolbar控件
+     * @return 返回创建者对象
      */
-    protected open fun getInflateToolbar(): Toolbar? {
-        return null
-    }
-
-    /**
-     * 获取填充的Toolbar控件的资源ID
-     *
-     * @return 返回资源ID
-     */
-    @IdRes
-    protected abstract fun getInflateToolbarResId(): Int
-
-    /**
-     * 供子类覆写的创建ToolbarBean方法，并放回创建好的ToolbarBean
-     *
-     * @return 返回创建好的ToolbarBean
-     */
-    protected abstract fun initToolbarConfigure(): ToolbarConfigure?
+    protected abstract fun generateToolbarInflateCreator(): ToolbarHelper.IToolbarInflateCreator
 }

@@ -335,7 +335,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
     }
 
     /**
-     * 获取填充布局视图创建者
+     * 生成填充布局视图创建者（供子类实现）
      *
      * @return 返回创建者对象，非空
      */

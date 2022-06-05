@@ -229,16 +229,24 @@ public class WebViewActivity extends BaseToolbarPresenterActivity<IBaseDataView,
         toolbar.setBackgroundColor(toolbarBgColor);
     }
 
+    @NonNull
     @Override
-    protected int getInflateToolbarResId() {
-        return R.id.tb_navigation_bar;
-    }
+    protected ToolbarHelper.IToolbarInflateCreator generateToolbarInflateCreator() {
+        return new ToolbarHelper.IToolbarInflateCreator.ToolbarInflateCreatorAdapter() {
 
-    @Override
-    protected ToolbarHelper.ToolbarConfigure initToolbarConfigure() {
-        return new ToolbarHelper.ToolbarConfigure.Builder()
-                .setImmerse(true)
-                .build();
+            @Override
+            public int getInflateToolbarResId() {
+                return R.id.tb_navigation_bar;
+            }
+
+            @NonNull
+            @Override
+            public ToolbarHelper.ToolbarConfig initToolbarConfig() {
+                return new ToolbarHelper.ToolbarConfig.Builder()
+                        .setImmerse(true)
+                        .build();
+            }
+        };
     }
 
     @Override

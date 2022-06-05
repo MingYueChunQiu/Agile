@@ -12,6 +12,7 @@ import android.view.View;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,7 +43,7 @@ public final class ToolbarHelper {
      * @param actionBar 活动条
      * @param configure 工具条信息对象
      */
-    public static void initToolbar(@Nullable Toolbar toolbar, @Nullable ActionBar actionBar, @Nullable ToolbarConfigure configure) {
+    public static void initToolbar(@Nullable Toolbar toolbar, @Nullable ActionBar actionBar, @Nullable ToolbarConfig configure) {
         if (toolbar == null || configure == null) {
             return;
         }
@@ -137,15 +138,15 @@ public final class ToolbarHelper {
         }
     }
 
-    public static class ToolbarConfigure {
+    public static final class ToolbarConfig {
 
         private final Builder mBuilder;
 
-        public ToolbarConfigure() {
+        public ToolbarConfig() {
             this(new Builder());
         }
 
-        public ToolbarConfigure(@NonNull Builder builder) {
+        public ToolbarConfig(@NonNull Builder builder) {
             mBuilder = builder;
         }
 
@@ -378,8 +379,8 @@ public final class ToolbarHelper {
             }
 
             @NonNull
-            public ToolbarConfigure build() {
-                return new ToolbarConfigure(this);
+            public ToolbarConfig build() {
+                return new ToolbarConfig(this);
             }
 
             @DrawableRes
@@ -566,6 +567,54 @@ public final class ToolbarHelper {
             public Builder setOverflowIcon(@Nullable Drawable overflowIcon) {
                 this.overflowIcon = overflowIcon;
                 return this;
+            }
+        }
+    }
+
+    /**
+     * Toolbar填充创建者接口
+     */
+    public interface IToolbarInflateCreator {
+
+        /**
+         * 获取填充Toolbar资源ID
+         *
+         * @return 返回Toolbar资源ID
+         */
+        @IdRes
+        int getInflateToolbarResId();
+
+        /**
+         * 获取填充Toolbar（当getInflateToolbarResId返回为0时，会被调用），可为null
+         *
+         * @return 返回Toolbar
+         */
+        @Nullable
+        Toolbar getInflateToolbar();
+
+        /**
+         * 供子类覆写的创建ToolbarBean方法，并放回创建好的ToolbarBean
+         *
+         * @return 返回创建好的ToolbarBean
+         */
+        @NonNull
+        ToolbarConfig initToolbarConfig();
+
+        /**
+         * 布局填充视图创建者适配器
+         * 实现IInflateLayoutViewCreator
+         */
+        abstract class ToolbarInflateCreatorAdapter implements IToolbarInflateCreator {
+
+            @Override
+            public int getInflateToolbarResId() {
+                return 0;
+            }
+
+            @Nullable
+            @Override
+            public Toolbar getInflateToolbar() {
+                return null;
             }
         }
     }

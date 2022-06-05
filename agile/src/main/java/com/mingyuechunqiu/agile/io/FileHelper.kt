@@ -1,9 +1,11 @@
 package com.mingyuechunqiu.agile.io
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import androidx.core.content.FileProvider
+import com.mingyuechunqiu.agile.constants.AgileFileConstants.FileSuffix.CommonSuffix
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider
 import com.mingyuechunqiu.agile.util.ThreadPoolUtils
 import java.io.*
@@ -124,6 +126,174 @@ object FileHelper {
                 LogManagerProvider.e(TAG, "writeStringToLocalFile: ${e.message}")
             }
         }
+    }
+
+    /**
+     * 把文本安全写入到文件中（先将源文件重命名为备份文件，再将新文件写入到目标文件，写入成功，删除备份文件，否则将备份文件还原）
+     *
+     * @param targetFile 目标存储文件
+     * @param originalFile 源文件
+     * @param contents 要写入的文本内容
+     */
+    fun saveStringToFileSafely(
+        targetFile: File,
+        originalFile: File?,
+        contents: List<String>
+    ): Boolean {
+        val originalFilePath = originalFile?.absolutePath
+        var backupFile: File? = null
+        originalFile?.let {
+            backupFile =
+                File(originalFilePath + CommonSuffix.BACK_UP)
+            backupFile?.let { f ->
+                if (it.exists() && !it.renameTo(f)) {
+                    LogManagerProvider.e(
+                        TAG,
+                        "saveFileSafely: rename to backup file error"
+                    )
+                    return false
+                }
+            }
+        }
+        try {
+            BufferedWriter(OutputStreamWriter(FileOutputStream(targetFile))).use { writer ->
+                contents.forEach { writer.write(it) }
+                writer.flush()
+                backupFile?.let {
+                    if (it.exists() && !it.delete()) {
+                        LogManagerProvider.e(
+                            TAG,
+                            "saveFileSafely: delete backup file error"
+                        )
+                    }
+                }
+            }
+            return true
+        } catch (e: IOException) {
+            if (targetFile.exists() && !targetFile.delete()) {
+                LogManagerProvider.e(
+                    TAG,
+                    "saveFileSafely: delete target file error"
+                )
+            }
+            if (backupFile != null && !originalFilePath.isNullOrEmpty()) {
+                if (backupFile!!.exists() && !backupFile!!.renameTo(File(originalFilePath))) {
+                    LogManagerProvider.e(
+                        "PathUtils",
+                        "saveFileSafely: rename to original file error"
+                    )
+                }
+            }
+            LogManagerProvider.e(
+                TAG,
+                "saveFileSafely: ${e.message}"
+            )
+        }
+        return false
+    }
+
+    /**
+     * 把图片安全写入到文件中（先将源文件重命名为备份文件，再将新文件写入到目标文件，写入成功，删除备份文件，否则将备份文件还原）
+     *
+     * @param originalFile 源文件
+     * @param targetFile 目标存储文件
+     * @param bitmap 要写入的图片
+     */
+    fun saveBitmapToFileSafely(
+        targetFile: File,
+        originalFile: File?,
+        bitmap: Bitmap
+    ): Boolean {
+        return saveStreamToFileSafely(
+            targetFile,
+            originalFile,
+            ByteArrayInputStream(ByteArrayOutputStream().use { bos ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos)
+                bos
+            }.toByteArray())
+        )
+    }
+
+    /**
+     * 把数据安全写入到目标文件中（先将源文件重命名为备份文件，再将新文件写入到目标文件，写入成功，删除备份文件，否则将备份文件还原）
+     *
+     * @param targetFile 目标存储文件
+     * @param originalFile 源文件
+     * @param newFile 要写入的新文件
+     */
+    fun saveFileToFileSafely(
+        targetFile: File,
+        originalFile: File?,
+        newFile: File
+    ) {
+        saveStreamToFileSafely(targetFile, originalFile, FileInputStream(newFile))
+    }
+
+    /**
+     * 把数据安全写入到目标文件中（先将源文件重命名为备份文件，再将新文件写入到目标文件，写入成功，删除备份文件，否则将备份文件还原）
+     *
+     * @param targetFile 目标存储文件
+     * @param originalFile 源文件
+     * @param isStream 要写入的流
+     */
+    fun saveStreamToFileSafely(
+        targetFile: File,
+        originalFile: File?,
+        isStream: InputStream
+    ): Boolean {
+        val originalFilePath = originalFile?.absolutePath
+        var backupFile: File? = null
+        originalFile?.let {
+            backupFile = File(originalFilePath + CommonSuffix.BACK_UP)
+            backupFile?.let { f ->
+                if (it.exists() && !it.renameTo(f)) {
+                    LogManagerProvider.e(
+                        TAG,
+                        "saveFileSafely: rename to backup file error"
+                    )
+                    return false
+                }
+            }
+        }
+        try {
+            BufferedOutputStream((FileOutputStream(targetFile))).use { bos ->
+                val buffer = ByteArray(4096)
+                while (isStream.read(buffer) != -1) {
+                    bos.write(buffer)
+                }
+                bos.flush()
+                //写入目标文件成功，则将备份文件删除
+                backupFile?.let {
+                    if (it.exists() && !it.delete()) {
+                        LogManagerProvider.e(
+                            TAG,
+                            "saveFileSafely: delete backup file error"
+                        )
+                    }
+                }
+            }
+            return true
+        } catch (e: IOException) {
+            if (targetFile.exists() && !targetFile.delete()) {
+                LogManagerProvider.e(
+                    TAG,
+                    "saveFileSafely: delete target file error"
+                )
+            }
+            if (backupFile != null && !originalFilePath.isNullOrEmpty()) {
+                if (backupFile!!.exists() && !backupFile!!.renameTo(File(originalFilePath))) {
+                    LogManagerProvider.e(
+                        TAG,
+                        "saveFileSafely: rename to original file error"
+                    )
+                }
+            }
+            LogManagerProvider.e(
+                TAG,
+                "saveFileSafely: ${e.message}"
+            )
+        }
+        return false
     }
 
     /**

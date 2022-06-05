@@ -16,7 +16,7 @@ import android.os.Bundle
  */
 class Request<I : Request.IParamsInfo> @JvmOverloads constructor(
     val requestCategory: RequestCategory = RequestCategory.CATEGORY_OFFLINE,
-    val requestTag: String = Request.Tag.TAG_DEFAULT_REQUEST,
+    val requestTag: String = Tag.TAG_DEFAULT_REQUEST,
     val arguments: Bundle? = null,
     val paramsInfo: I? = null
 ) {
@@ -30,7 +30,13 @@ class Request<I : Request.IParamsInfo> @JvmOverloads constructor(
     /**
      * 参数对象接口
      */
-    interface IParamsInfo
+    interface IParamsInfo {
+
+        /**
+         * 提供一个默认空参数对象
+         */
+        object EmptyParamsInfo : IParamsInfo
+    }
 
     object Tag {
 

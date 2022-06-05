@@ -90,20 +90,6 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
     }
 
     @Override
-    protected int getInflateToolbarResId() {
-        return R.id.tb_navigation_bar;
-    }
-
-    @Override
-    protected ToolbarHelper.ToolbarConfigure initToolbarConfigure() {
-        return new ToolbarHelper.ToolbarConfigure.Builder()
-                .setImmerse(true)
-                .setNavigationIconResId(R.drawable.agile_arrow_back_pressed)
-                .setTitle("分为非")
-                .build();
-    }
-
-    @Override
     protected void release() {
         Log.d("份", "销毁");
         AgileExitAppManager.getInstance().exit();
@@ -206,6 +192,28 @@ public class MainActivity extends BaseToolbarPresenterActivity<MainContract.View
                 // MediaUtils.startPickVideo(MainActivity.this, 2);
             }
         });
+    }
+
+    @NonNull
+    @Override
+    protected ToolbarHelper.IToolbarInflateCreator generateToolbarInflateCreator() {
+        return new ToolbarHelper.IToolbarInflateCreator.ToolbarInflateCreatorAdapter() {
+
+            @Override
+            public int getInflateToolbarResId() {
+                return R.id.tb_navigation_bar;
+            }
+
+            @NonNull
+            @Override
+            public ToolbarHelper.ToolbarConfig initToolbarConfig() {
+                return new ToolbarHelper.ToolbarConfig.Builder()
+                        .setImmerse(true)
+                        .setNavigationIconResId(R.drawable.agile_arrow_back_pressed)
+                        .setTitle("分为非")
+                        .build();
+            }
+        };
     }
 
     /**

@@ -1,11 +1,12 @@
 package com.mingyuechunqiu.agile.ui.fragment;
 
+import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.NO_RESOURCE_ID;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -17,8 +18,6 @@ import com.mingyuechunqiu.agile.base.model.BaseAbstractDataModel;
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 import com.mingyuechunqiu.agile.feature.helper.ui.widget.ToolbarHelper;
-
-import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.NO_RESOURCE_ID;
 
 /**
  * <pre>
@@ -35,7 +34,9 @@ public abstract class BaseToolbarPresenterFragment<V extends IBaseDataView, P ex
     @Nullable
     private Toolbar tbBar;
     @Nullable
-    private ToolbarHelper.ToolbarConfigure mToolbarConfigure;
+    private ToolbarHelper.IToolbarInflateCreator mToolbarInflateCreator = null;
+    @Nullable
+    private ToolbarHelper.ToolbarConfig mToolbarConfig;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -48,29 +49,31 @@ public abstract class BaseToolbarPresenterFragment<V extends IBaseDataView, P ex
             ((AppCompatActivity) activity).setSupportActionBar(tbBar);
             actionBar = ((AppCompatActivity) activity).getSupportActionBar();
         }
-        mToolbarConfigure = initToolbarConfigure();
-        ToolbarHelper.initToolbar(tbBar, actionBar, mToolbarConfigure);
+        if (mToolbarInflateCreator != null) {
+            mToolbarConfig = mToolbarInflateCreator.initToolbarConfig();
+            ToolbarHelper.initToolbar(tbBar, actionBar, mToolbarConfig);
+        }
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (mToolbarConfigure == null) {
+        if (mToolbarConfig == null) {
             return;
         }
-        if (mToolbarConfigure.isClearActivityMenu()) {
+        if (mToolbarConfig.isClearActivityMenu()) {
             menu.clear();
         }
-        if (mToolbarConfigure.getMenuResId() != NO_RESOURCE_ID) {
-            inflater.inflate(mToolbarConfigure.getMenuResId(), menu);
-            ToolbarHelper.applyMenuColorFilter(menu, mToolbarConfigure.getMenuColorFilterColor());
+        if (mToolbarConfig.getMenuResId() != NO_RESOURCE_ID) {
+            inflater.inflate(mToolbarConfig.getMenuResId(), menu);
+            ToolbarHelper.applyMenuColorFilter(menu, mToolbarConfig.getMenuColorFilterColor());
         }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mToolbarConfigure = null;
+        mToolbarConfig = null;
     }
 
     /**
@@ -79,12 +82,13 @@ public abstract class BaseToolbarPresenterFragment<V extends IBaseDataView, P ex
      * @param view 父容器
      */
     private void initInflateToolbar(@NonNull View view) {
-        int resId = getInflateToolbarResId();
+        mToolbarInflateCreator = generateToolbarInflateCreator();
+        int resId = mToolbarInflateCreator.getInflateToolbarResId();
         if (resId != 0) {
             tbBar = view.findViewById(resId);
         }
         if (tbBar == null) {
-            tbBar = getInflateToolbar();
+            tbBar = mToolbarInflateCreator.getInflateToolbar();
         }
         onInitInflateToolbar(tbBar);
     }
@@ -108,28 +112,10 @@ public abstract class BaseToolbarPresenterFragment<V extends IBaseDataView, P ex
     }
 
     /**
-     * 获取填充的Toolbar（在getInflateToolbarResId返回为0时，会被调用）
+     * 生成Toolbar布局创建者（供子类实现）
      *
-     * @return 返回Toolbar控件
+     * @return 返回创建者对象，非空
      */
-    @Nullable
-    protected Toolbar getInflateToolbar() {
-        return null;
-    }
-
-    /**
-     * 获取填充的Toolbar控件的资源ID
-     *
-     * @return 返回资源ID
-     */
-    @IdRes
-    protected abstract int getInflateToolbarResId();
-
-    /**
-     * 供子类覆写的创建ToolbarBean方法，并放回创建好的ToolbarBean
-     *
-     * @return 返回创建好的ToolbarBean
-     */
-    @Nullable
-    protected abstract ToolbarHelper.ToolbarConfigure initToolbarConfigure();
+    @NonNull
+    protected abstract ToolbarHelper.IToolbarInflateCreator generateToolbarInflateCreator();
 }

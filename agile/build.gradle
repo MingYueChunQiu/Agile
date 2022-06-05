@@ -11,18 +11,18 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.MingYueChunQiu'
                 artifactId = 'Agile'
-                version = '0.6.34'
+                version = '0.6.35'
             }
         }
     }
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 31
+        targetSdkVersion 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
