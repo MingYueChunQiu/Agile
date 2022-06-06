@@ -155,6 +155,16 @@ object FileHelper {
                 }
             }
         }
+        val targetParentFile = targetFile.parentFile
+        if (targetParentFile != null && !targetParentFile.exists()) {
+            if (!targetParentFile.mkdirs()) {
+                LogManagerProvider.e(
+                    TAG,
+                    "saveFileSafely: targetParentFile mkdirs error"
+                )
+                return false
+            }
+        }
         try {
             BufferedWriter(OutputStreamWriter(FileOutputStream(targetFile))).use { writer ->
                 contents.forEach { writer.write(it) }
@@ -253,6 +263,16 @@ object FileHelper {
                     )
                     return false
                 }
+            }
+        }
+        val targetParentFile = targetFile.parentFile
+        if (targetParentFile != null && !targetParentFile.exists()) {
+            if (!targetParentFile.mkdirs()) {
+                LogManagerProvider.e(
+                    TAG,
+                    "saveFileSafely: targetParentFile mkdirs error"
+                )
+                return false
             }
         }
         try {
