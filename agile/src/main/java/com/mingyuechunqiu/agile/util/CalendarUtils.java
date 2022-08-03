@@ -222,7 +222,7 @@ public final class CalendarUtils {
         if (!checkIsMilliseconds(milliseconds)) return null;
         SimpleDateFormat format = new SimpleDateFormat("dd", Locale.getDefault());
         String day = format.format(new Date(milliseconds));
-        if (day.length() > 1 && day.substring(0, 1).equals("0")) {
+        if (day.length() > 1 && day.charAt(0) == '0') {
             return day.substring(1);
         }
         return day;

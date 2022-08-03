@@ -34,7 +34,8 @@ import java.io.InputStream;
  */
 public class BigImageView extends View {
 
-    private Rect mBitmapRect = new Rect();//显示矩形
+    @NonNull
+    private final Rect mBitmapRect = new Rect();//显示矩形
     private BitmapRegionDecoder mDecoder;
     private final BitmapFactory.Options mOptions = new BitmapFactory.Options();
     private int mBitmapWidth, mBitmapHeight;//图标原始宽高
@@ -153,15 +154,12 @@ public class BigImageView extends View {
      * @param path 文件路径
      */
     public void loadBitmapFile(@Nullable final String path) {
-        decodeBitmap(new DecodeBitmapHandler() {
-            @Override
-            public void onDecodeBitmap(@NonNull BitmapFactory.Options options) {
-                try {
-                    mDecoder = BitmapRegionDecoder.newInstance(path, false);
-                    BitmapFactory.decodeFile(path, options);
-                } catch (IOException e) {
-                    LogManagerProvider.e("BigImageView:loadBitmapFile", e.getMessage());
-                }
+        decodeBitmap(options -> {
+            try {
+                mDecoder = BitmapRegionDecoder.newInstance(path, false);
+                BitmapFactory.decodeFile(path, options);
+            } catch (IOException e) {
+                LogManagerProvider.e("BigImageView:loadBitmapFile", e.getMessage());
             }
         });
     }
@@ -172,15 +170,12 @@ public class BigImageView extends View {
      * @param fileDescriptor 文件描述符
      */
     public void loadBitmapFileDescriptor(@Nullable final FileDescriptor fileDescriptor) {
-        decodeBitmap(new DecodeBitmapHandler() {
-            @Override
-            public void onDecodeBitmap(@NonNull BitmapFactory.Options options) {
-                try {
-                    mDecoder = BitmapRegionDecoder.newInstance(fileDescriptor, false);
-                    BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
-                } catch (IOException e) {
-                    LogManagerProvider.e("BigImageView:loadBitmapFileDescriptor", e.getMessage());
-                }
+        decodeBitmap(options -> {
+            try {
+                mDecoder = BitmapRegionDecoder.newInstance(fileDescriptor, false);
+                BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
+            } catch (IOException e) {
+                LogManagerProvider.e("BigImageView:loadBitmapFileDescriptor", e.getMessage());
             }
         });
     }
@@ -191,15 +186,12 @@ public class BigImageView extends View {
      * @param stream 输入流
      */
     public void loadBitmapStream(@Nullable final InputStream stream) {
-        decodeBitmap(new DecodeBitmapHandler() {
-            @Override
-            public void onDecodeBitmap(@NonNull BitmapFactory.Options options) {
-                try {
-                    mDecoder = BitmapRegionDecoder.newInstance(stream, false);
-                    BitmapFactory.decodeStream(stream, null, options);
-                } catch (IOException e) {
-                    LogManagerProvider.e("BigImageView:loadBitmapStream", e.getMessage());
-                }
+        decodeBitmap(options -> {
+            try {
+                mDecoder = BitmapRegionDecoder.newInstance(stream, false);
+                BitmapFactory.decodeStream(stream, null, options);
+            } catch (IOException e) {
+                LogManagerProvider.e("BigImageView:loadBitmapStream", e.getMessage());
             }
         });
     }

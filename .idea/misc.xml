@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.20729166666666668" />
+        <entry key="agile/src/main/res/drawable/agile_shape_round_corners_8_white.xml" value="0.1955" />
         <entry key="agile/src/main/res/layout/agile_dialog_fragment_status_view.xml" value="0.16354166666666667" />
         <entry key="agile/src/main/res/layout/agile_layout_bnb_tab_item.xml" value="0.18020833333333333" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1625" />

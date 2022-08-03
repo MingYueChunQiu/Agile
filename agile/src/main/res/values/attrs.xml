@@ -159,4 +159,20 @@
         <attr name="cpv_progress" format="integer" />
     </declare-styleable>
 
+    <!--展开收缩按钮集控件-->
+    <declare-styleable name="CollapseFeatureBarLayout">
+        <attr name="cfbl_main_button_background" format="color|reference" />
+        <attr name="cfbl_main_button_size" format="dimension" />
+        <attr name="cfbl_main_icon_drawable" format="reference" />
+        <attr name="cfbl_main_icon_size" format="dimension" />
+        <attr name="cfbl_main_horizontal_ratio" format="float" />
+        <attr name="cfbl_main_vertical_ratio" format="float" />
+        <attr name="cfbl_feature_bar_item_padding" format="dimension" />
+        <attr name="cfbl_feature_bar_item_icon_size" format="dimension" />
+        <attr name="cfbl_feature_bar_item_text_size" format="dimension" />
+        <attr name="cfbl_feature_bar_item_text_color" format="color" />
+        <attr name="cfbl_feature_bar_item_inner_padding" format="dimension" />
+        <attr name="cfbl_feature_bar_item_icon_padding" format="dimension" />
+    </declare-styleable>
+
 </resources>

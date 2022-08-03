@@ -17,7 +17,7 @@ import kotlin.text.Charsets.UTF_8
  *      version: 1.0
 </pre> *
  */
-abstract class BaseResponseBodyIntereceptor : Interceptor {
+abstract class BaseResponseBodyInterceptor : Interceptor {
 
     protected lateinit var url: String
 

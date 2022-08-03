@@ -218,12 +218,7 @@ public class BottomNavigationBar extends LinearLayoutCompat {
             tvItem.setText(mTabList.get(index).getItemText());
         }
 
-        view.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectTabItem(index);
-            }
-        });
+        view.setOnClickListener(v -> selectTabItem(index));
         llTabContainer.addView(view);
         updateTabItemAppearance(view, mTabList.get(index), false);
     }
@@ -303,7 +298,7 @@ public class BottomNavigationBar extends LinearLayoutCompat {
      */
     public static class BottomNavigationTabItem {
 
-        private Builder mBuilder;
+        private final Builder mBuilder;
 
         public BottomNavigationTabItem() {
             this(new Builder());
