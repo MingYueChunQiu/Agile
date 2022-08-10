@@ -173,6 +173,8 @@
         <attr name="cfbl_feature_bar_item_text_color" format="color" />
         <attr name="cfbl_feature_bar_item_inner_padding" format="dimension" />
         <attr name="cfbl_feature_bar_item_icon_padding" format="dimension" />
+        <attr name="cfbl_show_mask" format="boolean" />
+        <attr name="cfbl_mask_color" format="color" />
     </declare-styleable>
 
 </resources>

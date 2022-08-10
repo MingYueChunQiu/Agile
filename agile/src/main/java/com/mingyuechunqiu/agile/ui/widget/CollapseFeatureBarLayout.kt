@@ -55,6 +55,9 @@ class CollapseFeatureBarLayout<T> @JvmOverloads constructor(
     var featureBarItemTextSize: Float
     var featureBarItemInnerPadding: Int
     var featureBarItemIconPadding: Int
+    var isShowMask: Boolean
+    @ColorInt
+    var maskColor: Int
 
     @ColorInt
     var featureBarItemTextColor: Int
@@ -124,6 +127,8 @@ class CollapseFeatureBarLayout<T> @JvmOverloads constructor(
             R.styleable.CollapseFeatureBarLayout_cfbl_feature_bar_item_icon_padding,
             featureBarItemIconSize / 4
         )
+        isShowMask = a.getBoolean(R.styleable.CollapseFeatureBarLayout_cfbl_show_mask, false)
+        maskColor = a.getColor(R.styleable.CollapseFeatureBarLayout_cfbl_mask_color, Color.LTGRAY)
         a.recycle()
         //以便Item阴影可以正常显示，不会被切割
         clipChildren = false
@@ -186,6 +191,11 @@ class CollapseFeatureBarLayout<T> @JvmOverloads constructor(
     fun expand() {
         if (isInExpand) {
             return
+        }
+        if (isShowMask) {
+            setBackgroundColor(maskColor)
+        } else {
+            setBackgroundColor(Color.TRANSPARENT)
         }
         mFeatureBarViews.forEach {
             it.visibility = View.VISIBLE

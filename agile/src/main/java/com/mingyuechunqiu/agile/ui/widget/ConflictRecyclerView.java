@@ -69,6 +69,22 @@ public class ConflictRecyclerView extends RecyclerView {
         return super.dispatchTouchEvent(ev);
     }
 
+    public boolean isPreventHorizontalConflict() {
+        return preventHorizontalConflict;
+    }
+
+    public void setPreventHorizontalConflict(boolean preventHorizontalConflict) {
+        this.preventHorizontalConflict = preventHorizontalConflict;
+    }
+
+    public boolean isPreventVerticalConflict() {
+        return preventVerticalConflict;
+    }
+
+    public void setPreventVerticalConflict(boolean preventVerticalConflict) {
+        this.preventVerticalConflict = preventVerticalConflict;
+    }
+
     /**
      * 判断滚动方向
      *

@@ -23,12 +23,14 @@ import com.mingyuechunqiu.agile.ui.fragment.BaseFragment
  *      Version:    1.0
  * </pre>
  */
-internal object AgileLifecycleDispatcher {
+object AgileLifecycleDispatcher {
 
     private var mActivityLifecycleCallbacks: MutableList<ActivityLifecycleCallback>? = null
     private var mFragmentLifecycleCallbacks: MutableList<FragmentLifecycleCallback>? = null
-    private var mDialogFragmentLifecycleCallbacks: MutableList<DialogFragmentLifecycleCallback>? = null
-    private var mBsDialogFragmentLifecycleCallbacks: MutableList<BSDialogFragmentLifecycleCallback>? = null
+    private var mDialogFragmentLifecycleCallbacks: MutableList<DialogFragmentLifecycleCallback>? =
+        null
+    private var mBsDialogFragmentLifecycleCallbacks: MutableList<BSDialogFragmentLifecycleCallback>? =
+        null
     private var mDialogLifecycleCallbacks: MutableList<DialogLifecycleCallback>? = null
 
     fun registerActivityLifecycleCallback(callback: ActivityLifecycleCallback) {
@@ -92,7 +94,10 @@ internal object AgileLifecycleDispatcher {
      * @param activity  Activity
      * @param state     生命周期状态
      */
-    fun updateActivityLifecycleState(activity: BaseActivity, state: AgileLifecycle.State.ActivityState) {
+    fun updateActivityLifecycleState(
+        activity: BaseActivity,
+        state: AgileLifecycle.State.ActivityState
+    ) {
         mActivityLifecycleCallbacks?.forEach {
             when (state) {
                 AgileLifecycle.State.ActivityState.CREATED -> it.onCreate(activity)
@@ -111,7 +116,10 @@ internal object AgileLifecycleDispatcher {
      * @param fragment  Fragment
      * @param state     生命周期状态
      */
-    fun updateFragmentLifecycleState(fragment: BaseFragment, state: AgileLifecycle.State.FragmentState) {
+    fun updateFragmentLifecycleState(
+        fragment: BaseFragment,
+        state: AgileLifecycle.State.FragmentState
+    ) {
         mFragmentLifecycleCallbacks?.forEach {
             when (state) {
                 AgileLifecycle.State.FragmentState.ATTACHED -> it.onAttach(fragment)
@@ -135,13 +143,18 @@ internal object AgileLifecycleDispatcher {
      * @param fragment  DialogFragment
      * @param state     生命周期状态
      */
-    fun updateDialogFragmentLifecycleState(fragment: BaseDialogFragment, state: AgileLifecycle.State.DialogFragmentState) {
+    fun updateDialogFragmentLifecycleState(
+        fragment: BaseDialogFragment,
+        state: AgileLifecycle.State.DialogFragmentState
+    ) {
         mDialogFragmentLifecycleCallbacks?.forEach {
             when (state) {
                 AgileLifecycle.State.DialogFragmentState.ATTACHED -> it.onAttach(fragment)
                 AgileLifecycle.State.DialogFragmentState.CREATED -> it.onCreate(fragment)
                 AgileLifecycle.State.DialogFragmentState.CREATED_VIEW -> it.onCreateView(fragment)
-                AgileLifecycle.State.DialogFragmentState.ACTIVITY_CREATED -> it.onActivityCreated(fragment)
+                AgileLifecycle.State.DialogFragmentState.ACTIVITY_CREATED -> it.onActivityCreated(
+                    fragment
+                )
                 AgileLifecycle.State.DialogFragmentState.STARTED -> it.onStart(fragment)
                 AgileLifecycle.State.DialogFragmentState.RESUMED -> it.onResume(fragment)
                 AgileLifecycle.State.DialogFragmentState.PAUSED -> it.onPause(fragment)
@@ -159,19 +172,30 @@ internal object AgileLifecycleDispatcher {
      * @param fragment  BottomSheetDialogFragment
      * @param state     生命周期状态
      */
-    fun updateBottomSheetDialogFragmentLifecycleState(fragment: BaseBSDialogFragment, state: AgileLifecycle.State.BottomSheetDialogFragmentState) {
+    fun updateBottomSheetDialogFragmentLifecycleState(
+        fragment: BaseBSDialogFragment,
+        state: AgileLifecycle.State.BottomSheetDialogFragmentState
+    ) {
         mBsDialogFragmentLifecycleCallbacks?.forEach {
             when (state) {
                 AgileLifecycle.State.BottomSheetDialogFragmentState.ATTACHED -> it.onAttach(fragment)
                 AgileLifecycle.State.BottomSheetDialogFragmentState.CREATED -> it.onCreate(fragment)
-                AgileLifecycle.State.BottomSheetDialogFragmentState.CREATED_VIEW -> it.onCreateView(fragment)
-                AgileLifecycle.State.BottomSheetDialogFragmentState.ACTIVITY_CREATED -> it.onActivityCreated(fragment)
+                AgileLifecycle.State.BottomSheetDialogFragmentState.CREATED_VIEW -> it.onCreateView(
+                    fragment
+                )
+                AgileLifecycle.State.BottomSheetDialogFragmentState.ACTIVITY_CREATED -> it.onActivityCreated(
+                    fragment
+                )
                 AgileLifecycle.State.BottomSheetDialogFragmentState.STARTED -> it.onStart(fragment)
                 AgileLifecycle.State.BottomSheetDialogFragmentState.RESUMED -> it.onResume(fragment)
                 AgileLifecycle.State.BottomSheetDialogFragmentState.PAUSED -> it.onPause(fragment)
                 AgileLifecycle.State.BottomSheetDialogFragmentState.STOPPED -> it.onStop(fragment)
-                AgileLifecycle.State.BottomSheetDialogFragmentState.DESTROYED_VIEW -> it.onDestroyView(fragment)
-                AgileLifecycle.State.BottomSheetDialogFragmentState.DESTROYED -> it.onDestroy(fragment)
+                AgileLifecycle.State.BottomSheetDialogFragmentState.DESTROYED_VIEW -> it.onDestroyView(
+                    fragment
+                )
+                AgileLifecycle.State.BottomSheetDialogFragmentState.DESTROYED -> it.onDestroy(
+                    fragment
+                )
                 AgileLifecycle.State.BottomSheetDialogFragmentState.DETACHED -> it.onDetach(fragment)
             }
         }
