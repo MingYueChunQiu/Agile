@@ -82,7 +82,7 @@ public class StatusFragment extends BaseFragment {
     }
 
     @Override
-    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    protected void initData(@Nullable Bundle savedInstanceState) {
 
     }
 }

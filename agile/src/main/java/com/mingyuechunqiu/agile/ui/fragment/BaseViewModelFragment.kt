@@ -1,7 +1,6 @@
 package com.mingyuechunqiu.agile.ui.fragment
 
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.mingyuechunqiu.agile.base.viewmodel.IBaseViewModel
 import com.mingyuechunqiu.agile.base.viewmodel.IViewModelOwner
@@ -23,9 +22,9 @@ abstract class BaseViewModelFragment : BaseFragment(), IViewModelOwner {
     private val mTag = javaClass.simpleName
     private val mBusinessViewModelList: MutableList<IBaseViewModel<*>> = ArrayList()
 
-    override fun initOnData(view: View, savedInstanceState: Bundle?) {
+    override fun initOnData(savedInstanceState: Bundle?) {
         initOnBusinessViewModels()
-        super.initOnData(view, savedInstanceState)
+        super.initOnData(savedInstanceState)
     }
 
     override fun addBusinessViewModel(viewModel: IBaseViewModel<*>) {

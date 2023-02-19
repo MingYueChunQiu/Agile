@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -512,7 +513,7 @@ public class CircleProgressButton extends View {
          * @param v 控件本身
          * @return 返回是否开始进度加载，为true表示可以加载进度，否则不加载
          */
-        boolean onPreProgress(CircleProgressButton v);
+        boolean onPreProgress(@NonNull CircleProgressButton v);
 
         /**
          * 进度回调
@@ -520,14 +521,15 @@ public class CircleProgressButton extends View {
          * @param v        控件本身
          * @param progress 当前加载进度
          */
-        void onProgress(CircleProgressButton v, float progress);
+        void onProgress(@NonNull CircleProgressButton v, float progress);
 
         /**
          * 当释放进度时回调
          *
          * @param v 控件本身
          */
-        int onReleaseProgress(CircleProgressButton v);
+        @IntRange(from = 0, to = 360)
+        int onReleaseProgress(@NonNull CircleProgressButton v);
 
         /**
          * 当取消进度加载时回调
@@ -535,7 +537,7 @@ public class CircleProgressButton extends View {
          * @param v 控件本身
          * @return 返回true表示继续进行后续调用，否则返回false
          */
-        boolean onCancelProgress(CircleProgressButton v);
+        boolean onCancelProgress(@NonNull CircleProgressButton v);
     }
 
     /**

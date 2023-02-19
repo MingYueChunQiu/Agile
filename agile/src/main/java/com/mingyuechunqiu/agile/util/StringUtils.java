@@ -36,7 +36,7 @@ public final class StringUtils {
      * @return MD5值
      */
     @Nullable
-    public static String encryMD5(@Nullable String msg) {
+    public static String encryptMD5(@Nullable String msg) {
         if (TextUtils.isEmpty(msg)) {
             return null;
         }

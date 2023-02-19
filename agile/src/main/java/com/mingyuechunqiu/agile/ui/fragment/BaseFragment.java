@@ -66,7 +66,7 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
     @NonNull
     private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
     @Nullable
-    private ITransferPageDataDispatcherHelper mTransferPageDataDispatcherHelper;
+    private volatile ITransferPageDataDispatcherHelper mTransferPageDataDispatcherHelper;
     @Nullable
     private ITransferPageDataReceiverHelper mTransferPageDataReceiverHelper;
     @Nullable
@@ -89,7 +89,11 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Agile.getLifecycleDispatcher().updateFragmentLifecycleState(this, AgileLifecycle.State.FragmentState.CREATED_VIEW);
         mFragmentViewPage = new FragmentViewPage(getViewLifecycleOwner(), getPageTag());
-        return initInflateLayoutView(inflater, container, savedInstanceState);
+        View view = initInflateLayoutView(inflater, container, savedInstanceState);
+        if (view == null) {
+            initOnData(savedInstanceState);
+        }
+        return view;
     }
 
     @Override
@@ -210,7 +214,7 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
                 }
             }
         }
-        return mTransferPageDataDispatcherHelper;
+        return this.mTransferPageDataDispatcherHelper;
     }
 
     @NonNull
@@ -357,15 +361,15 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
      */
     protected void initOnViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         initOnView(view, savedInstanceState);
-        initOnData(view, savedInstanceState);
+        initOnData(savedInstanceState);
     }
 
     protected void initOnView(@NonNull View view, @Nullable Bundle savedInstanceState) {
         initView(view, savedInstanceState);
     }
 
-    protected void initOnData(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        initData(view, savedInstanceState);
+    protected void initOnData(@Nullable Bundle savedInstanceState) {
+        initData(savedInstanceState);
     }
 
     /**
@@ -447,7 +451,7 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
     protected abstract IFragmentInflateLayoutViewCreator generateInflateLayoutViewCreator();
 
     /**
-     * 由子类重写控件的初始化方法
+     * 由子类重写控件的初始化方法，只有当view存在时才会被调用
      *
      * @param view               界面父容器View
      * @param savedInstanceState 界面销毁时保存的状态数据实例
@@ -455,12 +459,11 @@ public abstract class BaseFragment extends Fragment implements IAgileFragmentPag
     protected abstract void initView(@NonNull View view, @Nullable Bundle savedInstanceState);
 
     /**
-     * 由子类重写初始化数据方法
+     * 由子类重写初始化数据方法，不管view是否存在，都会调用，如果view存在，调用时机将在initView之后
      *
-     * @param view               界面父容器View
      * @param savedInstanceState 界面销毁时保存的状态数据实例
      */
-    protected abstract void initData(@NonNull View view, @Nullable Bundle savedInstanceState);
+    protected abstract void initData(@Nullable Bundle savedInstanceState);
 
     /**
      * 释放资源（在onDestroyView时调用）

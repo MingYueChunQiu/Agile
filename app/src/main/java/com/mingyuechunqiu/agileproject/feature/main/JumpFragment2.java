@@ -61,7 +61,7 @@ public class JumpFragment2 extends BaseFragment {
     }
 
     @Override
-    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    protected void initData(@Nullable Bundle savedInstanceState) {
 
     }
 

@@ -62,7 +62,7 @@ public class TestBottomDialogFragment extends BaseDataPresenterDialogFragment<Ma
     }
 
     @Override
-    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    protected void initData(@Nullable Bundle savedInstanceState) {
 
     }
 

@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">AgileMVPFrame</string>
 
     <string name="agile_error_set_params">The service request parameter setting is abnormal, please try again</string>
     <string name="agile_error_set_net_params">The network request parameter setting is abnormal, please try again</string>

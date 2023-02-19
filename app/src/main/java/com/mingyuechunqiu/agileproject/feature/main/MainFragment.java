@@ -81,7 +81,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    protected void initData(@Nullable Bundle savedInstanceState) {
 
     }
 

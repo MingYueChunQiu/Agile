@@ -297,6 +297,19 @@ public final class CalendarUtils {
     }
 
     /**
+     * 获取毫秒数所在当天的开始时间毫秒数
+     *
+     * @param milliseconds 毫秒数
+     * @return 当天的起始毫秒数
+     */
+    public static long getInitialDateTimeOfDay(long milliseconds) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliseconds);
+        resetTime(calendar);
+        return calendar.getTimeInMillis();
+    }
+
+    /**
      * 检查时间戳是否是秒级别的
      *
      * @param timestamp 时间戳字符串

@@ -51,9 +51,10 @@ public final class Agile {
      * 进行框架初始化，需要在application中进行初始化，必须最先调用，否则可能会报错
      *
      * @param context 传入上下文
+     * @return 返回框架自身
      */
-    public static void init(@NonNull Context context) {
-        init(context, null);
+    public static Agile init(@NonNull Context context) {
+        return init(context, null);
     }
 
     /**
@@ -61,9 +62,10 @@ public final class Agile {
      *
      * @param context   传入上下文
      * @param configure 框架配置
+     * @return 返回框架自身
      */
-    public static void init(@NonNull Context context, @Nullable AgileFrameConfigure configure) {
-        init(context, configure, BuildConfig.DEBUG);
+    public static Agile init(@NonNull Context context, @Nullable AgileFrameConfigure configure) {
+        return init(context, configure, BuildConfig.DEBUG);
     }
 
     /**
@@ -72,8 +74,9 @@ public final class Agile {
      * @param context   传入上下文
      * @param configure 框架配置
      * @param isDebug   是否处于调试模式
+     * @return 返回框架自身
      */
-    public static void init(@NonNull Context context, @Nullable AgileFrameConfigure configure, boolean isDebug) {
+    public static Agile init(@NonNull Context context, @Nullable AgileFrameConfigure configure, boolean isDebug) {
         if (sInstance == null) {
             synchronized (Agile.class) {
                 if (sInstance == null) {
@@ -86,6 +89,7 @@ public final class Agile {
         for (IAgileFrameObserver observer : sInstance.mAgileFrameObserverList) {
             observer.onFrameInit();
         }
+        return Agile.sInstance;
     }
 
     /**

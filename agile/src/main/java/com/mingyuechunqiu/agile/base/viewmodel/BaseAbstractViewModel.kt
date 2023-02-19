@@ -7,6 +7,8 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
+import com.mingyuechunqiu.agile.base.bridge.Request.IParamsInfo
+import com.mingyuechunqiu.agile.base.bridge.call.Call
 import com.mingyuechunqiu.agile.base.businessengine.IBaseBusinessEngine
 import com.mingyuechunqiu.agile.base.model.IBaseModel
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo
@@ -144,6 +146,12 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
 
     override fun getBusinessEngineList(): List<IBaseBusinessEngine?> {
         return mBusinessEngineList ?: ArrayList()
+    }
+
+    override fun <I : IParamsInfo, T : Any> dispatchCall(call: Call<I, T>): Boolean {
+        LogManagerProvider.i(mTag, "dispatchCall")
+        requireNotNull(mModel) { "Model has not been set!" }
+        return dispatchCallWithModel(call)
     }
 
     override fun getPopHintState(): LiveData<IBaseViewModel.PopHintState> {
@@ -299,6 +307,12 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
         dismissStatusView()
     }
 
+    /**
+     * 当和视图View进行依附关联时调用
+     *
+     * @param page 依附的界面
+     * @param model 控制的Model
+     */
     protected open fun onAttachView(page: IAgilePage, model: M?) {}
 
     protected open fun onStart() {}
@@ -309,5 +323,18 @@ abstract class BaseAbstractViewModel<M : IBaseModel> : ViewModel(), IBaseViewMod
 
     protected open fun onStop() {}
 
+    /**
+     * 由子类重写，调用model进行分发调用操作
+     *
+     * @param I 请求泛型类型
+     * @param T 响应泛型类型
+     * @param call 调用对象
+     * @return 执行请求返回true，否则返回false
+     */
+    protected abstract fun <I : IParamsInfo, T> dispatchCallWithModel(call: Call<I, T>): Boolean
+
+    /**
+     * 释放资源
+     */
     protected abstract fun release()
 }

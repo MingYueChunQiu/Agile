@@ -58,7 +58,7 @@ public class JumpFragment1 extends BaseFragment {
     }
 
     @Override
-    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    protected void initData(@Nullable Bundle savedInstanceState) {
         getTransferPageDataReceiverHelper().addTransferDataReceiverListener(new ITransferPageDataReceiver.TransferPageDataReceiverListener() {
             @Override
             public void onReceiveTransferPageData(@NonNull ITransferPageDataDispatcher.TransferPageDataOwner dataOwner, @Nullable ITransferPageDataDispatcher.TransferPageData data) {

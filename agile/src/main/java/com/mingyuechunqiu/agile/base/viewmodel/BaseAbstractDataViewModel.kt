@@ -38,7 +38,7 @@ abstract class BaseAbstractDataViewModel<M : BaseAbstractDataModel> : BaseAbstra
         return dispatchCallWithModel(call)
     }
 
-    protected open fun <I : Request.IParamsInfo, T : Any> dispatchCallWithModel(call: Call<I, T>): Boolean {
+    override fun <I : Request.IParamsInfo, T> dispatchCallWithModel(call: Call<I, T>): Boolean {
         LogManagerProvider.i(mTag, "dispatchCallWithModel")
         return getModel()?.dispatchCall(call) ?: false
     }

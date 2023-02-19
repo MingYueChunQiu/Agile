@@ -2,6 +2,7 @@ package com.mingyuechunqiu.agile.feature.helper.ui.common;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Point;
@@ -17,7 +18,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 
 /**
  * <pre>
@@ -158,47 +158,10 @@ public final class ScreenHelper {
      * @param view     指定的view
      */
     public static void hideViewSoftInput(@Nullable Activity activity, @Nullable View view) {
-        if (activity == null || view == null) {
+        if (activity == null) {
             return;
         }
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm == null) {
-            return;
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    /**
-     * 隐藏对话框指定view的软键盘
-     *
-     * @param dialog 对话框
-     */
-    public static void hideViewSoftInput(@Nullable Dialog dialog) {
-        if (dialog == null) {
-            return;
-        }
-        Window window = dialog.getWindow();
-        if (window == null) {
-            return;
-        }
-        hideViewSoftInput(dialog, window.getDecorView());
-    }
-
-    /**
-     * 隐藏对话框指定view的软键盘
-     *
-     * @param dialog 对话框
-     * @param view   指定的view
-     */
-    public static void hideViewSoftInput(@Nullable Dialog dialog, @Nullable View view) {
-        if (dialog == null || view == null) {
-            return;
-        }
-        InputMethodManager imm = (InputMethodManager) dialog.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm == null) {
-            return;
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        hideViewSoftInput(activity, view);
     }
 
     /**
@@ -224,6 +187,170 @@ public final class ScreenHelper {
             return;
         }
         hideViewSoftInput(dialogFragment.getDialog(), view);
+    }
+
+    /**
+     * 隐藏对话框指定view的软键盘
+     *
+     * @param dialog 对话框
+     */
+    public static void hideViewSoftInput(@Nullable Dialog dialog) {
+        if (dialog == null) {
+            return;
+        }
+        Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+        hideViewSoftInput(dialog, window.getDecorView());
+    }
+
+    /**
+     * 隐藏对话框指定view的软键盘
+     *
+     * @param dialog 对话框
+     * @param view   指定的view
+     */
+    public static void hideViewSoftInput(@Nullable Dialog dialog, @Nullable View view) {
+        if (dialog == null) {
+            return;
+        }
+        hideViewSoftInput(dialog.getContext(), view);
+    }
+
+    /**
+     * 隐藏对话框指定view的软键盘
+     *
+     * @param context 上下文
+     * @param view    指定的view
+     */
+    public static void hideViewSoftInput(@Nullable Context context, @Nullable View view) {
+        if (context == null || view == null) {
+            return;
+        }
+        hideViewSoftInput((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE), view);
+    }
+
+    /**
+     * 隐藏对话框指定view的软键盘
+     *
+     * @param imm  软键盘管理器
+     * @param view 指定的view
+     */
+    public static void hideViewSoftInput(@Nullable InputMethodManager imm, @Nullable View view) {
+        if (imm == null || view == null) {
+            return;
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    /**
+     * 显示当前获取焦点view的软键盘
+     *
+     * @param activity 软键盘所在界面
+     */
+    public static void showViewSoftInput(@Nullable Activity activity) {
+        if (activity == null) {
+            return;
+        }
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            return;
+        }
+        showViewSoftInput(activity, view);
+    }
+
+    /**
+     * 显示指定view的软键盘
+     *
+     * @param activity 软键盘所在界面
+     * @param view     指定的view
+     */
+    public static void showViewSoftInput(@Nullable Activity activity, @Nullable View view) {
+        if (activity == null) {
+            return;
+        }
+        showViewSoftInput(activity, view);
+    }
+
+    /**
+     * 显示DialogFragment指定view的软键盘
+     *
+     * @param dialogFragment 对话框Fragment
+     */
+    public static void showViewSoftInput(@Nullable DialogFragment dialogFragment) {
+        if (dialogFragment == null) {
+            return;
+        }
+        showViewSoftInput(dialogFragment.getDialog());
+    }
+
+    /**
+     * 显示DialogFragment指定view的软键盘
+     *
+     * @param dialogFragment 对话框Fragment
+     * @param view           指定的view
+     */
+    public static void showViewSoftInput(@Nullable DialogFragment dialogFragment, @Nullable View view) {
+        if (dialogFragment == null) {
+            return;
+        }
+        showViewSoftInput(dialogFragment.getDialog(), view);
+    }
+
+    /**
+     * 显示对话框指定view的软键盘
+     *
+     * @param dialog 对话框
+     */
+    public static void showViewSoftInput(@Nullable Dialog dialog) {
+        if (dialog == null) {
+            return;
+        }
+        Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+        showViewSoftInput(dialog, window.getDecorView());
+    }
+
+    /**
+     * 显示对话框指定view的软键盘
+     *
+     * @param dialog 对话框
+     * @param view   指定的view
+     */
+    public static void showViewSoftInput(@Nullable Dialog dialog, @Nullable View view) {
+        if (dialog == null) {
+            return;
+        }
+        showViewSoftInput(dialog.getContext(), view);
+    }
+
+    /**
+     * 显示对话框指定view的软键盘
+     *
+     * @param context 上下文
+     * @param view    指定的view
+     */
+    public static void showViewSoftInput(@Nullable Context context, @Nullable View view) {
+        if (context == null || view == null) {
+            return;
+        }
+        showViewSoftInput((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE), view);
+    }
+
+    /**
+     * 显示对话框指定view的软键盘
+     *
+     * @param imm  软键盘管理器
+     * @param view 指定的view
+     */
+    public static void showViewSoftInput(@Nullable InputMethodManager imm, @Nullable View view) {
+        if (imm == null || view == null) {
+            return;
+        }
+        imm.showSoftInput(view, 0);
     }
 
     /**

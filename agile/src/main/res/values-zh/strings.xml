@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">AgileMVPFrame</string>
-
     <string name="agile_error_set_params">业务请求参数设置异常，请重试</string>
     <string name="agile_error_set_net_params">网络请求参数设置异常，请重试</string>
     <string name="agile_error_service_response">服务器响应异常，请重试</string>
