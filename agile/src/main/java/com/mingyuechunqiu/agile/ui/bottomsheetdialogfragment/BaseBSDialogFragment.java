@@ -42,10 +42,15 @@ import com.mingyuechunqiu.agile.frame.Agile;
 import com.mingyuechunqiu.agile.frame.lifecycle.AgileLifecycle;
 import com.mingyuechunqiu.agile.frame.ui.fragment.FragmentViewPage;
 import com.mingyuechunqiu.agile.frame.ui.fragment.IAgileFragmentPage;
+import com.mingyuechunqiu.agile.frame.ui.fragment.IAgileFragmentViewPage;
 import com.mingyuechunqiu.agile.framework.ui.IFragmentInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.framework.ui.WindowHandler;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * <pre>
@@ -59,19 +64,30 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment implements IAgileFragmentPage, IWindowInsetsHelperOwner, IPopHintOwner, IStatusViewOwner {
 
-    private FragmentViewPage mFragmentViewPage;
-    @Nullable
-    private WindowInsetsHelper mWindowInsetsHelper;
-    @Nullable
-    private IStatusViewManager mStatusViewManager;
     @NonNull
-    private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
+    private final String mTag = getClass().getSimpleName();
     @Nullable
-    private ITransferPageDataDispatcherHelper mTransferPageDataDispatcherHelper;
+    private IAgileFragmentViewPage mFragmentViewPage;//代表包含的视图界面
     @Nullable
-    private ITransferPageDataReceiverHelper mTransferPageDataReceiverHelper;
+    private WindowInsetsHelper mWindowInsetsHelper;//处理系统窗口辅助类
     @Nullable
-    private IKeyEventReceiverHelper mKeyEventReceiverHelper;
+    private IStatusViewManager mStatusViewManager;//处理应用层各类状态视图管理器
+    @Nullable
+    private ITransferPageDataDispatcherHelper mTransferPageDataDispatcherHelper;//处理跨页面数据分发辅助类
+    @Nullable
+    private ITransferPageDataReceiverHelper mTransferPageDataReceiverHelper;//处理跨页面数据接受辅助类
+    @Nullable
+    private IKeyEventReceiverHelper mKeyEventReceiverHelper;//处理页面按键接受辅助类
+    @NonNull
+    private final Lock mWindowInsetsHelperLock = new ReentrantLock();
+    @NonNull
+    private final Lock mStatusViewManagerLock = new ReentrantLock();
+    @NonNull
+    private final Lock mTransferPageDataDispatcherHelperLock = new ReentrantLock();
+    @NonNull
+    private final Lock mTransferPageDataReceiverHelperLock = new ReentrantLock();
+    @NonNull
+    private final Lock mKeyEventReceiverHelperLock = new ReentrantLock();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -89,9 +105,9 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Agile.getLifecycleDispatcher().updateBottomSheetDialogFragmentLifecycleState(this, AgileLifecycle.State.BottomSheetDialogFragmentState.CREATED_VIEW);
-        mFragmentViewPage = new FragmentViewPage(getViewLifecycleOwner(), getPageTag());
         initDialogBackground();
         View view = initInflateLayoutView(inflater, container, savedInstanceState);
+        mFragmentViewPage = new FragmentViewPage(getViewLifecycleOwner(), getPageTag(), view == null);
         if (view == null) {
             initOnData(savedInstanceState);
         }
@@ -163,8 +179,8 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
 
     @NonNull
     @Override
-    public FragmentViewPage getFragmentViewPage() {
-        return mFragmentViewPage;
+    public IAgileFragmentViewPage getFragmentViewPage() {
+        return Objects.requireNonNull(mFragmentViewPage, "getFragmentViewPage() must call after onCreateView()");
     }
 
     @Nullable
@@ -197,10 +213,15 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
             throw new IllegalStateException("Window must not be null!");
         }
         if (mWindowInsetsHelper == null) {
-            synchronized (this) {
+            mWindowInsetsHelperLock.lock();
+            try {
                 if (mWindowInsetsHelper == null) {
                     mWindowInsetsHelper = new WindowInsetsHelper(window);
                 }
+            } catch (Exception e) {
+                LogManagerProvider.e(mTag, "getWindowInsetsHelper error: " + e.getMessage());
+            } finally {
+                mWindowInsetsHelperLock.unlock();
             }
         }
         return mWindowInsetsHelper;
@@ -210,10 +231,15 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
     @Override
     public ITransferPageDataDispatcherHelper getTransferPageDataDispatcherHelper() {
         if (mTransferPageDataDispatcherHelper == null) {
-            synchronized (this) {
+            mTransferPageDataDispatcherHelperLock.lock();
+            try {
                 if (mTransferPageDataDispatcherHelper == null) {
                     mTransferPageDataDispatcherHelper = new TransferPageDataDispatcherHelper(this);
                 }
+            } catch (Exception e) {
+                LogManagerProvider.e(mTag, "getTransferPageDataDispatcherHelper error: " + e.getMessage());
+            } finally {
+                mTransferPageDataDispatcherHelperLock.unlock();
             }
         }
         return mTransferPageDataDispatcherHelper;
@@ -223,10 +249,15 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
     @Override
     public ITransferPageDataReceiverHelper getTransferPageDataReceiverHelper() {
         if (mTransferPageDataReceiverHelper == null) {
-            synchronized (this) {
+            mTransferPageDataReceiverHelperLock.lock();
+            try {
                 if (mTransferPageDataReceiverHelper == null) {
                     mTransferPageDataReceiverHelper = new TransferPageDataReceiverHelper(this);
                 }
+            } catch (Exception e) {
+                LogManagerProvider.e(mTag, "getTransferPageDataReceiverHelper error: " + e.getMessage());
+            } finally {
+                mTransferPageDataReceiverHelperLock.unlock();
             }
         }
         return mTransferPageDataReceiverHelper;
@@ -236,10 +267,15 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
     @Override
     public IKeyEventReceiverHelper getKeyEventReceiverHelper() {
         if (mKeyEventReceiverHelper == null) {
-            synchronized (this) {
+            mKeyEventReceiverHelperLock.lock();
+            try {
                 if (mKeyEventReceiverHelper == null) {
                     mKeyEventReceiverHelper = new KeyEventReceiverHelper(this);
                 }
+            } catch (Exception e) {
+                LogManagerProvider.e(mTag, "getKeyEventReceiverHelper error: " + e.getMessage());
+            } finally {
+                mKeyEventReceiverHelperLock.unlock();
             }
         }
         return mKeyEventReceiverHelper;
@@ -345,11 +381,16 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
     @Override
     public IStatusViewManager getStatusViewManager() {
         if (mStatusViewManager == null) {
-            synchronized (mStatusViewLock) {
+            mStatusViewManagerLock.lock();
+            try {
                 if (mStatusViewManager == null) {
-                    mStatusViewManager = StatusViewManagerProvider.newInstance(mFragmentViewPage);
+                    mStatusViewManager = StatusViewManagerProvider.newInstance(getFragmentViewPage());
                     onInitStatusViewManager(mStatusViewManager);
                 }
+            } catch (Exception e) {
+                LogManagerProvider.e(mTag, "getStatusViewManager error: " + e.getMessage());
+            } finally {
+                mStatusViewManagerLock.unlock();
             }
         }
         return mStatusViewManager;

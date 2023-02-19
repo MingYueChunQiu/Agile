@@ -24,6 +24,7 @@ import com.mingyuechunqiu.agile.feature.helper.ui.key.dispatcher.IKeyEventDispat
 import com.mingyuechunqiu.agile.feature.helper.ui.key.dispatcher.KeyEventDispatcherHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.transfer.receiver.ITransferPageDataReceiverHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.transfer.receiver.TransferPageDataReceiverHelper;
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.constants.StatusViewConstants;
@@ -38,6 +39,9 @@ import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * <pre>
  *     author : xyj
@@ -50,16 +54,24 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class BaseActivity extends AppCompatActivity implements IAgileActivityPage, IWindowInsetsHelperOwner, IPopHintOwner, IStatusViewOwner {
 
-    @Nullable
-    private WindowInsetsHelper mWindowInsetsHelper;
-    @Nullable
-    private IStatusViewManager mStatusViewManager;
     @NonNull
-    private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
+    private final String mTag = getClass().getSimpleName();
     @Nullable
-    private ITransferPageDataReceiverHelper mTransferPageDataReceiverHelper;
+    private WindowInsetsHelper mWindowInsetsHelper;//处理系统窗口辅助类
     @Nullable
-    private IKeyEventDispatcherHelper mKeyEventDispatcher = null;
+    private IStatusViewManager mStatusViewManager;//处理应用层各类状态视图管理器
+    @Nullable
+    private ITransferPageDataReceiverHelper mTransferPageDataReceiverHelper;//处理跨页面数据接受辅助类
+    @Nullable
+    private IKeyEventDispatcherHelper mKeyEventDispatcher = null;//处理页面按键分发辅助类
+    @NonNull
+    private final Lock mWindowInsetsHelperLock = new ReentrantLock();
+    @NonNull
+    private final Lock mStatusViewManagerLock = new ReentrantLock();
+    @NonNull
+    private final Lock mTransferPageDataReceiverHelperLock = new ReentrantLock();
+    @NonNull
+    private final Lock mKeyEventDispatcherLock = new ReentrantLock();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -123,10 +135,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
             throw new IllegalStateException("Window must not be null!");
         }
         if (mWindowInsetsHelper == null) {
-            synchronized (this) {
+            mWindowInsetsHelperLock.lock();
+            try {
                 if (mWindowInsetsHelper == null) {
                     mWindowInsetsHelper = new WindowInsetsHelper(window);
                 }
+            } catch (Exception e) {
+                LogManagerProvider.e(mTag, "getWindowInsetsHelper error: " + e.getMessage());
+            } finally {
+                mWindowInsetsHelperLock.unlock();
             }
         }
         return mWindowInsetsHelper;
@@ -136,10 +153,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
     @Override
     public ITransferPageDataReceiverHelper getTransferPageDataReceiverHelper() {
         if (mTransferPageDataReceiverHelper == null) {
-            synchronized (this) {
+            mTransferPageDataReceiverHelperLock.lock();
+            try {
                 if (mTransferPageDataReceiverHelper == null) {
                     mTransferPageDataReceiverHelper = new TransferPageDataReceiverHelper(this);
                 }
+            } catch (Exception e) {
+                LogManagerProvider.e(mTag, "getTransferPageDataReceiverHelper error: " + e.getMessage());
+            } finally {
+                mTransferPageDataReceiverHelperLock.unlock();
             }
         }
         return mTransferPageDataReceiverHelper;
@@ -149,10 +171,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
     @Override
     public IKeyEventDispatcherHelper getKeyEventDispatcherHelper() {
         if (mKeyEventDispatcher == null) {
-            synchronized (this) {
+            mKeyEventDispatcherLock.lock();
+            try {
                 if (mKeyEventDispatcher == null) {
                     mKeyEventDispatcher = new KeyEventDispatcherHelper(this);
                 }
+            } catch (Exception e) {
+                LogManagerProvider.e(mTag, "getKeyEventDispatcherHelper error: " + e.getMessage());
+            } finally {
+                mKeyEventDispatcherLock.unlock();
             }
         }
         return mKeyEventDispatcher;
@@ -249,11 +276,16 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
     @NonNull
     public IStatusViewManager getStatusViewManager() {
         if (mStatusViewManager == null) {
-            synchronized (mStatusViewLock) {
+            mStatusViewManagerLock.lock();
+            try {
                 if (mStatusViewManager == null) {
                     mStatusViewManager = StatusViewManagerProvider.newInstance(this);
                     onInitStatusViewManager(mStatusViewManager);
                 }
+            } catch (Exception e) {
+                LogManagerProvider.e(mTag, "getStatusViewManager error: " + e.getMessage());
+            } finally {
+                mStatusViewManagerLock.unlock();
             }
         }
         return mStatusViewManager;

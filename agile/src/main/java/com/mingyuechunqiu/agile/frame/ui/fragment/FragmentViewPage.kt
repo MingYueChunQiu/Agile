@@ -2,7 +2,6 @@ package com.mingyuechunqiu.agile.frame.ui.fragment
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import com.mingyuechunqiu.agile.frame.ui.IAgilePage
 
 /**
  * <pre>
@@ -12,11 +11,17 @@ import com.mingyuechunqiu.agile.frame.ui.IAgilePage
  *      Github:     https://github.com/MingYueChunQiu
  *      Email:      xiyujieit@163.com
  *      Time:       2021/5/16 11:53 下午
- *      Desc:
+ *      Desc:       Fragment视图页面
+ *                  实现IAgileFragmentViewPage
  *      Version:    1.0
  * </pre>
  */
-data class FragmentViewPage(val owner: LifecycleOwner, val tag: String) : IAgilePage {
+data class FragmentViewPage(
+    val owner: LifecycleOwner,
+    val tag: String,
+    val isEmpty: Boolean
+) :
+    IAgileFragmentViewPage {
 
     override fun getPageTag(): String {
         return tag
@@ -24,5 +29,9 @@ data class FragmentViewPage(val owner: LifecycleOwner, val tag: String) : IAgile
 
     override fun getLifecycle(): Lifecycle {
         return owner.lifecycle
+    }
+
+    override fun isEmptyView(): Boolean {
+        return isEmpty
     }
 }

@@ -42,6 +42,9 @@ import com.mingyuechunqiu.agile.framework.ui.dialog.DialogLifecycleOwner;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * <pre>
  *      Project:    Agile
@@ -57,15 +60,22 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class BaseDialog extends AppCompatDialog implements IAgileDialogPage, IWindowInsetsHelperOwner, IPopHintOwner, IStatusViewOwner {
 
+    @NonNull
+    private final String mTag = getClass().getSimpleName();
     @Nullable
-    private WindowInsetsHelper mWindowInsetsHelper;
+    private WindowInsetsHelper mWindowInsetsHelper;//处理系统窗口辅助类
     @Nullable
-    private IStatusViewManager mStatusViewManager;
-    private final Object mStatusViewLock = new Object();//使用私有锁对象模式用于同步状态视图
+    private IStatusViewManager mStatusViewManager;//处理应用层各类状态视图管理器
     @Nullable
-    private ITransferPageDataDispatcherHelper mTransferPageDataDispatcherHelper;
+    private ITransferPageDataDispatcherHelper mTransferPageDataDispatcherHelper;//处理跨页面数据分发辅助类
     @Nullable
     private final DialogLifecycleOwner mDialogLifecycleOwner;
+    @NonNull
+    private final Lock mWindowInsetsHelperLock = new ReentrantLock();
+    @NonNull
+    private final Lock mStatusViewManagerLock = new ReentrantLock();
+    @NonNull
+    private final Lock mTransferPageDataDispatcherHelperLock = new ReentrantLock();
 
     public BaseDialog(Context context) {
         super(context);
@@ -151,10 +161,15 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
             throw new IllegalStateException("Window must not be null!");
         }
         if (mWindowInsetsHelper == null) {
-            synchronized (this) {
+            mWindowInsetsHelperLock.lock();
+            try {
                 if (mWindowInsetsHelper == null) {
                     mWindowInsetsHelper = new WindowInsetsHelper(window);
                 }
+            } catch (Exception e) {
+                LogManagerProvider.e(mTag, "getWindowInsetsHelper error: " + e.getMessage());
+            } finally {
+                mWindowInsetsHelperLock.unlock();
             }
         }
         return mWindowInsetsHelper;
@@ -164,10 +179,15 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
     @Override
     public ITransferPageDataDispatcherHelper getTransferPageDataDispatcherHelper() {
         if (mTransferPageDataDispatcherHelper == null) {
-            synchronized (this) {
+            mTransferPageDataDispatcherHelperLock.lock();
+            try {
                 if (mTransferPageDataDispatcherHelper == null) {
                     mTransferPageDataDispatcherHelper = new TransferPageDataDispatcherHelper(this);
                 }
+            } catch (Exception e) {
+                LogManagerProvider.e(mTag, "getTransferPageDataDispatcherHelper error: " + e.getMessage());
+            } finally {
+                mTransferPageDataDispatcherHelperLock.unlock();
             }
         }
         return mTransferPageDataDispatcherHelper;
@@ -280,11 +300,16 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
     @Override
     public IStatusViewManager getStatusViewManager() {
         if (mStatusViewManager == null) {
-            synchronized (mStatusViewLock) {
+            mStatusViewManagerLock.lock();
+            try {
                 if (mStatusViewManager == null) {
                     mStatusViewManager = StatusViewManagerProvider.newInstance(this);
                     onInitStatusViewManager(mStatusViewManager);
                 }
+            } catch (Exception e) {
+                LogManagerProvider.e(mTag, "getStatusViewManager error: " + e.getMessage());
+            } finally {
+                mStatusViewManagerLock.unlock();
             }
         }
         return mStatusViewManager;

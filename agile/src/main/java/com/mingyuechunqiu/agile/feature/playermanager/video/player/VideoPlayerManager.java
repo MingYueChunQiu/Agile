@@ -15,50 +15,50 @@ import com.mingyuechunqiu.agile.feature.playermanager.video.VideoPlayerOption;
  */
 class VideoPlayerManager implements VideoPlayerManagerable {
 
-    private VideoPlayerable mPlayerable;
+    private final VideoPlayerable mPlayer;
 
-    VideoPlayerManager(VideoPlayerable playerable) {
-        mPlayerable = playerable;
+    VideoPlayerManager(VideoPlayerable player) {
+        mPlayer = player;
     }
 
     @Override
     public void start() {
-        mPlayerable.start();
+        mPlayer.start();
     }
 
     @Override
     public void pause() {
-        mPlayerable.pause();
+        mPlayer.pause();
     }
 
     @Override
     public void resume() {
-        mPlayerable.resume();
+        mPlayer.resume();
     }
 
     @Override
     public void stop() {
-        mPlayerable.stop();
+        mPlayer.stop();
     }
 
     @Override
     public void release() {
-        mPlayerable.release();
+        mPlayer.release();
     }
 
     @Override
     public void setVolume(float leftVolume, float rightVolume) {
-        mPlayerable.setVolume(leftVolume, rightVolume);
+        mPlayer.setVolume(leftVolume, rightVolume);
     }
 
     @Override
     public void setVideoSource(String pathOrUrl) {
-        mPlayerable.setVideoSource(pathOrUrl);
+        mPlayer.setVideoSource(pathOrUrl);
     }
 
     @Override
     public VideoPlayerOption getVideoPlayerOption() {
-        return mPlayerable.getVideoPlayerOption();
+        return mPlayer.getVideoPlayerOption();
     }
 
 }

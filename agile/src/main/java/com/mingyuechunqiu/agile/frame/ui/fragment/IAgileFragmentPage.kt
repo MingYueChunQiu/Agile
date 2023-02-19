@@ -20,5 +20,10 @@ import com.mingyuechunqiu.agile.feature.helper.ui.transfer.receiver.ITransferPag
 interface IAgileFragmentPage : ITransferPageDataDispatcherPage, ITransferPageDataReceiverPage,
     IKeyEventReceiverPage {
 
-    fun getFragmentViewPage(): FragmentViewPage
+    /**
+     * 获取内部视图页面
+     *
+     * @return 返回视图页面对象，通过内部isEmptyView方法判断是否为空
+     */
+    fun getFragmentViewPage(): IAgileFragmentViewPage
 }

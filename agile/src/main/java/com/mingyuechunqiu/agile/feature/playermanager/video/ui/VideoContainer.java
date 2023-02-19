@@ -30,14 +30,14 @@ import com.mingyuechunqiu.agile.feature.playermanager.video.VideoPlayerOption;
  */
 public class VideoContainer implements VideoContainerable {
 
-    private MaterialCardView mcvContainer;//父容器层
-    private View vBackground;//背景层（因为对于TextureView只有它的直接父类设置背景才能有效果）
+    private final MaterialCardView mcvContainer;//父容器层
+    private final View vBackground;//背景层（因为对于TextureView只有它的直接父类设置背景才能有效果）
     private SurfaceView svScreen;
     private TextureView ttvScreen;
-    private ImageView ivPlaceholder;//占位图层
-    private TextView tvTitle;//标题
-    private View vLoading;//等待加载控件
-    private VideoPlayerOption mOption;//视频播放配置信息对象
+    private final ImageView ivPlaceholder;//占位图层
+    private final TextView tvTitle;//标题
+    private final View vLoading;//等待加载控件
+    private final VideoPlayerOption mOption;//视频播放配置信息对象
 
     public VideoContainer(@NonNull Context context, @NonNull ViewGroup parent, @NonNull VideoPlayerOption option) {
         View vContainer = LayoutInflater.from(context).inflate(R.layout.agile_layout_video_container, parent);

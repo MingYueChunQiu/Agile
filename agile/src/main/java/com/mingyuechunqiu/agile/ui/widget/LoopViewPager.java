@@ -1,9 +1,15 @@
 package com.mingyuechunqiu.agile.ui.widget;
 
+import static android.view.MotionEvent.ACTION_CANCEL;
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
+import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_IDLE;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -22,11 +28,6 @@ import com.mingyuechunqiu.agile.R;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
-
-import static android.view.MotionEvent.ACTION_CANCEL;
-import static android.view.MotionEvent.ACTION_DOWN;
-import static android.view.MotionEvent.ACTION_UP;
-import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_IDLE;
 
 /**
  * <pre>
@@ -92,7 +93,7 @@ public class LoopViewPager extends FrameLayout {
         PagerAdapter pagerAdapter = vpItem.getAdapter();
         if (pagerAdapter instanceof LoopPageAdapterWrapper) {
             //noinspection unchecked
-            ((LoopPageAdapterWrapper) pagerAdapter).setOnItemClickListener(listener);
+            ((LoopPageAdapterWrapper<T>) pagerAdapter).setOnItemClickListener(listener);
         }
     }
 
@@ -205,8 +206,8 @@ public class LoopViewPager extends FrameLayout {
      */
     public static abstract class LoopPageAdapter<T> extends PagerAdapter {
 
-        private SparseArray<Object> mCacheItemView = new SparseArray<>();//缓存对应Item控件实例，避免不断创建导致闪烁内存抖动等问题
-        private List<T> mData;//Item数据集合
+        private final SparseArray<Object> mCacheItemView = new SparseArray<>();//缓存对应Item控件实例，避免不断创建导致闪烁内存抖动等问题
+        private final List<T> mData;//Item数据集合
         private OnItemListener<T> mListener;//Item事件监听器
 
         public LoopPageAdapter(@NonNull List<T> data) {
@@ -231,12 +232,9 @@ public class LoopViewPager extends FrameLayout {
             final int realPosition = mData.size() > 1 ? (position - 1) : position;//对于用户而言真实的Item索引位置
             if (itemView == null) {
                 itemView = onCreateItem(container, realPosition);
-                ((View) itemView).setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mListener != null) {
-                            mListener.onItemClick(container, realPosition, v, mData.get(position));
-                        }
+                ((View) itemView).setOnClickListener(v -> {
+                    if (mListener != null) {
+                        mListener.onItemClick(container, realPosition, v, mData.get(position));
                     }
                 });
                 mCacheItemView.put(position, itemView);
@@ -276,7 +274,7 @@ public class LoopViewPager extends FrameLayout {
      */
     private static class LoopPageAdapterWrapper<T> extends PagerAdapter {
 
-        private LoopPageAdapter<T> mAdapter;
+        private final LoopPageAdapter<T> mAdapter;
 
         LoopPageAdapterWrapper(@NonNull LoopPageAdapter<T> adapter) {
             mAdapter = adapter;
@@ -390,9 +388,10 @@ public class LoopViewPager extends FrameLayout {
 
     private static class LoopHandler extends Handler {
 
-        private WeakReference<LoopViewPager> mViewRef;
+        private final WeakReference<LoopViewPager> mViewRef;
 
         LoopHandler(@NonNull LoopViewPager loopViewPager) {
+            super(Looper.getMainLooper());
             mViewRef = new WeakReference<>(loopViewPager);
         }
 
