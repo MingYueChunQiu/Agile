@@ -35,15 +35,38 @@ public final class ScreenHelper {
     }
 
     /**
-     * 获取item平均宽度
+     * 获取屏幕宽度平均划分数量后大小
      *
      * @param context 上下文
-     * @param radio   截取的屏幕宽度
-     * @param count   item个数
-     * @return 返回平分后的item宽度
+     * @param radio   需要截取的尺寸比例
+     * @param count   均分个数
+     * @return 返回平均后的大小（整型值）
      */
-    public static int getItemWidth(@NonNull Context context, float radio, int count) {
-        return (int) (context.getResources().getDisplayMetrics().widthPixels * radio / count);
+    public static int getAverageSizeWithParentWidth(@NonNull Context context, float radio, int count) {
+        return getAverageSizeWithSpecifiedSize(context.getResources().getDisplayMetrics().widthPixels, radio, count);
+    }
+
+    /**
+     * 获取屏幕高度平均划分数量后大小
+     *
+     * @param context 上下文
+     * @param radio   需要截取的尺寸比例
+     * @param count   均分个数
+     * @return 返回平均后的大小（整型值）
+     */
+    public static int getAverageSizeWithParentHeight(@NonNull Context context, float radio, int count) {
+        return getAverageSizeWithSpecifiedSize(context.getResources().getDisplayMetrics().heightPixels, radio, count);
+    }
+
+    /**
+     * 获取指定尺寸平均划分数量后大小
+     *
+     * @param radio 需要截取的尺寸比例
+     * @param count 均分个数
+     * @return 返回平均后的大小（整型值）
+     */
+    public static int getAverageSizeWithSpecifiedSize(float specifiedSize, float radio, int count) {
+        return (int) (specifiedSize * radio / count);
     }
 
     /**
@@ -161,7 +184,7 @@ public final class ScreenHelper {
         if (activity == null) {
             return;
         }
-        hideViewSoftInput(activity, view);
+        hideViewSoftInput((Context) activity, view);
     }
 
     /**
@@ -270,7 +293,7 @@ public final class ScreenHelper {
         if (activity == null) {
             return;
         }
-        showViewSoftInput(activity, view);
+        showViewSoftInput((Context) activity, view);
     }
 
     /**
