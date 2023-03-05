@@ -40,14 +40,10 @@ public class DaisyLoadingView extends View {
     private @ColorInt
     int mColor;//控件颜色
     private int mAnimateValue = 0;//动画旋转过程中变量
-    private ValueAnimator.AnimatorUpdateListener mUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-        @Override
-        public void onAnimationUpdate(ValueAnimator animation) {
-            mAnimateValue = (int) animation.getAnimatedValue();
-            invalidate();
-        }
+    private final ValueAnimator.AnimatorUpdateListener mUpdateListener = animation -> {
+        mAnimateValue = (int) animation.getAnimatedValue();
+        invalidate();
     };
-
 
     public DaisyLoadingView(Context context) {
         this(context, null);
@@ -163,7 +159,7 @@ public class DaisyLoadingView extends View {
         mPaint.setStrokeCap(Paint.Cap.ROUND);
     }
 
-    private void drawLoading(Canvas canvas, int rotateDegrees) {
+    private void drawLoading(@NonNull Canvas canvas, int rotateDegrees) {
         float width = mSize / 12, height = mSize / 6;
         mPaint.setStrokeWidth(width);
 
