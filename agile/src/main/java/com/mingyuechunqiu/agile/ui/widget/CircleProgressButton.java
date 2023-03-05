@@ -1,7 +1,5 @@
 package com.mingyuechunqiu.agile.ui.widget;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -53,17 +51,17 @@ public class CircleProgressButton extends View {
     private int mIdleInnerPadding, mPressedInnerPadding, mReleasedInnerPadding;//圆环距离内圆的边距
     private boolean mIdleRingVisible, mPressedRingVisible, mReleasedRingVisible;
     private int mMinProgress, mMaxProgress, mCurrentProgress;
-    private boolean mTimerMode;
+    private boolean mTimerMode;//是否处于计时模式
     private int mProgressDuration;
 
     private Paint mCirclePaint, mRingPaint;
     private int mInnerPadding;
     private RectF mRectF;
     private float mEndAngle;
-    private ValueAnimator mProgressAnimator;
+    private ValueAnimator mProgressAnimator;//进度显示动画
     private OnCircleProgressButtonListener mListener;
 
-    private State mState = State.IDLE;
+    private State mState = State.IDLE;//控件当前状态
 
     public CircleProgressButton(Context context) {
         this(context, null);
@@ -140,6 +138,15 @@ public class CircleProgressButton extends View {
         mState = State.IDLE;
         mEndAngle = 360;
         invalidate();
+    }
+
+    /**
+     * 返回控件当前状态
+     *
+     * @return 返回枚举状态值
+     */
+    public State getState() {
+        return mState;
     }
 
     public int getMinProgress() {
@@ -322,15 +329,18 @@ public class CircleProgressButton extends View {
             }
             mProgressAnimator = null;
         }
-        setReleasedState(callRelease);
+        moveToReleasedState(callRelease);
     }
 
     /**
-     * 设置控件释放状态
+     * 转移控件状态至释放状态
      *
      * @param callRelease 是否调用释放回调
      */
-    private void setReleasedState(boolean callRelease) {
+    private void moveToReleasedState(boolean callRelease) {
+        if (mState == State.RELEASED) {
+            return;
+        }
         mState = State.RELEASED;
         mEndAngle = 360;
         if (mListener != null) {
@@ -364,12 +374,6 @@ public class CircleProgressButton extends View {
                 mListener.onProgress(CircleProgressButton.this, progress);
             }
             invalidate();
-        });
-        mProgressAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                setReleasedState(true);
-            }
         });
         if (mTimerMode) {
             mProgressAnimator.setDuration(mMaxProgress * 1000L);

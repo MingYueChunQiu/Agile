@@ -7,7 +7,7 @@ import com.mingyuechunqiu.agile.constants.AgileCommonConstants
 import com.mingyuechunqiu.agile.feature.helper.ui.widget.ToolbarHelper
 import com.mingyuechunqiu.agile.feature.helper.ui.widget.ToolbarHelper.ToolbarConfig
 
-abstract class BaseToolViewModelActivity : BaseDataViewModelActivity() {
+abstract class BaseToolbarViewModelActivity : BaseDataViewModelActivity() {
 
     private var tbBar: Toolbar? = null
     private var mToolbarInflateCreator: ToolbarHelper.IToolbarInflateCreator? = null
