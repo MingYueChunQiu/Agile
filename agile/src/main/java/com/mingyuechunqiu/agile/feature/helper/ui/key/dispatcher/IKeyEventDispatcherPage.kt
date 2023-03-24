@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.feature.helper.ui.key.dispatcher
 
 import com.mingyuechunqiu.agile.frame.ui.IAgilePage
+import com.mingyuechunqiu.agile.frame.ui.activity.IActivityOwnerPage
 
 /**
  * <pre>
@@ -15,7 +16,7 @@ import com.mingyuechunqiu.agile.frame.ui.IAgilePage
  *      Version:    1.0
  * </pre>
  */
-interface IKeyEventDispatcherPage : IAgilePage{
+interface IKeyEventDispatcherPage : IAgilePage, IActivityOwnerPage {
 
     fun getKeyEventDispatcherHelper(): IKeyEventDispatcherHelper
 }

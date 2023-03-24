@@ -1,6 +1,7 @@
 package com.mingyuechunqiu.agile.ui.activity;
 
 import static com.mingyuechunqiu.agile.constants.AgileCommonConstants.BUNDLE_RETURN_TO_PREVIOUS_PAGE;
+import static com.mingyuechunqiu.agile.frame.ui.AgilePagesKt.createPageTag;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.mingyuechunqiu.agile.data.bean.ErrorInfo;
@@ -124,7 +126,13 @@ public abstract class BaseActivity extends AppCompatActivity implements IAgileAc
     @NonNull
     @Override
     public String getPageTag() {
-        return getClass().getSimpleName();
+        return createPageTag(this);
+    }
+
+    @Nullable
+    @Override
+    public FragmentActivity getOwnedActivity() {
+        return this;
     }
 
     @NonNull

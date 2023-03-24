@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewProgressOption;
@@ -65,7 +66,7 @@ public class TestFragment extends BasePresenterFragment<MainContract.View, MainC
 
     @Override
     protected void initData(@Nullable Bundle savedInstanceState) {
-
+        LogManagerProvider.d("fewew", getPageTag());
     }
 
     @Override

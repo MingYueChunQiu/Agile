@@ -1,7 +1,7 @@
 package com.mingyuechunqiu.agile.feature.helper.ui.key.receiver
 
-import android.view.KeyEvent
-import androidx.activity.OnBackPressedCallback
+import com.mingyuechunqiu.agile.feature.helper.ui.key.BackPressedObserver
+import com.mingyuechunqiu.agile.feature.helper.ui.key.OnKeyEventListener
 import com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher.ITransferPageDataDispatcher
 import com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher.ITransferPageDataDispatcherHelper
 
@@ -47,21 +47,73 @@ interface IKeyEventReceiver {
     fun clearAllOnKeyEventListeners()
 
     /**
-     * 添加按返回键通过Activity返回上一个界面
+     * 添加返回键监听器
      *
      * @param isEnabled 是否启用
      * @param operation 返回操作
-     * @return 添加监听成功返回true, 否则返回false
+     * @return 返回返回键监听器，可能为空
      */
-    fun addBackPressedObserver(isEnabled: Boolean, operation: (() -> Unit)): Boolean
-
-    fun getBackPressedObserver(): BackPressedObserver?
+    fun addBackPressedObserver(isEnabled: Boolean, operation: (() -> Unit)): BackPressedObserver?
 
     /**
-     * 设置返回回调是否生效
-     * @param enabled true生效，否则false
+     * 添加返回键监听器
+     *
+     * @param tag 事件监听器标签
+     * @param isEnabled 是否启用
+     * @param operation 返回操作
+     * @return 返回返回键监听器，可能为空
      */
-    fun setEnableBackPressedCallback(enabled: Boolean)
+    fun addBackPressedObserver(
+        tag: String,
+        isEnabled: Boolean,
+        operation: (() -> Unit)
+    ): BackPressedObserver?
+
+    /**
+     * 根据监听器ID移除返回键监听器
+     *
+     * @param observerId 监听器ID
+     * @return 移除成功返回true，否则返回false
+     */
+    fun removeBackPressedObserver(observerId: String): Boolean
+
+    /**
+     * 根据默认监听器关联标签移除返回键监听器
+     *
+     * @return 如果移除成功返回true，否则返回false
+     */
+    fun removeBackPressedObserversWithTag(): Boolean
+
+    /**
+     * 根据监听器关联标签移除返回键监听器
+     *
+     * @param tag 与按键监听器相关联的标签
+     * @return 如果移除成功返回true，否则返回false
+     */
+    fun removeBackPressedObserversWithTag(tag: String): Boolean
+
+    /**
+     * 根据监听器ID设置返回键监听器是否生效
+     *
+     * @param observerId 监听器ID
+     * @param isEnabled true表示生效，否则false
+     */
+    fun setEnableBackPressedCallback(observerId: String, isEnabled: Boolean)
+
+    /**
+     * 根据默认监听器关联标签设置返回键监听器是否生效
+     *
+     * @param isEnabled true表示生效，否则false
+     */
+    fun setEnableBackPressedCallbacksWithTag(isEnabled: Boolean)
+
+    /**
+     * 根据监听器关联标签设置返回键监听器是否生效
+     *
+     * @param tag 监听器关联标签
+     * @param isEnabled true表示生效，否则false
+     */
+    fun setEnableBackPressedCallbacksWithTag(tag: String, isEnabled: Boolean)
 
     /**
      * 添加按返回键通过Activity返回上一个界面
@@ -98,25 +150,4 @@ interface IKeyEventReceiver {
         helper: ITransferPageDataDispatcherHelper,
         interceptor: ITransferPageDataDispatcher.TransferPageDataInterceptor?
     ): Boolean
-
-    data class KeyEventObserver(val id: String, val listener: OnKeyEventListener)
-
-    interface OnKeyEventListener {
-
-        /**
-         * 当触发按键事件时回调
-         *
-         * @param keyCode 键值
-         * @param event   按键事件
-         * @return 如果自己处理完成，不需要分发者继续处理返回true，否则返回false
-         */
-        fun onKeyEvent(keyCode: Int, event: KeyEvent): Boolean
-    }
-
-    /**
-     * 回退键观察者类
-     *
-     * @param callback 回退键回调
-     */
-    data class BackPressedObserver(val callback: OnBackPressedCallback)
 }

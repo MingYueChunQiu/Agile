@@ -1,5 +1,6 @@
 package com.mingyuechunqiu.agile.feature.helper.ui.key.receiver
 
+import com.mingyuechunqiu.agile.feature.helper.ui.key.dispatcher.IKeyEventDispatcherPage
 import com.mingyuechunqiu.agile.frame.ui.IAgilePage
 import com.mingyuechunqiu.agile.frame.ui.fragment.IFragmentOwnerPage
 
@@ -16,7 +17,9 @@ import com.mingyuechunqiu.agile.frame.ui.fragment.IFragmentOwnerPage
  *      Version:    1.0
  * </pre>
  */
-interface IKeyEventReceiverPage : IAgilePage, IFragmentOwnerPage{
+interface IKeyEventReceiverPage : IAgilePage, IFragmentOwnerPage {
 
     fun getKeyEventReceiverHelper(): IKeyEventReceiverHelper
+
+    fun getBelongToKeyEventDispatcherPage(): IKeyEventDispatcherPage?
 }

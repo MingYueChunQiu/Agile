@@ -1,23 +1,25 @@
 package com.mingyuechunqiu.agile.util;
 
+import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_DISCONNECTED;
+import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_MOBILE;
+import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_UNKNOWN;
+import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_WIFI;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.frame.Agile;
-
-import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_DISCONNECTED;
-import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_MOBILE;
-import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_UNKNOWN;
-import static com.mingyuechunqiu.agile.util.NetworkUtils.NetworkTypeConstants.NET_TYPE_WIFI;
 
 /**
  * <pre>
@@ -41,10 +43,13 @@ public final class NetworkUtils {
      * @return 返回手机的网络连接检测结果
      */
     public static boolean checkNetworkIsConnected() {
-        if (Build.VERSION.SDK_INT < 21) {
-            return checkNetStateWith21();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return checkNetworkStateWith23OrNewer();
+        } else if (Build.VERSION.SDK_INT >= 21) {
+            return checkNetworkStateWith21OrNewer();
+        } else {
+            return checkNetworkStateWith21();
         }
-        return checkNetStateWith21OrNew();
     }
 
     /**
@@ -53,20 +58,11 @@ public final class NetworkUtils {
      * @return 分为未连接、未知、WiFi、移动网络四种类型
      */
     public static int getNetworkType() {
-        if (!checkNetworkIsConnected()) {
-            return NET_TYPE_DISCONNECTED;
-        }
-        NetworkInfo networkInfo = sConnMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                return NET_TYPE_WIFI;
-            } else if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
-                return NET_TYPE_MOBILE;
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return getNetworkTypeWith23OrNewer();
         } else {
-            return NET_TYPE_UNKNOWN;
+            return getNetworkTypeWith23();
         }
-        return networkInfo.getType();
     }
 
     /**
@@ -155,7 +151,7 @@ public final class NetworkUtils {
      *
      * @return 返回手机的网络连接检测结果
      */
-    private static boolean checkNetStateWith21() {
+    private static boolean checkNetworkStateWith21() {
         checkConnMgr();
         NetworkInfo wifiInfo = sConnMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         boolean isWifiConnected = wifiInfo != null && wifiInfo.isConnected();
@@ -170,7 +166,7 @@ public final class NetworkUtils {
      * @return 返回手机的网络连接检测结果
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static boolean checkNetStateWith21OrNew() {
+    private static boolean checkNetworkStateWith21OrNewer() {
         checkConnMgr();
         Network[] networks = sConnMgr.getAllNetworks();
         for (Network network : networks) {
@@ -182,6 +178,53 @@ public final class NetworkUtils {
             }
         }
         return false;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private static boolean checkNetworkStateWith23OrNewer() {
+        checkConnMgr();
+        Network network = sConnMgr.getActiveNetwork();
+        if (network == null) {
+            return false;
+        }
+        NetworkCapabilities networkCapabilities = sConnMgr.getNetworkCapabilities(network);
+        if (networkCapabilities == null) {
+            return false;
+        }
+        return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
+    }
+
+    private static int getNetworkTypeWith23() {
+        NetworkInfo networkInfo = sConnMgr.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isConnected()) {
+            return NET_TYPE_DISCONNECTED;
+        }
+        if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            return NET_TYPE_WIFI;
+        } else if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+            return NET_TYPE_MOBILE;
+        } else {
+            return NET_TYPE_UNKNOWN;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private static int getNetworkTypeWith23OrNewer() {
+        Network network = sConnMgr.getActiveNetwork();
+        if (network == null) {
+            return NET_TYPE_DISCONNECTED;
+        }
+        NetworkCapabilities networkCapabilities = sConnMgr.getNetworkCapabilities(network);
+        if (networkCapabilities == null) {
+            return NET_TYPE_DISCONNECTED;
+        }
+        if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+            return NET_TYPE_WIFI;
+        } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+            return NET_TYPE_MOBILE;
+        } else {
+            return NET_TYPE_UNKNOWN;
+        }
     }
 
     /**

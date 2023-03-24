@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.base.presenter.BaseAbstractDataPresenter;
 import com.mingyuechunqiu.agile.base.view.IBaseDataView;
+import com.mingyuechunqiu.agile.feature.helper.ui.widget.ToolbarHelper;
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewConfigure;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewOption;
 import com.mingyuechunqiu.agile.feature.statusview.bean.StatusViewProgressOption;
@@ -19,7 +21,7 @@ import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
-import com.mingyuechunqiu.agile.feature.helper.ui.widget.ToolbarHelper;
+import com.mingyuechunqiu.agile.util.NetworkUtils;
 import com.mingyuechunqiu.agileproject.R;
 
 /**
@@ -74,7 +76,7 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity<IBaseDataView,
 
     @Override
     protected void initData(@Nullable Bundle savedInstanceState) {
-
+        LogManagerProvider.e("fewew", "网络3 " + NetworkUtils.checkNetworkIsConnected() + " " + NetworkUtils.getNetworkType() + " " + getPageTag());
     }
 
     @Override

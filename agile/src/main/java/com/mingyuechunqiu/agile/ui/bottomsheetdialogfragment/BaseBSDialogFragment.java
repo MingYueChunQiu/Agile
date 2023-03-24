@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agile.ui.bottomsheetdialogfragment;
 
+import static com.mingyuechunqiu.agile.frame.ui.AgilePagesKt.createPageTag;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -25,6 +27,7 @@ import com.mingyuechunqiu.agile.feature.helper.ui.hint.IPopHintOwner;
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.insets.IWindowInsetsHelperOwner;
 import com.mingyuechunqiu.agile.feature.helper.ui.insets.WindowInsetsHelper;
+import com.mingyuechunqiu.agile.feature.helper.ui.key.dispatcher.IKeyEventDispatcherPage;
 import com.mingyuechunqiu.agile.feature.helper.ui.key.receiver.IKeyEventReceiverHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.key.receiver.KeyEventReceiverHelper;
 import com.mingyuechunqiu.agile.feature.helper.ui.transfer.dispatcher.ITransferPageDataDispatcherHelper;
@@ -174,7 +177,7 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
     @NonNull
     @Override
     public String getPageTag() {
-        return getClass().getSimpleName();
+        return createPageTag(this);
     }
 
     @NonNull
@@ -279,6 +282,16 @@ public abstract class BaseBSDialogFragment extends BottomSheetDialogFragment imp
             }
         }
         return mKeyEventReceiverHelper;
+    }
+
+    @Nullable
+    @Override
+    public IKeyEventDispatcherPage getBelongToKeyEventDispatcherPage() {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof IKeyEventDispatcherPage) {
+            return (IKeyEventDispatcherPage) activity;
+        }
+        return null;
     }
 
     /**

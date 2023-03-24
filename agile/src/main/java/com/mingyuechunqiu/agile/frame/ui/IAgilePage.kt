@@ -18,7 +18,7 @@ import androidx.lifecycle.LifecycleOwner
 interface IAgilePage : LifecycleOwner {
 
     /**
-     * 获取界面标签
+     * 获取界面标签，确保唯一
      */
     fun getPageTag(): String
 }

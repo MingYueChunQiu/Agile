@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agile.ui.dialog;
 
+import static com.mingyuechunqiu.agile.frame.ui.AgilePagesKt.createPageTag;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -121,10 +123,10 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
         return getDialogLifecycleOwner().getLifecycle();
     }
 
-    @NotNull
+    @NonNull
     @Override
     public String getPageTag() {
-        return getClass().getSimpleName();
+        return createPageTag(this);
     }
 
     @Nullable
