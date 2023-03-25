@@ -15,9 +15,8 @@ import androidx.activity.OnBackPressedCallback
  *      Version:    1.0
  * </pre>
  */
-//键前缀
-private const val KEY_KEY_EVENT_PREFIX = "Key_key_event_"
-private const val KEY_BACK_PRESSED_EVENT_PREFIX = "Key_back_pressed_"
+private const val KEY_KEY_EVENT_PREFIX = "Key_key_event_"//通用按键前缀
+private const val KEY_BACK_PRESSED_EVENT_PREFIX = "Key_back_pressed_"//返回按键前缀
 
 /**
  * 针对通用按键，根据传入tag创建真正的键
@@ -54,6 +53,7 @@ interface OnKeyEventListener {
 /**
  * 回退键观察者类
  *
- * @param callback 回退键回调
+ * @property id 监听器ID
+ * @property callback 回退键监听器
  */
 data class BackPressedObserver(val id: String, val callback: OnBackPressedCallback)
