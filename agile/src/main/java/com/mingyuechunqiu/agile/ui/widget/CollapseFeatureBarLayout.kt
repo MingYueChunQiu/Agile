@@ -31,7 +31,7 @@ import kotlin.math.max
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2022/8/3 23:15
  *      Desc:       展开收缩按钮集控件
@@ -56,6 +56,7 @@ class CollapseFeatureBarLayout<T> @JvmOverloads constructor(
     var featureBarItemInnerPadding: Int
     var featureBarItemIconPadding: Int
     var isShowMask: Boolean
+
     @ColorInt
     var maskColor: Int
 
@@ -220,6 +221,9 @@ class CollapseFeatureBarLayout<T> @JvmOverloads constructor(
     fun collapse() {
         if (!isInExpand) {
             return
+        }
+        if (isShowMask) {
+            setBackgroundColor(Color.TRANSPARENT)
         }
         mFeatureBarViews.forEach {
             it.animate().translationY(0F)

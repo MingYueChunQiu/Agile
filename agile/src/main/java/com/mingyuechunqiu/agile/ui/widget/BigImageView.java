@@ -63,7 +63,7 @@ public class BigImageView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         if (mDecoder == null) {
             return;
@@ -154,6 +154,10 @@ public class BigImageView extends View {
      * @param path 文件路径
      */
     public void loadBitmapFile(@Nullable final String path) {
+        if (path == null){
+            LogManagerProvider.e("BigImageView:loadBitmapFile", "path == null");
+            return;
+        }
         decodeBitmap(options -> {
             try {
                 mDecoder = BitmapRegionDecoder.newInstance(path, false);
@@ -170,6 +174,10 @@ public class BigImageView extends View {
      * @param fileDescriptor 文件描述符
      */
     public void loadBitmapFileDescriptor(@Nullable final FileDescriptor fileDescriptor) {
+        if (fileDescriptor == null){
+            LogManagerProvider.e("BigImageView:loadBitmapFile", "fileDescriptor == null");
+            return;
+        }
         decodeBitmap(options -> {
             try {
                 mDecoder = BitmapRegionDecoder.newInstance(fileDescriptor, false);
@@ -186,6 +194,10 @@ public class BigImageView extends View {
      * @param stream 输入流
      */
     public void loadBitmapStream(@Nullable final InputStream stream) {
+        if (stream == null){
+            LogManagerProvider.e("BigImageView:loadBitmapFile", "stream == null");
+            return;
+        }
         decodeBitmap(options -> {
             try {
                 mDecoder = BitmapRegionDecoder.newInstance(stream, false);

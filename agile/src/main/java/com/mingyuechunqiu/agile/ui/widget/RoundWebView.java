@@ -17,7 +17,7 @@ import com.mingyuechunqiu.agile.R;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2020/3/28 9:41 PM
  *      Desc:       圆角网页控件
@@ -27,10 +27,10 @@ import com.mingyuechunqiu.agile.R;
  */
 public class RoundWebView extends WebView {
 
-    private Path mPath = new Path();
-    private RectF mRectF = new RectF();
+    private final Path mPath = new Path();
+    private final RectF mRectF = new RectF();
 
-    private float[] mRadiusArray = {0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f};
+    private final float[] mRadiusArray = {0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f};
 
     public RoundWebView(Context context) {
         this(context, null);

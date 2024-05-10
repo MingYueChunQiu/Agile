@@ -1,18 +1,19 @@
 package com.mingyuechunqiu.agile.ui.widget;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.view.MotionEventCompat;
-import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.MotionEventCompat;
+import androidx.slidingpanelayout.widget.SlidingPaneLayout;
+
 /**
  * <pre>
  *     author : xyj
- *     Github : https://github.com/MingYueChunQiu
+ *     Github : <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/6/27
  *     desc   : 自定义滑动面板（解决ViewPager和SlidingPaneLayout的滑动事件冲突）

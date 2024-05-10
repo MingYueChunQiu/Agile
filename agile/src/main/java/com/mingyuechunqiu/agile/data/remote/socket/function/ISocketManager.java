@@ -4,7 +4,7 @@ package com.mingyuechunqiu.agile.data.remote.socket.function;
  * <pre>
  *       Project:    Agile
  *       author :    MingYueChunQiu
- *       Github :    https://github.com/MingYueChunQiu
+ *       Github :    <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *       e-mail :    xiyujieit@163.com
  *       Time:       2019/9/24 14:09
  *       Desc:       socket管理器类

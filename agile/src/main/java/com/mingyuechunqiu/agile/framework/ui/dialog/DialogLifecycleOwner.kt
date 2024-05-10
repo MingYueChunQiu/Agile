@@ -21,9 +21,8 @@ class DialogLifecycleOwner : LifecycleOwner {
 
     private val mLifecycleRegistry = LifecycleRegistry(this)
 
-    override fun getLifecycle(): Lifecycle {
-        return mLifecycleRegistry
-    }
+    override val lifecycle: Lifecycle
+        get() = mLifecycleRegistry
 
     fun handleLifecycleEvent(event: Lifecycle.Event) {
         mLifecycleRegistry.handleLifecycleEvent(event)

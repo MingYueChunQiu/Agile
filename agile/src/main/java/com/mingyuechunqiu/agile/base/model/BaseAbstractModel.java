@@ -163,7 +163,11 @@ public abstract class BaseAbstractModel implements IBaseModel {
         if (dispatchCallWithCustom(call)) {
             return true;
         }
-        return dispatchCallInternal(call);
+        boolean result = dispatchCallInternal(call);
+        if (!result) {
+            LogManagerProvider.e(TAG, "dispatchCall method found no matched repository to handle call!");
+        }
+        return result;
     }
 
     /**

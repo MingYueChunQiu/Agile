@@ -34,7 +34,7 @@ import java.util.List;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2020/4/7 4:39 PM
  *      Desc:       可无线循环滚动控件

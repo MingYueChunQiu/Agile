@@ -9,7 +9,7 @@ import com.mingyuechunqiu.agile.base.view.IBaseView
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2022/1/12 9:24 下午
  *      Desc:       用于储存Presenter的容器，确保Present的生命周期可以跟随界面变化

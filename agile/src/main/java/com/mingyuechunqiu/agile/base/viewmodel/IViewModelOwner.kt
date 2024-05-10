@@ -5,7 +5,7 @@ package com.mingyuechunqiu.agile.base.viewmodel
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2021/12/30 11:14 下午
  *      Desc:       ViewModel拥有者接口

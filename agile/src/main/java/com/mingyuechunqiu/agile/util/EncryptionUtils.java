@@ -2,6 +2,8 @@ package com.mingyuechunqiu.agile.util;
 
 import android.text.TextUtils;
 
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.security.MessageDigest;
@@ -12,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
  *      Project:    DoomsdayTaoistSanctuary
  *
  *      author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2019-05-04 22:27
  *      Desc:       加密工具类
@@ -50,7 +52,7 @@ public class EncryptionUtils {
             digest.update(msg.getBytes());
             return digest.digest();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LogManagerProvider.e("EncryptionUtils", e.getMessage());
             return null;
         }
     }

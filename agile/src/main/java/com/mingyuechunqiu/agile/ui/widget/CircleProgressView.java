@@ -26,7 +26,7 @@ import com.mingyuechunqiu.agile.R;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       1/16/21 1:20 PM
  *      Desc:
@@ -94,7 +94,7 @@ public final class CircleProgressView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         int width = getWidth() - getCompatPaddingStart() - getCompatPaddingEnd();
         int height = getHeight() - getPaddingTop() - getPaddingBottom();

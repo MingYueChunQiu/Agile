@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * <pre>
  *     author : xyj
- *     Github : https://github.com/MingYueChunQiu
+ *     Github : <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/8/5
  *     desc   : 颜色分割线Item装饰器

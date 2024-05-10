@@ -11,7 +11,7 @@ import com.mingyuechunqiu.agile.base.bridge.Request;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2019-12-14 11:37
  *      Desc:       错误信息类

@@ -11,26 +11,26 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.MingYueChunQiu'
                 artifactId = 'Agile'
-                version = '0.6.45'
+                version = '0.7.0'
             }
         }
     }
 }
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 33
+        targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     buildTypes {
@@ -42,25 +42,38 @@ android {
     }
     namespace 'com.mingyuechunqiu.agile'
 
+    buildFeatures {
+
+        viewBinding true
+        buildConfig true
+    }
+
+    //兼容AGP 8.0，自动创建组件将在默认情况下被禁用问题
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test:runner:1.4.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    implementation 'androidx.core:core-ktx:1.9.0'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation 'androidx.core:core-ktx:1.10.1'
 
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
     implementation group: 'commons-net', name: 'commons-net', version: '3.8.0'
     implementation 'androidx.slidingpanelayout:slidingpanelayout:1.2.0'
-    implementation "androidx.exifinterface:exifinterface:1.3.3"
+    implementation "androidx.exifinterface:exifinterface:1.3.6"
 }
 
 repositories {

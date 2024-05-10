@@ -1,20 +1,20 @@
 package com.mingyuechunqiu.agile.data.remote.socket.function;
 
+import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_HEART_BEAT;
+import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_RETRY_COUNT;
+import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_SILENT_DURATION;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketIpInfo;
 import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketSendData;
 
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_HEART_BEAT;
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_RETRY_COUNT;
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_SILENT_DURATION;
-
 /**
  * <pre>
  *       Project:    Agile
  *       author :    MingYueChunQiu
- *       Github :    https://github.com/MingYueChunQiu
+ *       Github :    <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *       e-mail :    xiyujieit@163.com
  *       Time:       2019/9/29 13:55
  *       Desc:       Socket管理器配置类

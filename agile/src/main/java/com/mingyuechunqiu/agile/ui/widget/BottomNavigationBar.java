@@ -21,6 +21,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.mingyuechunqiu.agile.R;
 import com.mingyuechunqiu.agile.feature.helper.ui.common.ScreenHelper;
@@ -42,9 +43,9 @@ import java.util.List;
  */
 public class BottomNavigationBar extends LinearLayoutCompat {
 
-    private List<BottomNavigationTabItem> mTabList;
+    private final List<BottomNavigationTabItem> mTabList;
 
-    private LinearLayoutCompat llTabContainer;
+    private final LinearLayoutCompat llTabContainer;
 
     private @ColorInt
     int mTextInactiveColor, mTextActiveColor;
@@ -161,7 +162,7 @@ public class BottomNavigationBar extends LinearLayoutCompat {
     }
 
     public boolean isInitialized() {
-        return mTabList != null && mTabList.size() > 0;
+        return mTabList != null && !mTabList.isEmpty();
     }
 
     /**
@@ -234,7 +235,7 @@ public class BottomNavigationBar extends LinearLayoutCompat {
         Drawable icon = iconDrawable;
         if (icon == null) {
             if (iconDrawableResId != 0) {
-                icon = getResources().getDrawable(iconDrawableResId);
+                icon = ResourcesCompat.getDrawable(getResources(), iconDrawableResId, null);
             }
         }
         return icon;

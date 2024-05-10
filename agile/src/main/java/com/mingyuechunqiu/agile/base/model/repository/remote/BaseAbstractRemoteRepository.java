@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * <pre>
  *     author : xyj
- *     Github : https://github.com/MingYueChunQiu
+ *     Github : <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/6/26
  *     desc   : 远程Repository层抽象基类
@@ -55,7 +55,7 @@ public abstract class BaseAbstractRemoteRepository extends BaseAbstractRepositor
             mRemoteRepositoryOperationList = new ArrayList<>();
         }
         //移除已经失效了的操作
-        if (mRemoteRepositoryOperationList.size() > 0) {
+        if (!mRemoteRepositoryOperationList.isEmpty()) {
             Iterator<IBaseRemoteRepositoryOperation<?>> iterator = mRemoteRepositoryOperationList.iterator();
             while (iterator.hasNext()) {
                 IBaseRemoteRepositoryOperation<?> o = iterator.next();
@@ -76,7 +76,7 @@ public abstract class BaseAbstractRemoteRepository extends BaseAbstractRepositor
      * @param operation 远程操作
      */
     protected <T> void removeRemoteOperation(@Nullable IBaseRemoteRepositoryOperation<T> operation) {
-        if (operation == null || mRemoteRepositoryOperationList == null || mRemoteRepositoryOperationList.size() == 0) {
+        if (operation == null || mRemoteRepositoryOperationList == null || mRemoteRepositoryOperationList.isEmpty()) {
             return;
         }
         if (!operation.isCanceled()) {

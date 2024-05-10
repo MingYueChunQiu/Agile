@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * <pre>
  *     author : xyj
- *     Github : https://github.com/MingYueChunQiu
+ *     Github : <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/1/16
  *     desc   : 贝塞尔曲线工具类
@@ -62,7 +62,7 @@ public final class BezierUtils {
     @NonNull
     public static List<PointF> getBezierPointFList(@NonNull List<PointF> controlPointFList, int frame) {
         List<PointF> bezierPointFList = new ArrayList<>();
-        if (controlPointFList.size() == 0) {
+        if (controlPointFList.isEmpty()) {
             return bezierPointFList;
         }
         //错误输入时，默认60帧

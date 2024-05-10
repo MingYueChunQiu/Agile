@@ -13,7 +13,7 @@ import com.mingyuechunqiu.agile.base.view.IBaseView;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2023/2/19 10:12
  *      Desc:       不依赖于数据层的孤立的展示者层，适用于纯粹视图逻辑模块

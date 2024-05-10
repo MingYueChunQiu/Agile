@@ -44,6 +44,7 @@ import com.mingyuechunqiu.agile.framework.ui.dialog.DialogLifecycleOwner;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -52,7 +53,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2020/4/7 9:10 PM
  *      Desc:       所有对话框基类
@@ -279,7 +280,11 @@ public abstract class BaseDialog extends AppCompatDialog implements IAgileDialog
      */
     @Override
     public void showLoadingStatusView(@IdRes int containerId) {
-        getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, getWindow().findViewById(containerId), null);
+        ViewGroup container = Objects.requireNonNull(getWindow()).findViewById(containerId);
+        if (container == null) {
+            throw new IllegalArgumentException("containerId is invalid ViewGroup Id");
+        }
+        getStatusViewManager().showStatusView(StatusViewConstants.StatusViewType.TYPE_LOADING, container, null);
     }
 
     /**

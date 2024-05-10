@@ -7,7 +7,7 @@ import com.mingyuechunqiu.agile.base.view.IBaseDataView;
 /**
  * <pre>
  *     author : xyj
- *     Github : https://github.com/MingYueChunQiu
+ *     Github : <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/4/9
  *     desc   : 所有MVP层具有数据功能的DialogFragment的基类

@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2021/5/9 2:08 下午
  *      Desc:       所有具有P层功能的Activity层基类

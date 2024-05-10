@@ -11,7 +11,7 @@ import com.mingyuechunqiu.agile.base.view.IBaseDataView;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2020/4/7 9:31 PM
  *      Desc:       所有MVP层具有网络功能的对话框的基类

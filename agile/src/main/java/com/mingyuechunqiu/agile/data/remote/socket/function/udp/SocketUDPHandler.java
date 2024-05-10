@@ -1,21 +1,5 @@
 package com.mingyuechunqiu.agile.data.remote.socket.function.udp;
 
-import androidx.annotation.NonNull;
-
-import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketIpInfo;
-import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketSendData;
-import com.mingyuechunqiu.agile.data.remote.socket.exception.SocketHandlerException;
-import com.mingyuechunqiu.agile.data.remote.socket.function.SocketManagerProvider;
-import com.mingyuechunqiu.agile.data.remote.socket.function.framework.data.SocketDataCallback;
-import com.mingyuechunqiu.agile.data.remote.socket.function.framework.handler.SocketUDPHandlerCallback;
-
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-
 import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConnectState.STATE_ERROR;
 import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConnectState.STATE_IDLE;
 import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConnectState.STATE_SUCCESS;
@@ -24,11 +8,28 @@ import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConsta
 import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketErrorType.TYPE_IP_ERROR;
 import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketErrorType.TYPE_REQUEST_PARAMS_ERROR;
 
+import androidx.annotation.NonNull;
+
+import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketIpInfo;
+import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketSendData;
+import com.mingyuechunqiu.agile.data.remote.socket.exception.SocketHandlerException;
+import com.mingyuechunqiu.agile.data.remote.socket.function.SocketManagerProvider;
+import com.mingyuechunqiu.agile.data.remote.socket.function.framework.data.SocketDataCallback;
+import com.mingyuechunqiu.agile.data.remote.socket.function.framework.handler.SocketUDPHandlerCallback;
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 /**
  * <pre>
  *       Project:    Agile
  *       author :    MingYueChunQiu
- *       Github :    https://github.com/MingYueChunQiu
+ *       Github :    <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *       e-mail :    xiyujieit@163.com
  *       Time:       2019/9/25 13:39
  *       Desc:       Socket处理UDP的具体实现类
@@ -80,22 +81,19 @@ public class SocketUDPHandler implements ISocketUDPHandler {
         mDataCallback = callback;
         if (mCallback != null) {
             final SocketIpInfo finalInfo = info;
-            mCallback.executeTask(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        InetAddress address = InetAddress.getByName(finalInfo.getIp());
-                        String heartBeat = SocketManagerProvider.getGlobalSocketConfigure().getHeartBeat().getData();
-                        mSocket.send(new DatagramPacket(heartBeat.getBytes(),
-                                heartBeat.length(),
-                                address,
-                                finalInfo.getPort()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        retrySendHeartBeat();
-                    }
-                    receiveHeartBeat();
+            mCallback.executeTask(() -> {
+                try {
+                    InetAddress address = InetAddress.getByName(finalInfo.getIp());
+                    String heartBeat = SocketManagerProvider.getGlobalSocketConfigure().getHeartBeat().getData();
+                    mSocket.send(new DatagramPacket(heartBeat.getBytes(),
+                            heartBeat.length(),
+                            address,
+                            finalInfo.getPort()));
+                } catch (IOException e) {
+                    LogManagerProvider.e("SocketUDPHandler", e.getMessage());
+                    retrySendHeartBeat();
                 }
+                receiveHeartBeat();
             });
         }
     }
@@ -129,7 +127,7 @@ public class SocketUDPHandler implements ISocketUDPHandler {
                     receivePacket = new DatagramPacket(
                             data, data.length, address, info.getPort());
                 } catch (UnknownHostException e) {
-                    e.printStackTrace();
+                    LogManagerProvider.e("SocketUDPHandler", e.getMessage());
                     if (mCallback != null && mDataCallback != null) {
                         mCallback.handleFailureResult(mDataCallback, TYPE_REQUEST_PARAMS_ERROR, "网络请求参数错误");
                     }
@@ -182,8 +180,9 @@ public class SocketUDPHandler implements ISocketUDPHandler {
                 mSocket.setSoTimeout(SOCKET_TIME_OUT);
                 return true;
             } catch (SocketException e) {
-                e.printStackTrace();
+                LogManagerProvider.e("SocketUDPHandler", e.getMessage());
                 mState = STATE_ERROR;
+                return false;
             }
         }
         return true;

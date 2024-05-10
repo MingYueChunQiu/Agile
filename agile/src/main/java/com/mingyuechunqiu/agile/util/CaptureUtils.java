@@ -79,12 +79,14 @@ public final class CaptureUtils {
         int screenWidth = metrics.widthPixels;
         int screenHeight = metrics.heightPixels;
         int densityDpi = metrics.densityDpi;
-        ImageReader imageReader = ImageReader.newInstance(screenWidth, screenHeight, ImageFormat.JPEG, 1);
-        mediaProjection.createVirtualDisplay("screenShot", screenWidth, screenHeight
-                , densityDpi, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                imageReader.getSurface(), null, null);
-        SystemClock.sleep(1000);
-        Image image = imageReader.acquireNextImage();
+        Image image;
+        try (ImageReader imageReader = ImageReader.newInstance(screenWidth, screenHeight, ImageFormat.JPEG, 1)) {
+            mediaProjection.createVirtualDisplay("screenShot", screenWidth, screenHeight
+                    , densityDpi, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+                    imageReader.getSurface(), null, null);
+            SystemClock.sleep(1000);
+            image = imageReader.acquireNextImage();
+        }
         return BitmapUtils.getBitmapFromImage(image);
     }
 

@@ -11,6 +11,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
@@ -46,7 +48,7 @@ public final class StringUtils {
             byte[] bytes = digest.digest();
             return bytesToHex(bytes);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LogManagerProvider.e("StringUtils:encryptMD5", e.getMessage());
             return null;
         }
     }

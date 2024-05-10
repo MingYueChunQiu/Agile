@@ -1,5 +1,7 @@
 package com.mingyuechunqiu.agile.data.remote.socket.function;
 
+import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketErrorType.TYPE_IP_ERROR;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -27,13 +29,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketErrorType.TYPE_IP_ERROR;
-
 /**
  * <pre>
  *       Project:    Agile
  *       author :    MingYueChunQiu
- *       Github :    https://github.com/MingYueChunQiu
+ *       Github :    <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *       e-mail :    xiyujieit@163.com
  *       Time:       2019/9/25 9:27
  *       Desc:       Socket处理器
@@ -48,9 +48,9 @@ class SocketHandler implements ISocketHandler, SocketUDPHandlerCallback,
     private static final int MSG_DATA_SUCCESS = 2;
     private static final int MSG_FAILURE = 3;
 
-    private ExecutorService mExecutor;
+    private final ExecutorService mExecutor;
     private InternalHandler mHandler;
-    private Map<SocketIpInfo, Pair<ISocketUDPHandler, ISocketTCPHandler>> mCacheMap;
+    private final Map<SocketIpInfo, Pair<ISocketUDPHandler, ISocketTCPHandler>> mCacheMap;
 
     SocketHandler() {
         int cpuNumbers = Runtime.getRuntime().availableProcessors();
@@ -81,7 +81,7 @@ class SocketHandler implements ISocketHandler, SocketUDPHandlerCallback,
         }
         if (!hasContained) {
             udpHandler = new SocketUDPHandler(this);
-            mCacheMap.put(info, new Pair<ISocketUDPHandler, ISocketTCPHandler>(udpHandler, new SocketTCPHandler(this)));
+            mCacheMap.put(info, new Pair<>(udpHandler, new SocketTCPHandler(this)));
         }
         udpHandler.sendHeartBeat(data, callback);
     }

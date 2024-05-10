@@ -16,7 +16,7 @@ import com.mingyuechunqiu.agile.base.bridge.Request
  *      Version:    1.0
  * </pre>
  */
-internal class RequestCall<I : Request.IParamsInfo, T> constructor(
+internal class RequestCall<I : Request.IParamsInfo, T>(
     private val mRequest: Request<I>,
     private val mCallback: Callback<T>
 ) : Call<I, T> {

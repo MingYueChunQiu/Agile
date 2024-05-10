@@ -8,14 +8,23 @@ import androidx.core.content.FileProvider
 import com.mingyuechunqiu.agile.constants.AgileFileConstants.FileSuffix.CommonSuffix
 import com.mingyuechunqiu.agile.feature.logmanager.LogManagerProvider
 import com.mingyuechunqiu.agile.util.ThreadPoolUtils
-import java.io.*
+import java.io.BufferedOutputStream
+import java.io.BufferedWriter
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStreamWriter
 
 /**
  * <pre>
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       1/16/21 1:36 PM
  *      Desc:       文件辅助类（单例）

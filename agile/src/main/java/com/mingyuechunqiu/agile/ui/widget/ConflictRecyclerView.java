@@ -16,7 +16,7 @@ import com.mingyuechunqiu.agile.R;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2020/3/22 11:18 PM
  *      Desc:       冲突处理列表

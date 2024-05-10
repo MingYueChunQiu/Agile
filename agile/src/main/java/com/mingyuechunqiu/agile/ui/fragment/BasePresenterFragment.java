@@ -17,7 +17,7 @@ import com.mingyuechunqiu.agile.base.view.IViewAttachPresenter;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2021/5/9 7:10 下午
  *      Desc:       P层功能的Fragment的基类

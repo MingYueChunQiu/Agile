@@ -8,7 +8,7 @@ import com.mingyuechunqiu.agile.data.remote.socket.exception.SocketHandlerExcept
  * <pre>
  *       Project:    Agile
  *       author :    MingYueChunQiu
- *       Github :    https://github.com/MingYueChunQiu
+ *       Github :    <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *       e-mail :    xiyujieit@163.com
  *       Time:       2019/9/24 16:53
  *       Desc:       所有Socket数据回调父接口

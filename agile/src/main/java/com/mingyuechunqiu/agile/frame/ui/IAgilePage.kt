@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleOwner
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       4/8/21 11:09 PM
  *      Desc:       所有框架界面父接口

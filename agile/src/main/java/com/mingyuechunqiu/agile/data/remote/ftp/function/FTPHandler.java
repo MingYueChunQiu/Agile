@@ -37,7 +37,7 @@ import java.util.List;
  * <pre>
  *       Project:    Agile
  *       author :    MingYueChunQiu
- *       Github :    https://github.com/MingYueChunQiu
+ *       Github :    <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *       e-mail :    xiyujieit@163.com
  *       Time:       2019/10/28 8:40
  *       Desc:       FTP具体处理类
@@ -159,7 +159,7 @@ class FTPHandler implements IFTPHandler {
             if (checkIsInvalidFile(file.getName())) {
                 continue;
             }
-            if ("".equals(downloadFileName) || downloadFileName.equals(file.getName())) {
+            if (downloadFileName.isEmpty() || downloadFileName.equals(file.getName())) {
 
                 File localFile = getLocalSaveFile(file.getName(), savePath, checkIsAvailableDirectory(file));
                 if (localFile == null) {
@@ -173,13 +173,13 @@ class FTPHandler implements IFTPHandler {
 
                     resultFlag = downloadWithSingleFile(file, localFile);
                     //单个文件下载完成，需要通过抛异常方式退出遍历
-                    if (resultFlag && !"".equals(downloadFileName)) {
+                    if (resultFlag && !downloadFileName.isEmpty()) {
                         throw new FTPDownloadException("download single file end");
                     }
                 }
 
                 //单个文件下载完成直接退出，文件夹下载需要继续遍历
-                if (!"".equals(downloadFileName)) {
+                if (!downloadFileName.isEmpty()) {
                     break;
                 }
             }
@@ -341,7 +341,6 @@ class FTPHandler implements IFTPHandler {
             list.addAll(Arrays.asList(files));
         } catch (IOException e) {
             LogManagerProvider.e("FTPHandler：listFiles", e.getMessage());
-            e.printStackTrace();
         }
         return list;
     }

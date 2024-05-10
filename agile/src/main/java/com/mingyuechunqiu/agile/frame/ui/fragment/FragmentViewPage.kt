@@ -27,9 +27,8 @@ data class FragmentViewPage(
         return tag
     }
 
-    override fun getLifecycle(): Lifecycle {
-        return owner.lifecycle
-    }
+    override val lifecycle: Lifecycle
+        get() = owner.lifecycle
 
     override fun isEmptyView(): Boolean {
         return isEmpty

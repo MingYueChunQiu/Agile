@@ -9,7 +9,7 @@ import com.mingyuechunqiu.agile.base.presenter.IBasePresenter;
 /**
  * <pre>
  *     author : xyj
- *     Github : https://github.com/MingYueChunQiu
+ *     Github : <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *     e-mail : xiyujieit@163.com
  *     time   : 2019/6/19
  *     desc   : View层关联Presenter层标准接口

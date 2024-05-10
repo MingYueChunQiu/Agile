@@ -2,7 +2,7 @@
 <resources>
 
     <!--加载对话框显示样式-->
-    <style name="DialogLoading" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="DialogLoading" parent="Theme.Material3.Light.Dialog">
         <item name="android:windowBackground">@drawable/agile_shape_round_corners_10_white</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">true</item>

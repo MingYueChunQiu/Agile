@@ -1,13 +1,13 @@
 package com.mingyuechunqiu.agile.data.local
 
-import java.util.*
+import java.util.UUID
 
 /**
  * <pre>
  *      Project:    FineNote
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2020/5/29 9:42 PM
  *      Desc:       随机数工具类

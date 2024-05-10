@@ -7,7 +7,7 @@ import androidx.annotation.ColorInt;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2020/3/28 9:29 PM
  *      Desc:       颜色工具类

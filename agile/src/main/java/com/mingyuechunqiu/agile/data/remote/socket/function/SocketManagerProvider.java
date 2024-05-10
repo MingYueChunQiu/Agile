@@ -1,18 +1,18 @@
 package com.mingyuechunqiu.agile.data.remote.socket.function;
 
-import androidx.annotation.NonNull;
-
-import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketSendData;
-
 import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_HEART_BEAT;
 import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_RETRY_COUNT;
 import static com.mingyuechunqiu.agile.data.remote.socket.constants.SocketConstants.SOCKET_SILENT_DURATION;
+
+import androidx.annotation.NonNull;
+
+import com.mingyuechunqiu.agile.data.remote.socket.bean.SocketSendData;
 
 /**
  * <pre>
  *       Project:    Agile
  *       author :    MingYueChunQiu
- *       Github :    https://github.com/MingYueChunQiu
+ *       Github :    <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *       e-mail :    xiyujieit@163.com
  *       Time:       2019/10/8 18:02
  *       Desc:       Socket管理器提供类
@@ -54,6 +54,6 @@ public final class SocketManagerProvider {
 
     private static final class SocketManagerProviderHolder {
 
-        private static ISocketManager sInstance = new SocketManager();
+        private static final ISocketManager sInstance = new SocketManager();
     }
 }

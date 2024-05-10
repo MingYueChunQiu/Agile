@@ -20,7 +20,7 @@ import com.mingyuechunqiu.agile.R;
 /**
  * <pre>
  *      Project:    PalmGoldenEagle
- *      Github :    https://github.com/MingYueChunQiu
+ *      Github :    <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Author:     XiYuJie
  *      Email:      xiyujie@jinying.com
  *      Time:       2019/12/5 9:29
@@ -35,7 +35,7 @@ public class PushNestedScrollView extends LinearLayoutCompat implements NestedSc
     private final NestedScrollingChildHelper mChildHelper;
 
     private PushScrollCallback mCallback;
-    private boolean openPullEffect;//标记是否打开可以推拉效果
+    private final boolean openPullEffect;//标记是否打开可以推拉效果
 
     public PushNestedScrollView(@NonNull Context context) {
         this(context, null);

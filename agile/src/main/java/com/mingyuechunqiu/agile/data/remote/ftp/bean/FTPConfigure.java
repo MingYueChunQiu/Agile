@@ -1,15 +1,15 @@
 package com.mingyuechunqiu.agile.data.remote.ftp.bean;
 
-import androidx.annotation.NonNull;
-
 import static com.mingyuechunqiu.agile.data.remote.ftp.constants.FTPConstants.DEFAULT_FTP_CONNECT_TIMEOUT;
 import static com.mingyuechunqiu.agile.data.remote.ftp.constants.FTPConstants.DEFAULT_FTP_DATA_TIMEOUT;
+
+import androidx.annotation.NonNull;
 
 /**
  * <pre>
  *       Project:    Agile
  *       author :    MingYueChunQiu
- *       Github :    https://github.com/MingYueChunQiu
+ *       Github :    <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *       e-mail :    xiyujieit@163.com
  *       Time:       2019/10/24 17:01
  *       Desc:       FTP信息类

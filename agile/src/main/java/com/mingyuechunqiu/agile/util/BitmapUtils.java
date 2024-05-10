@@ -164,11 +164,9 @@ public final class BitmapUtils {
             }
             listener.onDownloadBitmapSuccess(file);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
             LogManagerProvider.d(TAG, "downloadBitmap: " + e.getMessage());
             listener.onDownloadBitmapFailed(e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
             LogManagerProvider.d(TAG, "downloadBitmap: " + e.getMessage());
             listener.onDownloadBitmapFailed(e.getMessage());
         } finally {

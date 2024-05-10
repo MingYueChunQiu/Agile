@@ -21,7 +21,7 @@ import com.mingyuechunqiu.agile.feature.helper.ui.common.ScreenHelper;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2020/4/8 8:52 PM
  *      Desc:       菊花样式加载控件
@@ -78,7 +78,7 @@ public class DaisyLoadingView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         int saveCount = canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.ALL_SAVE_FLAG);
         drawLoading(canvas, mAnimateValue * DEGREE_PER_LINE);

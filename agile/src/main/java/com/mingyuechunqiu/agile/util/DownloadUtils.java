@@ -93,12 +93,30 @@ public final class DownloadUtils {
         Cursor cursor = manager.query(query.setFilterById(id));
         if (cursor != null && cursor.moveToFirst()) {
             DownloadCursorBean bean = new DownloadCursorBean();
-            bean.setAddress(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)));
-            bean.setDownloadedBytes(cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR)));
-            bean.setTotalBytes((cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))));
-            bean.setTitle(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_TITLE)));
-            bean.setDescription(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_DESCRIPTION)));
-            bean.setUrl(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_URI)));
+            int localUriIndex = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI);
+            if (localUriIndex >= 0) {
+                bean.setAddress(cursor.getString(localUriIndex));
+            }
+            int downloadedSizeIndex = cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
+            if (downloadedSizeIndex >= 0) {
+                bean.setDownloadedBytes(cursor.getInt(downloadedSizeIndex));
+            }
+            int totalSizeIndex = cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
+            if (totalSizeIndex >= 0) {
+                bean.setTotalBytes((cursor.getInt(totalSizeIndex)));
+            }
+            int titleIndex = cursor.getColumnIndex(DownloadManager.COLUMN_TITLE);
+            if (titleIndex >= 0) {
+                bean.setTitle(cursor.getString(titleIndex));
+            }
+            int descriptionIndex = cursor.getColumnIndex(DownloadManager.COLUMN_DESCRIPTION);
+            if (descriptionIndex >= 0) {
+                bean.setDescription(cursor.getString(descriptionIndex));
+            }
+            int uriIndex = cursor.getColumnIndex(DownloadManager.COLUMN_URI);
+            if (uriIndex >= 0) {
+                bean.setUrl(cursor.getString(uriIndex));
+            }
             cursor.close();
             return bean;
         }

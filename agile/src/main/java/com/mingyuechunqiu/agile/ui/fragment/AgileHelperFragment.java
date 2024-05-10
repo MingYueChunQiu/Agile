@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2020/6/20 1:15 PM
  *      Desc:       框架辅助Fragment

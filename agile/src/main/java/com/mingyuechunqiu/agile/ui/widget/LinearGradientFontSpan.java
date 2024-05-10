@@ -11,7 +11,7 @@ import android.text.style.ReplacementSpan;
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2020/3/22 11:19 PM
  *      Desc:       线性渐变文字扩展
@@ -21,8 +21,8 @@ import android.text.style.ReplacementSpan;
  */
 public class LinearGradientFontSpan extends ReplacementSpan {
     private int mSize;
-    private int mStartColor;
-    private int mEndColor;
+    private final int mStartColor;
+    private final int mEndColor;
 
 
     public LinearGradientFontSpan(int startColor, int endColor) {

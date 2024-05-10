@@ -9,7 +9,7 @@ import com.mingyuechunqiu.agile.base.model.IBaseModel
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2023/2/18 21:11
  *      Desc:       不依赖于数据层的孤立的ViewModel，适用于纯粹视图逻辑模块

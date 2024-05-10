@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
  * <pre>
  *       Project:    Agile
  *       author :    MingYueChunQiu
- *       Github :    https://github.com/MingYueChunQiu
+ *       Github :    <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *       e-mail :    xiyujieit@163.com
  *       Time:       2019/10/24 16:49
  *       Desc:       FTP管理器提供者

@@ -10,7 +10,7 @@ import com.mingyuechunqiu.agile.constants.AgileKeyPrefixConstants;
  * <pre>
  *      Project:    Agile
  *      author :    MingYueChunQiu
- *      Github :    https://github.com/MingYueChunQiu
+ *      Github :    <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      e-mail :    xiyujieit@163.com
  *      Time:       2019/10/9 17:09
  *      Desc:       Key输入工具类

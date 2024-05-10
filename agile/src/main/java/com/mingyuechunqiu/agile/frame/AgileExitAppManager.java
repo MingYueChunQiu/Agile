@@ -78,10 +78,8 @@ public final class AgileExitAppManager {
      * 彻底退出应用
      */
     public void exit() {
-        if (Agile.getAppContext() != null) {
-            Agile.getAppContext().stopService(new Intent(
-                    Agile.getAppContext(), NetworkStateService.class));
-        }
+        Agile.getAppContext().stopService(new Intent(
+                Agile.getAppContext(), NetworkStateService.class));
         if (mActivityMap == null || mActivityMap.isEmpty()) {
             return;
         }

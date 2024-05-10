@@ -5,7 +5,7 @@ package com.mingyuechunqiu.agile.frame.ui
  *      Project:    Agile
  *
  *      Author:     xiyujie
- *      Github:     https://github.com/MingYueChunQiu
+ *      Github:     <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *      Email:      xiyujieit@163.com
  *      Time:       2023/3/24 23:11
  *      Desc:       Agile库页面通用API

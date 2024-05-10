@@ -36,7 +36,7 @@ import java.util.TimerTask;
  * <pre>
  *       Project:    Agile
  *       author :    MingYueChunQiu
- *       Github :    https://github.com/MingYueChunQiu
+ *       Github :    <a href="https://github.com/MingYueChunQiu">仓库地址</a>
  *       e-mail :    xiyujieit@163.com
  *       Time:       2019/9/24 14:09
  *       Desc:       socket处理TCP的实现类
@@ -130,7 +130,7 @@ public class SocketTCPHandler implements ISocketTCPHandler {
             try {
                 bfr = new BufferedReader(new InputStreamReader(mSocket.getInputStream(), "GB2312"));
             } catch (IOException e) {
-                e.printStackTrace();
+                LogManagerProvider.e("SocketTCPHandler", e.getMessage());
                 return;
             }
             waitReceiveData = true;
@@ -155,7 +155,7 @@ public class SocketTCPHandler implements ISocketTCPHandler {
                 try {
                     mSocket.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LogManagerProvider.e("SocketTCPHandler", e.getMessage());
                 }
             }
             mSocket = null;
