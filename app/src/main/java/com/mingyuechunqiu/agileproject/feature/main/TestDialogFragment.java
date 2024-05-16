@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 import com.mingyuechunqiu.agile.feature.helper.ui.hint.ToastHelper;
 import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
@@ -27,6 +28,12 @@ import com.mingyuechunqiu.agileproject.R;
  */
 public class TestDialogFragment extends BasePresenterDialogFragment<MainContract.View, MainContract.Presenter<MainContract.View, ?>>
         implements MainContract.View {
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AgileDialogTheme);
+    }
 
     @Override
     public void onStart() {

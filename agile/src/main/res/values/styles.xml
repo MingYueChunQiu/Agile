@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--加载对话框显示样式-->
-    <style name="DialogLoading" parent="Theme.Material3.Light.Dialog">
+    <!--加载对话框显示样式，库中不添加parent，防止覆盖主应用样式-->
+    <style name="AgileDialogTheme">
         <item name="android:windowBackground">@drawable/agile_shape_round_corners_10_white</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">true</item>
@@ -10,12 +10,12 @@
     </style>
 
     <!--透明背景加载对话框显示样式-->
-    <style name="DialogLoading.Transparent" parent="DialogLoading">
+    <style name="AgileDialogTheme.Transparent" parent="AgileDialogTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <!--带动画弹出的透明背景加载对话框显示样式-->
-    <style name="DialogLoading.Transparent.Animation" parent="DialogLoading.Transparent">
+    <style name="DialogLoading.Transparent.Animation" parent="AgileDialogTheme.Transparent">
         <item name="android:windowAnimationStyle">@style/AnimationPop</item>
     </style>
 

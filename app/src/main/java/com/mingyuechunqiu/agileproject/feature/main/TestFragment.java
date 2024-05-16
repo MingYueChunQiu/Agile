@@ -62,6 +62,8 @@ public class TestFragment extends BasePresenterFragment<MainContract.View, MainC
             }
         });
 //        showLoadingStatusView(R.id.fl_fragment_main_loading);
+        TestDialogFragment fragment = new TestDialogFragment();
+        fragment.show(getChildFragmentManager(), fragment.getPageTag());
     }
 
     @Override

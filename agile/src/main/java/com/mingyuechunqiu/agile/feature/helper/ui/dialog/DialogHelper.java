@@ -68,7 +68,7 @@ public final class DialogHelper {
         View view = View.inflate(context, R.layout.agile_dialog_fragment_status_view, null);
         AppCompatTextView tvMsg = view.findViewById(R.id.tv_agile_dfg_status_view_content);
         tvMsg.setText(hint);
-        return new AlertDialog.Builder(context, R.style.DialogLoading)
+        return new AlertDialog.Builder(context, R.style.AgileDialogTheme)
                 .setView(view)
                 .setCancelable(cancelable)
                 .create();
