@@ -15,7 +15,7 @@
     </style>
 
     <!--带动画弹出的透明背景加载对话框显示样式-->
-    <style name="DialogLoading.Transparent.Animation" parent="AgileDialogTheme.Transparent">
+    <style name="AgileDialogTheme.Transparent.Animation" parent="AgileDialogTheme.Transparent">
         <item name="android:windowAnimationStyle">@style/AnimationPop</item>
     </style>
 
