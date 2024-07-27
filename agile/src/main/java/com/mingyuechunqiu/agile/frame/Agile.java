@@ -60,6 +60,17 @@ public final class Agile {
     /**
      * 进行框架初始化，需要在application中进行初始化，必须最先调用，否则可能会报错
      *
+     * @param context 传入上下文
+     * @param isDebug 是否处于调试模式
+     * @return 返回框架自身
+     */
+    public static Agile init(@NonNull Context context, boolean isDebug) {
+        return init(context, null, isDebug);
+    }
+
+    /**
+     * 进行框架初始化，需要在application中进行初始化，必须最先调用，否则可能会报错
+     *
      * @param context   传入上下文
      * @param configure 框架配置
      * @return 返回框架自身
