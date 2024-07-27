@@ -11,7 +11,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.MingYueChunQiu'
                 artifactId = 'Agile'
-                version = '0.7.4'
+                version = '0.7.5'
             }
         }
     }
