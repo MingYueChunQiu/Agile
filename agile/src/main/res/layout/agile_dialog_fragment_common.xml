@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/agile_shape_dialog"
+    android:orientation="vertical">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_agile_common_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_36"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/dp_20"
+        android:text="@string/agile_hint"
+        android:textColor="@color/agile_text_title"
+        android:textSize="@dimen/font_18"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_agile_common_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_36"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/dp_20"
+        android:textColor="@color/agile_text_subTitle"
+        android:textSize="@dimen/font_14"
+        tools:text="@string/agile_hint" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_agile_common"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/agile_divider_size"
+        android:layout_marginTop="@dimen/dp_36"
+        app:dividerColor="@color/agile_divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:divider="@color/agile_divider"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_agile_common_negative"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:paddingHorizontal="@dimen/dp_6"
+            android:text="@string/agile_cancel"
+            android:textColor="@color/agile_text_light"
+            android:textSize="@dimen/font_14"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_agile_common_positive"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:paddingHorizontal="@dimen/dp_6"
+            android:text="@string/agile_confirm"
+            android:textColor="@color/agile_positive"
+            android:textSize="@dimen/font_14"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

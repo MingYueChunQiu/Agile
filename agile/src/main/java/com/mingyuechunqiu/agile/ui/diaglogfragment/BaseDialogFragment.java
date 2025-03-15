@@ -322,10 +322,7 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
      */
     @Override
     public void showToast(@NotNull ErrorInfo info) {
-        showToast(new ToastHelper.ToastConfig.Builder()
-                .setMsg(info.getErrorMsg())
-                .setMsgResId(info.getErrorMsgResId())
-                .build());
+        showToast(new ToastHelper.ToastConfig.Builder().setMsg(info.getErrorMsg()).setMsgResId(info.getErrorMsgResId()).build());
     }
 
     /**
@@ -425,17 +422,61 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
     /**
      * 安全显示对话框
      *
+     * @param activity Fragment所在上下文
+     * @param tag      Fragment标签
+     */
+    public void showSafely(@Nullable FragmentActivity activity, @Nullable String tag) {
+        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
+            return;
+        }
+        if (activity.getSupportFragmentManager().findFragmentByTag(tag) != null || activity.getSupportFragmentManager().isStateSaved()) {
+            return;
+        }
+        if (isAdded() || isStateSaved()) {
+            return;
+        }
+        show(activity.getSupportFragmentManager(), tag);
+    }
+
+    /**
+     * 安全显示对话框
+     *
      * @param manager Fragment管理器
      * @param tag     Fragment标签
      */
     public void showSafely(@NonNull FragmentManager manager, @Nullable String tag) {
-        if (manager.findFragmentByTag(tag) != null) {
+        if (manager.findFragmentByTag(tag) != null || manager.isStateSaved()) {
             return;
         }
         if (isAdded() || isStateSaved()) {
             return;
         }
         show(manager, tag);
+    }
+
+    /**
+     * 安全关闭对话框
+     *
+     * @param activity Fragment所在上下文
+     */
+    public void dismissSafely(@Nullable FragmentActivity activity) {
+        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
+            return;
+        }
+        if (!isAdded()) {
+            return;
+        }
+        dismissAllowingStateLoss();
+    }
+
+    /**
+     * 安全关闭对话框
+     */
+    public void dismissSafely() {
+        if (!isAdded()) {
+            return;
+        }
+        dismissAllowingStateLoss();
     }
 
     /**

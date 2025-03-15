@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="agile_dialog_bg">#151515</color>
+    <color name="agile_text_title">@android:color/white</color>
+    <color name="agile_text_subTitle">#CCCCCC</color>
+    <color name="agile_text_light">#AFAFAF</color>
+    <color name="agile_divider">#4C4C4C</color>
+    <color name="agile_positive">#A3C9FE</color>
+
+</resources>

@@ -9,4 +9,11 @@
     <color name="gray_AAEEEEEE">#AAEEEEEE</color>
     <color name="gray_B2B2B2">#B2B2B2</color>
 
+    <color name="agile_dialog_bg">@android:color/white</color>
+    <color name="agile_text_title">@android:color/black</color>
+    <color name="agile_text_subTitle">#515151</color>
+    <color name="agile_text_light">#888888</color>
+    <color name="agile_divider">#D9D9D9</color>
+    <color name="agile_positive">#0F8DF2</color>
+
 </resources>

@@ -56,19 +56,19 @@ dependencies {
     implementation project(':agile')
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.1.0'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     implementation 'com.github.chenBingX:SuperTextView:3.2.4.64'
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation group: 'commons-net', name: 'commons-net', version: '3.8.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
     implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.5.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
     implementation 'com.github.MingYueChunQiu:RecorderManager:0.4.0-beta.5'
-    implementation 'com.lxj:xpopup:1.8.10-x'
+    implementation 'com.github.li-xiaojun:XPopup:2.10.0'
 }
 repositories {
     mavenCentral()

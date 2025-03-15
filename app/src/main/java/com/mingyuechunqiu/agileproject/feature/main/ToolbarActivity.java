@@ -21,6 +21,7 @@ import com.mingyuechunqiu.agile.feature.statusview.function.IStatusViewManager;
 import com.mingyuechunqiu.agile.feature.statusview.function.StatusViewManagerProvider;
 import com.mingyuechunqiu.agile.framework.ui.IActivityInflateLayoutViewCreator;
 import com.mingyuechunqiu.agile.ui.activity.BaseToolbarPresenterActivity;
+import com.mingyuechunqiu.agile.ui.diaglogfragment.AgileCommonDialogFragment;
 import com.mingyuechunqiu.agile.util.NetworkUtils;
 import com.mingyuechunqiu.agileproject.R;
 
@@ -68,10 +69,19 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity<IBaseDataView,
 //                })
 //                .subscribe();
 //        showLoadingStatusView(R.id.fl_toolbar_test_container);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_toolbar_test_container, new TestFragment())
-                .commitAllowingStateLoss();
-
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.fl_toolbar_test_container, new TestFragment())
+//                .commitAllowingStateLoss();
+        AgileCommonDialogFragment.Companion.show(this, new AgileCommonDialogFragment.Config.Builder(getPageTag())
+                .setTitle(R.string.app_name)
+                .setMsg(R.string.agile_error_failed_to_delete_old_version_apk)
+//                .setNegativeButtonTextColor(Color.RED)
+                .setNegativeButtonText(R.string.agile_cancel)
+//                .setPositiveButtonTextColor(Color.GREEN)
+                .setPositiveButtonText("份额王凤娥王凤娥我发额我方法俄国人各位放假诶哦叫哦及哦家里及哦及哦及哦ii哦")
+                        .setCancelable(true)
+                        .setCancelableWithTouchOutside(false)
+                .build());
     }
 
     @Override
@@ -87,14 +97,10 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity<IBaseDataView,
         configure.setLoadingOption(option);
         StatusViewOption.Builder builder = option.getBuilder();
         builder.getContentOption().setText("废物范围蜂窝网");
-        builder.setShowContentText(false)
-                .setDialogDimAmount(0.5F)
-                .setContainerBackground(new ColorDrawable(Color.TRANSPARENT))
-                .setProgressOption(new StatusViewProgressOption.Builder()
-                        .setProgressStyle(StatusViewConstants.ProgressStyle.STYLE_DAISY)
+        builder.setShowContentText(false).setDialogDimAmount(0.5F).setContainerBackground(new ColorDrawable(Color.TRANSPARENT)).setProgressOption(new StatusViewProgressOption.Builder().setProgressStyle(StatusViewConstants.ProgressStyle.STYLE_DAISY)
 //                .setProgressSize((int) ScreenUtils.getPxFromDp(getResources(), 70F))
 //                .setDaisyColor(Color.BLUE)
-                        .build());
+                .build());
         manager.applyStatusViewConfigure(configure);
     }
 
@@ -134,20 +140,14 @@ public class ToolbarActivity extends BaseToolbarPresenterActivity<IBaseDataView,
             @NonNull
             @Override
             public ToolbarHelper.ToolbarConfig initToolbarConfig() {
-                return new ToolbarHelper.ToolbarConfig.Builder()
-                        .setImmerse(true)
-                        .setNavigationIconResId(R.drawable.agile_arrow_back_press)
-                        .setTitle("分为非")
+                return new ToolbarHelper.ToolbarConfig.Builder().setImmerse(true).setNavigationIconResId(R.drawable.agile_arrow_back_press).setTitle("分为非")
 //                .setEnableDisplayHomeAsUp(true)
-                        .setHideDisplayTitle(false)
-                        .setOnNavigationIconClickListener(new View.OnClickListener() {
+                        .setHideDisplayTitle(false).setOnNavigationIconClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 startActivity(new Intent(ToolbarActivity.this, MainActivity.class));
                             }
-                        })
-                        .setLogoResId(R.drawable.agile_arrow_back_pressed)
-                        .build();
+                        }).setLogoResId(R.drawable.agile_arrow_back_pressed).build();
             }
         };
     }
