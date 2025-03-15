@@ -3,7 +3,7 @@ a agile android framework for MVP and MVVM.
 一个Android高效框架，提供公共框架、方法，进行敏捷开发。
 
     最新v0.7.6</br>
-    1.AGP现已升级至8.5.2，SDK升至34</br>
+    1.AGP现已升级至8.5.2，升级SDK</br>
     2.新增通用样式对话框，优化对话框显示判断</br>
     3.增加ExtraHelper用于Activity/Fragment参数传递辅助类
     
